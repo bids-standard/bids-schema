@@ -21,6 +21,7 @@ the repositories of tools which need to use it, or incorporated into their tree
   - `README.md`
   - `versions/`
     - `x.y.z/` - subdirectories matching versions of schema in BIDS specification
+    - `latest` - a copy (symlinks aren't supported on some os) of the most recent release 
     - `master/` - the state of schema in master branch of the BIDS specification 
       repository
   - `tools/`
