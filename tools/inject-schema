@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "TODO: $0 [release]
+
+By default would take a master branch copy and place into file tree here.
+If release is provided, would inject version corresponding to that tagged
+release of bids-specification"
