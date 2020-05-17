@@ -31,3 +31,8 @@ the repositories of tools which need to use it, or incorporated into their tree
 
 See http://github.com/dandi/dandi-core and its README.md for an example
 of similar (not fully automated yet though) subtree use.
+
+# References
+
+- [bids-specification #466](https://github.com/bids-standard/bids-specification/issues/466)
+  the issue discussing establishing of schema for BIDS
