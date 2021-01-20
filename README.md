@@ -1,7 +1,7 @@
 # bids-schema
 
 Perspective repository to contain (including historical) versions of BIDS
-schema.  ATM this is just a place holder to eastablish necessary
+schema.  At the moment this is just a place holder to eastablish necessary
 scripting/workflows.  This repository would become ultimate source for schema,
 including its released versions which would correspond to the versions of BIDS
 specification where they come from.  It could be used as a git submodule  in
