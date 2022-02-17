@@ -1,7 +1,18 @@
 #!/bin/bash
+# $0 [release]
+# 
+# By default would take a master branch copy and place into file tree here.
+# If release is provided, would inject version corresponding to that tagged
+# release of bids-specification"
 
-echo "TODO: $0 [release]
+set -eu
 
-By default would take a master branch copy and place into file tree here.
-If release is provided, would inject version corresponding to that tagged
-release of bids-specification"
+rel="$1"  # specify release
+
+cd $(dirname "$0")/..
+
+mkdir versions/$rel  # must not exist yet
+cd versions/$rel
+
+curl --silent -L https://github.com/bids-standard/bids-specification/archive/refs/tags/v${rel}.tar.gz \
+| tar -xzf- --strip 3 --wildcards '*/src/schema'
