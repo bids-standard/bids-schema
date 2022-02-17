@@ -16,3 +16,9 @@ cd versions/$rel
 
 curl --silent -L https://github.com/bids-standard/bids-specification/archive/refs/tags/v${rel}.tar.gz \
 | tar -xzf- --strip 3 --wildcards '*/src/schema'
+
+# possibly make it "the latest". very crude!!
+cd ..
+latest=$(/bin/ls -1d [1-9].* | sort -n | tail -n 1)
+rm -rf latest
+cp -rp "$latest" latest
