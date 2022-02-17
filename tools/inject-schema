@@ -11,14 +11,27 @@ rel="$1"  # specify release
 
 cd $(dirname "$0")/..
 
+
+if [ "$rel" = "master" ]; then
+	treeish="$rel"
+	rm -r versions/$rel  # we allow to redo master since it changes
+	# TODO: for master would be nice to have output of `git describe` but I do not
+	# think we can get that without git clone'ing
+else
+	treeish="v$rel"
+fi
+
 mkdir versions/$rel  # must not exist yet
 cd versions/$rel
 
-curl --silent -L https://github.com/bids-standard/bids-specification/archive/refs/tags/v${rel}.tar.gz \
+curl --silent -L "https://github.com/bids-standard/bids-specification/tarball/$treeish" \
 | tar -xzf- --strip 3 --wildcards '*/src/schema'
 
-# possibly make it "the latest". very crude!!
 cd ..
-latest=$(/bin/ls -1d [1-9].* | sort -n | tail -n 1)
-rm -rf latest
-cp -rp "$latest" latest
+
+if [ "$rel" != "master" ]; then
+    # possibly make it "the latest". very crude and inefficient!!
+    latest=$(/bin/ls -1d [1-9].* | sort -n | tail -n 1)
+    rm -rf latest
+    cp -rp "$latest" latest
+fi
