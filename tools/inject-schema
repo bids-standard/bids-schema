@@ -25,9 +25,9 @@ mkdir versions/$rel  # must not exist yet
 cd versions/$rel
 
 curl --silent -L "https://github.com/bids-standard/bids-specification/tarball/$treeish" \
-| tar -xzf- --strip 3 --wildcards '*/src/schema'
+| tar -xzf- --strip 2 --wildcards '*/src/schema'
 
-bst -v export --schema . --output schema.json
+bst -v export --schema schema --output schema.json
 
 cd ..
 
