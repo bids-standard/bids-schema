@@ -8,9 +8,11 @@
 set -eu
 
 rel="$1"  # specify release
+repo=${2:-}  # optionally - use the local repo
+
+[ -z "$repo" ] || repo=$(readlink -f "$repo")
 
 cd $(dirname "$0")/..
-
 
 if [ "$rel" = "master" ]; then
 	treeish="$rel"
@@ -24,8 +26,14 @@ fi
 mkdir versions/$rel  # must not exist yet
 cd versions/$rel
 
-curl --silent -L "https://github.com/bids-standard/bids-specification/tarball/$treeish" \
-| tar -xzf- --strip 2 --wildcards '*/src/schema'
+if [ -z "$repo" ]; then
+    curl --silent -L "https://github.com/bids-standard/bids-specification/tarball/$treeish" \
+    | tar -xzf- --strip 2 --wildcards '*/src/schema'
+else
+    git -C "$repo" archive --prefix prefix/ "$treeish" \
+    | tar -xf- --strip 2 --wildcards '*/src/schema'
+fi
+
 
 bst -v export --schema schema --output schema.json
 
