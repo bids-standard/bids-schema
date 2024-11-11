@@ -1,0 +1,29 @@
+name: Inject
+
+on:
+  schedule:
+    - cron: '0 */12 * * *'
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: upstream/master
+      
+      - name: Run cron job
+        run: |
+          tools/inject-schema-fully-auto
+
+      - name: Possibly push results
+        run:
+          git push
