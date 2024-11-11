@@ -12,7 +12,7 @@ repo=${2:-}  # optionally - use the local repo
 
 [ -z "$repo" ] || repo=$(readlink -f "$repo")
 
-cd $(dirname "$0")/..
+cd "$(dirname "$0")/.."
 
 if [ "$rel" = "master" ]; then
 	treeish="$rel"

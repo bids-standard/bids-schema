@@ -10,9 +10,10 @@ this_path=$(dirname "$0")
 versions_path="${this_path}/../versions"
 
 TMP="$(mktemp -d "${TMPDIR:-/tmp}"/bids-XXXXXXX)"
+# shellcheck disable=SC2064
 trap "rm -rf '$TMP'" SIGINT SIGHUP SIGABRT EXIT
 
-: ${BIDS_REPO:=}
+: "${BIDS_REPO:=}"
 
 if [ -z "$BIDS_REPO" ]; then
     BIDS_REPO="$TMP/bids-specification"
@@ -38,9 +39,10 @@ fi
 if [ -n "$to_inject" ]; then
     # TODO: setup venv
     venv="$TMP/venv"
+    # shellcheck disable=SC1091
     python3 -m "venv" "$venv" && source "$venv/bin/activate"
     python -m pip install -r requirements.txt
-    echo -e "$to_inject" | while read committish folder; do
+    echo -e "$to_inject" | while read -r committish folder; do
         [ -n "$committish" ] || continue
         git -C "$BIDS_REPO" checkout "$committish"
         "$this_path/inject-schema" "$folder" "$BIDS_REPO"

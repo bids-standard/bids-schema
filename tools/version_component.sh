@@ -9,11 +9,11 @@ repo="$1"
 shift
 
 cd "$repo"
-if [ -z "$@" ]; then
+if [ -z "$*" ]; then
     # no components given -- just 
     comm=HEAD
 else
-    comm=$(git log -1 --pretty=format:%H "$@*")
+    comm=$(git log -1 --pretty=format:%H "$@")
 fi
 
 cver=$(git describe --match=v[0-9].*.* "$comm")
