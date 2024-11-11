@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+# The "ultimate" script to run to do injection, e.g. on CI
+#
+
+export PS4='> '
+set -x
+set -eu
+this_path=$(dirname "$0")
+versions_path="${this_path}/.."
+
+TMP="$(mktemp -d ${TMPDIR:-/tmp}/bids-XXXXXXX)"
+trap "rm -rf '$TMP'" SIGINT SIGHUP SIGABRT EXIT
+
+: ${BIDS_REPO:=}
+
+if [ -z "$BIDS_REPO" ]; then
+    BIDS_REPO="$TMP/bids-specification"
+
+    git clone https://github.com/bids-standard/bids-specification/ "$BIDS_REPO"
+fi
+
+schema_ver=$("$this_path/version_component.sh" "$BIDS_REPO" src/schema | sed -e 's,^v,,g')
+
+to_inject=''
+
+master_ver_here=$(cat "$versions_path/master/SCHEMA_VERSION" || echo "unknown")
+if [ "$master_ver_here" != "$schema_ver" ] ; then
+    to_inject+="v$schema_ver master\n"
+fi
+
+released_ver=${schema_ver%%+*}
+echo "schema version: $schema_ver ; released ver: $released_ver"
+if [ ! -d "$versions_path/$released_ver" ]; then
+    to_inject+="v$released_ver $released_ver\n"
+fi
+
+if [ -n "$to_inject" ]; then
+    # TODO: setup venv
+    venv="$TMP/venv"
+    python3 -m "venv" "$venv" && source "$venv/bin/activate"
+    python -m pip install -r requirements.txt
+    echo -e "$to_inject" | while read committish folder; do
+        [ -n "$committish" ] || continue
+        git -C "$BIDS_REPO" checkout "$committish"
+        "$this_path/inject-schema" "$folder" "$BIDS_REPO"
+        git add versions; git commit -m "Injected $committish version of schema" -a
+    done
+fi
+echo "done"

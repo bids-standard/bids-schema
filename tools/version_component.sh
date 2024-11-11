@@ -5,6 +5,10 @@
 
 set -eu
 
+repo="$1"
+shift
+
+cd "$repo"
 if [ -z "$@" ]; then
     # no components given -- just 
     comm=HEAD
