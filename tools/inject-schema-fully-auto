@@ -9,7 +9,7 @@ set -eu
 this_path=$(dirname "$0")
 versions_path="${this_path}/../versions"
 
-TMP="$(mktemp -d ${TMPDIR:-/tmp}/bids-XXXXXXX)"
+TMP="$(mktemp -d "${TMPDIR:-/tmp}"/bids-XXXXXXX)"
 trap "rm -rf '$TMP'" SIGINT SIGHUP SIGABRT EXIT
 
 : ${BIDS_REPO:=}

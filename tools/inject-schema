@@ -16,15 +16,15 @@ cd $(dirname "$0")/..
 
 if [ "$rel" = "master" ]; then
 	treeish="$rel"
-	rm -r versions/$rel  # we allow to redo master since it changes
+	rm -r versions/"$rel"  # we allow to redo master since it changes
 	# TODO: for master would be nice to have output of `git describe` but I do not
 	# think we can get that without git clone'ing
 else
 	treeish="v$rel"
 fi
 
-mkdir versions/$rel  # must not exist yet
-cd versions/$rel
+mkdir versions/"$rel"  # must not exist yet
+cd versions/"$rel"
 
 if [ -z "$repo" ]; then
     curl --silent -L "https://github.com/bids-standard/bids-specification/tarball/$treeish" \
