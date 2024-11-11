@@ -7,7 +7,7 @@ export PS4='> '
 set -x
 set -eu
 this_path=$(dirname "$0")
-versions_path="${this_path}/.."
+versions_path="${this_path}/../versions"
 
 TMP="$(mktemp -d ${TMPDIR:-/tmp}/bids-XXXXXXX)"
 trap "rm -rf '$TMP'" SIGINT SIGHUP SIGABRT EXIT
@@ -24,7 +24,7 @@ schema_ver=$("$this_path/version_component.sh" "$BIDS_REPO" src/schema | sed -e 
 
 to_inject=''
 
-master_ver_here=$(cat "$versions_path/master/SCHEMA_VERSION" || echo "unknown")
+master_ver_here=$(cat "$versions_path/master/BIDS_VERSION_LASTEDIT" || echo "unknown")
 if [ "$master_ver_here" != "$schema_ver" ] ; then
     to_inject+="v$schema_ver master\n"
 fi
@@ -44,7 +44,9 @@ if [ -n "$to_inject" ]; then
         [ -n "$committish" ] || continue
         git -C "$BIDS_REPO" checkout "$committish"
         "$this_path/inject-schema" "$folder" "$BIDS_REPO"
-        git add versions; git commit -m "Injected $committish version of schema" -a
+        echo "$committish" >| "$versions_path/$folder/BIDS_VERSION_LASTEDIT"
+        git add versions; 
+        git commit -m "Injected $committish version of schema into $folder" -a
     done
 fi
 echo "done"
