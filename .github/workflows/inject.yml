@@ -11,14 +11,13 @@ permissions:
   contents: write
 
 jobs:
-  update:
+  inject:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
-          ref: upstream/master
       
       - name: Run cron job
         run: |
