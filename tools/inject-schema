@@ -41,7 +41,7 @@ cd ..
 
 if [ "$rel" != "master" ]; then
     # possibly make it "the latest". very crude and inefficient!!
-    latest=$(/bin/ls -1d [1-9].* | sort -n | tail -n 1)
+    latest=$(/bin/ls -1d [1-9].* | sort -V | tail -n 1)
     rm -rf latest
     cp -rp "$latest" latest
 fi
