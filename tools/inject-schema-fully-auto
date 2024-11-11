@@ -44,9 +44,12 @@ if [ -n "$to_inject" ]; then
         [ -n "$committish" ] || continue
         git -C "$BIDS_REPO" checkout "$committish"
         "$this_path/inject-schema" "$folder" "$BIDS_REPO"
-        echo "$committish" >| "$versions_path/$folder/BIDS_VERSION_LASTEDIT"
+        version_folder="$versions_path/$folder/"
+        echo "$committish" >| "$version_folder/BIDS_VERSION_LASTEDIT"
+        schema_version=$(cat "$version_folder/schema/SCHEMA_VERSION")
+        bids_version=$(cat "$version_folder/schema/BIDS_VERSION")
         git add versions; 
-        git commit -m "Injected $committish version of schema into $folder" -a
+        git commit -m "Injected schema $schema_version for BIDS $bids_version as of commit $committish into versions/$folder" -a
     done
 fi
 echo "done"
