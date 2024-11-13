@@ -51,7 +51,11 @@ if [ -n "$to_inject" ]; then
         schema_version=$(cat "$version_folder/schema/SCHEMA_VERSION")
         bids_version=$(cat "$version_folder/schema/BIDS_VERSION")
         git add versions; 
-        git commit -m "Injected schema $schema_version for BIDS $bids_version as of commit $committish into versions/$folder" -a
+        if git diff-index --quiet HEAD --; then
+            echo "Nothing to commit"
+        else
+            git commit -m "Injected schema $schema_version for BIDS $bids_version as of commit $committish into versions/$folder" -a
+        fi
     done
 fi
 echo "done"
