@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+# Process PR schemas from bids-specification repository
+# Detects PRs with schema changes and generates corresponding schemas
+
+set -eu
+
+# Configuration
+SCRIPT_DIR="$(dirname "$0")"
+BASE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+BIDS_REPO="${BIDS_REPO:-$BASE_DIR/../bids-specification}"
+PR_DIR="$BASE_DIR/PRs"
+
+# Ensure we're in the right directory
+cd "$BASE_DIR"
+
+# Check if BIDS repo exists or needs to be cloned
+if [ ! -d "$BIDS_REPO" ]; then
+    echo "BIDS repository not found at $BIDS_REPO. Cloning..."
+    TMP_DIR=$(mktemp -d)
+    trap "rm -rf $TMP_DIR" EXIT
+    BIDS_REPO="$TMP_DIR/bids-specification"
+    git clone https://github.com/bids-standard/bids-specification/ "$BIDS_REPO"
+fi
+
+cd "$BIDS_REPO"
+
+# Configure git to fetch PR refs if not already done
+if ! git config --get-all remote.origin.fetch | grep -q 'refs/pull'; then
+    echo "Configuring git to fetch PR references..."
+    git config --add remote.origin.fetch '+refs/pull/*:refs/pull/origin/*'
+fi
+
+echo "Fetching latest PR references..."
+git fetch origin
+
+# Get list of all PR merge refs
+pr_refs=$(find .git/refs/pull/origin -name "merge" -type f 2>/dev/null || true)
+
+if [ -z "$pr_refs" ]; then
+    echo "No PR references found"
+    exit 0
+fi
+
+# Track processed PRs
+processed_count=0
+schema_change_count=0
+
+echo "Checking PRs for schema changes..."
+
+for ref_file in $pr_refs; do
+    # Extract PR number from path
+    pr_number=$(basename $(dirname "$ref_file"))
+
+    # Skip if not a number
+    if ! [[ "$pr_number" =~ ^[0-9]+$ ]]; then
+        continue
+    fi
+
+    # Read the ref
+    ref=$(cat "$ref_file")
+
+    # Check if this PR has schema changes
+    if git diff --quiet origin/master..."$ref" -- src/schema 2>/dev/null; then
+        # No schema changes, skip
+        continue
+    fi
+
+    echo "PR #$pr_number has schema changes"
+    schema_change_count=$((schema_change_count + 1))
+
+    # Check if we already have this PR processed and if it's up to date
+    if [ -d "$PR_DIR/$pr_number" ]; then
+        if [ -f "$PR_DIR/$pr_number/PR_METADATA" ]; then
+            existing_commit=$(grep '"last_commit"' "$PR_DIR/$pr_number/PR_METADATA" | sed 's/.*"last_commit": "\([^"]*\)".*/\1/')
+            if [ "$existing_commit" = "$ref" ]; then
+                echo "  PR #$pr_number is already up to date"
+                continue
+            fi
+        fi
+    fi
+
+    echo "  Processing PR #$pr_number..."
+
+    # Use datalad run if available, otherwise run directly
+    if command -v datalad &> /dev/null; then
+        cd "$BASE_DIR"
+        datalad run -m "Generate schema for PR #$pr_number" \
+            --output "PRs/$pr_number/" \
+            tools/inject-schema-pr "PRs/$pr_number" "$BIDS_REPO" "$ref" --type pr --metadata
+        cd "$BIDS_REPO"
+    else
+        # Fallback to direct execution if datalad is not available
+        "$SCRIPT_DIR/inject-schema-pr" "$PR_DIR/$pr_number" "$BIDS_REPO" "$ref" --type pr --metadata
+    fi
+
+    processed_count=$((processed_count + 1))
+done
+
+# Clean up PRs that are merged or closed (no longer have refs)
+echo "Checking for merged/closed PRs to clean up..."
+
+if [ -d "$PR_DIR" ]; then
+    for pr_folder in "$PR_DIR"/*; do
+        if [ ! -d "$pr_folder" ]; then
+            continue
+        fi
+
+        pr_number=$(basename "$pr_folder")
+
+        # Skip non-numeric folders
+        if ! [[ "$pr_number" =~ ^[0-9]+$ ]]; then
+            continue
+        fi
+
+        # Check if this PR still exists
+        if [ ! -f ".git/refs/pull/origin/$pr_number/merge" ]; then
+            echo "  PR #$pr_number appears to be merged/closed, removing schema..."
+            rm -rf "$pr_folder"
+        fi
+    done
+fi
+
+echo ""
+echo "Summary:"
+echo "  Total PRs checked: $(echo "$pr_refs" | wc -w)"
+echo "  PRs with schema changes: $schema_change_count"
+echo "  PRs processed: $processed_count"

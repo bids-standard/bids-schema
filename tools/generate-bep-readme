@@ -1,0 +1,191 @@
+#!/usr/bin/env python3
+"""Generate README.md for BEPs directory with status table"""
+
+import json
+import glob
+from pathlib import Path
+from datetime import datetime
+
+def load_json(filepath):
+    """Load JSON file safely"""
+    try:
+        with open(filepath, 'r') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+
+def format_bep_row(bep_dir_path, metadata):
+    """Format a single BEP as a table row"""
+    bep_number = Path(bep_dir_path).name
+
+    # Extract fields with defaults
+    title = metadata.get('title', 'Unknown')
+    status = metadata.get('status', 'draft')
+    pr_number = metadata.get('pr_number', '')
+    google_doc = metadata.get('google_doc', '')
+    last_synced = metadata.get('last_synced', 'Unknown')
+
+    # Format date if it's a timestamp
+    if last_synced != 'Unknown':
+        try:
+            dt = datetime.fromisoformat(last_synced.replace('Z', '+00:00'))
+            last_synced = dt.strftime('%Y-%m-%d')
+        except:
+            pass
+
+    # Format PR link
+    pr_link = f"[#{pr_number}](https://github.com/bids-standard/bids-specification/pull/{pr_number})" if pr_number else "N/A"
+
+    # Format Google Doc link
+    doc_link = f"[Doc]({google_doc})" if google_doc else "N/A"
+
+    # Schema path (relative to BEPs directory)
+    schema_path = f"./{bep_number}/schema.json"
+
+    # Status emoji
+    status_emoji = {
+        'draft': '📝',
+        'review': '👁️',
+        'accepted': '✅',
+        'archived': '📦'
+    }.get(status, '⚪')
+
+    # BEP number with leading zeros for display
+    bep_display = bep_number.zfill(3)
+
+    return f"| {bep_display} | {title} | {status_emoji} {status.title()} | {pr_link} | {doc_link} | {last_synced} | [Schema]({schema_path}) |"
+
+def group_beps_by_status(bep_dirs):
+    """Group BEPs by their status"""
+    grouped = {
+        'draft': [],
+        'review': [],
+        'accepted': [],
+        'archived': []
+    }
+
+    for bep_dir in bep_dirs:
+        metadata = load_json(f"{bep_dir}/BEP_METADATA")
+        if metadata:
+            status = metadata.get('status', 'draft')
+            grouped.get(status, grouped['draft']).append((bep_dir, metadata))
+
+    return grouped
+
+def generate_bep_table(beps):
+    """Generate markdown table for a list of BEPs"""
+    if not beps:
+        return ""
+
+    # Table header
+    table = "| BEP # | Title | Status | Associated PR | Google Doc | Schema Updated | Actions |\n"
+    table += "|-------|-------|--------|---------------|------------|----------------|---------|"
+
+    # Sort BEPs by number
+    beps_sorted = sorted(beps, key=lambda x: int(Path(x[0]).name) if Path(x[0]).name.isdigit() else 0)
+
+    for bep_dir, metadata in beps_sorted:
+        table += "\n" + format_bep_row(bep_dir, metadata)
+
+    return table
+
+def generate_bep_readme():
+    """Generate the complete README.md for BEPs directory"""
+    readme_content = """# BIDS Extension Proposals (BEPs) Schemas
+
+This directory contains automatically generated schemas for BIDS Extension Proposals.
+Each BEP schema is linked to its corresponding Pull Request in the BIDS specification repository.
+
+## Overview
+
+BIDS Extension Proposals (BEPs) are community-driven extensions to the BIDS specification.
+This directory provides compiled schemas for BEPs that have associated Pull Requests with schema changes.
+
+Each subdirectory corresponds to a BEP number and contains:
+- `schema/` - The raw schema files from the associated PR
+- `schema.json` - The compiled BIDS schema
+- `BEP_METADATA` - Metadata about the BEP and its PR association
+
+## BEP Status Overview
+
+"""
+
+    # Find all BEP directories
+    bep_dirs = glob.glob("BEPs/[0-9]*")
+
+    if not bep_dirs:
+        readme_content += "*No BEP schemas currently available*\n"
+    else:
+        # Group BEPs by status
+        beps_by_status = group_beps_by_status(bep_dirs)
+
+        # Add summary
+        counts = {status: len(beps) for status, beps in beps_by_status.items()}
+        readme_content += f"**Status Summary:** "
+        readme_content += f"📝 Draft ({counts['draft']}) | "
+        readme_content += f"👁️ Under Review ({counts['review']}) | "
+        readme_content += f"✅ Accepted ({counts['accepted']}) | "
+        readme_content += f"📦 Archived ({counts['archived']})\n\n"
+
+        # Generate tables for each status
+        for status in ['draft', 'review', 'accepted', 'archived']:
+            if beps_by_status[status]:
+                status_title = {
+                    'draft': 'Draft BEPs',
+                    'review': 'BEPs Under Review',
+                    'accepted': 'Accepted BEPs',
+                    'archived': 'Archived BEPs'
+                }[status]
+
+                readme_content += f"### {status_title}\n\n"
+                readme_content += generate_bep_table(beps_by_status[status])
+                readme_content += "\n\n"
+
+    # Add footer
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')
+    readme_content += f"""## How to Use BEP Schemas
+
+1. **Accessing a schema**: Navigate to `BEPs/{{bep_number}}/schema.json`
+2. **Checking metadata**: View `BEPs/{{bep_number}}/BEP_METADATA` for BEP details
+3. **Raw schema files**: Available in `BEPs/{{bep_number}}/schema/`
+4. **Finding the source PR**: Check the "Associated PR" column in the tables above
+
+## BEP Process
+
+1. **Draft**: Initial proposal and discussion
+2. **Under Review**: Active development and community feedback
+3. **Accepted**: Approved for inclusion in BIDS
+4. **Archived**: Historical BEPs no longer under active development
+
+## Update Frequency
+
+BEP schemas are automatically synchronized with their associated PRs:
+- Every 12 hours via scheduled GitHub Actions
+- On manual workflow dispatch
+- When PR schemas are updated
+
+## Related Resources
+
+- [PR Schemas](../PRs/) - All Pull Request schemas
+- [Released Versions](../versions/) - Official BIDS schema releases
+- [BIDS Website - BEPs](https://bids.neuroimaging.io/beps) - Official BEP documentation
+- [BIDS Specification Repository](https://github.com/bids-standard/bids-specification)
+
+## Legend
+
+- 📝 **Draft**: Proposal under initial development
+- 👁️ **Under Review**: Actively being reviewed by the community
+- ✅ **Accepted**: Approved and merged into BIDS
+- 📦 **Archived**: No longer under active development
+
+---
+
+*Last generated: {timestamp}*
+"""
+
+    # Write the README
+    Path("BEPs/README.md").write_text(readme_content)
+    print(f"Generated BEPs/README.md with {len(bep_dirs)} BEP schemas")
+
+if __name__ == "__main__":
+    generate_bep_readme()

@@ -27,7 +27,22 @@ package managers.
     - `latest/` - a copy (symlinks aren't supported on some operating systems) of the most recent release
     - `master/` - the state of schema in the BIDS specification master branch
       repository
+  - `PRs/` - schemas from Pull Requests with schema changes
+  - `BEPs/` - schemas for BIDS Extension Proposals
   - `tools/`
+
+## Schema Versions
+
+### Released Versions
+- [Latest Release](./versions/latest/) - Current stable BIDS schema
+- [All Releases](./versions/) - Historical BIDS schema versions
+
+### Development Versions
+- [Master Branch](./versions/master/) - Current development schema
+- [PR Schemas](./PRs/) - Schemas from open Pull Requests with schema changes
+- [BEP Schemas](./BEPs/) - Schemas for BIDS Extension Proposals
+
+See [PRs/README.md](./PRs/README.md) and [BEPs/README.md](./BEPs/README.md) for detailed status tables.
 
 # HOWTOs
 
