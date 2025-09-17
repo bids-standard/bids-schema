@@ -23,7 +23,6 @@ def format_bep_row(bep_dir_path, metadata):
     bep_status = metadata.get('status', 'draft')
     pr_number = metadata.get('pr_number', '')
     google_doc = metadata.get('google_doc', '')
-    last_synced = metadata.get('last_synced', 'Unknown')
 
     # Load corresponding PR metadata if available
     pr_metadata = None
@@ -35,7 +34,7 @@ def format_bep_row(bep_dir_path, metadata):
     pr_status = 'unknown'
     build_status = 'unknown'
     last_commit_raw = 'Unknown'
-    schema_updated = last_synced
+    schema_updated = 'Unknown'
 
     if pr_metadata:
         # Count authors using git shortlog if we have git_ref

@@ -102,15 +102,20 @@ for bep in beps_data:
                 metadata = json.load(f)
                 if metadata.get('pr_number') == int(pr_number):
                     # Check if PR has been updated since last sync
-                    pr_metadata_file = pr_schema_dir / 'PR_METADATA'
+                    pr_metadata_file = pr_schema_dir / 'PR_METADATA.json'
                     if pr_metadata_file.exists():
                         with open(pr_metadata_file, 'r') as f:
                             pr_metadata = json.load(f)
                             pr_updated = pr_metadata.get('last_updated', '')
-                            bep_synced = metadata.get('last_synced', '')
-                            if bep_synced >= pr_updated:
-                                print(f"  BEP {bep_number} is up to date")
-                                need_update = False
+                            bep_metadata_file = bep_schema_dir / 'BEP_METADATA.json'
+                            if bep_metadata_file.exists():
+                                with open(bep_metadata_file, 'r') as f:
+                                    bep_metadata = json.load(f)
+                                    # Check if PR number matches and schema exists
+                                    if (bep_metadata.get('pr_number') == int(pr_number) and
+                                        (bep_schema_dir / 'schema.json').exists()):
+                                        print(f"  BEP {bep_number} is already up to date")
+                                        need_update = False
 
     if need_update:
         print(f"  Syncing BEP {bep_number} from PR #{pr_number}")
@@ -156,14 +161,12 @@ for bep in beps_data:
             shutil.copytree(pr_schema_dir, bep_schema_dir)
 
         # Generate BEP metadata
-        import datetime
         metadata = {
             'bep_number': bep_number,
             'title': title,
             'pr_number': int(pr_number),
             'pull_request': pull_request,
             'google_doc': bep.get('google_doc', ''),
-            'last_synced': datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
             'status': 'review'  # Default status, could be enhanced
         }
 
