@@ -115,14 +115,18 @@ done
 ```
 1. Process releases and master (existing)
 2. Process PR schemas (new)
-3. Process BEP schemas (new)
-4. Commit changes with detailed messages
-5. Generate summary report
+3. Generate PRs/README.md with status table
+4. Process BEP schemas (new)
+5. Generate BEPs/README.md with status table
+6. Update main README.md if needed
+7. Commit changes with detailed messages
+8. Generate summary report
 ```
 
 **Commit Strategy**:
 - One commit per PR schema update
 - One commit per BEP schema update
+- One commit for README updates (can be combined)
 - Informative commit messages with PR/BEP context
 
 ### State Management
@@ -152,6 +156,126 @@ done
   "last_synced": "2024-01-15T10:00:00Z",
   "status": "draft|review|accepted"
 }
+```
+
+### README Generation
+
+#### PRs/README.md Generator
+**File**: `tools/generate-pr-readme`
+
+**Functionality**:
+- Scan all PR directories and their metadata
+- Generate markdown table with PR information
+- Include links to GitHub PRs and schema status
+- Update automatically on each CI run
+
+**Table Format**:
+| PR # | Title | Author | Status | Schema Updated | Last Commit | Actions |
+|------|-------|--------|--------|----------------|-------------|---------|
+| 518 | Add structural derivatives | @user | Open | 2024-01-15 | abc123... | [View PR](https://github.com/bids-standard/bids-specification/pull/518) \| [Schema](./518/schema.json) |
+| 1234 | Fix EEG channels | @other | Merged | 2024-01-14 | def456... | [View PR](https://github.com/bids-standard/bids-specification/pull/1234) \| [Schema](./1234/schema.json) |
+
+**Implementation**:
+```python
+def generate_pr_readme():
+    readme_content = """# BIDS Specification PR Schemas
+
+This directory contains automatically generated schemas from Pull Requests to the BIDS specification
+that modify the schema files.
+
+## Active PR Schemas
+
+"""
+
+    table_rows = []
+    for pr_dir in sorted(glob.glob("PRs/*")):
+        metadata = load_json(f"{pr_dir}/PR_METADATA")
+        table_rows.append(format_pr_row(metadata))
+
+    readme_content += generate_markdown_table(table_rows)
+    write_file("PRs/README.md", readme_content)
+```
+
+#### BEPs/README.md Generator
+**File**: `tools/generate-bep-readme`
+
+**Functionality**:
+- Parse BEP directories and metadata
+- Generate comprehensive BEP status table
+- Link to associated PRs and documentation
+- Group by BEP status (draft/review/accepted)
+
+**Table Format**:
+| BEP # | Title | Status | Associated PR | Google Doc | Schema Updated | Actions |
+|-------|-------|--------|---------------|------------|----------------|---------|
+| 011 | Structural preprocessing derivatives | Review | #518 | [Doc](https://docs.google.com/...) | 2024-01-15 | [Schema](./011/schema.json) |
+| 025 | Multi-echo fMRI | Draft | #1234 | [Doc](https://docs.google.com/...) | 2024-01-14 | [Schema](./025/schema.json) |
+
+**Grouped Display**:
+- Section for Draft BEPs
+- Section for BEPs Under Review
+- Section for Accepted BEPs
+- Section for Archived/Completed BEPs
+
+**Implementation**:
+```python
+def generate_bep_readme():
+    readme_content = """# BIDS Extension Proposals (BEPs) Schemas
+
+This directory contains automatically generated schemas for BIDS Extension Proposals.
+Each BEP schema is linked to its corresponding Pull Request in the BIDS specification repository.
+
+## BEP Status Overview
+
+"""
+
+    beps_by_status = group_beps_by_status()
+
+    for status in ['draft', 'review', 'accepted']:
+        if beps_by_status[status]:
+            readme_content += f"### {status.title()} BEPs\n\n"
+            readme_content += generate_bep_table(beps_by_status[status])
+
+    write_file("BEPs/README.md", readme_content)
+```
+
+#### Main README.md Update
+**File**: `README.md` (root)
+
+**Addition to main README**:
+```markdown
+## Schema Versions
+
+### Released Versions
+- [Latest Release](./versions/latest/) - Current stable BIDS schema
+- [All Releases](./versions/) - Historical BIDS schema versions
+
+### Development Versions
+- [Master Branch](./versions/master/) - Current development schema
+- [PR Schemas](./PRs/) - Schemas from open Pull Requests with schema changes
+- [BEP Schemas](./BEPs/) - Schemas for BIDS Extension Proposals
+
+See [PRs/README.md](./PRs/README.md) and [BEPs/README.md](./BEPs/README.md) for detailed status tables.
+```
+
+### Integration with Processing Scripts
+
+#### Update process-pr-schemas
+Add README generation after processing PRs:
+```bash
+# After processing all PRs
+python tools/generate-pr-readme.py
+git add PRs/README.md
+git commit -m "Update PRs README with current PR status"
+```
+
+#### Update process-bep-schemas
+Add README generation after processing BEPs:
+```bash
+# After processing all BEPs
+python tools/generate-bep-readme.py
+git add BEPs/README.md
+git commit -m "Update BEPs README with current BEP status"
 ```
 
 ### GitHub Actions Workflow Updates
@@ -267,11 +391,13 @@ jobs:
 - Test PR detection logic
 - Test schema generation for different ref types
 - Test metadata parsing and generation
+- Test README markdown generation
 
 ### Integration Tests
 - Test full PR processing pipeline
 - Test BEP-to-PR mapping
 - Test cleanup of merged/closed PRs
+- Test README update workflows
 
 ### End-to-End Tests
 - Simulate full workflow with test PRs
