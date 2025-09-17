@@ -1,0 +1,51 @@
+---
+Events:
+  selectors:
+    - suffix == "events"
+  columns:
+    onset: required
+    duration: required
+    trial_type: optional
+    response_time: optional
+    HED: optional
+    stim_file: optional
+    channel:
+      level: optional
+      description_addendum: |
+        Note that this column only applies to data types where
+        channels are specified, such as EEG, iEEG, MEG or NIRS.
+# TODO: Make the addendums more clear and descriptive
+    data_entity_id:
+      level: optional
+      description_addendum: |
+        Note that this column only applies to
+        microelectrode eleectrophysiology data type.
+    duration_index:
+      level: optional
+      description_addendum: |
+        Note that this column only applies to
+        microelectrode eleectrophysiology data type.
+    onset_index:
+      level: optional
+      description_addendum: |
+        Note that this column only applies to
+        microelectrode eleectrophysiology data type.
+    trial_id:
+      level: optional
+      description_addendum: |
+        Note that this column only applies to
+        microelectrode eleectrophysiology data type.
+  additional_columns: allowed
+  initial_columns:
+    - onset
+    - duration
+
+Behavioral:
+  selectors:
+    - suffix == "beh"
+  columns:
+    trial_type: optional
+    response_time: optional
+    HED: optional
+    stim_file: optional
+  additional_columns: allowed
