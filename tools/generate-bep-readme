@@ -53,7 +53,11 @@ def format_bep_row(bep_dir_path, metadata):
     # BEP number with leading zeros for display
     bep_display = bep_number.zfill(3)
 
-    return f"| {bep_display} | {title} | {status_emoji} {status.title()} | {pr_link} | {doc_link} | {last_synced} | [Schema]({schema_path}) |"
+    # Raw schema URL (assuming enh-prs-and-beps branch - will need to be updated)
+    raw_schema_url = f"https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/{bep_number}/schema.json"
+    actions = f"[Schema]({schema_path}) \\| [Raw]({raw_schema_url})"
+
+    return f"| {bep_display} | {title} | {status_emoji} {status.title()} | {pr_link} | {doc_link} | {last_synced} | {actions} |"
 
 def group_beps_by_status(bep_dirs):
     """Group BEPs by their status"""

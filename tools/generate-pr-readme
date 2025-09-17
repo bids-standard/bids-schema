@@ -48,7 +48,9 @@ def format_pr_row(pr_dir_path, metadata):
     }.get(status, '⚪')
 
     # Build status indicator and actions
-    actions = f"[View PR]({pr_url}) \\| [Schema]({schema_path})"
+    # Assuming the repo is bids-standard/bids-schema and branch is enh-prs-and-beps (will need to be updated)
+    raw_schema_url = f"https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/PRs/{pr_number}/schema.json"
+    actions = f"[View PR]({pr_url}) \\| [Schema]({schema_path}) \\| [Raw]({raw_schema_url})"
 
     if build_status == 'failed':
         build_indicator = '❌'
