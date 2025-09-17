@@ -87,6 +87,12 @@ fi
 
 # Generate schema.json using bst
 echo "Generating schema.json..."
+
+# Activate venv if it exists
+if [ -f "$base_dir/venvs/dev/bin/activate" ]; then
+    source "$base_dir/venvs/dev/bin/activate"
+fi
+
 if ! bst -v export --schema schema --output schema.json; then
     echo "Error: Failed to generate schema.json" >&2
     cd ..
