@@ -97,7 +97,7 @@ fi
 bst -v export --schema schema --output schema.json 2>&1 | tee bst-output.log
 BST_EXIT_CODE=${PIPESTATUS[0]}
 
-if [ $BST_EXIT_CODE -ne 0 ]; then
+if [ "$BST_EXIT_CODE" -ne 0 ]; then
     echo "Error: Failed to generate schema.json" >&2
 
     # Capture the error message from the last meaningful line
