@@ -100,7 +100,9 @@ def format_bep_row(bep_dir_path, metadata):
 
     # Raw schema URL and actions (no View PR since PR # is now a link)
     raw_schema_url = f"https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/{bep_number}/schema.json"
-    actions = f"[Schema]({schema_path}) \\| [Raw]({raw_schema_url})"
+    pretty_schema_path = f"./{bep_number}/schema_pp.json"
+    pretty_raw_url = f"https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/{bep_number}/schema_pp.json"
+    actions = f"[Schema]({schema_path}) \\| [Raw]({raw_schema_url}) \\| [Pretty]({pretty_raw_url})"
 
     # Add error log link if available
     if build_status == 'failed' and pr_metadata and pr_metadata.get('error_log'):

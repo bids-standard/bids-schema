@@ -146,9 +146,12 @@ EOF
     cd "$base_dir"
     exit 0  # Exit with success so processing can continue
 else
-    # Success - remove the log file
+    # Success - remove the log file and create pretty-printed version
     rm -f bst-output.log
     echo "Schema build succeeded for $git_ref"
+
+    # Generate pretty-printed schema
+    "$base_dir/tools/prettify-schema" schema
 fi
 
 # Generate metadata if requested

@@ -37,6 +37,9 @@ fi
 
 bst -v export --schema schema --output schema.json
 
+# Generate pretty-printed schema
+"$(dirname "$0")/prettify-schema" schema
+
 cd ..
 
 if [ "$rel" != "master" ]; then

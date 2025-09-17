@@ -63,7 +63,9 @@ def format_pr_row(pr_dir_path, metadata):
 
     # Build status indicator and actions (no View PR since PR # is now a link)
     raw_schema_url = f"https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/PRs/{pr_number}/schema.json"
-    actions = f"[Schema]({schema_path}) \\| [Raw]({raw_schema_url})"
+    pretty_schema_path = f"./{pr_number}/schema_pp.json"
+    pretty_raw_url = f"https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/PRs/{pr_number}/schema_pp.json"
+    actions = f"[Schema]({schema_path}) \\| [Raw]({raw_schema_url}) \\| [Pretty]({pretty_raw_url})"
 
     if build_status == 'failed':
         build_indicator = '❌'
