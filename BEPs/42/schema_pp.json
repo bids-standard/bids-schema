@@ -9908,6 +9908,22 @@
           ]
         }
       },
+      "emg": {
+        "EMGCoordSysMatch": {
+          "checks": [
+            "length(\n  intersects(unique(columns.coordinate_system),\n  associations.coordsystem.keys)\n) == length(unique(columns.coordinate_system))\n"
+          ],
+          "issue": {
+            "code": "EMG_COORD_SYS_MISMATCH",
+            "level": "error",
+            "message": "Some values in the coordinate_system column of *_electrodes.tsv are not present as\ntop-level keys of the corresponding *_coordsystem.json file.\n"
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"electrodes\""
+          ]
+        }
+      },
       "events": {
         "EventsMissing": {
           "checks": [

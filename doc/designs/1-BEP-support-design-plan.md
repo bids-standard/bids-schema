@@ -166,7 +166,6 @@ done
   "title": "Structural preprocessing derivatives",
   "pr_number": 518,
   "google_doc": "https://...",
-  "last_synced": "2024-01-15T10:00:00Z",
   "status": "draft|review|accepted"
 }
 ```
