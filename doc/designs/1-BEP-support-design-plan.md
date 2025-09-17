@@ -83,6 +83,7 @@ BEPs/                 # NEW: BEP schemas (copies from PRs/)
 set -eu
 
 # Fetch PR references
+# TODO: add conditional to do that only if not yet added
 git config --add remote.origin.fetch '+refs/pull/*:refs/pull/origin/*'
 git fetch origin
 
@@ -367,27 +368,27 @@ jobs:
 
 ## Implementation Phases
 
-### Phase 1: Core Infrastructure (Week 1)
+### Phase 1: Core Infrastructure
 1. Enhance `inject-schema` to handle arbitrary refs
 2. Create directory structure for PRs/ and BEPs/
 3. Implement basic PR detection logic
 
-### Phase 2: PR Processing (Week 2)
+### Phase 2: PR Processing
 1. Implement `process-pr-schemas` script
 2. Add PR state tracking
 3. Test with sample PRs
 
-### Phase 3: BEP Integration (Week 3)
+### Phase 3: BEP Integration
 1. Implement `process-bep-schemas` script
 2. Add BEP-to-PR mapping
 3. Test with existing BEPs
 
-### Phase 4: Orchestration (Week 4)
+### Phase 4: Orchestration
 1. Update `inject-schema-fully-auto`
 2. Enhance GitHub Actions workflow
 3. Add comprehensive logging and error handling
 
-### Phase 5: Testing & Deployment (Week 5)
+### Phase 5: Testing & Deployment
 1. End-to-end testing
 2. Performance optimization
 3. Documentation updates
@@ -450,7 +451,6 @@ jobs:
 1. **Backup Current State**: Archive existing versions/ directory
 2. **Test in Staging**: Run new system in parallel temporarily
 3. **Gradual Rollout**: Enable PR processing first, then BEPs
-4. **Monitoring Period**: Watch for issues over 1-2 weeks
 5. **Full Deployment**: Switch to new system completely
 
 ## Future Enhancements
@@ -465,7 +465,7 @@ jobs:
 
 ### External Dependencies
 - bids-specification repository
-- bids-website repository (for BEP data)
+- bids-website repository (for BEP data) https://github.com/bids-standard/bids-website/
 - bidsschematools Python package
 - GitHub API (for PR metadata)
 - **DataLad** (for provenance tracking and atomic commits)
