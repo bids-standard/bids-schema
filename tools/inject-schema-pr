@@ -140,10 +140,12 @@ EOF
 
     cd ..
     rm -rf "$output_dir/schema"
+    echo "Schema build failed for $git_ref - error metadata saved in $output_dir"
     exit 0  # Exit with success so processing can continue
 else
     # Success - remove the log file
     rm -f ../bst-output.log
+    echo "Schema build succeeded for $git_ref"
 fi
 
 # Generate metadata if requested
@@ -176,8 +178,6 @@ fi
 
 # Remove the schema directory to save repository space - only keep compiled schema.json
 rm -rf schema
-
-echo "Successfully generated schema for $git_ref in $output_dir"
 
 cd "$base_dir"
 
