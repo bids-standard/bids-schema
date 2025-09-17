@@ -44,7 +44,20 @@ if [ -n "$to_inject" ]; then
     python -m pip install -r requirements.txt
     echo -e "$to_inject" | while read -r committish folder; do
         [ -n "$committish" ] || continue
-        git -C "$BIDS_REPO" checkout "$committish"
+        set +e
+        out=$(git -C "$BIDS_REPO" checkout "$committish" -- 2>&1)
+        ex="$?"
+        set -e
+        if [ "$ex" != 0 ]; then
+            if echo "$out" | grep "invalid reference"; then
+                # git stopped understanding committishes like v1.10.1+23-g6404e2ee?
+                git -C "$BIDS_REPO" checkout "${committish#*[0-9]-g}"
+            else
+                echo -e "ERROR: errored out with out:\n$out"
+                exit 1
+            fi
+        fi
+
         "$this_path/inject-schema" "$folder" "$BIDS_REPO"
         version_folder="$versions_path/$folder/"
         echo "$committish" >| "$version_folder/BIDS_VERSION_LASTEDIT"
