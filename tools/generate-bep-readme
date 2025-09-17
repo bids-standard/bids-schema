@@ -76,29 +76,14 @@ def format_bep_row(bep_dir_path, metadata):
     else:
         last_commit = 'Unknown'
 
-    # Format PR link
-    pr_link = f"[#{pr_number}](https://github.com/bids-standard/bids-specification/pull/{pr_number})" if pr_number else "N/A"
+    # Format PR link (make PR number a hyperlink)
+    pr_link = f"[{pr_number}](https://github.com/bids-standard/bids-specification/pull/{pr_number})" if pr_number else "N/A"
 
     # Format Google Doc link
     doc_link = f"[Doc]({google_doc})" if google_doc else "N/A"
 
     # Schema path (relative to BEPs directory)
     schema_path = f"./{bep_number}/schema.json"
-
-    # Status emoji for BEP status
-    bep_status_emoji = {
-        'draft': '📝',
-        'review': '👁️',
-        'accepted': '✅',
-        'archived': '📦'
-    }.get(bep_status, '⚪')
-
-    # PR status emoji
-    pr_status_emoji = {
-        'open': '🟢',
-        'merged': '🟣',
-        'closed': '🔴'
-    }.get(pr_status, '⚪')
 
     # Build status indicator
     if build_status == 'failed':
@@ -108,18 +93,20 @@ def format_bep_row(bep_dir_path, metadata):
     else:
         build_indicator = '❓'
 
-    # BEP number with leading zeros for display
-    bep_display = bep_number.zfill(3)
+    # BEP number with leading zeros for display - make it a hyperlink to BIDS website
+    bep_display_number = bep_number.zfill(3)
+    bep_url = f"https://bids.neuroimaging.io/bep{bep_display_number}"
+    bep_display = f"[{bep_display_number}]({bep_url})"
 
-    # Raw schema URL
+    # Raw schema URL and actions (no View PR since PR # is now a link)
     raw_schema_url = f"https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/{bep_number}/schema.json"
-    actions = f"[View PR](https://github.com/bids-standard/bids-specification/pull/{pr_number}) \\| [Schema]({schema_path}) \\| [Raw]({raw_schema_url})" if pr_number else f"[Schema]({schema_path}) \\| [Raw]({raw_schema_url})"
+    actions = f"[Schema]({schema_path}) \\| [Raw]({raw_schema_url})"
 
     # Add error log link if available
     if build_status == 'failed' and pr_metadata and pr_metadata.get('error_log'):
         actions += f" \\| [Error Log](../PRs/{pr_number}/bst-output.log)"
 
-    return f"| {bep_display} | {title} | {doc_link} | {authors_count} | {pr_status_emoji} {pr_status.title()} | {build_indicator} | {schema_updated} | {last_commit} | {actions} |"
+    return f"| {bep_display} | {title} | {doc_link} | {pr_link} | {authors_count} | {build_indicator} | {schema_updated} | {last_commit} | {actions} |"
 
 
 def generate_bep_table(beps):
@@ -127,9 +114,9 @@ def generate_bep_table(beps):
     if not beps:
         return ""
 
-    # Table header - harmonized with PRs/README.md format
-    table = "| BEP # | Title | Google Doc | Authors | PR Status | Build | Schema Updated | Last Commit | Actions |\n"
-    table += "|-------|-------|------------|---------|-----------|-------|----------------|-------------|---------|"
+    # Table header - simplified and harmonized
+    table = "| BEP # | Title | Google Doc | PR # | Authors | Build | Schema Updated | Last Commit | Actions |\n"
+    table += "|-------|-------|------------|------|---------|-------|----------------|-------------|---------|"
 
     # Sort BEPs by number
     beps_sorted = sorted(beps, key=lambda x: int(Path(x[0]).name) if Path(x[0]).name.isdigit() else 0)
@@ -155,7 +142,7 @@ Each subdirectory corresponds to a BEP number and contains:
 - `schema.json` - The compiled BIDS schema (only file stored to save space)
 - `BEP_METADATA.json` - Metadata about the BEP and its PR association
 
-## BEP Status Overview
+## Active BEP Schemas
 
 """
 
@@ -165,29 +152,7 @@ Each subdirectory corresponds to a BEP number and contains:
     if not bep_dirs:
         readme_content += "*No BEP schemas currently available*\n"
     else:
-        # Add status counts
-        draft_count = 0
-        review_count = 0
-        accepted_count = 0
-        archived_count = 0
-
-        for bep_dir in bep_dirs:
-            metadata = load_json(f"{bep_dir}/BEP_METADATA.json")
-            if metadata:
-                status = metadata.get('status', 'draft')
-                if status == 'draft':
-                    draft_count += 1
-                elif status == 'review':
-                    review_count += 1
-                elif status == 'accepted':
-                    accepted_count += 1
-                elif status == 'archived':
-                    archived_count += 1
-
-        readme_content += f"**Status Summary:** 📝 Draft ({draft_count}) | 👁️ Under Review ({review_count}) | ✅ Accepted ({accepted_count}) | 📦 Archived ({archived_count})\n\n"
-
         # Generate single unified table
-        readme_content += "## Active BEP Schemas\n\n"
         bep_data = [(bep_dir, load_json(f"{bep_dir}/BEP_METADATA.json")) for bep_dir in bep_dirs]
         bep_data = [(bep_dir, metadata) for bep_dir, metadata in bep_data if metadata]
         readme_content += generate_bep_table(bep_data)
@@ -207,12 +172,11 @@ Each subdirectory corresponds to a BEP number and contains:
 3. **Accepted**: Approved for inclusion in BIDS
 4. **Archived**: Historical BEPs no longer under active development
 
-## Update Frequency
+## Automation
 
-BEP schemas are automatically synchronized with their associated PRs:
-- Every 12 hours via scheduled GitHub Actions
-- On manual workflow dispatch
-- When PR schemas are updated
+[![Inject](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml/badge.svg)](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml)
+
+BEP schemas are automatically synchronized with their associated PRs by the [Schema Injection GitHub workflow](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml). View [workflow runs](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml) to see the latest updates.
 
 ## Related Resources
 
@@ -221,12 +185,6 @@ BEP schemas are automatically synchronized with their associated PRs:
 - [BIDS Website - BEPs](https://bids.neuroimaging.io/beps) - Official BEP documentation
 - [BIDS Specification Repository](https://github.com/bids-standard/bids-specification)
 
-## Legend
-
-- 📝 **Draft**: Proposal under initial development
-- 👁️ **Under Review**: Actively being reviewed by the community
-- ✅ **Accepted**: Approved and merged into BIDS
-- 📦 **Archived**: No longer under active development
 """
 
     # Write the README

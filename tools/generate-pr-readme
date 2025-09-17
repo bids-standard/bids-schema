@@ -55,20 +55,15 @@ def format_pr_row(pr_dir_path, metadata):
     # GitHub PR URL
     pr_url = f"https://github.com/bids-standard/bids-specification/pull/{pr_number}"
 
+    # Make PR number a hyperlink
+    pr_link = f"[{pr_number}]({pr_url})"
+
     # Schema path (relative to PRs directory)
     schema_path = f"./{pr_number}/schema.json"
 
-    # Status emoji
-    status_emoji = {
-        'open': '🟢',
-        'merged': '🟣',
-        'closed': '🔴'
-    }.get(status, '⚪')
-
-    # Build status indicator and actions
-    # Assuming the repo is bids-standard/bids-schema and branch is enh-prs-and-beps (will need to be updated)
+    # Build status indicator and actions (no View PR since PR # is now a link)
     raw_schema_url = f"https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/PRs/{pr_number}/schema.json"
-    actions = f"[View PR]({pr_url}) \\| [Schema]({schema_path}) \\| [Raw]({raw_schema_url})"
+    actions = f"[Schema]({schema_path}) \\| [Raw]({raw_schema_url})"
 
     if build_status == 'failed':
         build_indicator = '❌'
@@ -81,7 +76,7 @@ def format_pr_row(pr_dir_path, metadata):
     else:
         build_indicator = '❓'
 
-    return f"| {pr_number} | {authors_count} | {status_emoji} {status.title()} | {build_indicator} | {last_updated} | {last_commit} | {actions} |"
+    return f"| {pr_link} | {authors_count} | {build_indicator} | {last_updated} | {last_commit} | {actions} |"
 
 def generate_markdown_table(pr_dirs):
     """Generate the markdown table for all PRs"""
@@ -89,8 +84,8 @@ def generate_markdown_table(pr_dirs):
         return "*No PR schemas currently available*\n"
 
     # Table header
-    table = "| PR # | Authors | Status | Build | Schema Updated | Last Commit | Actions |\n"
-    table += "|------|---------|--------|-------|----------------|-------------|---------|"
+    table = "| PR # | Authors | Build | Schema Updated | Last Commit | Actions |\n"
+    table += "|------|---------|-------|----------------|-------------|---------|"
 
     # Sort PR directories by number
     pr_dirs_sorted = sorted(pr_dirs, key=lambda x: int(Path(x).name) if Path(x).name.isdigit() else 0)
@@ -122,25 +117,6 @@ Each subdirectory corresponds to a Pull Request (PR) number and contains:
     # Find all PR directories
     pr_dirs = glob.glob("PRs/[0-9]*")
 
-    # Add status counts
-    if pr_dirs:
-        open_count = 0
-        merged_count = 0
-        closed_count = 0
-
-        for pr_dir in pr_dirs:
-            metadata = load_json(f"{pr_dir}/PR_METADATA.json")
-            if metadata:
-                status = metadata.get('status', 'open')
-                if status == 'open':
-                    open_count += 1
-                elif status == 'merged':
-                    merged_count += 1
-                elif status == 'closed':
-                    closed_count += 1
-
-        readme_content += f"**Status Summary:** 🟢 Open ({open_count}) | 🟣 Merged ({merged_count}) | 🔴 Closed ({closed_count})\n\n"
-
     # Generate table
     readme_content += generate_markdown_table(pr_dirs)
 
@@ -153,12 +129,11 @@ Each subdirectory corresponds to a Pull Request (PR) number and contains:
 2. **Checking metadata**: View `PRs/{{pr_number}}/PR_METADATA.json` for processing details
 3. **Raw schema files**: Not stored (only compiled schema.json saved to reduce repository size)
 
-## Update Frequency
+## Automation
 
-PR schemas are automatically updated:
-- Every 12 hours via scheduled GitHub Actions
-- On manual workflow dispatch
-- When changes are pushed to the main branch
+[![Inject](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml/badge.svg)](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml)
+
+PR schemas are automatically updated by the [Schema Injection GitHub workflow](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml). View [workflow runs](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml) to see the latest updates.
 
 ## Related Resources
 
