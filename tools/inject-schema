@@ -12,6 +12,9 @@ repo=${2:-}  # optionally - use the local repo
 
 [ -z "$repo" ] || repo=$(readlink -f "$repo")
 
+# Get full path to tools directory before changing directories
+tools_dir="$(cd "$(dirname "$0")" && pwd)"
+
 cd "$(dirname "$0")/.."
 
 if [ "$rel" = "master" ]; then
@@ -38,7 +41,7 @@ fi
 bst -v export --schema schema --output schema.json
 
 # Generate pretty-printed schema
-"$(dirname "$0")/prettify-schema" schema
+"$tools_dir/prettify-schema" schema
 
 cd ..
 
