@@ -34,18 +34,16 @@ versions/
 ├── 1.10.0/           # Existing release schemas
 ├── master/           # Existing master branch schema
 ├── latest/           # Symlink to latest release
-PRs/                  # NEW: PR-based schemas
+PRs/                  # NEW: PR-based schemas (compiled only)
 ├── 518/
-│   ├── schema/
-│   ├── schema.json
-│   └── PR_METADATA  # PR state, last update, etc.
+│   ├── schema.json   # Compiled BIDS schema only
+│   └── PR_METADATA.json   # PR state, last update, etc.
 ├── 1234/
 │   └── ...
 BEPs/                 # NEW: BEP schemas (copies from PRs/)
 ├── 011/              # BEP number
-│   ├── schema/
-│   ├── schema.json
-│   └── BEP_METADATA  # BEP info, linked PR, etc.
+│   ├── schema.json   # Compiled BIDS schema only
+│   └── BEP_METADATA.json  # BEP info, linked PR, etc.
 └── 025/
     └── ...
 ```
@@ -147,7 +145,7 @@ done
 ### State Management
 
 #### PR State Tracking
-**File**: `PRs/{pr_number}/PR_METADATA`
+**File**: `PRs/{pr_number}/PR_METADATA.json`
 ```json
 {
   "pr_number": 518,
@@ -161,7 +159,7 @@ done
 ```
 
 #### BEP State Tracking
-**File**: `BEPs/{bep_number}/BEP_METADATA`
+**File**: `BEPs/{bep_number}/BEP_METADATA.json`
 ```json
 {
   "bep_number": "011",

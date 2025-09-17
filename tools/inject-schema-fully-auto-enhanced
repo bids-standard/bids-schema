@@ -97,7 +97,7 @@ if [ "$PROCESS_PRS" = "true" ]; then
     "$this_path/process-pr-schemas"
 
     # Generate PRs README
-    if [ -d "PRs" ] && ls PRs/*/PR_METADATA 2>/dev/null | grep -q .; then
+    if [ -d "PRs" ] && compgen -G "PRs/*/PR_METADATA.json" > /dev/null; then
         echo "Generating PRs/README.md..."
         if command -v datalad &> /dev/null; then
             datalad run -m "Update PRs README with current PR status" \
@@ -119,12 +119,12 @@ echo "=== Phase 3: Process BEP schemas ==="
 
 if [ "$PROCESS_BEPS" = "true" ]; then
     # Only process BEPs if we have PRs
-    if [ -d "PRs" ] && ls PRs/*/PR_METADATA 2>/dev/null | grep -q .; then
+    if [ -d "PRs" ] && compgen -G "PRs/*/PR_METADATA.json" > /dev/null; then
         echo "Processing BEP schemas..."
         "$this_path/process-bep-schemas"
 
         # Generate BEPs README
-        if [ -d "BEPs" ] && ls BEPs/*/BEP_METADATA 2>/dev/null | grep -q .; then
+        if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
             echo "Generating BEPs/README.md..."
             if command -v datalad &> /dev/null; then
                 datalad run -m "Update BEPs README with current BEP status" \
@@ -148,9 +148,9 @@ fi
 echo "=== Phase 4: Generate summary report ==="
 
 # Count results
-release_count=$(ls -d versions/[0-9]* 2>/dev/null | wc -l)
-pr_count=$(ls -d PRs/[0-9]* 2>/dev/null | wc -l)
-bep_count=$(ls -d BEPs/[0-9]* 2>/dev/null | wc -l)
+release_count=$(find versions -maxdepth 1 -name "[0-9]*" -type d 2>/dev/null | wc -l)
+pr_count=$(find PRs -maxdepth 1 -name "[0-9]*" -type d 2>/dev/null | wc -l)
+bep_count=$(find BEPs -maxdepth 1 -name "[0-9]*" -type d 2>/dev/null | wc -l)
 
 echo ""
 echo "=========================================="

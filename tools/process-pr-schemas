@@ -17,7 +17,7 @@ cd "$BASE_DIR"
 if [ ! -d "$BIDS_REPO" ]; then
     echo "BIDS repository not found at $BIDS_REPO. Cloning..."
     TMP_DIR=$(mktemp -d)
-    trap "rm -rf $TMP_DIR" EXIT
+    trap 'rm -rf "$TMP_DIR"' EXIT
     BIDS_REPO="$TMP_DIR/bids-specification"
     git clone https://github.com/bids-standard/bids-specification/ "$BIDS_REPO"
 fi
@@ -49,7 +49,7 @@ echo "Checking PRs for schema changes..."
 
 for ref_file in $pr_refs; do
     # Extract PR number from path
-    pr_number=$(basename $(dirname "$ref_file"))
+    pr_number=$(basename "$(dirname "$ref_file")")
 
     # Skip if not a number
     if ! [[ "$pr_number" =~ ^[0-9]+$ ]]; then
@@ -70,8 +70,8 @@ for ref_file in $pr_refs; do
 
     # Check if we already have this PR processed and if it's up to date
     if [ -d "$PR_DIR/$pr_number" ]; then
-        if [ -f "$PR_DIR/$pr_number/PR_METADATA" ]; then
-            existing_commit=$(grep '"last_commit"' "$PR_DIR/$pr_number/PR_METADATA" | sed 's/.*"last_commit": "\([^"]*\)".*/\1/')
+        if [ -f "$PR_DIR/$pr_number/PR_METADATA.json" ]; then
+            existing_commit=$(grep '"last_commit"' "$PR_DIR/$pr_number/PR_METADATA.json" | sed 's/.*"last_commit": "\([^"]*\)".*/\1/')
             if [ "$existing_commit" = "$ref" ]; then
                 echo "  PR #$pr_number is already up to date"
                 continue

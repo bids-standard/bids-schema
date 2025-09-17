@@ -96,7 +96,7 @@ for bep in beps_data:
     need_update = True
     if bep_schema_dir.exists():
         # Check if BEP metadata exists and is up to date
-        metadata_file = bep_schema_dir / 'BEP_METADATA'
+        metadata_file = bep_schema_dir / 'BEP_METADATA.json'
         if metadata_file.exists():
             with open(metadata_file, 'r') as f:
                 metadata = json.load(f)
@@ -167,7 +167,7 @@ for bep in beps_data:
             'status': 'review'  # Default status, could be enhanced
         }
 
-        metadata_file = bep_schema_dir / 'BEP_METADATA'
+        metadata_file = bep_schema_dir / 'BEP_METADATA.json'
         with open(metadata_file, 'w') as f:
             json.dump(metadata, f, indent=2)
 
@@ -185,7 +185,7 @@ if bep_dir.exists():
         bep_number = bep_folder.name
 
         # Check if this BEP still has an active PR
-        metadata_file = bep_folder / 'BEP_METADATA'
+        metadata_file = bep_folder / 'BEP_METADATA.json'
         if metadata_file.exists():
             with open(metadata_file, 'r') as f:
                 metadata = json.load(f)

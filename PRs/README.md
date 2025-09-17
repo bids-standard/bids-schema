@@ -6,9 +6,8 @@ that modify the schema files.
 ## Overview
 
 Each subdirectory corresponds to a Pull Request (PR) number and contains:
-- `schema/` - The raw schema files from the PR
-- `schema.json` - The compiled BIDS schema
-- `PR_METADATA` - Metadata about the PR and processing status
+- `schema.json` - The compiled BIDS schema (only file stored to save space)
+- `PR_METADATA.json` - Metadata about the PR and processing status
 
 ## Active PR Schemas
 
@@ -22,8 +21,8 @@ Each subdirectory corresponds to a Pull Request (PR) number and contains:
 ## How to Use PR Schemas
 
 1. **Accessing a schema**: Navigate to `PRs/{pr_number}/schema.json`
-2. **Checking metadata**: View `PRs/{pr_number}/PR_METADATA` for processing details
-3. **Raw schema files**: Available in `PRs/{pr_number}/schema/`
+2. **Checking metadata**: View `PRs/{pr_number}/PR_METADATA.json` for processing details
+3. **Raw schema files**: Not stored (only compiled schema.json saved to reduce repository size)
 
 ## Update Frequency
 
@@ -40,4 +39,4 @@ PR schemas are automatically updated:
 
 ---
 
-*Last generated: 2025-09-17 13:08:35 UTC*
+*Last generated: 2025-09-17 13:24:21 UTC*

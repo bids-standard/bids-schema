@@ -9,9 +9,8 @@ BIDS Extension Proposals (BEPs) are community-driven extensions to the BIDS spec
 This directory provides compiled schemas for BEPs that have associated Pull Requests with schema changes.
 
 Each subdirectory corresponds to a BEP number and contains:
-- `schema/` - The raw schema files from the associated PR
-- `schema.json` - The compiled BIDS schema
-- `BEP_METADATA` - Metadata about the BEP and its PR association
+- `schema.json` - The compiled BIDS schema (only file stored to save space)
+- `BEP_METADATA.json` - Metadata about the BEP and its PR association
 
 ## BEP Status Overview
 
@@ -26,8 +25,8 @@ Each subdirectory corresponds to a BEP number and contains:
 ## How to Use BEP Schemas
 
 1. **Accessing a schema**: Navigate to `BEPs/{bep_number}/schema.json`
-2. **Checking metadata**: View `BEPs/{bep_number}/BEP_METADATA` for BEP details
-3. **Raw schema files**: Available in `BEPs/{bep_number}/schema/`
+2. **Checking metadata**: View `BEPs/{bep_number}/BEP_METADATA.json` for BEP details
+3. **Raw schema files**: Not stored (only compiled schema.json saved to reduce repository size)
 4. **Finding the source PR**: Check the "Associated PR" column in the tables above
 
 ## BEP Process
@@ -60,4 +59,4 @@ BEP schemas are automatically synchronized with their associated PRs:
 
 ---
 
-*Last generated: 2025-09-17 13:11:36 UTC*
+*Last generated: 2025-09-17 13:24:21 UTC*

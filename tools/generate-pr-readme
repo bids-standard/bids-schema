@@ -61,7 +61,7 @@ def generate_markdown_table(pr_dirs):
     pr_dirs_sorted = sorted(pr_dirs, key=lambda x: int(Path(x).name) if Path(x).name.isdigit() else 0)
 
     for pr_dir in pr_dirs_sorted:
-        metadata = load_json(f"{pr_dir}/PR_METADATA")
+        metadata = load_json(f"{pr_dir}/PR_METADATA.json")
         if metadata:
             table += "\n" + format_pr_row(pr_dir, metadata)
 
@@ -77,9 +77,8 @@ that modify the schema files.
 ## Overview
 
 Each subdirectory corresponds to a Pull Request (PR) number and contains:
-- `schema/` - The raw schema files from the PR
-- `schema.json` - The compiled BIDS schema
-- `PR_METADATA` - Metadata about the PR and processing status
+- `schema.json` - The compiled BIDS schema (only file stored to save space)
+- `PR_METADATA.json` - Metadata about the PR and processing status
 
 ## Active PR Schemas
 
@@ -95,7 +94,7 @@ Each subdirectory corresponds to a Pull Request (PR) number and contains:
         closed_count = 0
 
         for pr_dir in pr_dirs:
-            metadata = load_json(f"{pr_dir}/PR_METADATA")
+            metadata = load_json(f"{pr_dir}/PR_METADATA.json")
             if metadata:
                 status = metadata.get('status', 'open')
                 if status == 'open':
@@ -117,8 +116,8 @@ Each subdirectory corresponds to a Pull Request (PR) number and contains:
 ## How to Use PR Schemas
 
 1. **Accessing a schema**: Navigate to `PRs/{{pr_number}}/schema.json`
-2. **Checking metadata**: View `PRs/{{pr_number}}/PR_METADATA` for processing details
-3. **Raw schema files**: Available in `PRs/{{pr_number}}/schema/`
+2. **Checking metadata**: View `PRs/{{pr_number}}/PR_METADATA.json` for processing details
+3. **Raw schema files**: Not stored (only compiled schema.json saved to reduce repository size)
 
 ## Update Frequency
 
