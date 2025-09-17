@@ -40,3 +40,7 @@ yet fully automated) subtree use.
 
 - [bids-specification #466](https://github.com/bids-standard/bids-specification/issues/466)
   the issue discussing establishing of schema for BIDS
+
+# Major TODOs
+
+- Add rendering of PRs and BEPs
