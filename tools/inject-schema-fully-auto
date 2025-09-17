@@ -99,17 +99,9 @@ if [ "$PROCESS_PRS" = "true" ]; then
     # Generate PRs README
     if [ -d "PRs" ] && compgen -G "PRs/*/PR_METADATA.json" > /dev/null; then
         echo "Generating PRs/README.md..."
-        if command -v datalad &> /dev/null; then
-            datalad run -m "Update PRs README with current PR status" \
-                --output PRs/README.md \
-                "$this_path/generate-pr-readme"
-        else
+        datalad run -m "Update PRs README with current PR status" \
+            --output PRs/README.md \
             "$this_path/generate-pr-readme"
-            git add PRs/README.md
-            if ! git diff-index --quiet HEAD -- PRs/README.md; then
-                git commit -m "Update PRs README with current PR status"
-            fi
-        fi
     fi
 else
     echo "Skipping PR processing (PROCESS_PRS=$PROCESS_PRS)"
@@ -121,22 +113,16 @@ if [ "$PROCESS_BEPS" = "true" ]; then
     # Only process BEPs if we have PRs
     if [ -d "PRs" ] && compgen -G "PRs/*/PR_METADATA.json" > /dev/null; then
         echo "Processing BEP schemas..."
-        "$this_path/process-bep-schemas"
+        datalad run -m "Process BEP schemas" \
+            --output "BEPs" \
+            "$this_path/process-bep-schemas"
 
         # Generate BEPs README
         if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
             echo "Generating BEPs/README.md..."
-            if command -v datalad &> /dev/null; then
-                datalad run -m "Update BEPs README with current BEP status" \
-                    --output BEPs/README.md \
-                    "$this_path/generate-bep-readme"
-            else
+            datalad run -m "Update BEPs README with current BEP status" \
+                --output BEPs/README.md \
                 "$this_path/generate-bep-readme"
-                git add BEPs/README.md
-                if ! git diff-index --quiet HEAD -- BEPs/README.md; then
-                    git commit -m "Update BEPs README with current BEP status"
-                fi
-            fi
         fi
     else
         echo "No PR schemas available, skipping BEP processing"

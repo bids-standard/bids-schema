@@ -466,7 +466,7 @@ jobs:
 - bids-website repository (for BEP data) https://github.com/bids-standard/bids-website/
 - bidsschematools Python package
 - GitHub API (for PR metadata)
-- **DataLad** (for provenance tracking and atomic commits)
+- **DataLad** (for provenance tracking and atomic commits) - **REQUIRED** for all operations
 
 ### Internal Dependencies
 - Existing inject-schema infrastructure
@@ -474,6 +474,18 @@ jobs:
 - Git command-line tools
 
 ## DataLad Integration Benefits
+
+### Critical Error Handling Requirements
+
+**Important**: `datalad run` will fail to commit if the underlying command exits with a non-zero status code. This means:
+
+- Scripts must handle errors internally and always exit with status 0 in normal operation
+- Failed schema builds (e.g., malformed PRs) should be handled gracefully within the script
+- Error states should be reflected in metadata files (e.g., `build_status: "failed"` in PR_METADATA.json)
+- Scripts should never crash the entire pipeline due to individual PR/BEP failures
+- Error logs should be saved to appropriate files for debugging (e.g., `bst-output.log`)
+
+This ensures that `datalad run` can always commit the results, even when individual components fail, maintaining pipeline continuity and proper provenance tracking.
 
 ### Advantages of Using DataLad
 1. **Atomic Operations**: Each `datalad run` ensures that inputs, outputs, and the command are tracked together

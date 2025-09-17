@@ -81,17 +81,12 @@ for ref_file in $pr_refs; do
 
     echo "  Processing PR #$pr_number..."
 
-    # Use datalad run if available, otherwise run directly
-    if command -v datalad &> /dev/null; then
-        cd "$BASE_DIR"
-        datalad run -m "Generate schema for PR #$pr_number" \
-            --output "PRs/$pr_number/" \
-            tools/inject-schema-pr "PRs/$pr_number" "$BIDS_REPO" "$ref" --type pr --metadata
-        cd "$BIDS_REPO"
-    else
-        # Fallback to direct execution if datalad is not available
-        "$SCRIPT_DIR/inject-schema-pr" "$PR_DIR/$pr_number" "$BIDS_REPO" "$ref" --type pr --metadata
-    fi
+    # Use datalad run for proper provenance tracking
+    cd "$BASE_DIR"
+    datalad run -m "Generate schema for PR #$pr_number" \
+        --output "PRs/$pr_number/" \
+        tools/inject-schema-pr "PRs/$pr_number" "$BIDS_REPO" "$ref" --type pr --metadata
+    cd "$BIDS_REPO"
 
     processed_count=$((processed_count + 1))
 done
