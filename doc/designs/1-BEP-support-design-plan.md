@@ -498,6 +498,10 @@ datalad run -m "Descriptive commit message" \
   - Python: `#!/usr/bin/env python3`
   - Bash: `#!/usr/bin/env bash`
 - Scripts should exit with appropriate status codes
+- **Shell scripts must pass shellcheck validation**: `shellcheck tools/script-name`
+  - Fix all shellcheck warnings before committing
+  - Use proper quoting for variables: `"$var"` instead of `$var`
+  - Use single quotes for trap handlers: `trap 'cleanup' EXIT`
 
 ## Risks and Mitigation
 

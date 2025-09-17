@@ -18,7 +18,7 @@ cd "$BASE_DIR"
 if [ ! -d "$WEBSITE_REPO" ]; then
     echo "BIDS website repository not found at $WEBSITE_REPO. Cloning..."
     TMP_DIR=$(mktemp -d)
-    trap "rm -rf $TMP_DIR" EXIT
+    trap 'rm -rf "$TMP_DIR"' EXIT
     WEBSITE_REPO="$TMP_DIR/bids-website"
     git clone https://github.com/bids-standard/bids-website/ "$WEBSITE_REPO"
 fi
