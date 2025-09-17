@@ -15,6 +15,7 @@ versions_path="${base_path}/versions"
 # Check environment variables for controlling what to process
 PROCESS_PRS="${PROCESS_PRS:-true}"
 PROCESS_BEPS="${PROCESS_BEPS:-true}"
+FORCE_REPROCESS="${FORCE_REPROCESS:-false}"
 
 TMP="$(mktemp -d "${TMPDIR:-/tmp}"/bids-XXXXXXX)"
 # shellcheck disable=SC2064
@@ -94,7 +95,11 @@ echo "=== Phase 2: Process PR schemas ==="
 
 if [ "$PROCESS_PRS" = "true" ]; then
     echo "Processing PR schemas..."
-    "$this_path/process-pr-schemas"
+    if [ "$FORCE_REPROCESS" = "true" ]; then
+        FORCE_REPROCESS=true "$this_path/process-pr-schemas"
+    else
+        "$this_path/process-pr-schemas"
+    fi
 
     # Generate PRs README
     if [ -d "PRs" ] && compgen -G "PRs/*/PR_METADATA.json" > /dev/null; then

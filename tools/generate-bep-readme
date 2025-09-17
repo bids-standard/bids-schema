@@ -18,20 +18,63 @@ def format_bep_row(bep_dir_path, metadata):
     """Format a single BEP as a table row"""
     bep_number = Path(bep_dir_path).name
 
-    # Extract fields with defaults
+    # Extract BEP-specific fields
     title = metadata.get('title', 'Unknown')
-    status = metadata.get('status', 'draft')
+    bep_status = metadata.get('status', 'draft')
     pr_number = metadata.get('pr_number', '')
     google_doc = metadata.get('google_doc', '')
     last_synced = metadata.get('last_synced', 'Unknown')
 
-    # Format date if it's a timestamp
-    if last_synced != 'Unknown':
+    # Load corresponding PR metadata if available
+    pr_metadata = None
+    if pr_number:
+        pr_metadata = load_json(f"PRs/{pr_number}/PR_METADATA.json")
+
+    # Get PR-based data if available, otherwise use defaults
+    authors_count = "?"
+    pr_status = 'unknown'
+    build_status = 'unknown'
+    last_commit_raw = 'Unknown'
+    schema_updated = last_synced
+
+    if pr_metadata:
+        # Count authors using git shortlog if we have git_ref
+        git_ref = pr_metadata.get('git_ref', '')
+        if git_ref:
+            try:
+                import subprocess
+                result = subprocess.run(
+                    ['git', 'shortlog', '-sn', f'origin/master...{git_ref}'],
+                    cwd='/home/yoh/proj/bids/bids-specification',
+                    capture_output=True, text=True, timeout=10
+                )
+                if result.returncode == 0:
+                    authors_count = str(len([line for line in result.stdout.strip().split('\n') if line.strip()]))
+            except:
+                pass
+
+        pr_status = pr_metadata.get('status', 'open')  # Default to 'open' for active PRs
+        build_status = pr_metadata.get('build_status', 'unknown')
+        last_commit_raw = pr_metadata.get('last_commit', 'Unknown')
+
+        # Use PR's last_updated if available and more recent
+        pr_last_updated = pr_metadata.get('last_updated', '')
+        if pr_last_updated and pr_last_updated != 'Unknown':
+            schema_updated = pr_last_updated
+
+    # Format dates
+    if schema_updated != 'Unknown':
         try:
-            dt = datetime.fromisoformat(last_synced.replace('Z', '+00:00'))
-            last_synced = dt.strftime('%Y-%m-%d')
+            dt = datetime.fromisoformat(schema_updated.replace('Z', '+00:00'))
+            schema_updated = dt.strftime('%Y-%m-%d')
         except:
             pass
+
+    # Format commit link
+    if last_commit_raw != 'Unknown':
+        last_commit = f"[{last_commit_raw[:10]}](https://github.com/bids-standard/bids-specification/commit/{last_commit_raw})"
+    else:
+        last_commit = 'Unknown'
 
     # Format PR link
     pr_link = f"[#{pr_number}](https://github.com/bids-standard/bids-specification/pull/{pr_number})" if pr_number else "N/A"
@@ -42,48 +85,51 @@ def format_bep_row(bep_dir_path, metadata):
     # Schema path (relative to BEPs directory)
     schema_path = f"./{bep_number}/schema.json"
 
-    # Status emoji
-    status_emoji = {
+    # Status emoji for BEP status
+    bep_status_emoji = {
         'draft': '📝',
         'review': '👁️',
         'accepted': '✅',
         'archived': '📦'
-    }.get(status, '⚪')
+    }.get(bep_status, '⚪')
+
+    # PR status emoji
+    pr_status_emoji = {
+        'open': '🟢',
+        'merged': '🟣',
+        'closed': '🔴'
+    }.get(pr_status, '⚪')
+
+    # Build status indicator
+    if build_status == 'failed':
+        build_indicator = '❌'
+    elif build_status == 'success':
+        build_indicator = '✅'
+    else:
+        build_indicator = '❓'
 
     # BEP number with leading zeros for display
     bep_display = bep_number.zfill(3)
 
-    # Raw schema URL (assuming enh-prs-and-beps branch - will need to be updated)
+    # Raw schema URL
     raw_schema_url = f"https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/{bep_number}/schema.json"
-    actions = f"[Schema]({schema_path}) \\| [Raw]({raw_schema_url})"
+    actions = f"[View PR](https://github.com/bids-standard/bids-specification/pull/{pr_number}) \\| [Schema]({schema_path}) \\| [Raw]({raw_schema_url})" if pr_number else f"[Schema]({schema_path}) \\| [Raw]({raw_schema_url})"
 
-    return f"| {bep_display} | {title} | {status_emoji} {status.title()} | {pr_link} | {doc_link} | {last_synced} | {actions} |"
+    # Add error log link if available
+    if build_status == 'failed' and pr_metadata and pr_metadata.get('error_log'):
+        actions += f" \\| [Error Log](../PRs/{pr_number}/bst-output.log)"
 
-def group_beps_by_status(bep_dirs):
-    """Group BEPs by their status"""
-    grouped = {
-        'draft': [],
-        'review': [],
-        'accepted': [],
-        'archived': []
-    }
+    return f"| {bep_display} | {title} | {doc_link} | {authors_count} | {pr_status_emoji} {pr_status.title()} | {build_indicator} | {schema_updated} | {last_commit} | {actions} |"
 
-    for bep_dir in bep_dirs:
-        metadata = load_json(f"{bep_dir}/BEP_METADATA.json")
-        if metadata:
-            status = metadata.get('status', 'draft')
-            grouped.get(status, grouped['draft']).append((bep_dir, metadata))
-
-    return grouped
 
 def generate_bep_table(beps):
     """Generate markdown table for a list of BEPs"""
     if not beps:
         return ""
 
-    # Table header
-    table = "| BEP # | Title | Status | Associated PR | Google Doc | Schema Updated | Actions |\n"
-    table += "|-------|-------|--------|---------------|------------|----------------|---------|"
+    # Table header - harmonized with PRs/README.md format
+    table = "| BEP # | Title | Google Doc | Authors | PR Status | Build | Schema Updated | Last Commit | Actions |\n"
+    table += "|-------|-------|------------|---------|-----------|-------|----------------|-------------|---------|"
 
     # Sort BEPs by number
     beps_sorted = sorted(beps, key=lambda x: int(Path(x[0]).name) if Path(x[0]).name.isdigit() else 0)
@@ -119,30 +165,32 @@ Each subdirectory corresponds to a BEP number and contains:
     if not bep_dirs:
         readme_content += "*No BEP schemas currently available*\n"
     else:
-        # Group BEPs by status
-        beps_by_status = group_beps_by_status(bep_dirs)
+        # Add status counts
+        draft_count = 0
+        review_count = 0
+        accepted_count = 0
+        archived_count = 0
 
-        # Add summary
-        counts = {status: len(beps) for status, beps in beps_by_status.items()}
-        readme_content += f"**Status Summary:** "
-        readme_content += f"📝 Draft ({counts['draft']}) | "
-        readme_content += f"👁️ Under Review ({counts['review']}) | "
-        readme_content += f"✅ Accepted ({counts['accepted']}) | "
-        readme_content += f"📦 Archived ({counts['archived']})\n\n"
+        for bep_dir in bep_dirs:
+            metadata = load_json(f"{bep_dir}/BEP_METADATA.json")
+            if metadata:
+                status = metadata.get('status', 'draft')
+                if status == 'draft':
+                    draft_count += 1
+                elif status == 'review':
+                    review_count += 1
+                elif status == 'accepted':
+                    accepted_count += 1
+                elif status == 'archived':
+                    archived_count += 1
 
-        # Generate tables for each status
-        for status in ['draft', 'review', 'accepted', 'archived']:
-            if beps_by_status[status]:
-                status_title = {
-                    'draft': 'Draft BEPs',
-                    'review': 'BEPs Under Review',
-                    'accepted': 'Accepted BEPs',
-                    'archived': 'Archived BEPs'
-                }[status]
+        readme_content += f"**Status Summary:** 📝 Draft ({draft_count}) | 👁️ Under Review ({review_count}) | ✅ Accepted ({accepted_count}) | 📦 Archived ({archived_count})\n\n"
 
-                readme_content += f"### {status_title}\n\n"
-                readme_content += generate_bep_table(beps_by_status[status])
-                readme_content += "\n\n"
+        # Generate single unified table
+        readme_content += "## Active BEP Schemas\n\n"
+        bep_data = [(bep_dir, load_json(f"{bep_dir}/BEP_METADATA.json")) for bep_dir in bep_dirs]
+        bep_data = [(bep_dir, metadata) for bep_dir, metadata in bep_data if metadata]
+        readme_content += generate_bep_table(bep_data)
 
     # Add footer
     readme_content += f"""## How to Use BEP Schemas

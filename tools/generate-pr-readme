@@ -23,7 +23,11 @@ def format_pr_row(pr_dir_path, metadata):
     status = metadata.get('status', 'open')
     build_status = metadata.get('build_status', 'unknown')
     last_updated = metadata.get('last_updated', 'Unknown')
-    last_commit = metadata.get('last_commit', 'Unknown')[:10] if metadata.get('last_commit') else 'Unknown'
+    last_commit_raw = metadata.get('last_commit', 'Unknown')
+    if last_commit_raw != 'Unknown':
+        last_commit = f"[{last_commit_raw[:10]}](https://github.com/bids-standard/bids-specification/commit/{last_commit_raw})"
+    else:
+        last_commit = 'Unknown'
 
     # Count authors using git shortlog if we have git_ref
     authors_count = "?"

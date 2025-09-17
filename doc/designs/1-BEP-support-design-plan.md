@@ -338,6 +338,11 @@ on:
         required: false
         default: true
         type: boolean
+      force_reprocess:
+        description: 'Force reprocessing of all PRs and BEPs (ignore up-to-date checks)'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   inject:
@@ -359,6 +364,7 @@ jobs:
         env:
           PROCESS_PRS: ${{ inputs.process_prs }}
           PROCESS_BEPS: ${{ inputs.process_beps }}
+          FORCE_REPROCESS: ${{ inputs.force_reprocess || 'false' }}
 
       - name: Push results
         run: git push

@@ -69,7 +69,7 @@ for ref_file in $pr_refs; do
     schema_change_count=$((schema_change_count + 1))
 
     # Check if we already have this PR processed and if it's up to date
-    if [ -d "$PR_DIR/$pr_number" ]; then
+    if [ "${FORCE_REPROCESS:-false}" != "true" ] && [ -d "$PR_DIR/$pr_number" ]; then
         if [ -f "$PR_DIR/$pr_number/PR_METADATA.json" ]; then
             existing_commit=$(grep '"last_commit"' "$PR_DIR/$pr_number/PR_METADATA.json" | sed 's/.*"last_commit": "\([^"]*\)".*/\1/')
             if [ "$existing_commit" = "$ref" ]; then
