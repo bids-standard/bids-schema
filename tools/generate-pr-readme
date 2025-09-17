@@ -47,7 +47,9 @@ def format_pr_row(pr_dir_path, metadata):
         'closed': '🔴'
     }.get(status, '⚪')
 
-    # Build status indicator
+    # Build status indicator and actions
+    actions = f"[View PR]({pr_url}) \\| [Schema]({schema_path})"
+
     if build_status == 'failed':
         build_indicator = '❌'
         error_msg = metadata.get('error_message', 'Build failed')
@@ -55,12 +57,15 @@ def format_pr_row(pr_dir_path, metadata):
         if len(error_msg) > 50:
             error_msg = error_msg[:47] + '...'
         title = f"{title} (Error: {error_msg})"
+        # Add error log link if available
+        if metadata.get('error_log'):
+            actions += f" \\| [Error Log](./{pr_number}/bst-output.log)"
     elif build_status == 'success':
         build_indicator = '✅'
     else:
         build_indicator = '❓'
 
-    return f"| {pr_number} | {title} | {author} | {status_emoji} {status.title()} | {build_indicator} | {last_updated} | {last_commit} | [View PR]({pr_url}) \\| [Schema]({schema_path}) |"
+    return f"| {pr_number} | {title} | {author} | {status_emoji} {status.title()} | {build_indicator} | {last_updated} | {last_commit} | {actions} |"
 
 def generate_markdown_table(pr_dirs):
     """Generate the markdown table for all PRs"""

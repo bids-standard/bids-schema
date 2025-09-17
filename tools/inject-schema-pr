@@ -94,11 +94,14 @@ if [ -f "$base_dir/venvs/dev/bin/activate" ]; then
     source "$base_dir/venvs/dev/bin/activate"
 fi
 
-if ! bst -v export --schema schema --output schema.json 2>&1 | tee /tmp/bst_error.log; then
+if ! bst -v export --schema schema --output schema.json 2>&1 | tee ../bst-output.log; then
     echo "Error: Failed to generate schema.json" >&2
 
-    # Capture the error message
-    error_msg=$(tail -1 /tmp/bst_error.log | sed 's/"/\\"/g')
+    # Capture the error message from the last meaningful line
+    error_msg=$(grep -E "(Error:|ValueError:|KeyError:|Exception:)" ../bst-output.log | tail -1 | sed 's/"/\\"/g')
+    if [ -z "$error_msg" ]; then
+        error_msg=$(tail -1 ../bst-output.log | sed 's/"/\\"/g')
+    fi
 
     # Generate error metadata if this is a PR
     if [ "$generate_metadata" = true ] && [ "$ref_type" = "pr" ]; then
@@ -114,7 +117,8 @@ if ! bst -v export --schema schema --output schema.json 2>&1 | tee /tmp/bst_erro
   "last_updated": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
   "has_schema_changes": true,
   "build_status": "failed",
-  "error_message": "$error_msg"
+  "error_message": "$error_msg",
+  "error_log": "bst-output.log"
 }
 EOF
         # Create a placeholder schema.json with error info
@@ -123,17 +127,23 @@ EOF
   "error": "Schema build failed",
   "message": "$error_msg",
   "pr_number": "$pr_number",
-  "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+  "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+  "log_file": "bst-output.log"
 }
 EOF
         # Copy version files if they exist
         [ -f "BIDS_VERSION" ] && cp BIDS_VERSION ../
         [ -f "SCHEMA_VERSION" ] && cp SCHEMA_VERSION ../
+        # Keep the error log file in the PR directory
+        echo "Error log saved to $output_dir/bst-output.log" >&2
     fi
 
     cd ..
     rm -rf "$output_dir/schema"
     exit 0  # Exit with success so processing can continue
+else
+    # Success - remove the log file
+    rm -f ../bst-output.log
 fi
 
 # Generate metadata if requested
