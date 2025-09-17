@@ -22,6 +22,7 @@ def format_pr_row(pr_dir_path, metadata):
     title = metadata.get('title', 'Unknown')
     author = metadata.get('author', 'Unknown')
     status = metadata.get('status', 'open')
+    build_status = metadata.get('build_status', 'unknown')
     last_updated = metadata.get('last_updated', 'Unknown')
     last_commit = metadata.get('last_commit', 'Unknown')[:10] if metadata.get('last_commit') else 'Unknown'
 
@@ -46,7 +47,20 @@ def format_pr_row(pr_dir_path, metadata):
         'closed': '🔴'
     }.get(status, '⚪')
 
-    return f"| {pr_number} | {title} | {author} | {status_emoji} {status.title()} | {last_updated} | {last_commit} | [View PR]({pr_url}) \\| [Schema]({schema_path}) |"
+    # Build status indicator
+    if build_status == 'failed':
+        build_indicator = '❌'
+        error_msg = metadata.get('error_message', 'Build failed')
+        # Truncate error message for table
+        if len(error_msg) > 50:
+            error_msg = error_msg[:47] + '...'
+        title = f"{title} (Error: {error_msg})"
+    elif build_status == 'success':
+        build_indicator = '✅'
+    else:
+        build_indicator = '❓'
+
+    return f"| {pr_number} | {title} | {author} | {status_emoji} {status.title()} | {build_indicator} | {last_updated} | {last_commit} | [View PR]({pr_url}) \\| [Schema]({schema_path}) |"
 
 def generate_markdown_table(pr_dirs):
     """Generate the markdown table for all PRs"""
@@ -54,8 +68,8 @@ def generate_markdown_table(pr_dirs):
         return "*No PR schemas currently available*\n"
 
     # Table header
-    table = "| PR # | Title | Author | Status | Schema Updated | Last Commit | Actions |\n"
-    table += "|------|-------|--------|--------|----------------|-------------|---------|"
+    table = "| PR # | Title | Author | Status | Build | Schema Updated | Last Commit | Actions |\n"
+    table += "|------|-------|--------|--------|-------|----------------|-------------|---------|"
 
     # Sort PR directories by number
     pr_dirs_sorted = sorted(pr_dirs, key=lambda x: int(Path(x).name) if Path(x).name.isdigit() else 0)
