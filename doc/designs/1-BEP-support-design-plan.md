@@ -66,7 +66,9 @@ BEPs/                 # NEW: BEP schemas (copies from PRs/)
 - `--metadata`: Generate metadata file with processing info
 
 #### 2. PR Schema Processor
-**File**: `tools/process-pr-schemas`
+**File**: `tools/process-pr-schemas` (executable, no extension)
+**Shebang**: `#!/usr/bin/env bash`
+**Permissions**: `chmod +x tools/process-pr-schemas`
 
 **Functionality**:
 - Fetch all PR references from bids-specification
@@ -77,22 +79,29 @@ BEPs/                 # NEW: BEP schemas (copies from PRs/)
 
 **Implementation Steps**:
 ```bash
+#!/usr/bin/env bash
+set -eu
+
 # Fetch PR references
 git config --add remote.origin.fetch '+refs/pull/*:refs/pull/origin/*'
 git fetch origin
 
-# Check for schema changes
+# Check for schema changes and process each PR
 for ref in .git/refs/pull/origin/*/merge; do
     pr_number=$(basename $(dirname $ref))
     if git diff --stat origin/master...$ref -- src/schema | grep -q .; then
-        # Process PR with schema changes
-        process_pr_schema "$pr_number" "$ref"
+        # Use datalad run to process PR with proper tracking
+        datalad run -m "Generate schema for PR #$pr_number" \
+            --output "PRs/$pr_number/" \
+            tools/inject-schema "PR-$pr_number" "$BIDS_REPO" "$ref"
     fi
 done
 ```
 
 #### 3. BEP Schema Manager
-**File**: `tools/process-bep-schemas`
+**File**: `tools/process-bep-schemas` (executable, no extension)
+**Shebang**: `#!/usr/bin/env bash`
+**Permissions**: `chmod +x tools/process-bep-schemas`
 
 **Functionality**:
 - Clone bids-website repository
@@ -105,29 +114,34 @@ done
 1. Read BEP configuration from bids-website
 2. For each BEP with a pull_request field:
    - Verify PR schema exists in PRs/
-   - Copy/link PR schema to BEPs/{bep_number}
+   - Use datalad run to copy PR schema to BEPs/{bep_number}:
+     ```bash
+     datalad run -m "Sync BEP $bep_number schema from PR #$pr_number" \
+         --output "BEPs/$bep_number/" \
+         cp -rp "PRs/$pr_number/"* "BEPs/$bep_number/"
+     ```
    - Generate BEP metadata file
 
 #### 4. Enhanced Main Orchestrator
-**File**: `tools/inject-schema-fully-auto`
+**File**: `tools/inject-schema-fully-auto` (already executable)
 
 **New Workflow**:
 ```
 1. Process releases and master (existing)
-2. Process PR schemas (new)
-3. Generate PRs/README.md with status table
-4. Process BEP schemas (new)
-5. Generate BEPs/README.md with status table
+2. Process PR schemas using datalad run
+3. Generate PRs/README.md using datalad run
+4. Process BEP schemas using datalad run
+5. Generate BEPs/README.md using datalad run
 6. Update main README.md if needed
-7. Commit changes with detailed messages
+7. All commits handled automatically by datalad run
 8. Generate summary report
 ```
 
-**Commit Strategy**:
-- One commit per PR schema update
-- One commit per BEP schema update
-- One commit for README updates (can be combined)
-- Informative commit messages with PR/BEP context
+**Commit Strategy with DataLad**:
+- Each `datalad run` creates an atomic commit
+- Automatic provenance tracking of inputs/outputs
+- Clear commit messages specified with `-m` flag
+- No manual git add/commit required
 
 ### State Management
 
@@ -161,7 +175,9 @@ done
 ### README Generation
 
 #### PRs/README.md Generator
-**File**: `tools/generate-pr-readme`
+**File**: `tools/generate-pr-readme` (executable, no extension)
+**Shebang**: `#!/usr/bin/env python3`
+**Permissions**: `chmod +x tools/generate-pr-readme`
 
 **Functionality**:
 - Scan all PR directories and their metadata
@@ -177,6 +193,11 @@ done
 
 **Implementation**:
 ```python
+#!/usr/bin/env python3
+import json
+import glob
+from pathlib import Path
+
 def generate_pr_readme():
     readme_content = """# BIDS Specification PR Schemas
 
@@ -193,11 +214,16 @@ that modify the schema files.
         table_rows.append(format_pr_row(metadata))
 
     readme_content += generate_markdown_table(table_rows)
-    write_file("PRs/README.md", readme_content)
+    Path("PRs/README.md").write_text(readme_content)
+
+if __name__ == "__main__":
+    generate_pr_readme()
 ```
 
 #### BEPs/README.md Generator
-**File**: `tools/generate-bep-readme`
+**File**: `tools/generate-bep-readme` (executable, no extension)
+**Shebang**: `#!/usr/bin/env python3`
+**Permissions**: `chmod +x tools/generate-bep-readme`
 
 **Functionality**:
 - Parse BEP directories and metadata
@@ -219,6 +245,11 @@ that modify the schema files.
 
 **Implementation**:
 ```python
+#!/usr/bin/env python3
+import json
+import glob
+from pathlib import Path
+
 def generate_bep_readme():
     readme_content = """# BIDS Extension Proposals (BEPs) Schemas
 
@@ -236,7 +267,10 @@ Each BEP schema is linked to its corresponding Pull Request in the BIDS specific
             readme_content += f"### {status.title()} BEPs\n\n"
             readme_content += generate_bep_table(beps_by_status[status])
 
-    write_file("BEPs/README.md", readme_content)
+    Path("BEPs/README.md").write_text(readme_content)
+
+if __name__ == "__main__":
+    generate_bep_readme()
 ```
 
 #### Main README.md Update
@@ -263,19 +297,19 @@ See [PRs/README.md](./PRs/README.md) and [BEPs/README.md](./BEPs/README.md) for 
 #### Update process-pr-schemas
 Add README generation after processing PRs:
 ```bash
-# After processing all PRs
-python tools/generate-pr-readme.py
-git add PRs/README.md
-git commit -m "Update PRs README with current PR status"
+# After processing all PRs, use datalad run for README generation
+datalad run -m "Update PRs README with current PR status" \
+    --output PRs/README.md \
+    tools/generate-pr-readme
 ```
 
 #### Update process-bep-schemas
 Add README generation after processing BEPs:
 ```bash
-# After processing all BEPs
-python tools/generate-bep-readme.py
-git add BEPs/README.md
-git commit -m "Update BEPs README with current BEP status"
+# After processing all BEPs, use datalad run for README generation
+datalad run -m "Update BEPs README with current BEP status" \
+    --output BEPs/README.md \
+    tools/generate-bep-readme
 ```
 
 ### GitHub Actions Workflow Updates
@@ -434,11 +468,38 @@ jobs:
 - bids-website repository (for BEP data)
 - bidsschematools Python package
 - GitHub API (for PR metadata)
+- **DataLad** (for provenance tracking and atomic commits)
 
 ### Internal Dependencies
 - Existing inject-schema infrastructure
 - GitHub Actions environment
 - Git command-line tools
+
+## DataLad Integration Benefits
+
+### Advantages of Using DataLad
+1. **Atomic Operations**: Each `datalad run` ensures that inputs, outputs, and the command are tracked together
+2. **Provenance Tracking**: Complete history of what command generated which output
+3. **Automatic Commits**: No need for manual git add/commit operations
+4. **Rollback Capability**: Easy to revert operations if needed
+5. **Input/Output Validation**: DataLad ensures clean working tree before operations
+
+### DataLad Command Pattern
+All schema generation and file updates follow this pattern:
+```bash
+datalad run -m "Descriptive commit message" \
+    --output "path/to/output/file/or/dir" \
+    [--input "path/to/input/file"] \
+    command-to-run [arguments]
+```
+
+### Script Requirements
+- All scripts must be executable: `chmod +x tools/script-name`
+- No file extensions (`.py`, `.sh`) on executable scripts
+- Proper shebang lines:
+  - Python: `#!/usr/bin/env python3`
+  - Bash: `#!/usr/bin/env bash`
+- Scripts should exit with appropriate status codes
 
 ## Risks and Mitigation
 
