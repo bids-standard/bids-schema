@@ -41,7 +41,7 @@ if [ -z "$output_dir" ] || [ -z "$repo" ] || [ -z "$git_ref" ]; then
 fi
 
 repo=$(readlink -f "$repo")
-base_dir="$(dirname "$0")/.."
+base_dir="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$base_dir"
 
 # Handle different types of refs
