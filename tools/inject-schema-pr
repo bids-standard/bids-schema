@@ -94,13 +94,16 @@ if [ -f "$base_dir/venvs/dev/bin/activate" ]; then
     source "$base_dir/venvs/dev/bin/activate"
 fi
 
-if ! bst -v export --schema schema --output schema.json 2>&1 | tee ../bst-output.log; then
+bst -v export --schema schema --output schema.json 2>&1 | tee bst-output.log
+BST_EXIT_CODE=${PIPESTATUS[0]}
+
+if [ $BST_EXIT_CODE -ne 0 ]; then
     echo "Error: Failed to generate schema.json" >&2
 
     # Capture the error message from the last meaningful line
-    error_msg=$(grep -E "(Error:|ValueError:|KeyError:|Exception:)" ../bst-output.log | tail -1 | sed 's/"/\\"/g')
+    error_msg=$(grep -E "(Error:|ValueError:|KeyError:|Exception:)" bst-output.log | tail -1 | sed 's/"/\\"/g')
     if [ -z "$error_msg" ]; then
-        error_msg=$(tail -1 ../bst-output.log | sed 's/"/\\"/g')
+        error_msg=$(tail -1 bst-output.log | sed 's/"/\\"/g')
     fi
 
     # Generate error metadata if this is a PR
@@ -109,7 +112,7 @@ if ! bst -v export --schema schema --output schema.json 2>&1 | tee ../bst-output
         commit_hash=$(git -C "$repo" rev-parse "$git_ref" 2>/dev/null || echo "unknown")
 
         # Create error metadata file
-        cat > ../PR_METADATA.json <<EOF
+        cat > PR_METADATA.json <<EOF
 {
   "pr_number": "$pr_number",
   "git_ref": "$git_ref",
@@ -122,7 +125,7 @@ if ! bst -v export --schema schema --output schema.json 2>&1 | tee ../bst-output
 }
 EOF
         # Create a placeholder schema.json with error info
-        cat > ../schema.json <<EOF
+        cat > schema.json <<EOF
 {
   "error": "Schema build failed",
   "message": "$error_msg",
@@ -132,19 +135,19 @@ EOF
 }
 EOF
         # Copy version files if they exist
-        [ -f "BIDS_VERSION" ] && cp BIDS_VERSION ../
-        [ -f "SCHEMA_VERSION" ] && cp SCHEMA_VERSION ../
+        [ -f "schema/BIDS_VERSION" ] && cp schema/BIDS_VERSION ./
+        [ -f "schema/SCHEMA_VERSION" ] && cp schema/SCHEMA_VERSION ./
         # Keep the error log file in the PR directory
         echo "Error log saved to $output_dir/bst-output.log" >&2
     fi
 
-    cd ..
-    rm -rf "$output_dir/schema"
+    rm -rf schema
     echo "Schema build failed for $git_ref - error metadata saved in $output_dir"
+    cd "$base_dir"
     exit 0  # Exit with success so processing can continue
 else
     # Success - remove the log file
-    rm -f ../bst-output.log
+    rm -f bst-output.log
     echo "Schema build succeeded for $git_ref"
 fi
 
