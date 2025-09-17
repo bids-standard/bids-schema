@@ -2,6 +2,7 @@
   "pr_number": "1533",
   "git_ref": "7a84ff6c9584912e92de4e23b5e4f7ebb0dbcbf1",
   "last_commit": "7a84ff6c9584912e92de4e23b5e4f7ebb0dbcbf1",
-  "last_updated": "2025-09-17T18:12:45Z",
-  "has_schema_changes": true
+  "last_updated": "2025-09-17T20:37:08Z",
+  "has_schema_changes": true,
+  "build_status": "success"
 }
