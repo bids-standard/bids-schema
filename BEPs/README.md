@@ -20,7 +20,7 @@ Each subdirectory corresponds to a BEP number and contains:
 
 | BEP # | Title | Status | Associated PR | Google Doc | Schema Updated | Actions |
 |-------|-------|--------|---------------|------------|----------------|---------|
-| 032 | Microelectrode electrophysiology | 👁️ Review | [#1705](https://github.com/bids-standard/bids-specification/pull/1705) | [Doc](https://docs.google.com/document/d/1oG-C8T-dWPqfVzL2W8HO3elWK8NIh2cOCPssRGv23n0/) | 2025-09-17 | [Schema](./32/schema.json) |
+| 032 | Microelectrode electrophysiology | 👁️ Review | [#1705](https://github.com/bids-standard/bids-specification/pull/1705) | [Doc](https://docs.google.com/document/d/1oG-C8T-dWPqfVzL2W8HO3elWK8NIh2cOCPssRGv23n0/) | 2025-09-17 | [Schema](./32/schema.json) \| [Raw](https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/32/schema.json) |
 
 ## How to Use BEP Schemas
 
@@ -56,7 +56,3 @@ BEP schemas are automatically synchronized with their associated PRs:
 - 👁️ **Under Review**: Actively being reviewed by the community
 - ✅ **Accepted**: Approved and merged into BIDS
 - 📦 **Archived**: No longer under active development
-
----
-
-*Last generated: 2025-09-17 13:24:21 UTC*

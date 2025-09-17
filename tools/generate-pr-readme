@@ -19,12 +19,26 @@ def format_pr_row(pr_dir_path, metadata):
     pr_number = Path(pr_dir_path).name
 
     # Extract fields with defaults
-    title = metadata.get('title', 'Unknown')
-    author = metadata.get('author', 'Unknown')
+    git_ref = metadata.get('git_ref', '')
     status = metadata.get('status', 'open')
     build_status = metadata.get('build_status', 'unknown')
     last_updated = metadata.get('last_updated', 'Unknown')
     last_commit = metadata.get('last_commit', 'Unknown')[:10] if metadata.get('last_commit') else 'Unknown'
+
+    # Count authors using git shortlog if we have git_ref
+    authors_count = "?"
+    if git_ref:
+        try:
+            import subprocess
+            result = subprocess.run(
+                ['git', 'shortlog', '-sn', f'origin/master...{git_ref}'],
+                cwd='/home/yoh/proj/bids/bids-specification',
+                capture_output=True, text=True, timeout=10
+            )
+            if result.returncode == 0:
+                authors_count = str(len([line for line in result.stdout.strip().split('\n') if line.strip()]))
+        except:
+            pass
 
     # Format date if it's a timestamp
     if last_updated != 'Unknown':
@@ -55,10 +69,6 @@ def format_pr_row(pr_dir_path, metadata):
     if build_status == 'failed':
         build_indicator = '❌'
         error_msg = metadata.get('error_message', 'Build failed')
-        # Truncate error message for table
-        if len(error_msg) > 50:
-            error_msg = error_msg[:47] + '...'
-        title = f"{title} (Error: {error_msg})"
         # Add error log link if available
         if metadata.get('error_log'):
             actions += f" \\| [Error Log](./{pr_number}/bst-output.log)"
@@ -67,7 +77,7 @@ def format_pr_row(pr_dir_path, metadata):
     else:
         build_indicator = '❓'
 
-    return f"| {pr_number} | {title} | {author} | {status_emoji} {status.title()} | {build_indicator} | {last_updated} | {last_commit} | {actions} |"
+    return f"| {pr_number} | {authors_count} | {status_emoji} {status.title()} | {build_indicator} | {last_updated} | {last_commit} | {actions} |"
 
 def generate_markdown_table(pr_dirs):
     """Generate the markdown table for all PRs"""
@@ -75,8 +85,8 @@ def generate_markdown_table(pr_dirs):
         return "*No PR schemas currently available*\n"
 
     # Table header
-    table = "| PR # | Title | Author | Status | Build | Schema Updated | Last Commit | Actions |\n"
-    table += "|------|-------|--------|--------|-------|----------------|-------------|---------|"
+    table = "| PR # | Authors | Status | Build | Schema Updated | Last Commit | Actions |\n"
+    table += "|------|---------|--------|-------|----------------|-------------|---------|"
 
     # Sort PR directories by number
     pr_dirs_sorted = sorted(pr_dirs, key=lambda x: int(Path(x).name) if Path(x).name.isdigit() else 0)
@@ -131,7 +141,6 @@ Each subdirectory corresponds to a Pull Request (PR) number and contains:
     readme_content += generate_markdown_table(pr_dirs)
 
     # Add footer
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')
     readme_content += f"""
 
 ## How to Use PR Schemas
@@ -152,10 +161,6 @@ PR schemas are automatically updated:
 - [BEP Schemas](../BEPs/) - BIDS Extension Proposal schemas
 - [Released Versions](../versions/) - Official BIDS schema releases
 - [BIDS Specification Repository](https://github.com/bids-standard/bids-specification)
-
----
-
-*Last generated: {timestamp}*
 """
 
     # Write the README
