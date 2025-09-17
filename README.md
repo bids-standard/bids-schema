@@ -33,14 +33,18 @@ package managers.
 
 ## Schema Versions
 
+Schema versions automatically updated using
+[![Inject](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml/badge.svg)](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml)
+CI run.
+
 ### Released Versions
 - [Latest Release](./versions/latest/) - Current stable BIDS schema
 - [All Releases](./versions/) - Historical BIDS schema versions
 
 ### Development Versions
 - [Master Branch](./versions/master/) - Current development schema
-- [PR Schemas](./PRs/) - Schemas from open Pull Requests with schema changes
-- [BEP Schemas](./BEPs/) - Schemas for BIDS Extension Proposals
+- [PR Schemas](./PRs/#readme) - Schemas from open Pull Requests with schema changes
+- [BEP Schemas](./BEPs/#readme) - Schemas for BIDS Extension Proposals
 
 See [PRs/README.md](./PRs/README.md) and [BEPs/README.md](./BEPs/README.md) for detailed status tables.
 
