@@ -1,0 +1,7 @@
+{
+  "error": "Schema build failed",
+  "log_file": "bst-output.log",
+  "message": "ValueError: Reference objects.enums.gestation.value not found in schema.",
+  "pr_number": "1839",
+  "timestamp": "2025-09-17T20:37:25Z"
+}

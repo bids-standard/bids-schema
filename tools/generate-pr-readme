@@ -1,0 +1,152 @@
+#!/usr/bin/env python3
+"""Generate README.md for PRs directory with status table"""
+
+import json
+import glob
+from pathlib import Path
+from datetime import datetime
+
+def load_json(filepath):
+    """Load JSON file safely"""
+    try:
+        with open(filepath, 'r') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+
+def format_pr_row(pr_dir_path, metadata):
+    """Format a single PR as a table row"""
+    pr_number = Path(pr_dir_path).name
+
+    # Extract fields with defaults
+    git_ref = metadata.get('git_ref', '')
+    status = metadata.get('status', 'open')
+    build_status = metadata.get('build_status', 'unknown')
+    last_updated = metadata.get('last_updated', 'Unknown')
+    last_commit_raw = metadata.get('last_commit', 'Unknown')
+    if last_commit_raw != 'Unknown':
+        last_commit = f"[{last_commit_raw[:10]}](https://github.com/bids-standard/bids-specification/commit/{last_commit_raw})"
+    else:
+        last_commit = 'Unknown'
+
+    # Count authors using git shortlog if we have git_ref
+    authors_count = "?"
+    if git_ref:
+        try:
+            import subprocess
+            result = subprocess.run(
+                ['git', 'shortlog', '-sn', f'origin/master...{git_ref}'],
+                cwd='/home/yoh/proj/bids/bids-specification',
+                capture_output=True, text=True, timeout=10
+            )
+            if result.returncode == 0:
+                authors_count = str(len([line for line in result.stdout.strip().split('\n') if line.strip()]))
+        except:
+            pass
+
+    # Format date if it's a timestamp
+    if last_updated != 'Unknown':
+        try:
+            dt = datetime.fromisoformat(last_updated.replace('Z', '+00:00'))
+            last_updated = dt.strftime('%Y-%m-%d')
+        except:
+            pass
+
+    # GitHub PR URL
+    pr_url = f"https://github.com/bids-standard/bids-specification/pull/{pr_number}"
+
+    # Make PR number a hyperlink
+    pr_link = f"[{pr_number}]({pr_url})"
+
+    # Schema path (relative to PRs directory)
+    schema_path = f"./{pr_number}/schema.json"
+
+    # Build status indicator and actions (no View PR since PR # is now a link)
+    raw_schema_url = f"https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/PRs/{pr_number}/schema.json"
+    pretty_schema_path = f"./{pr_number}/schema_pp.json"
+    pretty_raw_url = f"https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/PRs/{pr_number}/schema_pp.json"
+    actions = f"[Schema]({schema_path}) \\| [Raw]({raw_schema_url}) \\| [Pretty]({pretty_raw_url})"
+
+    if build_status == 'failed':
+        build_indicator = '❌'
+        error_msg = metadata.get('error_message', 'Build failed')
+        # Add error log link if available
+        if metadata.get('error_log'):
+            actions += f" \\| [Error Log](./{pr_number}/bst-output.log)"
+    elif build_status == 'success':
+        build_indicator = '✅'
+    else:
+        build_indicator = '❓'
+
+    return f"| {pr_link} | {authors_count} | {build_indicator} | {last_updated} | {last_commit} | {actions} |"
+
+def generate_markdown_table(pr_dirs):
+    """Generate the markdown table for all PRs"""
+    if not pr_dirs:
+        return "*No PR schemas currently available*\n"
+
+    # Table header
+    table = "| PR # | Authors | Build | Schema Updated | Last Commit | Actions |\n"
+    table += "|------|---------|-------|----------------|-------------|---------|"
+
+    # Sort PR directories by number
+    pr_dirs_sorted = sorted(pr_dirs, key=lambda x: int(Path(x).name) if Path(x).name.isdigit() else 0)
+
+    for pr_dir in pr_dirs_sorted:
+        metadata = load_json(f"{pr_dir}/PR_METADATA.json")
+        if metadata:
+            table += "\n" + format_pr_row(pr_dir, metadata)
+
+    return table
+
+def generate_pr_readme():
+    """Generate the complete README.md for PRs directory"""
+    readme_content = """# BIDS Specification PR Schemas
+
+This directory contains automatically generated schemas from Pull Requests to the BIDS specification
+that modify the schema files.
+
+## Overview
+
+Each subdirectory corresponds to a Pull Request (PR) number and contains:
+- `schema.json` - The compiled BIDS schema (only file stored to save space)
+- `PR_METADATA.json` - Metadata about the PR and processing status
+
+## Active PR Schemas
+
+"""
+
+    # Find all PR directories
+    pr_dirs = glob.glob("PRs/[0-9]*")
+
+    # Generate table
+    readme_content += generate_markdown_table(pr_dirs)
+
+    # Add footer
+    readme_content += f"""
+
+## How to Use PR Schemas
+
+1. **Accessing a schema**: Navigate to `PRs/{{pr_number}}/schema.json`
+2. **Checking metadata**: View `PRs/{{pr_number}}/PR_METADATA.json` for processing details
+3. **Raw schema files**: Not stored (only compiled schema.json saved to reduce repository size)
+
+## Automation
+
+[![Inject](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml/badge.svg)](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml)
+
+PR schemas are automatically updated by the [Schema Injection GitHub workflow](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml). View [workflow runs](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml) to see the latest updates.
+
+## Related Resources
+
+- [BEP Schemas](../BEPs/) - BIDS Extension Proposal schemas
+- [Released Versions](../versions/) - Official BIDS schema releases
+- [BIDS Specification Repository](https://github.com/bids-standard/bids-specification)
+"""
+
+    # Write the README
+    Path("PRs/README.md").write_text(readme_content)
+    print(f"Generated PRs/README.md with {len(pr_dirs)} PR schemas")
+
+if __name__ == "__main__":
+    generate_pr_readme()

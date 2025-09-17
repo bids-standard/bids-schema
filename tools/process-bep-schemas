@@ -1,0 +1,201 @@
+#!/usr/bin/env bash
+# Process BEP schemas by mapping them to their corresponding PRs
+# Reads BEP definitions from bids-website and syncs schemas from PRs
+
+set -eu
+
+# Configuration
+SCRIPT_DIR="$(dirname "$0")"
+BASE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+PR_DIR="$BASE_DIR/PRs"
+BEP_DIR="$BASE_DIR/BEPs"
+WEBSITE_REPO="${BIDS_WEBSITE_REPO:-$BASE_DIR/../bids-website}"
+
+# Ensure we're in the right directory
+cd "$BASE_DIR"
+
+# Check if bids-website repo exists or needs to be cloned
+if [ ! -d "$WEBSITE_REPO" ]; then
+    echo "BIDS website repository not found at $WEBSITE_REPO. Cloning..."
+    TMP_DIR=$(mktemp -d)
+    trap 'rm -rf "$TMP_DIR"' EXIT
+    WEBSITE_REPO="$TMP_DIR/bids-website"
+    git clone https://github.com/bids-standard/bids-website/ "$WEBSITE_REPO"
+fi
+
+# Check if BEPs YAML file exists
+BEPS_FILE="$WEBSITE_REPO/data/beps/beps.yml"
+if [ ! -f "$BEPS_FILE" ]; then
+    echo "Error: BEPs file not found at $BEPS_FILE"
+    exit 1
+fi
+
+echo "Processing BEPs from $BEPS_FILE..."
+
+# We need Python to parse YAML
+python3 - <<EOF
+import yaml
+import json
+import os
+import sys
+import shutil
+from pathlib import Path
+
+# Read BEPs YAML file
+with open("$BEPS_FILE", 'r') as f:
+    beps_data = yaml.safe_load(f)
+
+if not beps_data:
+    print("No BEPs found in YAML file")
+    sys.exit(0)
+
+pr_dir = Path("$PR_DIR")
+bep_dir = Path("$BEP_DIR")
+
+processed_count = 0
+synced_count = 0
+
+# Process each BEP
+for bep in beps_data:
+    if not isinstance(bep, dict):
+        continue
+
+    bep_number = bep.get('number', '').lstrip('0')  # Remove leading zeros
+    if not bep_number:
+        continue
+
+    title = bep.get('title', 'Untitled')
+    pull_request = bep.get('pull_request', '')
+
+    # Extract PR number from URL if present
+    pr_number = None
+    if pull_request and 'github.com' in pull_request:
+        # Extract PR number from URL like https://github.com/bids-standard/bids-specification/pull/518
+        parts = pull_request.split('/')
+        if 'pull' in parts:
+            idx = parts.index('pull')
+            if idx + 1 < len(parts):
+                pr_number = parts[idx + 1].split('#')[0]
+
+    if not pr_number:
+        print(f"BEP {bep_number}: No PR linked")
+        continue
+
+    print(f"BEP {bep_number}: '{title}' -> PR #{pr_number}")
+
+    # Check if PR schema exists
+    pr_schema_dir = pr_dir / pr_number
+    if not pr_schema_dir.exists():
+        print(f"  PR #{pr_number} schema not found, skipping BEP {bep_number}")
+        continue
+
+    # Create BEP directory
+    bep_schema_dir = bep_dir / bep_number
+
+    # Check if we need to update
+    need_update = True
+    if bep_schema_dir.exists():
+        # Check if BEP metadata exists and is up to date
+        metadata_file = bep_schema_dir / 'BEP_METADATA.json'
+        if metadata_file.exists():
+            with open(metadata_file, 'r') as f:
+                metadata = json.load(f)
+                if metadata.get('pr_number') == int(pr_number):
+                    # Check if PR has been updated since last sync
+                    pr_metadata_file = pr_schema_dir / 'PR_METADATA'
+                    if pr_metadata_file.exists():
+                        with open(pr_metadata_file, 'r') as f:
+                            pr_metadata = json.load(f)
+                            pr_updated = pr_metadata.get('last_updated', '')
+                            bep_synced = metadata.get('last_synced', '')
+                            if bep_synced >= pr_updated:
+                                print(f"  BEP {bep_number} is up to date")
+                                need_update = False
+
+    if need_update:
+        print(f"  Syncing BEP {bep_number} from PR #{pr_number}")
+
+        # Use datalad run if available, otherwise copy directly
+        import subprocess
+        if shutil.which('datalad'):
+            # Try datalad run with --explicit first
+            cmd = [
+                'datalad', 'run',
+                '-m', f'Sync BEP {bep_number} schema from PR #{pr_number}',
+                '--output', f'BEPs/{bep_number}/',
+                '--explicit',
+                'cp', '-rp', f'PRs/{pr_number}/.', f'BEPs/{bep_number}/'
+            ]
+            result = subprocess.run(cmd, capture_output=True, text=True)
+
+            if result.returncode != 0:
+                # If --explicit failed, check if it's due to uncommitted changes
+                if "clean dataset required" in result.stderr:
+                    print(f"  Committing pending changes before BEP sync...")
+                    # Commit any pending changes first
+                    commit_cmd = ['git', 'add', '.']
+                    subprocess.run(commit_cmd)
+                    commit_cmd = ['git', 'commit', '-m', f'Intermediate commit before syncing BEP {bep_number}']
+                    commit_result = subprocess.run(commit_cmd, capture_output=True, text=True)
+
+                    # Try datalad run again
+                    result = subprocess.run(cmd, capture_output=True, text=True)
+
+                if result.returncode != 0:
+                    error_msg = result.stderr.strip() or result.stdout.strip() or "Unknown error"
+                    print(f"  DataLad run failed: {error_msg}")
+                    print(f"  Falling back to direct copy...")
+                    # Fall back to direct copy
+                    if bep_schema_dir.exists():
+                        shutil.rmtree(bep_schema_dir)
+                    shutil.copytree(pr_schema_dir, bep_schema_dir)
+        else:
+            # Direct copy
+            if bep_schema_dir.exists():
+                shutil.rmtree(bep_schema_dir)
+            shutil.copytree(pr_schema_dir, bep_schema_dir)
+
+        # Generate BEP metadata
+        import datetime
+        metadata = {
+            'bep_number': bep_number,
+            'title': title,
+            'pr_number': int(pr_number),
+            'pull_request': pull_request,
+            'google_doc': bep.get('google_doc', ''),
+            'last_synced': datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+            'status': 'review'  # Default status, could be enhanced
+        }
+
+        metadata_file = bep_schema_dir / 'BEP_METADATA.json'
+        with open(metadata_file, 'w') as f:
+            json.dump(metadata, f, indent=2)
+
+        synced_count += 1
+
+    processed_count += 1
+
+# Clean up BEPs that no longer have PRs
+print("\nChecking for BEPs without active PRs...")
+if bep_dir.exists():
+    for bep_folder in bep_dir.iterdir():
+        if not bep_folder.is_dir():
+            continue
+
+        bep_number = bep_folder.name
+
+        # Check if this BEP still has an active PR
+        metadata_file = bep_folder / 'BEP_METADATA.json'
+        if metadata_file.exists():
+            with open(metadata_file, 'r') as f:
+                metadata = json.load(f)
+                pr_number = str(metadata.get('pr_number', ''))
+
+                if pr_number and not (pr_dir / pr_number).exists():
+                    print(f"  BEP {bep_number}: PR #{pr_number} no longer exists, removing BEP schema")
+                    shutil.rmtree(bep_folder)
+
+print(f"\nSummary:")
+print(f"  BEPs processed: {processed_count}")
+print(f"  BEPs synced: {synced_count}")
+EOF

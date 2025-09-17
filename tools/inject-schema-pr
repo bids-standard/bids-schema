@@ -1,0 +1,198 @@
+#!/bin/bash
+# Enhanced inject-schema script that handles arbitrary git refs including PRs
+# Usage: inject-schema-pr <output-dir> <repo-path> <git-ref> [--type release|master|pr] [--metadata]
+#
+# Examples:
+#   inject-schema-pr versions/1.10.0 /path/to/repo v1.10.0 --type release
+#   inject-schema-pr versions/master /path/to/repo master --type master
+#   inject-schema-pr PRs/518 /path/to/repo refs/pull/origin/518/merge --type pr --metadata
+
+set -eu
+
+# Parse arguments
+output_dir="${1:-}"
+repo="${2:-}"
+git_ref="${3:-}"
+ref_type="release"  # default
+generate_metadata=false
+
+# Parse optional arguments
+shift 3 || true
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --type)
+            ref_type="$2"
+            shift 2
+            ;;
+        --metadata)
+            generate_metadata=true
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1" >&2
+            exit 1
+            ;;
+    esac
+done
+
+if [ -z "$output_dir" ] || [ -z "$repo" ] || [ -z "$git_ref" ]; then
+    echo "Usage: $0 <output-dir> <repo-path> <git-ref> [--type release|master|pr] [--metadata]" >&2
+    exit 1
+fi
+
+repo=$(readlink -f "$repo")
+base_dir="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$base_dir"
+
+# Handle different types of refs
+case "$ref_type" in
+    master)
+        # Allow re-processing master
+        [ -d "$output_dir" ] && rm -rf "$output_dir"
+        ;;
+    pr)
+        # PRs can be re-processed
+        [ -d "$output_dir" ] && rm -rf "$output_dir"
+        ;;
+    release)
+        # Releases should not exist yet
+        if [ -d "$output_dir" ]; then
+            echo "Error: $output_dir already exists" >&2
+            exit 1
+        fi
+        ;;
+esac
+
+# Create output directory
+mkdir -p "$output_dir"
+cd "$output_dir"
+
+# Extract schema files from the repository
+echo "Extracting schema from $git_ref..."
+git -C "$repo" archive --prefix prefix/ "$git_ref" 2>/dev/null \
+    | tar -xf- --strip 2 --wildcards '*/src/schema' 2>/dev/null || {
+    echo "Error: Failed to extract schema from $git_ref" >&2
+    cd ..
+    rmdir "$output_dir" 2>/dev/null || true
+    exit 1
+}
+
+# Check if schema directory exists
+if [ ! -d "schema" ]; then
+    echo "Error: No schema directory found in $git_ref" >&2
+    cd ..
+    rm -rf "$output_dir"
+    exit 1
+fi
+
+# Generate schema.json using bst
+echo "Generating schema.json..."
+
+# Activate venv if it exists
+if [ -f "$base_dir/venvs/dev/bin/activate" ]; then
+    # shellcheck disable=SC1091
+    source "$base_dir/venvs/dev/bin/activate"
+fi
+
+bst -v export --schema schema --output schema.json 2>&1 | tee bst-output.log
+BST_EXIT_CODE=${PIPESTATUS[0]}
+
+if [ "$BST_EXIT_CODE" -ne 0 ]; then
+    echo "Error: Failed to generate schema.json" >&2
+
+    # Capture the error message from the last meaningful line
+    error_msg=$(grep -E "(Error:|ValueError:|KeyError:|Exception:)" bst-output.log | tail -1 | sed 's/"/\\"/g')
+    if [ -z "$error_msg" ]; then
+        error_msg=$(tail -1 bst-output.log | sed 's/"/\\"/g')
+    fi
+
+    # Generate error metadata if this is a PR
+    if [ "$generate_metadata" = true ] && [ "$ref_type" = "pr" ]; then
+        pr_number=$(echo "$output_dir" | sed 's/.*PRs\///')
+        commit_hash=$(git -C "$repo" rev-parse "$git_ref" 2>/dev/null || echo "unknown")
+
+        # Create error metadata file
+        cat > PR_METADATA.json <<EOF
+{
+  "pr_number": "$pr_number",
+  "git_ref": "$git_ref",
+  "last_commit": "$commit_hash",
+  "last_updated": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+  "has_schema_changes": true,
+  "build_status": "failed",
+  "error_message": "$error_msg",
+  "error_log": "bst-output.log"
+}
+EOF
+        # Create a placeholder schema.json with error info
+        cat > schema.json <<EOF
+{
+  "error": "Schema build failed",
+  "message": "$error_msg",
+  "pr_number": "$pr_number",
+  "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+  "log_file": "bst-output.log"
+}
+EOF
+        # Copy version files if they exist
+        [ -f "schema/BIDS_VERSION" ] && cp schema/BIDS_VERSION ./
+        [ -f "schema/SCHEMA_VERSION" ] && cp schema/SCHEMA_VERSION ./
+        # Keep the error log file in the PR directory
+        echo "Error log saved to $output_dir/bst-output.log" >&2
+    fi
+
+    rm -rf schema
+    echo "Schema build failed for $git_ref - error metadata saved in $output_dir"
+    cd "$base_dir"
+    exit 0  # Exit with success so processing can continue
+else
+    # Success - remove the log file and create pretty-printed version
+    rm -f bst-output.log
+    echo "Schema build succeeded for $git_ref"
+
+    # Generate pretty-printed schema
+    "$base_dir/tools/prettify-schema" schema
+fi
+
+# Generate metadata if requested
+if [ "$generate_metadata" = true ] && [ "$ref_type" = "pr" ]; then
+    pr_number=$(echo "$output_dir" | sed 's/.*PRs\///')
+
+    # Get commit hash for the ref
+    commit_hash=$(git -C "$repo" rev-parse "$git_ref" 2>/dev/null || echo "unknown")
+
+    # Generate PR_METADATA.json file
+    cat > PR_METADATA.json <<EOF
+{
+  "pr_number": "$pr_number",
+  "git_ref": "$git_ref",
+  "last_commit": "$commit_hash",
+  "last_updated": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+  "has_schema_changes": true,
+  "build_status": "success"
+}
+EOF
+fi
+
+# Store version info (but remove schema directory to save space)
+if [ -f "schema/SCHEMA_VERSION" ]; then
+    cp schema/SCHEMA_VERSION ./
+fi
+if [ -f "schema/BIDS_VERSION" ]; then
+    cp schema/BIDS_VERSION ./
+fi
+
+# Remove the schema directory to save repository space - only keep compiled schema.json
+rm -rf schema
+
+cd "$base_dir"
+
+# Update latest symlink for releases
+if [ "$ref_type" = "release" ] && [ "$output_dir" != "versions/master" ]; then
+    cd versions
+    latest=$(/bin/ls -1d [1-9].* 2>/dev/null | sort -V | tail -n 1)
+    if [ -n "$latest" ]; then
+        rm -rf latest
+        cp -rp "$latest" latest
+    fi
+fi

@@ -27,7 +27,26 @@ package managers.
     - `latest/` - a copy (symlinks aren't supported on some operating systems) of the most recent release
     - `master/` - the state of schema in the BIDS specification master branch
       repository
+  - `PRs/` - schemas from Pull Requests with schema changes
+  - `BEPs/` - schemas for BIDS Extension Proposals
   - `tools/`
+
+## Schema Versions
+
+Schema versions automatically updated using
+[![Inject](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml/badge.svg)](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml)
+CI run.
+
+### Released Versions
+- [Latest Release](./versions/latest/) - Current stable BIDS schema
+- [All Releases](./versions/) - Historical BIDS schema versions
+
+### Development Versions
+- [Master Branch](./versions/master/) - Current development schema
+- [PR Schemas](./PRs/#readme) - Schemas from open Pull Requests with schema changes
+- [BEP Schemas](./BEPs/#readme) - Schemas for BIDS Extension Proposals
+
+See [PRs/README.md](./PRs/README.md) and [BEPs/README.md](./BEPs/README.md) for detailed status tables.
 
 # HOWTOs
 

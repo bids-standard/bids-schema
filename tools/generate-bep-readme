@@ -1,0 +1,197 @@
+#!/usr/bin/env python3
+"""Generate README.md for BEPs directory with status table"""
+
+import json
+import glob
+from pathlib import Path
+from datetime import datetime
+
+def load_json(filepath):
+    """Load JSON file safely"""
+    try:
+        with open(filepath, 'r') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+
+def format_bep_row(bep_dir_path, metadata):
+    """Format a single BEP as a table row"""
+    bep_number = Path(bep_dir_path).name
+
+    # Extract BEP-specific fields
+    title = metadata.get('title', 'Unknown')
+    bep_status = metadata.get('status', 'draft')
+    pr_number = metadata.get('pr_number', '')
+    google_doc = metadata.get('google_doc', '')
+    last_synced = metadata.get('last_synced', 'Unknown')
+
+    # Load corresponding PR metadata if available
+    pr_metadata = None
+    if pr_number:
+        pr_metadata = load_json(f"PRs/{pr_number}/PR_METADATA.json")
+
+    # Get PR-based data if available, otherwise use defaults
+    authors_count = "?"
+    pr_status = 'unknown'
+    build_status = 'unknown'
+    last_commit_raw = 'Unknown'
+    schema_updated = last_synced
+
+    if pr_metadata:
+        # Count authors using git shortlog if we have git_ref
+        git_ref = pr_metadata.get('git_ref', '')
+        if git_ref:
+            try:
+                import subprocess
+                result = subprocess.run(
+                    ['git', 'shortlog', '-sn', f'origin/master...{git_ref}'],
+                    cwd='/home/yoh/proj/bids/bids-specification',
+                    capture_output=True, text=True, timeout=10
+                )
+                if result.returncode == 0:
+                    authors_count = str(len([line for line in result.stdout.strip().split('\n') if line.strip()]))
+            except:
+                pass
+
+        pr_status = pr_metadata.get('status', 'open')  # Default to 'open' for active PRs
+        build_status = pr_metadata.get('build_status', 'unknown')
+        last_commit_raw = pr_metadata.get('last_commit', 'Unknown')
+
+        # Use PR's last_updated if available and more recent
+        pr_last_updated = pr_metadata.get('last_updated', '')
+        if pr_last_updated and pr_last_updated != 'Unknown':
+            schema_updated = pr_last_updated
+
+    # Format dates
+    if schema_updated != 'Unknown':
+        try:
+            dt = datetime.fromisoformat(schema_updated.replace('Z', '+00:00'))
+            schema_updated = dt.strftime('%Y-%m-%d')
+        except:
+            pass
+
+    # Format commit link
+    if last_commit_raw != 'Unknown':
+        last_commit = f"[{last_commit_raw[:10]}](https://github.com/bids-standard/bids-specification/commit/{last_commit_raw})"
+    else:
+        last_commit = 'Unknown'
+
+    # Format PR link (make PR number a hyperlink)
+    pr_link = f"[{pr_number}](https://github.com/bids-standard/bids-specification/pull/{pr_number})" if pr_number else "N/A"
+
+    # Format Google Doc link
+    doc_link = f"[Doc]({google_doc})" if google_doc else "N/A"
+
+    # Schema path (relative to BEPs directory)
+    schema_path = f"./{bep_number}/schema.json"
+
+    # Build status indicator
+    if build_status == 'failed':
+        build_indicator = '❌'
+    elif build_status == 'success':
+        build_indicator = '✅'
+    else:
+        build_indicator = '❓'
+
+    # BEP number with leading zeros for display - make it a hyperlink to BIDS website
+    bep_display_number = bep_number.zfill(3)
+    bep_url = f"https://bids.neuroimaging.io/bep{bep_display_number}"
+    bep_display = f"[{bep_display_number}]({bep_url})"
+
+    # Raw schema URL and actions (no View PR since PR # is now a link)
+    raw_schema_url = f"https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/{bep_number}/schema.json"
+    pretty_schema_path = f"./{bep_number}/schema_pp.json"
+    pretty_raw_url = f"https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/{bep_number}/schema_pp.json"
+    actions = f"[Schema]({schema_path}) \\| [Raw]({raw_schema_url}) \\| [Pretty]({pretty_raw_url})"
+
+    # Add error log link if available
+    if build_status == 'failed' and pr_metadata and pr_metadata.get('error_log'):
+        actions += f" \\| [Error Log](../PRs/{pr_number}/bst-output.log)"
+
+    return f"| {bep_display} | {title} | {doc_link} | {pr_link} | {authors_count} | {build_indicator} | {schema_updated} | {last_commit} | {actions} |"
+
+
+def generate_bep_table(beps):
+    """Generate markdown table for a list of BEPs"""
+    if not beps:
+        return ""
+
+    # Table header - simplified and harmonized
+    table = "| BEP # | Title | Google Doc | PR # | Authors | Build | Schema Updated | Last Commit | Actions |\n"
+    table += "|-------|-------|------------|------|---------|-------|----------------|-------------|---------|"
+
+    # Sort BEPs by number
+    beps_sorted = sorted(beps, key=lambda x: int(Path(x[0]).name) if Path(x[0]).name.isdigit() else 0)
+
+    for bep_dir, metadata in beps_sorted:
+        table += "\n" + format_bep_row(bep_dir, metadata)
+
+    return table
+
+def generate_bep_readme():
+    """Generate the complete README.md for BEPs directory"""
+    readme_content = """# BIDS Extension Proposals (BEPs) Schemas
+
+This directory contains automatically generated schemas for BIDS Extension Proposals.
+Each BEP schema is linked to its corresponding Pull Request in the BIDS specification repository.
+
+## Overview
+
+BIDS Extension Proposals (BEPs) are community-driven extensions to the BIDS specification.
+This directory provides compiled schemas for BEPs that have associated Pull Requests with schema changes.
+
+Each subdirectory corresponds to a BEP number and contains:
+- `schema.json` - The compiled BIDS schema (only file stored to save space)
+- `BEP_METADATA.json` - Metadata about the BEP and its PR association
+
+## Active BEP Schemas
+
+"""
+
+    # Find all BEP directories
+    bep_dirs = glob.glob("BEPs/[0-9]*")
+
+    if not bep_dirs:
+        readme_content += "*No BEP schemas currently available*\n"
+    else:
+        # Generate single unified table
+        bep_data = [(bep_dir, load_json(f"{bep_dir}/BEP_METADATA.json")) for bep_dir in bep_dirs]
+        bep_data = [(bep_dir, metadata) for bep_dir, metadata in bep_data if metadata]
+        readme_content += generate_bep_table(bep_data)
+
+    # Add footer
+    readme_content += f"""## How to Use BEP Schemas
+
+1. **Accessing a schema**: Navigate to `BEPs/{{bep_number}}/schema.json`
+2. **Checking metadata**: View `BEPs/{{bep_number}}/BEP_METADATA.json` for BEP details
+3. **Raw schema files**: Not stored (only compiled schema.json saved to reduce repository size)
+4. **Finding the source PR**: Check the "Associated PR" column in the tables above
+
+## BEP Process
+
+1. **Draft**: Initial proposal and discussion
+2. **Under Review**: Active development and community feedback
+3. **Accepted**: Approved for inclusion in BIDS
+4. **Archived**: Historical BEPs no longer under active development
+
+## Automation
+
+[![Inject](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml/badge.svg)](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml)
+
+BEP schemas are automatically synchronized with their associated PRs by the [Schema Injection GitHub workflow](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml). View [workflow runs](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml) to see the latest updates.
+
+## Related Resources
+
+- [PR Schemas](../PRs/) - All Pull Request schemas
+- [Released Versions](../versions/) - Official BIDS schema releases
+- [BIDS Website - BEPs](https://bids.neuroimaging.io/beps) - Official BEP documentation
+- [BIDS Specification Repository](https://github.com/bids-standard/bids-specification)
+
+"""
+
+    # Write the README
+    Path("BEPs/README.md").write_text(readme_content)
+    print(f"Generated BEPs/README.md with {len(bep_dirs)} BEP schemas")
+
+if __name__ == "__main__":
+    generate_bep_readme()

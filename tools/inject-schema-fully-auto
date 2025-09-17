@@ -1,13 +1,21 @@
 #!/bin/bash
 #
-# The "ultimate" script to run to do injection, e.g. on CI
+# Enhanced version of inject-schema-fully-auto that includes PR and BEP processing
+# This script orchestrates the complete schema injection workflow
 #
 
 export PS4='> '
 set -x
 set -eu
+
 this_path=$(dirname "$0")
-versions_path="${this_path}/../versions"
+base_path="${this_path}/.."
+versions_path="${base_path}/versions"
+
+# Check environment variables for controlling what to process
+PROCESS_PRS="${PROCESS_PRS:-true}"
+PROCESS_BEPS="${PROCESS_BEPS:-true}"
+FORCE_REPROCESS="${FORCE_REPROCESS:-false}"
 
 TMP="$(mktemp -d "${TMPDIR:-/tmp}"/bids-XXXXXXX)"
 # shellcheck disable=SC2064
@@ -17,15 +25,19 @@ trap "rm -rf '$TMP'" SIGINT SIGHUP SIGABRT EXIT
 
 if [ -z "$BIDS_REPO" ]; then
     BIDS_REPO="$TMP/bids-specification"
-
     git clone https://github.com/bids-standard/bids-specification/ "$BIDS_REPO"
 fi
+
+# Export for use by other scripts
+export BIDS_REPO
+
+echo "=== Phase 1: Process releases and master ==="
 
 schema_ver=$("$this_path/version_component.sh" "$BIDS_REPO" src/schema | sed -e 's,^v,,g')
 
 to_inject=''
 
-master_ver_here=$(cat "$versions_path/master/BIDS_VERSION_LASTEDIT" || echo "unknown")
+master_ver_here=$(cat "$versions_path/master/BIDS_VERSION_LASTEDIT" 2>/dev/null || echo "unknown")
 if [ "$master_ver_here" != "$schema_ver" ] ; then
     to_inject+="v$schema_ver master\n"
 fi
@@ -37,11 +49,12 @@ if [ ! -d "$versions_path/$released_ver" ]; then
 fi
 
 if [ -n "$to_inject" ]; then
-    # TODO: setup venv
+    # Setup venv if needed
     venv="$TMP/venv"
     # shellcheck disable=SC1091
     python3 -m "venv" "$venv" && source "$venv/bin/activate"
     python -m pip install -r requirements.txt
+
     echo -e "$to_inject" | while read -r committish folder; do
         [ -n "$committish" ] || continue
         set +e
@@ -63,12 +76,83 @@ if [ -n "$to_inject" ]; then
         echo "$committish" >| "$version_folder/BIDS_VERSION_LASTEDIT"
         schema_version=$(cat "$version_folder/schema/SCHEMA_VERSION")
         bids_version=$(cat "$version_folder/schema/BIDS_VERSION")
-        git add versions; 
+        git add versions
         if git diff-index --quiet HEAD --; then
-            echo "Nothing to commit"
+            echo "Nothing to commit for $folder"
         else
             git commit -m "Injected schema $schema_version for BIDS $bids_version as of commit $committish into versions/$folder" -a
         fi
     done
+else
+    # Still need to activate venv for subsequent processing
+    venv="$TMP/venv"
+    # shellcheck disable=SC1091
+    python3 -m "venv" "$venv" && source "$venv/bin/activate"
+    python -m pip install -r requirements.txt
 fi
+
+echo "=== Phase 2: Process PR schemas ==="
+
+if [ "$PROCESS_PRS" = "true" ]; then
+    echo "Processing PR schemas..."
+    if [ "$FORCE_REPROCESS" = "true" ]; then
+        FORCE_REPROCESS=true "$this_path/process-pr-schemas"
+    else
+        "$this_path/process-pr-schemas"
+    fi
+
+    # Generate PRs README
+    if [ -d "PRs" ] && compgen -G "PRs/*/PR_METADATA.json" > /dev/null; then
+        echo "Generating PRs/README.md..."
+        datalad run -m "Update PRs README with current PR status" \
+            --output PRs/README.md \
+            "$this_path/generate-pr-readme"
+    fi
+else
+    echo "Skipping PR processing (PROCESS_PRS=$PROCESS_PRS)"
+fi
+
+echo "=== Phase 3: Process BEP schemas ==="
+
+if [ "$PROCESS_BEPS" = "true" ]; then
+    # Only process BEPs if we have PRs
+    if [ -d "PRs" ] && compgen -G "PRs/*/PR_METADATA.json" > /dev/null; then
+        echo "Processing BEP schemas..."
+        datalad run -m "Process BEP schemas" \
+            --output "BEPs" \
+            "$this_path/process-bep-schemas"
+
+        # Generate BEPs README
+        if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
+            echo "Generating BEPs/README.md..."
+            datalad run -m "Update BEPs README with current BEP status" \
+                --output BEPs/README.md \
+                "$this_path/generate-bep-readme"
+        fi
+    else
+        echo "No PR schemas available, skipping BEP processing"
+    fi
+else
+    echo "Skipping BEP processing (PROCESS_BEPS=$PROCESS_BEPS)"
+fi
+
+echo "=== Phase 4: Generate summary report ==="
+
+# Count results
+release_count=$(find versions -maxdepth 1 -name "[0-9]*" -type d 2>/dev/null | wc -l)
+pr_count=$(find PRs -maxdepth 1 -name "[0-9]*" -type d 2>/dev/null | wc -l)
+bep_count=$(find BEPs -maxdepth 1 -name "[0-9]*" -type d 2>/dev/null | wc -l)
+
+echo ""
+echo "=========================================="
+echo "Schema Injection Complete"
+echo "=========================================="
+echo "Releases processed: $release_count"
+echo "PR schemas available: $pr_count"
+echo "BEP schemas available: $bep_count"
+echo ""
+echo "Master version: $schema_ver"
+echo "Latest release: $released_ver"
+echo "=========================================="
+
 echo "done"
