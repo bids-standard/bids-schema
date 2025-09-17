@@ -14,13 +14,19 @@ Each subdirectory corresponds to a BEP number and contains:
 
 ## BEP Status Overview
 
-**Status Summary:** 📝 Draft (0) | 👁️ Under Review (1) | ✅ Accepted (0) | 📦 Archived (0)
+**Status Summary:** 📝 Draft (0) | 👁️ Under Review (7) | ✅ Accepted (0) | 📦 Archived (0)
 
 ### BEPs Under Review
 
 | BEP # | Title | Status | Associated PR | Google Doc | Schema Updated | Actions |
 |-------|-------|--------|---------------|------------|----------------|---------|
+| 012 | Functional preprocessing derivatives | 👁️ Review | [#519](https://github.com/bids-standard/bids-specification/pull/519) | N/A | 2025-09-17 | [Schema](./12/schema.json) \| [Raw](https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/12/schema.json) |
+| 020 | Eye Tracking including Gaze Position and Pupil Size | 👁️ Review | [#1128](https://github.com/bids-standard/bids-specification/pull/1128) | N/A | 2025-09-17 | [Schema](./20/schema.json) \| [Raw](https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/20/schema.json) |
+| 028 | Provenance | 👁️ Review | [#2099](https://github.com/bids-standard/bids-specification/pull/2099) | [Doc](https://docs.google.com/document/d/1vw3VNDof5cecv2PkFp7Lw_pNUTUo8-m8V4SIdtGJVKs/) | 2025-09-17 | [Schema](./28/schema.json) \| [Raw](https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/28/schema.json) |
 | 032 | Microelectrode electrophysiology | 👁️ Review | [#1705](https://github.com/bids-standard/bids-specification/pull/1705) | [Doc](https://docs.google.com/document/d/1oG-C8T-dWPqfVzL2W8HO3elWK8NIh2cOCPssRGv23n0/) | 2025-09-17 | [Schema](./32/schema.json) \| [Raw](https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/32/schema.json) |
+| 034 | Computational modeling | 👁️ Review | [#967](https://github.com/bids-standard/bids-specification/pull/967) | N/A | 2025-09-17 | [Schema](./34/schema.json) \| [Raw](https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/34/schema.json) |
+| 042 | Electromyography | 👁️ Review | [#1998](https://github.com/bids-standard/bids-specification/pull/1998) | N/A | 2025-09-17 | [Schema](./42/schema.json) \| [Raw](https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/42/schema.json) |
+| 044 | Stimuli | 👁️ Review | [#2022](https://github.com/bids-standard/bids-specification/pull/2022) | N/A | 2025-09-17 | [Schema](./44/schema.json) \| [Raw](https://raw.githubusercontent.com/bids-standard/bids-schema/refs/heads/enh-prs-and-beps/BEPs/44/schema.json) |
 
 ## How to Use BEP Schemas
 
