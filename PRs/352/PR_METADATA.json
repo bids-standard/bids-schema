@@ -2,7 +2,7 @@
   "pr_number": "352",
   "git_ref": "376e7696b0bbfeb7b2347989beabec5f9833e59e",
   "last_commit": "376e7696b0bbfeb7b2347989beabec5f9833e59e",
-  "last_updated": "2025-09-17T19:35:19Z",
+  "last_updated": "2025-09-17T20:38:07Z",
   "has_schema_changes": true,
   "build_status": "failed",
   "error_message": "AttributeError: 'Namespace' object has no attribute 'objects'",
