@@ -15,7 +15,14 @@ Each subdirectory corresponds to a BEP number and contains:
 
 ## BEP Status Overview
 
-*No BEP schemas currently available*
+**Status Summary:** 📝 Draft (0) | 👁️ Under Review (1) | ✅ Accepted (0) | 📦 Archived (0)
+
+### BEPs Under Review
+
+| BEP # | Title | Status | Associated PR | Google Doc | Schema Updated | Actions |
+|-------|-------|--------|---------------|------------|----------------|---------|
+| 032 | Microelectrode electrophysiology | 👁️ Review | [#1705](https://github.com/bids-standard/bids-specification/pull/1705) | [Doc](https://docs.google.com/document/d/1oG-C8T-dWPqfVzL2W8HO3elWK8NIh2cOCPssRGv23n0/) | 2025-09-17 | [Schema](./32/schema.json) |
+
 ## How to Use BEP Schemas
 
 1. **Accessing a schema**: Navigate to `BEPs/{bep_number}/schema.json`
@@ -53,4 +60,4 @@ BEP schemas are automatically synchronized with their associated PRs:
 
 ---
 
-*Last generated: 2025-09-17 13:00:45 UTC*
+*Last generated: 2025-09-17 13:08:36 UTC*

@@ -118,17 +118,37 @@ for bep in beps_data:
         # Use datalad run if available, otherwise copy directly
         import subprocess
         if shutil.which('datalad'):
-            # Use datalad run
+            # Try datalad run with --explicit first
             cmd = [
                 'datalad', 'run',
                 '-m', f'Sync BEP {bep_number} schema from PR #{pr_number}',
                 '--output', f'BEPs/{bep_number}/',
+                '--explicit',
                 'cp', '-rp', f'PRs/{pr_number}/.', f'BEPs/{bep_number}/'
             ]
             result = subprocess.run(cmd, capture_output=True, text=True)
+
             if result.returncode != 0:
-                print(f"  Error syncing BEP {bep_number}: {result.stderr}")
-                continue
+                # If --explicit failed, check if it's due to uncommitted changes
+                if "clean dataset required" in result.stderr:
+                    print(f"  Committing pending changes before BEP sync...")
+                    # Commit any pending changes first
+                    commit_cmd = ['git', 'add', '.']
+                    subprocess.run(commit_cmd)
+                    commit_cmd = ['git', 'commit', '-m', f'Intermediate commit before syncing BEP {bep_number}']
+                    commit_result = subprocess.run(commit_cmd, capture_output=True, text=True)
+
+                    # Try datalad run again
+                    result = subprocess.run(cmd, capture_output=True, text=True)
+
+                if result.returncode != 0:
+                    error_msg = result.stderr.strip() or result.stdout.strip() or "Unknown error"
+                    print(f"  DataLad run failed: {error_msg}")
+                    print(f"  Falling back to direct copy...")
+                    # Fall back to direct copy
+                    if bep_schema_dir.exists():
+                        shutil.rmtree(bep_schema_dir)
+                    shutil.copytree(pr_schema_dir, bep_schema_dir)
         else:
             # Direct copy
             if bep_schema_dir.exists():

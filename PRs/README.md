@@ -12,11 +12,12 @@ Each subdirectory corresponds to a Pull Request (PR) number and contains:
 
 ## Active PR Schemas
 
-**Status Summary:** 🟢 Open (1) | 🟣 Merged (0) | 🔴 Closed (0)
+**Status Summary:** 🟢 Open (2) | 🟣 Merged (0) | 🔴 Closed (0)
 
 | PR # | Title | Author | Status | Schema Updated | Last Commit | Actions |
 |------|-------|--------|--------|----------------|-------------|---------|
 | 1261 | Unknown | Unknown | 🟢 Open | 2025-09-17 | 97825f5c27 | [View PR](https://github.com/bids-standard/bids-specification/pull/1261) \| [Schema](./1261/schema.json) |
+| 1705 | Unknown | Unknown | 🟢 Open | 2025-09-17 | 70bddec095 | [View PR](https://github.com/bids-standard/bids-specification/pull/1705) \| [Schema](./1705/schema.json) |
 
 ## How to Use PR Schemas
 
@@ -39,4 +40,4 @@ PR schemas are automatically updated:
 
 ---
 
-*Last generated: 2025-09-17 13:05:45 UTC*
+*Last generated: 2025-09-17 13:08:35 UTC*
