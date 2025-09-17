@@ -60,4 +60,4 @@ BEP schemas are automatically synchronized with their associated PRs:
 
 ---
 
-*Last generated: 2025-09-17 13:08:36 UTC*
+*Last generated: 2025-09-17 13:11:36 UTC*
