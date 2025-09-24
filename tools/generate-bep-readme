@@ -44,7 +44,7 @@ def format_bep_row(bep_dir_path, metadata):
                 import subprocess
                 result = subprocess.run(
                     ['git', 'shortlog', '-sn', f'origin/master...{git_ref}'],
-                    cwd='/home/yoh/proj/bids/bids-specification',
+                    cwd=bep_dir_path,
                     capture_output=True, text=True, timeout=10
                 )
                 if result.returncode == 0:
