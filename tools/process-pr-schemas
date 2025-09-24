@@ -82,11 +82,9 @@ for ref_file in $pr_refs; do
     echo "  Processing PR #$pr_number..."
 
     # Use datalad run for proper provenance tracking
-    cd "$BASE_DIR"
-    datalad run -m "Generate schema for PR #$pr_number" \
+    datalad -C "$BASE_DIR" run -m "Generate schema for PR #$pr_number" \
         --output "PRs/$pr_number/" \
         tools/inject-schema-pr "PRs/$pr_number" "$BIDS_REPO" "$ref" --type pr --metadata
-    cd "$BIDS_REPO"
 
     processed_count=$((processed_count + 1))
 done
@@ -110,7 +108,9 @@ if [ -d "$PR_DIR" ]; then
         # Check if this PR still exists
         if [ ! -f ".git/refs/pull/origin/$pr_number/merge" ]; then
             echo "  PR #$pr_number appears to be merged/closed, removing schema..."
-            datalad run -m "Removing schema for PR #$pr_number (PR is gone)" --output "$pr_folder" rm -rf "$pr_folder"
+            datalad -C "$BASE_DIR" run -m "Removing schema for PR #$pr_number (PR is gone)" \
+                --output "$pr_folder" \
+                rm -rf "$pr_folder"
         fi
     done
 fi
