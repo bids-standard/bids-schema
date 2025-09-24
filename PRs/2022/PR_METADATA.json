@@ -1,8 +1,8 @@
 {
   "pr_number": "2022",
-  "git_ref": "302a16156d59376fc5d0d63ef9108c54ee297ecb",
-  "last_commit": "302a16156d59376fc5d0d63ef9108c54ee297ecb",
-  "last_updated": "2025-09-18T12:50:13Z",
+  "git_ref": "52180974548ae7fe1596a79a483c90d50516ad1b",
+  "last_commit": "52180974548ae7fe1596a79a483c90d50516ad1b",
+  "last_updated": "2025-09-24T16:50:16Z",
   "has_schema_changes": true,
   "build_status": "success"
 }
