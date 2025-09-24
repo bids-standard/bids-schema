@@ -36,7 +36,7 @@
       "channels": {
         "inherit": true,
         "selectors": [
-          "intersects([suffix], ['eeg', 'ieeg', 'meg', 'nirs', 'motion', 'optodes'])",
+          "intersects([suffix], ['eeg', 'emg', 'ieeg', 'meg', 'nirs', 'motion', 'optodes'])",
           "extension != '.json'"
         ],
         "target": {
@@ -55,10 +55,25 @@
           "suffix": "coordsystem"
         }
       },
+      "coordsystems": {
+        "inherit": true,
+        "selectors": [
+          "datatype == 'emg'",
+          "intersects([suffix], ['emg', 'electrodes'])",
+          "extension != '.json'"
+        ],
+        "target": {
+          "entities": [
+            "space"
+          ],
+          "extension": ".json",
+          "suffix": "coordsystem"
+        }
+      },
       "electrodes": {
         "inherit": true,
         "selectors": [
-          "intersects([suffix], ['eeg', 'ieeg', 'meg'])",
+          "intersects([suffix], ['eeg', 'emg', 'ieeg', 'meg'])",
           "extension != '.json'"
         ],
         "target": {
@@ -249,23 +264,48 @@
             },
             "coordsystem": {
               "additionalProperties": false,
-              "description": "Coordinate system file",
+              "description": "Coordinate system file (first found)",
               "properties": {
-                "keys": {
-                  "description": "Top-level keys in coordsystem file",
-                  "items": {
-                    "type": "string"
-                  },
-                  "type": "array"
-                },
                 "path": {
                   "description": "Path to associated coordsystem file",
                   "type": "string"
                 }
               },
               "required": [
-                "path",
-                "keys"
+                "path"
+              ],
+              "type": "object"
+            },
+            "coordsystems": {
+              "additionalProperties": false,
+              "description": "Coordinate system files (all)",
+              "properties": {
+                "ParentCoordinateSystems": {
+                  "description": "ParentCoordinateSystem fields loaded from files",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "paths": {
+                  "description": "Paths to associated coordsystem files",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "spaces": {
+                  "description": "Space entity labels extracted from file names",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "paths",
+                "spaces",
+                "ParentCoordinateSystems"
               ],
               "type": "object"
             },
@@ -1283,8 +1323,8 @@
             "type": "number"
           }
         ],
-        "description": "Which group of channels this channel belongs to (typically this indicates channels\non the same grid, strip, or other device).\n",
-        "display_name": "Channel group",
+        "description": "Which group the electrode or channel belongs to (typically this indicates electrodes\nor bipolar channels on the same grid, strip, or other device).\n",
+        "display_name": "Electrode or channel group",
         "name": "group"
       },
       "handedness": {
@@ -3320,12 +3360,12 @@
         "value": "ex vivo"
       },
       "fsLR": {
-        "description": "The `fsLR` is a **dual template** providing both volumetric and surface coordinates references.\nThe volumetric template corresponds to `MNI152NLin6Asym`.\nSurface templates are given at several sampling densities:\n164k (used by HCP pipelines for 3T and 7T anatomical analysis),\n59k (used by HCP pipelines for 7T MRI bold and DWI analysis),\n32k (used by HCP pipelines for 3T MRI bold and DWI analysis), or\n4k (used by HCP pipelines for MEG analysis) fsaverage_LR surface reconstructed from the T1w image.\n\nUsed by Freesurfer.\n",
+        "description": "The `fsLR` is a surface template.\nAdditionally, by convention,\n`fsLR` is used as shorthand for a **dual template** providing both volumetric and surface\ncoordinates references,\nwhere the surface template is `fsLR` and the volumetric template corresponds to `MNI152NLin6Asym`.\nSurface templates are given at several sampling densities:\n164k (used by HCP pipelines for 3T and 7T anatomical analysis),\n59k (used by HCP pipelines for 7T MRI bold and DWI analysis),\n32k (used by HCP pipelines for 3T MRI bold and DWI analysis), or\n4k (used by HCP pipelines for MEG analysis) fsaverage_LR surface reconstructed from the T1w image.\n\nUsed by Freesurfer and Connectome Workbench.\n",
         "display_name": "fsLR",
         "value": "fsLR"
       },
       "fsaverage": {
-        "description": "The `fsaverage` is a **dual template** providing both volumetric and surface coordinates references.\nThe volumetric template corresponds to a FreeSurfer variant of `MNI305` space.\nThe `fsaverage` atlas also defines a surface reference system (formerly described as fsaverage[3|4|5|6|sym]).\n\nUsed by Freesurfer.\n",
+        "description": "The `fsaverage` is a surface reference system\n(formerly described as fsaverage\\[3\\|4\\|5\\|6\\|sym\\]).\nAdditionally, by convention,\n`fsaverage` is used as shorthand for a **dual template** providing both volumetric and\nsurface coordinates references,\nwhere the surface template is `fsaverage` and the volumetric template corresponds to a\nFreeSurfer variant of `MNI305` space.\n\nUsed by Freesurfer.\n",
         "display_name": "fsaverage",
         "value": "fsaverage"
       },
@@ -3350,7 +3390,7 @@
         "value": "fsaverage6"
       },
       "fsaverageSym": {
-        "description": "The `fsaverage` is a **dual template** providing both volumetric and surface coordinates references.\nThe volumetric template corresponds to a FreeSurfer variant of `MNI305` space.\nThe `fsaverageSym` atlas also defines a symmetric surface reference system\n(formerly described as `fsaveragesym`).\n\nUsed by Freesurfer.\n",
+        "description": "The `fsaverageSym` is a symmetric surface reference system\n(formerly described as `fsaveragesym`).\nAdditionally, by convention,\n`fsaverageSym` is used as shorthand for a **dual template** providing both volumetric and\nsurface coordinates references,\nwhere the surface template is `fsaverageSym` and the volumetric template corresponds to a\nFreeSurfer variant of `MNI305` space.\n\nUsed by Freesurfer.\n",
         "display_name": "fsaverageSym",
         "value": "fsaverageSym"
       },
@@ -5116,7 +5156,7 @@
         "type": "string"
       },
       "EMGCoordinateSystemDescription": {
-        "description": "Free-form text description of the coordinate system, typically defining the origin\nand positive x,y,z axis directions, relative to skeletal landmarks.\nMay also include a link to a documentation page or paper describing the\nsystem in greater detail.\n",
+        "description": "Free-form text description of the coordinate system, typically defining the origin\nand positive x,y,z axis directions, relative to anatomical landmarks.\nMay also include a link to a documentation page or paper describing the\nsystem in greater detail.\n",
         "display_name": "EMG Coordinate System Description",
         "name": "EMGCoordinateSystemDescription",
         "type": "string"
@@ -5128,6 +5168,7 @@
           "m",
           "mm",
           "cm",
+          "percent",
           "n/a"
         ],
         "name": "EMGCoordinateUnits",
@@ -9580,7 +9621,7 @@
         },
         "RequiredCoordsystem": {
           "checks": [
-            "associations.coordsystem != null"
+            "associations.coordsystem != null || associations.coordsystems != null"
           ],
           "issue": {
             "code": "REQUIRED_COORDSYSTEM",
@@ -9589,7 +9630,8 @@
           },
           "selectors": [
             "suffix == \"electrodes\"",
-            "extension == \".tsv\""
+            "extension == \".tsv\"",
+            "datatype != \"emg\""
           ]
         }
       },
@@ -9911,16 +9953,32 @@
       "emg": {
         "EMGCoordSysMatch": {
           "checks": [
-            "length(\n  intersects(unique(columns.coordinate_system),\n  associations.coordsystem.keys)\n) == length(unique(columns.coordinate_system))\n"
+            "length(\n  intersects(\n    unique(columns.coordinate_system),\n    associations.coordsystems.spaces\n  )\n) == length(unique(columns.coordinate_system))\n"
           ],
           "issue": {
             "code": "EMG_COORD_SYS_MISMATCH",
             "level": "error",
-            "message": "Some values in the coordinate_system column of *_electrodes.tsv are not present as\ntop-level keys of the corresponding *_coordsystem.json file.\n"
+            "message": "Some values in the coordinate_system column of *_electrodes.tsv are not present as\nspace entities in *_coordsystem.json files.\n"
           },
           "selectors": [
             "datatype == \"emg\"",
-            "suffix == \"electrodes\""
+            "suffix == \"electrodes\"",
+            "columns.coordinate_system"
+          ]
+        },
+        "EMGCoordSysParents": {
+          "checks": [
+            "length(\n  intersects(\n    unique(associations.coordsystems.ParentCoordinateSystems),\n    associations.coordsystems.spaces\n  )\n) == length(unique(associations.coordsystems.ParentCoordinateSystems))\n"
+          ],
+          "issue": {
+            "code": "EMG_COORD_SYS_PARENTS",
+            "level": "error",
+            "message": "Some parent coordinate systems were not found."
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"electrodes\"",
+            "length(associations.coordsystems.ParentCoordinateSystems)"
           ]
         }
       },
@@ -11553,7 +11611,8 @@
         "level": "error",
         "message": "A json sidecar file was found without a corresponding data file.\n",
         "selectors": [
-          "extension == \".json\""
+          "extension == \".json\"",
+          "suffix != \"coordsystem\" || modality != \"emg\""
         ]
       },
       "WrongNewLine": {
@@ -14031,6 +14090,7 @@
               "acquisition": "optional",
               "recording": "optional",
               "session": "optional",
+              "space": "optional",
               "subject": "required",
               "task": "optional"
             },
@@ -15075,13 +15135,31 @@
           "photo": {
             "datatypes": [
               "eeg",
-              "emg",
               "ieeg",
               "meg",
               "nirs"
             ],
             "entities": {
               "acquisition": "optional",
+              "session": "optional",
+              "subject": "required"
+            },
+            "extensions": [
+              ".jpg",
+              ".png",
+              ".tif"
+            ],
+            "suffixes": [
+              "photo"
+            ]
+          },
+          "photo__emg": {
+            "datatypes": [
+              "emg"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "recording": "optional",
               "session": "optional",
               "subject": "required"
             },
@@ -15387,15 +15465,15 @@
         }
       },
       "emg": {
-        "EMGCoordsystemAnchor": {
+        "EMGChildCoordSystem": {
           "fields": {
-            "AnchorCoordinates": "optional",
-            "AnchorElectrode": "optional",
-            "ParentCoordinateSystem": "optional"
+            "AnchorCoordinates": "required",
+            "AnchorElectrode": "required"
           },
           "selectors": [
             "datatype == \"emg\"",
-            "suffix == \"coordsystem\""
+            "suffix == \"coordsystem\"",
+            "\"ParentCoordinateSystem\" in json"
           ]
         },
         "EMGCoordsystemOther": {
@@ -15411,12 +15489,21 @@
         },
         "EMGCoordsystemPositions": {
           "fields": {
+            "AnchorCoordinates": {
+              "level": "optional",
+              "level_addendum": "required if `ParentCoordinateSystem` is present"
+            },
+            "AnchorElectrode": {
+              "level": "optional",
+              "level_addendum": "required if `ParentCoordinateSystem` is present"
+            },
             "EMGCoordinateSystem": "required",
             "EMGCoordinateSystemDescription": {
               "level": "recommended",
               "level_addendum": "required if `EMGCoordinateSystem` is `\"Other\"`"
             },
-            "EMGCoordinateUnits": "required"
+            "EMGCoordinateUnits": "required",
+            "ParentCoordinateSystem": "optional"
           },
           "selectors": [
             "datatype == \"emg\"",
@@ -18470,8 +18557,7 @@
             "units": "required"
           },
           "index_columns": [
-            "name__channels",
-            "group__emg"
+            "name__channels"
           ],
           "initial_columns": [
             "name__channels",
