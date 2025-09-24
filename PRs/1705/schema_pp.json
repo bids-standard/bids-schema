@@ -3702,12 +3702,12 @@
         "value": "ex vivo"
       },
       "fsLR": {
-        "description": "The `fsLR` is a **dual template** providing both volumetric and surface coordinates references.\nThe volumetric template corresponds to `MNI152NLin6Asym`.\nSurface templates are given at several sampling densities:\n164k (used by HCP pipelines for 3T and 7T anatomical analysis),\n59k (used by HCP pipelines for 7T MRI bold and DWI analysis),\n32k (used by HCP pipelines for 3T MRI bold and DWI analysis), or\n4k (used by HCP pipelines for MEG analysis) fsaverage_LR surface reconstructed from the T1w image.\n\nUsed by Freesurfer.\n",
+        "description": "The `fsLR` is a surface template.\nAdditionally, by convention,\n`fsLR` is used as shorthand for a **dual template** providing both volumetric and surface\ncoordinates references,\nwhere the surface template is `fsLR` and the volumetric template corresponds to `MNI152NLin6Asym`.\nSurface templates are given at several sampling densities:\n164k (used by HCP pipelines for 3T and 7T anatomical analysis),\n59k (used by HCP pipelines for 7T MRI bold and DWI analysis),\n32k (used by HCP pipelines for 3T MRI bold and DWI analysis), or\n4k (used by HCP pipelines for MEG analysis) fsaverage_LR surface reconstructed from the T1w image.\n\nUsed by Freesurfer and Connectome Workbench.\n",
         "display_name": "fsLR",
         "value": "fsLR"
       },
       "fsaverage": {
-        "description": "The `fsaverage` is a **dual template** providing both volumetric and surface coordinates references.\nThe volumetric template corresponds to a FreeSurfer variant of `MNI305` space.\nThe `fsaverage` atlas also defines a surface reference system (formerly described as fsaverage[3|4|5|6|sym]).\n\nUsed by Freesurfer.\n",
+        "description": "The `fsaverage` is a surface reference system\n(formerly described as fsaverage\\[3\\|4\\|5\\|6\\|sym\\]).\nAdditionally, by convention,\n`fsaverage` is used as shorthand for a **dual template** providing both volumetric and\nsurface coordinates references,\nwhere the surface template is `fsaverage` and the volumetric template corresponds to a\nFreeSurfer variant of `MNI305` space.\n\nUsed by Freesurfer.\n",
         "display_name": "fsaverage",
         "value": "fsaverage"
       },
@@ -3732,7 +3732,7 @@
         "value": "fsaverage6"
       },
       "fsaverageSym": {
-        "description": "The `fsaverage` is a **dual template** providing both volumetric and surface coordinates references.\nThe volumetric template corresponds to a FreeSurfer variant of `MNI305` space.\nThe `fsaverageSym` atlas also defines a symmetric surface reference system\n(formerly described as `fsaveragesym`).\n\nUsed by Freesurfer.\n",
+        "description": "The `fsaverageSym` is a symmetric surface reference system\n(formerly described as `fsaveragesym`).\nAdditionally, by convention,\n`fsaverageSym` is used as shorthand for a **dual template** providing both volumetric and\nsurface coordinates references,\nwhere the surface template is `fsaverageSym` and the volumetric template corresponds to a\nFreeSurfer variant of `MNI305` space.\n\nUsed by Freesurfer.\n",
         "display_name": "fsaverageSym",
         "value": "fsaverageSym"
       },
