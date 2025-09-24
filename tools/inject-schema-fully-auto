@@ -17,6 +17,8 @@ PROCESS_PRS="${PROCESS_PRS:-true}"
 PROCESS_BEPS="${PROCESS_BEPS:-true}"
 FORCE_REPROCESS="${FORCE_REPROCESS:-false}"
 
+export FORCE_REPROCESS
+
 TMP="$(mktemp -d "${TMPDIR:-/tmp}"/bids-XXXXXXX)"
 # shellcheck disable=SC2064
 trap "rm -rf '$TMP'" SIGINT SIGHUP SIGABRT EXIT
@@ -95,11 +97,7 @@ echo "=== Phase 2: Process PR schemas ==="
 
 if [ "$PROCESS_PRS" = "true" ]; then
     echo "Processing PR schemas..."
-    if [ "$FORCE_REPROCESS" = "true" ]; then
-        FORCE_REPROCESS=true "$this_path/process-pr-schemas"
-    else
-        "$this_path/process-pr-schemas"
-    fi
+    "$this_path/process-pr-schemas"
 
     # Generate PRs README
     if [ -d "PRs" ] && compgen -G "PRs/*/PR_METADATA.json" > /dev/null; then
