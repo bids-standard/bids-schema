@@ -104,6 +104,7 @@ if [ "$PROCESS_PRS" = "true" ]; then
     # Generate PRs README
     if [ -d "PRs" ] && compgen -G "PRs/*/PR_METADATA.json" > /dev/null; then
         echo "Generating PRs/README.md..."
+        git status  # debugging
         datalad run -m "Update PRs README with current PR status" \
             --output PRs/README.md \
             "$this_path/generate-pr-readme"
