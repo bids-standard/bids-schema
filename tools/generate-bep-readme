@@ -30,27 +30,15 @@ def format_bep_row(bep_dir_path, metadata):
         pr_metadata = load_json(f"PRs/{pr_number}/PR_METADATA.json")
 
     # Get PR-based data if available, otherwise use defaults
-    authors_count = "?"
+    authors_count = "0"
     pr_status = 'unknown'
     build_status = 'unknown'
     last_commit_raw = 'Unknown'
     schema_updated = 'Unknown'
 
     if pr_metadata:
-        # Count authors using git shortlog if we have git_ref
-        git_ref = pr_metadata.get('git_ref', '')
-        if git_ref:
-            try:
-                import subprocess
-                result = subprocess.run(
-                    ['git', 'shortlog', '-sn', f'origin/master...{git_ref}'],
-                    cwd=bep_dir_path,
-                    capture_output=True, text=True, timeout=10
-                )
-                if result.returncode == 0:
-                    authors_count = str(len([line for line in result.stdout.strip().split('\n') if line.strip()]))
-            except:
-                pass
+        # Use authors count from PR metadata
+        authors_count = str(pr_metadata.get('authors_count', 0))
 
         pr_status = pr_metadata.get('status', 'open')  # Default to 'open' for active PRs
         build_status = pr_metadata.get('build_status', 'unknown')

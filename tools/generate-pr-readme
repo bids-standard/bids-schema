@@ -29,20 +29,8 @@ def format_pr_row(pr_dir_path, metadata):
     else:
         last_commit = 'Unknown'
 
-    # Count authors using git shortlog if we have git_ref
-    authors_count = "?"
-    if git_ref:
-        try:
-            import subprocess
-            result = subprocess.run(
-                ['git', 'shortlog', '-sn', f'origin/master...{git_ref}'],
-                cwd=pr_dir_path,
-                capture_output=True, text=True, timeout=10
-            )
-            if result.returncode == 0:
-                authors_count = str(len([line for line in result.stdout.strip().split('\n') if line.strip()]))
-        except:
-            pass
+    # Use authors count from metadata if available
+    authors_count = str(metadata.get('authors_count', 0))
 
     # Format date if it's a timestamp
     if last_updated != 'Unknown':

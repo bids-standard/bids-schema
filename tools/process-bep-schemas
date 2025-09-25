@@ -160,6 +160,14 @@ for bep in beps_data:
                 shutil.rmtree(bep_schema_dir)
             shutil.copytree(pr_schema_dir, bep_schema_dir)
 
+        # Get authors count from PR metadata if available
+        authors_count = 0
+        pr_metadata_file = pr_schema_dir / 'PR_METADATA.json'
+        if pr_metadata_file.exists():
+            with open(pr_metadata_file, 'r') as f:
+                pr_metadata = json.load(f)
+                authors_count = pr_metadata.get('authors_count', 0)
+
         # Generate BEP metadata
         metadata = {
             'bep_number': bep_number,
@@ -167,7 +175,8 @@ for bep in beps_data:
             'pr_number': int(pr_number),
             'pull_request': pull_request,
             'google_doc': bep.get('google_doc', ''),
-            'status': 'review'  # Default status, could be enhanced
+            'status': 'review',  # Default status, could be enhanced
+            'authors_count': authors_count
         }
 
         metadata_file = bep_schema_dir / 'BEP_METADATA.json'

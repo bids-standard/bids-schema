@@ -111,6 +111,17 @@ if [ "$BST_EXIT_CODE" -ne 0 ]; then
         pr_number=$(echo "$output_dir" | sed 's/.*PRs\///')
         commit_hash=$(git -C "$repo" rev-parse "$git_ref" 2>/dev/null || echo "unknown")
 
+        # Count unique authors for the PR
+        authors_count=0
+        if [ -n "$repo" ] && [ "$repo" != "unknown" ]; then
+            # Get the merge base with master to find all commits in the PR
+            merge_base=$(git -C "$repo" merge-base "$git_ref" origin/master 2>/dev/null || echo "")
+            if [ -n "$merge_base" ]; then
+                # Count unique authors for commits in the PR
+                authors_count=$(git -C "$repo" shortlog -sn "$merge_base..$git_ref" 2>/dev/null | wc -l)
+            fi
+        fi
+
         # Create error metadata file
         cat > PR_METADATA.json <<EOF
 {
@@ -121,7 +132,8 @@ if [ "$BST_EXIT_CODE" -ne 0 ]; then
   "has_schema_changes": true,
   "build_status": "failed",
   "error_message": "$error_msg",
-  "error_log": "bst-output.log"
+  "error_log": "bst-output.log",
+  "authors_count": $authors_count
 }
 EOF
         # Create a placeholder schema.json with error info
@@ -161,6 +173,17 @@ if [ "$generate_metadata" = true ] && [ "$ref_type" = "pr" ]; then
     # Get commit hash for the ref
     commit_hash=$(git -C "$repo" rev-parse "$git_ref" 2>/dev/null || echo "unknown")
 
+    # Count unique authors for the PR
+    authors_count=0
+    if [ -n "$repo" ] && [ "$repo" != "unknown" ]; then
+        # Get the merge base with master to find all commits in the PR
+        merge_base=$(git -C "$repo" merge-base "$git_ref" origin/master 2>/dev/null || echo "")
+        if [ -n "$merge_base" ]; then
+            # Count unique authors for commits in the PR
+            authors_count=$(git -C "$repo" shortlog -sn "$merge_base..$git_ref" 2>/dev/null | wc -l)
+        fi
+    fi
+
     # Generate PR_METADATA.json file
     cat > PR_METADATA.json <<EOF
 {
@@ -169,7 +192,8 @@ if [ "$generate_metadata" = true ] && [ "$ref_type" = "pr" ]; then
   "last_commit": "$commit_hash",
   "last_updated": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
   "has_schema_changes": true,
-  "build_status": "success"
+  "build_status": "success",
+  "authors_count": $authors_count
 }
 EOF
 fi
