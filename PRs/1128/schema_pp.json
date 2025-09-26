@@ -5479,12 +5479,6 @@
         "display_name": "Flip Angle",
         "name": "FlipAngle"
       },
-      "ForeignIndexColumn": {
-        "description": "An existing column name in an corresponding recoding data TSV file that\nindexes the `\"onset\"` column of the present TSV file.\nFor example, `\"timestamp\"` column.\n",
-        "display_name": "Column Name of a Foreign Index",
-        "name": "ForeignIndexColumn",
-        "type": "string"
-      },
       "Format": {
         "description": "Permitted formats for values in the described column.\n",
         "display_name": "Value format",
@@ -6895,6 +6889,12 @@
         "minimum": 0,
         "name": "ORNTChannelCount",
         "type": "integer"
+      },
+      "OnsetSource": {
+        "description": "An existing column name in an corresponding recoding data TSV file that\nindexes or is correspondent to the `\"onset\"` column of the present TSV file.\nFor example, `\"timestamp\"` column.\n",
+        "display_name": "Column Name of the Onset Source",
+        "name": "OnsetSource",
+        "type": "string"
       },
       "OperatingSystem": {
         "description": "Operating system used to run the stimuli presentation software\n(for formatting recommendations, see examples below this table).\n",
@@ -10260,19 +10260,19 @@
             "sidecar.PhysioType == 'eyetrack'"
           ]
         },
-        "ForeignColumnConsistency": {
+        "OnsetSourceConsistency": {
           "checks": [
-            "intersects([sidecar.ForeignIndexColumn], associations.physio.sidecar.Columns)"
+            "intersects([sidecar.OnsetSource], associations.physio.sidecar.Columns)"
           ],
           "issue": {
-            "code": "MISSING_FOREIGN_COLUMN",
+            "code": "MISSING_ONSET_COLUMN",
             "level": "error",
-            "message": "The `physioevents.tsv.gz` file declared a `ForeignIndexColumn` of {sidecar.ForeignIndexColumn}, but no such column was found in {associations.physio.path}.\n"
+            "message": "The `physioevents.tsv.gz` file declared a `OnsetSource` of {sidecar.OnsetSource}, but no such column was found in {associations.physio.path}.\n"
           },
           "selectors": [
             "suffix == 'physioevents'",
             "extension == '.tsv.gz'",
-            "sidecar.ForeignIndexColumn"
+            "sidecar.OnsetSource"
           ]
         }
       },
@@ -16243,7 +16243,7 @@
           "fields": {
             "Columns": "required",
             "Description": "recommended",
-            "ForeignIndexColumn": "recommended"
+            "OnsetSource": "required"
           },
           "selectors": [
             "suffix == \"physioevents\""
