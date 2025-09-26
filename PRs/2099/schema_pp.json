@@ -4020,7 +4020,7 @@
               "type": "string"
             },
             "Id": {
-              "description": "Identifier for the activity\n(see the [Consistency and uniqueness of Ids](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-ids)\nsection).\n",
+              "description": "Identifier for the activity\n(see the [Consistency and uniqueness of Ids](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers)\nsection).\n",
               "format": "uri",
               "name": "Id",
               "type": "string"
@@ -5308,7 +5308,7 @@
               "name": "GeneratedBy"
             },
             "Id": {
-              "description": "Identifier for the entity\n(see the [Consistency and uniqueness of Ids](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-ids)\nsection).\n",
+              "description": "Identifier for the entity\n(see the [Consistency and uniqueness of Ids](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers)\nsection).\n",
               "format": "uri",
               "name": "Id",
               "type": "string"
@@ -5362,7 +5362,7 @@
               "type": "object"
             },
             "Id": {
-              "description": "Identifier for the environment.\n(see the [Consistency and uniqueness of Ids](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-ids)\nsection).\n",
+              "description": "Identifier for the environment.\n(see the [Consistency and uniqueness of Ids](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers)\nsection).\n",
               "format": "uri",
               "name": "Id",
               "type": "string"
@@ -7898,7 +7898,7 @@
               "type": "string"
             },
             "Id": {
-              "description": "Identifier for the software package\n(see the [Consistency and uniqueness of Ids](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-ids)\nsection).\n",
+              "description": "Identifier for the software package\n(see the [Consistency and uniqueness of Ids](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers)\nsection).\n",
               "format": "uri",
               "name": "Id",
               "type": "string"
