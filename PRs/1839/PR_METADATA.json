@@ -1,8 +1,8 @@
 {
   "pr_number": "1839",
-  "git_ref": "414c2f8ef0515f1dd1d7024db98fa0d65b7634e8",
-  "last_commit": "414c2f8ef0515f1dd1d7024db98fa0d65b7634e8",
-  "last_updated": "2025-09-25T12:52:53Z",
+  "git_ref": "56f3b2efe4267d0e5d9485aceab6fe00c24dfb30",
+  "last_commit": "56f3b2efe4267d0e5d9485aceab6fe00c24dfb30",
+  "last_updated": "2025-09-26T12:51:14Z",
   "has_schema_changes": true,
   "build_status": "failed",
   "error_message": "ValueError: Reference objects.enums.gestation.value not found in schema.",
