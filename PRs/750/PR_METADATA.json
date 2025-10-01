@@ -1,0 +1,11 @@
+{
+  "pr_number": "750",
+  "git_ref": "d8cd4cd9385a733ed5b3dfd2cb807b6d7be896a3",
+  "last_commit": "d8cd4cd9385a733ed5b3dfd2cb807b6d7be896a3",
+  "last_updated": "2025-10-01T17:46:27Z",
+  "has_schema_changes": true,
+  "build_status": "failed",
+  "error_message": "AttributeError: 'Namespace' object has no attribute 'objects'",
+  "error_log": "bst-output.log",
+  "authors_count": 1
+}
