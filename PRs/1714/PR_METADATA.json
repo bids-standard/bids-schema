@@ -1,0 +1,11 @@
+{
+  "pr_number": "1714",
+  "git_ref": "94044914fcb1ade8b7e5e99d80f6135d8a382641",
+  "last_commit": "94044914fcb1ade8b7e5e99d80f6135d8a382641",
+  "last_updated": "2025-10-01T17:46:00Z",
+  "has_schema_changes": true,
+  "build_status": "failed",
+  "error_message": "AttributeError: 'list' object has no attribute 'split'",
+  "error_log": "bst-output.log",
+  "authors_count": 9
+}
