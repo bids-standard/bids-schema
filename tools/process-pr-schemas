@@ -60,8 +60,13 @@ for ref_file in $pr_refs; do
     ref=$(cat "$ref_file")
 
     # Check if this PR has schema changes
-    if git diff --quiet origin/master..."$ref" -- src/schema 2>/dev/null; then
-        # No schema changes, skip
+    if git ls-tree "$ref" src/schema | grep -q .; then
+        if git diff --quiet origin/master..."$ref" -- src/schema 2>/dev/null; then
+            # No schema changes, skip
+            continue
+        fi
+    else
+        echo "I: PR $pr_number seems to have no src/schema -- skipping"
         continue
     fi
 
