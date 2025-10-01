@@ -21,7 +21,12 @@ export FORCE_REPROCESS
 
 TMP="$(mktemp -d "${TMPDIR:-/tmp}"/bids-XXXXXXX)"
 # shellcheck disable=SC2064
-trap "rm -rf '$TMP'" SIGINT SIGHUP SIGABRT EXIT
+if [ "${BIDS_SCHEMA_KEEPTMP:-0}" != "1" ]; then
+    cmd="rm -rf '$TMP'"
+else
+    cmd="echo Keeping tempdir '$TMP' as instructed"
+fi
+trap "$cmd" SIGINT SIGHUP SIGABRT EXIT
 
 : "${BIDS_REPO:=}"
 
