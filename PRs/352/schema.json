@@ -1,0 +1,7 @@
+{
+  "error": "Schema build failed",
+  "message": "AttributeError: 'Namespace' object has no attribute 'objects'",
+  "pr_number": "352",
+  "timestamp": "2025-10-01T17:46:25Z",
+  "log_file": "bst-output.log"
+}
