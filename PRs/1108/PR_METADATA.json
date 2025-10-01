@@ -1,0 +1,11 @@
+{
+  "pr_number": "1108",
+  "git_ref": "cf7b356ee0e8ce0fed9361a8b2ca654bcca0b2c0",
+  "last_commit": "cf7b356ee0e8ce0fed9361a8b2ca654bcca0b2c0",
+  "last_updated": "2025-10-01T17:45:44Z",
+  "has_schema_changes": true,
+  "build_status": "failed",
+  "error_message": "ValueError: Reference _MEGCoordSys not found in schema.",
+  "error_log": "bst-output.log",
+  "authors_count": 1
+}
