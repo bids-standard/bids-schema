@@ -1,7 +1,0 @@
-{
-  "error": "Schema build failed",
-  "log_file": "bst-output.log",
-  "message": "AttributeError: 'list' object has no attribute 'split'",
-  "pr_number": "1714",
-  "timestamp": "2025-09-17T20:37:15Z"
-}

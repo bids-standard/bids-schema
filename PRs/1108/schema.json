@@ -1,7 +1,0 @@
-{
-  "error": "Schema build failed",
-  "message": "ValueError: Reference _MEGCoordSys not found in schema.",
-  "pr_number": "1108",
-  "timestamp": "2025-09-17T20:36:48Z",
-  "log_file": "bst-output.log"
-}
