@@ -4569,7 +4569,7 @@
         "type": "string"
       },
       "DOI": {
-        "description": "Used to specify the locations of all source datasets.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
+        "description": "A Digital Object Identifier (DOI) is a persistent, resolvable name for a digital resource.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
         "display_name": "DOI",
         "name": "DOI",
         "type": "string"
@@ -7660,18 +7660,18 @@
         "type": "string"
       },
       "SourceDatasets": {
-        "description": "Used to specify the locations and relevant attributes of all source datasets.\nValid keys in each object include `\"URL\"`, `\"DOI\"` (see\n[URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator)), and\n`\"Version\"` with\n[string](https://www.w3schools.com/js/js_json_datatypes.asp)\nvalues.\n",
+        "description": "Used to specify the locations and relevant attributes of all source datasets (BIDS or not).\nValid keys in each object include `\"URL\"`, `\"DOI\"` (see\n[URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator)), and\n`\"Version\"` with\n[string](https://www.w3schools.com/js/js_json_datatypes.asp)\nvalues.\n",
         "display_name": "Source Datasets",
         "items": {
           "properties": {
             "DOI": {
-              "description": "Used to specify the locations of all source datasets.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
+              "description": "A Digital Object Identifier (DOI) is a persistent, resolvable name for a digital resource.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
               "display_name": "DOI",
               "name": "DOI",
               "type": "string"
             },
             "URL": {
-              "description": "Used to specify the locations of all source datasets.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
+              "description": "A Uniform Resource Locator (URL) is a structured reference to an object that\nincludes a resource transfer scheme and a location.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
               "display_name": "URL",
               "format": "uri",
               "name": "URL",
@@ -8152,7 +8152,7 @@
         "type": "string"
       },
       "URL": {
-        "description": "Used to specify the locations of all source datasets.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
+        "description": "A Uniform Resource Locator (URL) is a structured reference to an object that\nincludes a resource transfer scheme and a location.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
         "display_name": "URL",
         "format": "uri",
         "name": "URL",
