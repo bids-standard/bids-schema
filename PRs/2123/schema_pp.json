@@ -9466,7 +9466,7 @@
         },
         "ParticipantIDMismatch": {
           "checks": [
-            "length(intersects(unique(columns.participant_id), dataset.subjects.sub_dirs))) ==\nlength(dataset.subjects.sub_dirs)\n"
+            "length(intersects(unique(columns.participant_id), dataset.subjects.sub_dirs)) ==\nlength(dataset.subjects.sub_dirs)\n"
           ],
           "issue": {
             "code": "PARTICIPANT_ID_MISMATCH",
@@ -17762,6 +17762,31 @@
           ]
         }
       },
+      "phenotype": {
+        "MeasurementToolMetadata": {
+          "fields": {
+            "MeasurementToolMetadata": {
+              "level": "optional",
+              "level_addendum": "recommended by phenotype guidelines"
+            }
+          },
+          "selectors": [
+            "datatype == 'phenotype'",
+            "extension == '.tsv'",
+            "!intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
+          ]
+        },
+        "MeasurementToolMetadataRec": {
+          "fields": {
+            "MeasurementToolMetadata": "recommended"
+          },
+          "selectors": [
+            "datatype == 'phenotype'",
+            "extension == '.tsv'",
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
+          ]
+        }
+      },
       "qmri": {
         "InversionRecoveryT1Metadata": {
           "fields": {
@@ -18159,15 +18184,16 @@
             "session_id"
           ],
           "selectors": [
-            "path == \"/participants.tsv\""
+            "path == \"/participants.tsv\"",
+            "!intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
           ]
         },
-        "Phenotype": {
-          "additional_columns": "allowed",
+        "Participants__Additional": {
+          "additional_columns": "allowed_if_defined",
           "columns": {
             "HED": "optional",
             "participant_id": "required",
-            "session_id": "optional"
+            "session_id": "recommended"
           },
           "index_columns": [
             "participant_id",
@@ -18178,12 +18204,14 @@
             "session_id"
           ],
           "selectors": [
-            "datatype == 'phenotype'"
+            "path == \"/participants.tsv\"",
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
           ]
         },
         "Phenotypes": {
           "additional_columns": "allowed",
           "columns": {
+            "HED": "optional",
             "participant_id": {
               "description_addendum": "Note that data for one participant MAY be represented across multiple rows\nin case of multiple sessions or runs, and\ntherefore the entry in the `participant_id` column will be repeated.\n",
               "level": "required"
@@ -18210,8 +18238,43 @@
             "run_id"
           ],
           "selectors": [
-            "datatype == \"phenotype\"",
-            "extension == \".tsv\""
+            "datatype == 'phenotype'",
+            "extension == \".tsv\"",
+            "!intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
+          ]
+        },
+        "Phenotypes__Additional": {
+          "additional_columns": "allowed_if_defined",
+          "columns": {
+            "HED": "optional",
+            "participant_id": {
+              "description_addendum": "Note that data for one participant MAY be represented across multiple rows\nin case of multiple sessions or runs, and\ntherefore the entry in the `participant_id` column will be repeated.\n",
+              "level": "required"
+            },
+            "run_id": {
+              "description_addendum": "A chronological `run` number is used when\na measurement tool or assessment described by a tabular file\nwas repeated within a session.\n",
+              "level": "optional",
+              "level_addendum": "required if there are multiple runs within any session"
+            },
+            "session_id": {
+              "description_addendum": "A `session_id` column MUST be added to all tabular files in the phenotype directory\nas soon as multiple sessions are present in the data set\nregardless of whether those sessions are in the\n`phenotype/` data, `sub-<label>/` data, or a combination of the two.\n",
+              "level": "optional",
+              "level_addendum": "required if sessions are defined in the dataset"
+            }
+          },
+          "index_columns": [
+            "participant_id",
+            "session_id",
+            "run_id"
+          ],
+          "initial_columns": [
+            "participant_id",
+            "session_id",
+            "run_id"
+          ],
+          "selectors": [
+            "datatype == 'phenotype'",
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
           ]
         },
         "Samples": {
@@ -18274,7 +18337,34 @@
           ],
           "selectors": [
             "suffix == \"sessions\"",
-            "extension == \".tsv\""
+            "extension == \".tsv\"",
+            "!intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
+          ]
+        },
+        "Sessions__Additional": {
+          "additional_columns": "allowed_if_defined",
+          "columns": {
+            "HED": "optional",
+            "acq_time__sessions": "required",
+            "participant_id": "optional",
+            "pathology": "recommended",
+            "run_id": "optional",
+            "session_id": "required"
+          },
+          "index_columns": [
+            "participant_id",
+            "session_id",
+            "run_id"
+          ],
+          "initial_columns": [
+            "participant_id",
+            "session_id",
+            "run_id"
+          ],
+          "selectors": [
+            "suffix == \"sessions\"",
+            "extension == \".tsv\"",
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
           ]
         }
       },
