@@ -46,9 +46,7 @@ def main():
     # Check if bids-website repo exists or needs to be cloned
     if not website_repo.exists():
         print(f"BIDS website repository not found at {website_repo}. Cloning...")
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            website_repo = Path(tmp_dir) / "bids-website"
-            subprocess.run(['git', 'clone', 'https://github.com/bids-standard/bids-website/', str(website_repo)], check=True)
+        subprocess.run(['git', 'clone', 'https://github.com/bids-standard/bids-website/', str(website_repo)], check=True)
 
     # Check if BEPs YAML file exists
     beps_file = website_repo / "data" / "beps" / "beps.yml"
