@@ -2097,7 +2097,7 @@
         "type": "string"
       },
       "prov": {
-        "description": "A grouping of provenance records.\nDefining multiple provenance records groups is appropriate when several processings have been performed on data.\n",
+        "description": "The `prov-<label>` entity allows to group related provenance files, using an arbitrary value for `<label>`.\n",
         "display_name": "Provenance group",
         "format": "label",
         "name": "prov",
