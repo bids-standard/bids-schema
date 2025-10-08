@@ -1463,12 +1463,6 @@
         "display_name": "Hardware filters",
         "name": "hardware_filters"
       },
-      "height__probes": {
-        "description": "Physical height of the probe, for example, '5'.\nThis dimension corresponds to the y\u2019axis of the Euler transformation defined by\nalpha, beta and gamma rotations values below.\n",
-        "display_name": "Height",
-        "name": "height",
-        "type": "number"
-      },
       "hemisphere": {
         "description": "The hemisphere in which the electrode is placed.\n",
         "display_name": "Electrode hemisphere",
@@ -2140,7 +2134,7 @@
         "type": "number"
       },
       "x__electrodes": {
-        "description": "Recorded position along the local width-axis relative\nto the probe origin and rotation (see `_probes.tsv`)\n",
+        "description": "Recorded position along the local width-axis relative\nto the probe origin (see `_probes.tsv`)\n",
         "display_name": "Electrode X position",
         "name": "x",
         "type": "number"
@@ -2158,7 +2152,7 @@
         "type": "number"
       },
       "y__electrodes": {
-        "description": "Recorded position along the local height-axis relative\nto the probe origin and rotation (see `_probes.tsv`)\n",
+        "description": "Recorded position along the local height-axis relative\nto the probe origin (see `_probes.tsv`)\n",
         "display_name": "Electrode Y position",
         "name": "y",
         "type": "number"
@@ -2176,7 +2170,7 @@
         "type": "number"
       },
       "z__electrodes": {
-        "description": "Recorded position along the local depth-axis relative\nto the probe origin and rotation (see `_probes.tsv`)\n",
+        "description": "Recorded position along the local depth-axis relative\nto the probe origin (see `_probes.tsv`)\n",
         "display_name": "Electrode Z position",
         "name": "z",
         "type": "number"
