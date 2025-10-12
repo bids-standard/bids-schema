@@ -6410,7 +6410,7 @@
         "type": "number"
       },
       "MeasurementToolMetadata": {
-        "description": "A description of the measurement tool as a whole.\nContains two fields: `\"Description\"` and `\"TermURL\"`.\n`\"Description\"` is a free text description of the measurement tool.\n`\"TermURL\"` is a URL to an entity in an ontology corresponding to this tool.\nRECOMMENDED by `AdditionalValidation` of `\"Phenotype\"` in `dataset_description.json`.\n",
+        "description": "A description of the measurement tool as a whole.\nContains two fields: `\"Description\"` and `\"TermURL\"`.\n`\"Description\"` is a free text description of the measurement tool.\n`\"TermURL\"` is a URL to an entity in an ontology corresponding to this tool.\nRECOMMENDED by `AdditionalValidation` containing `\"Phenotype\"` in `dataset_description.json`.\n",
         "display_name": "Measurement Tool Metadata",
         "name": "MeasurementToolMetadata",
         "properties": {
