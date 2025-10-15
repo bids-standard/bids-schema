@@ -7729,7 +7729,7 @@
             "type": "string"
           }
         ],
-        "description": "Distance between the participant's eye and the screen. If no screen was used, use `n/a`.\n`ScreenDistance` is REQUIRED and MUST NOT be `n/a` when the experiment included simultaneous\neye-tracking recordings.\nDistance can either be expressed as a single numeric value indicating the shortest distance between\nthe participant's eye and the screen, or a three-coordinates array indicating the X, Y, Z distances\nbetween the participant's eye and the center of the screen.\n",
+        "description": "Distance between the participant's eye and the screen. If no screen was used, use `n/a`.\nDistance can either be expressed as a single numeric value indicating the shortest distance between\nthe participant's eye and the screen, or a three-coordinates array indicating the X, Y, Z distances\nbetween the participant's eye and the center of the screen.\n",
         "display_name": "Screen Distance",
         "name": "ScreenDistance"
       },
@@ -8173,7 +8173,7 @@
                 "type": "string"
               }
             ],
-            "description": "Distance between the participant's eye and the screen. If no screen was used, use `n/a`.\n`ScreenDistance` is REQUIRED and MUST NOT be `n/a` when the experiment included simultaneous\neye-tracking recordings.\nDistance can either be expressed as a single numeric value indicating the shortest distance between\nthe participant's eye and the screen, or a three-coordinates array indicating the X, Y, Z distances\nbetween the participant's eye and the center of the screen.\n",
+            "description": "Distance between the participant's eye and the screen. If no screen was used, use `n/a`.\nDistance can either be expressed as a single numeric value indicating the shortest distance between\nthe participant's eye and the screen, or a three-coordinates array indicating the X, Y, Z distances\nbetween the participant's eye and the center of the screen.\n",
             "display_name": "Screen Distance",
             "name": "ScreenDistance"
           },
@@ -8319,7 +8319,7 @@
                 "type": "string"
               }
             ],
-            "description": "Distance between the participant's eye and the screen. If no screen was used, use `n/a`.\n`ScreenDistance` is REQUIRED and MUST NOT be `n/a` when the experiment included simultaneous\neye-tracking recordings.\nDistance can either be expressed as a single numeric value indicating the shortest distance between\nthe participant's eye and the screen, or a three-coordinates array indicating the X, Y, Z distances\nbetween the participant's eye and the center of the screen.\n",
+            "description": "Distance between the participant's eye and the screen. If no screen was used, use `n/a`.\nDistance can either be expressed as a single numeric value indicating the shortest distance between\nthe participant's eye and the screen, or a three-coordinates array indicating the X, Y, Z distances\nbetween the participant's eye and the center of the screen.\n",
             "display_name": "Screen Distance",
             "name": "ScreenDistance"
           },
