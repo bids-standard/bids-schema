@@ -19148,9 +19148,11 @@
           "initial_columns": [
             "probe_name",
             "type__probes",
-            "x__probes",
-            "y__probes",
-            "z__probes"
+            "AP__probes",
+            "ML__probes",
+            "DV__probes",
+            "AP_angle",
+            "ML_angle"
           ],
           "selectors": [
             "datatype == [\"ecephys\", \"icephys\"]",
