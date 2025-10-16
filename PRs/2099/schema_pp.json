@@ -1221,6 +1221,12 @@
         "name": "description",
         "type": "string"
       },
+      "description__provenance": {
+        "description": "Free-form text description of the provenance file(s).\n",
+        "display_name": "Description",
+        "name": "description",
+        "type": "string"
+      },
       "detector__channels": {
         "description": "Name of the detector as specified in the `*_optodes.tsv` file.\n`n/a` for channels that do not contain NIRS signals (for example, acceleration).\n",
         "display_name": "Detector Name",
@@ -1430,6 +1436,13 @@
         "display_name": "Plasma radioactivity",
         "name": "plasma_radioactivity",
         "type": "number"
+      },
+      "provenance_label": {
+        "description": "An identifier of the form `prov-<label>`,\nmatching a `prov` entity found in the dataset.\n",
+        "display_name": "Provenance label",
+        "name": "provenance_label",
+        "pattern": "^prov-[0-9a-zA-Z+]+$",
+        "type": "string"
       },
       "reference__eeg": {
         "description": "Name of the reference electrode(s).\nThis column is not needed when it is common to all channels.\nIn that case the reference electrode(s) can be specified in `*_eeg.json` as `EEGReference`).\n",
@@ -3827,7 +3840,7 @@
       },
       "prov": {
         "description": "A directory in which to store provenance metadata.\nSee the [Provenance section](SPEC_ROOT/modality-agnostic-files/provenance.md)\nfor more information.\n",
-        "display_name": "Provenance Records",
+        "display_name": "Provenance",
         "file_type": "directory"
       },
       "samples": {
@@ -4057,7 +4070,7 @@
                   "type": "array"
                 }
               ],
-              "description": "Identifier(s) of the entity (one or more) or environment (one or more) used by this activity.\n\nRelated entities MUST be described as specified in the\n[Entities](SPEC_ROOT/modality-agnostic-files/provenance.md#entities) section.\n\nRelated environments MUST be described as specified in the\n[Environments](SPEC_ROOT/modality-agnostic-files/provenance.md#environments) section.\n",
+              "description": "Identifier(s) of the provEntity (one or more) or environment (one or more) used by this activity.\n\nRelated provEntities MUST be described as specified in the\n[ProvEntities](SPEC_ROOT/modality-agnostic-files/provenance.md#proventities) section.\n\nRelated environments MUST be described as specified in the\n[Environments](SPEC_ROOT/modality-agnostic-files/provenance.md#environments) section.\n",
               "name": "Used"
             }
           },
@@ -5273,70 +5286,6 @@
         "description": "The encoding technique used during readout.\nFor example, `\"Cartesian\"`, `\"EPSI\"`, `\"Spiral\"`,\nor `\"Density-weighted concentric ring trajectory\"`.\n",
         "display_name": "Encoding Technique",
         "name": "EncodingTechnique",
-        "type": "string"
-      },
-      "Entities": {
-        "description": "Provenance objects describing entities.",
-        "display_name": "Entities",
-        "items": {
-          "properties": {
-            "AtLocation": {
-              "description": "For input files, this is the relative path to the file on disk.\n",
-              "name": "AtLocation",
-              "type": "string"
-            },
-            "Digest": {
-              "description": "For files, this includes checksums.\nIt takes the form of a dictionary with the name of the checksum functions as keys\nand checksums as values : `{\"<checksum_function>\": \"<checksum>\"}`.\n",
-              "name": "Digest",
-              "type": "object"
-            },
-            "GeneratedBy": {
-              "description": "Identifier(s) of the activity (one or more) responsible for the creation of the entity.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
-              "items": {
-                "format": "uri",
-                "type": "string"
-              },
-              "minItems": 1,
-              "name": "GeneratedBy",
-              "type": "array"
-            },
-            "Id": {
-              "description": "Identifier for the entity (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
-              "format": "uri",
-              "name": "Id",
-              "type": "string"
-            },
-            "Label": {
-              "description": "A name for the entity.",
-              "format": "label",
-              "name": "Label",
-              "type": "string"
-            },
-            "Type": {
-              "description": "A term from a controlled vocabulary that more specifically describes the entity.",
-              "format": "uri",
-              "name": "Type",
-              "type": "string"
-            }
-          },
-          "recommended": [
-            "Digest"
-          ],
-          "required": [
-            "Id",
-            "Label"
-          ],
-          "type": "object"
-        },
-        "minItems": 1,
-        "name": "Entities",
-        "type": "array"
-      },
-      "EntityType": {
-        "description": "A term from a controlled vocabulary that more specifically describes an entity.\n",
-        "display_name": "Type",
-        "format": "uri",
-        "name": "Type",
         "type": "string"
       },
       "Environments": {
@@ -7175,6 +7124,70 @@
         },
         "name": "PromptRate",
         "type": "array"
+      },
+      "ProvEntities": {
+        "description": "Provenance objects describing provEntities.",
+        "display_name": "ProvEntities",
+        "items": {
+          "properties": {
+            "AtLocation": {
+              "description": "For input files, this is the relative path to the file on disk.\n",
+              "name": "AtLocation",
+              "type": "string"
+            },
+            "Digest": {
+              "description": "For files, this includes checksums.\nIt takes the form of a dictionary with the name of the checksum functions as keys\nand checksums as values : `{\"<checksum_function>\": \"<checksum>\"}`.\n",
+              "name": "Digest",
+              "type": "object"
+            },
+            "GeneratedBy": {
+              "description": "Identifier(s) of the activity (one or more) responsible for the creation of the provEntity.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+              "items": {
+                "format": "uri",
+                "type": "string"
+              },
+              "minItems": 1,
+              "name": "GeneratedBy",
+              "type": "array"
+            },
+            "Id": {
+              "description": "Identifier for the provEntity (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
+              "format": "uri",
+              "name": "Id",
+              "type": "string"
+            },
+            "Label": {
+              "description": "A name for the provEntity.",
+              "format": "label",
+              "name": "Label",
+              "type": "string"
+            },
+            "Type": {
+              "description": "A term from a controlled vocabulary that more specifically describes the provEntity.",
+              "format": "uri",
+              "name": "Type",
+              "type": "string"
+            }
+          },
+          "recommended": [
+            "Digest"
+          ],
+          "required": [
+            "Id",
+            "Label"
+          ],
+          "type": "object"
+        },
+        "minItems": 1,
+        "name": "ProvEntities",
+        "type": "array"
+      },
+      "ProvEntityType": {
+        "description": "A term from a controlled vocabulary that more specifically describes a ProvEntity.\n",
+        "display_name": "Type",
+        "format": "uri",
+        "name": "Type",
+        "type": "string"
       },
       "PulseDuration": {
         "description": "Pulse duration if spectral editing was applied, in milliseconds\n",
@@ -9140,8 +9153,8 @@
         "value": "electrodes"
       },
       "ent": {
-        "description": "A JSON file containing provenance objects describing entities.\n(See the [`Entities`](SPEC_ROOT/modality-agnostic-files/provenance.md#entities) section).\n",
-        "display_name": "Entities",
+        "description": "A JSON file containing provenance objects describing provEntities.\n(See the [`ProvEntities`](SPEC_ROOT/modality-agnostic-files/provenance.md#proventities) section).\n",
+        "display_name": "ProvEntities",
         "value": "ent"
       },
       "env": {
@@ -11472,8 +11485,8 @@
       "resolution",
       "density",
       "label",
-      "description",
-      "prov"
+      "prov",
+      "description"
     ],
     "errors": {
       "BFile": {
@@ -11749,6 +11762,7 @@
               "prov"
             ],
             "entities": {
+              "description": "optional",
               "prov": "required"
             },
             "extensions": [
@@ -11782,6 +11796,14 @@
             ],
             "level": "optional",
             "stem": "*"
+          },
+          "provenance": {
+            "extensions": [
+              ".tsv",
+              ".json"
+            ],
+            "level": "optional",
+            "stem": "provenance"
           },
           "samples": {
             "extensions": [
@@ -18505,6 +18527,24 @@
           ],
           "selectors": [
             "datatype == 'phenotype'"
+          ]
+        },
+        "Provenance": {
+          "additional_columns": "allowed",
+          "columns": {
+            "description__provenance": "optional",
+            "provenance_label": "required"
+          },
+          "index_columns": [
+            "provenance_label"
+          ],
+          "initial_columns": [
+            "provenance_label"
+          ],
+          "selectors": [
+            "datatype == 'prov'",
+            "stem == 'provenance'",
+            "extension == '.tsv'"
           ]
         },
         "Samples": {
