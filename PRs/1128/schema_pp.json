@@ -7775,7 +7775,7 @@
             "type": "string"
           }
         ],
-        "description": "Screen resolution in pixel\n(for example `[1920, 1200]` for a screen of 1920-width by 1080-height pixels),\nif no screen use `n/a`.\n`ScreenResolution` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings.\n",
+        "description": "Screen resolution in pixel\n(for example `[1920, 1200]` for a screen of 1920-width by 1080-height pixels),\nif no screen use `n/a`.\n`ScreenResolution` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings with `SampleCoordinateSystem` matching `\"gaze-on-screen\"`.\n",
         "display_name": "Screen Resolution",
         "name": "ScreenResolution"
       },
@@ -7797,7 +7797,7 @@
             "type": "string"
           }
         ],
-        "description": "Screen size in m, excluding potential screen borders\n(for example `[0.472, 0.295]` for a screen of 47.2-width by 29.5-height cm),\nif no screen use `n/a`.\n`ScreenSize` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings.\n",
+        "description": "Screen size in m, excluding potential screen borders\n(for example `[0.472, 0.295]` for a screen of 47.2-width by 29.5-height cm),\nif no screen use `n/a`.\n`ScreenSize` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings with `SampleCoordinateSystem` matching `\"gaze-on-screen\"`.\n",
         "display_name": "Screen Size",
         "name": "ScreenSize"
       },
@@ -8219,7 +8219,7 @@
                 "type": "string"
               }
             ],
-            "description": "Screen resolution in pixel\n(for example `[1920, 1200]` for a screen of 1920-width by 1080-height pixels),\nif no screen use `n/a`.\n`ScreenResolution` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings.\n",
+            "description": "Screen resolution in pixel\n(for example `[1920, 1200]` for a screen of 1920-width by 1080-height pixels),\nif no screen use `n/a`.\n`ScreenResolution` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings with `SampleCoordinateSystem` matching `\"gaze-on-screen\"`.\n",
             "display_name": "Screen Resolution",
             "name": "ScreenResolution"
           },
@@ -8241,7 +8241,7 @@
                 "type": "string"
               }
             ],
-            "description": "Screen size in m, excluding potential screen borders\n(for example `[0.472, 0.295]` for a screen of 47.2-width by 29.5-height cm),\nif no screen use `n/a`.\n`ScreenSize` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings.\n",
+            "description": "Screen size in m, excluding potential screen borders\n(for example `[0.472, 0.295]` for a screen of 47.2-width by 29.5-height cm),\nif no screen use `n/a`.\n`ScreenSize` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings with `SampleCoordinateSystem` matching `\"gaze-on-screen\"`.\n",
             "display_name": "Screen Size",
             "name": "ScreenSize"
           },
@@ -8277,154 +8277,6 @@
           "SoftwareVersion",
           "Code",
           "HeadStabilization"
-        ],
-        "type": "object"
-      },
-      "StimulusPresentation__eyetrack": {
-        "description": "Object containing key-value pairs related to the software used to present\nthe stimuli during the experiment.\n",
-        "display_name": "Stimulus Presentation",
-        "name": "StimulusPresentation",
-        "properties": {
-          "Code": {
-            "description": "[URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator)\nof the code used to present the stimuli.\nPersistent identifiers such as DOIs are preferred.\nIf multiple versions of code may be hosted at the same location,\nrevision-specific URIs are recommended.\n",
-            "display_name": "Code",
-            "format": "uri",
-            "name": "Code",
-            "type": "string"
-          },
-          "OperatingSystem": {
-            "description": "Operating system used to run the stimuli presentation software\n(for formatting recommendations, see examples below this table).\n",
-            "display_name": "Operating System",
-            "name": "OperatingSystem",
-            "type": "string"
-          },
-          "ScreenDistance": {
-            "anyOf": [
-              {
-                "type": "number",
-                "unit": "m"
-              },
-              {
-                "items": {
-                  "type": "number"
-                },
-                "maxItems": 3,
-                "minItems": 3,
-                "type": "array"
-              },
-              {
-                "enum": [
-                  "n/a"
-                ],
-                "type": "string"
-              }
-            ],
-            "description": "Distance between the participant's eye and the screen. If no screen was used, use `n/a`.\nDistance can either be expressed as a single numeric value indicating the shortest distance between\nthe participant's eye and the screen, or a three-coordinates array indicating the X, Y, Z distances\nbetween the participant's eye and the center of the screen.\n",
-            "display_name": "Screen Distance",
-            "name": "ScreenDistance"
-          },
-          "ScreenOrigin": {
-            "description": "Location of the spatial coordinates' origin for the visual stimuli presentation,\ndescribed by a list of two keywords such as (\"top\", \"left\") if the coordinates\nrefer to the top-left corner of the screen, or (\"center\", \"center\") if the position\n(0, 0) is at the center or the screen's extent.\n",
-            "display_name": "Screen Coordinate System's Origin",
-            "items": {
-              "enum": [
-                "top",
-                "bottom",
-                "left",
-                "right",
-                "center"
-              ],
-              "maxItems": 2,
-              "minItems": 2,
-              "type": "string"
-            },
-            "name": "ScreenOrigin",
-            "type": "array"
-          },
-          "ScreenRefreshRate": {
-            "description": "Refresh rate of the screen (when used), in Hertz (equivalent to frames per second, \"FPS\").\n",
-            "display_name": "Screen Refresh Rate",
-            "name": "ScreenRefreshRate",
-            "type": "number",
-            "unit": "Hz"
-          },
-          "ScreenResolution": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "integer"
-                },
-                "maxItems": 2,
-                "minItems": 2,
-                "type": "array"
-              },
-              {
-                "enum": [
-                  "n/a"
-                ],
-                "type": "string"
-              }
-            ],
-            "description": "Screen resolution in pixel\n(for example `[1920, 1200]` for a screen of 1920-width by 1080-height pixels),\nif no screen use `n/a`.\n`ScreenResolution` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings.\n",
-            "display_name": "Screen Resolution",
-            "name": "ScreenResolution"
-          },
-          "ScreenSize": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "number",
-                  "unit": "m"
-                },
-                "maxItems": 2,
-                "minItems": 2,
-                "type": "array"
-              },
-              {
-                "enum": [
-                  "n/a"
-                ],
-                "type": "string"
-              }
-            ],
-            "description": "Screen size in m, excluding potential screen borders\n(for example `[0.472, 0.295]` for a screen of 47.2-width by 29.5-height cm),\nif no screen use `n/a`.\n`ScreenSize` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings.\n",
-            "display_name": "Screen Size",
-            "name": "ScreenSize"
-          },
-          "SoftwareName": {
-            "description": "Name of the software that was used to present the stimuli.\n",
-            "display_name": "Software Name",
-            "name": "SoftwareName",
-            "type": "string"
-          },
-          "SoftwareRRID": {
-            "description": "[Research Resource Identifier](https://rrid.site) of the\nsoftware that was used to present the stimuli.\nExamples: The RRID for Psychtoolbox is 'SCR_002881',\nand that of PsychoPy is 'SCR_006571'.\n",
-            "display_name": "SoftwareRRID",
-            "format": "rrid",
-            "name": "SoftwareRRID",
-            "type": "string"
-          },
-          "SoftwareVersion": {
-            "description": "Version of the software that was used to present the stimuli.\n",
-            "display_name": "Software Version",
-            "name": "SoftwareVersion",
-            "type": "string"
-          }
-        },
-        "recommended": [
-          "OperatingSystem",
-          "ScreenRefreshRate",
-          "SoftwareName",
-          "SoftwareRRID",
-          "SoftwareVersion",
-          "Code",
-          "HeadStabilization"
-        ],
-        "required": [
-          "ScreenDistance",
-          "ScreenOrigin",
-          "ScreenResolution",
-          "ScreenSize"
         ],
         "type": "object"
       },
@@ -10244,10 +10096,10 @@
       "eyetrack": {
         "EyetrackingStimulusPresentation": {
           "checks": [
-            "\"ScreenDistance\" in associations.events.sidecar.StimulusPresentation",
+            "associations.events.sidecar.StimulusPresentation.ScreenDistance != 'n/a'",
             "\"ScreenOrigin\" in associations.events.sidecar.StimulusPresentation",
-            "\"ScreenResolution\" in associations.events.sidecar.StimulusPresentation",
-            "\"ScreenSize\" in associations.events.sidecar.StimulusPresentation"
+            "associations.events.sidecar.StimulusPresentation.ScreenResolution != 'n/a'",
+            "associations.events.sidecar.StimulusPresentation.ScreenSize != 'n/a'"
           ],
           "issue": {
             "code": "INCOMPLETE_STIMULUS_PRESENTATION",
@@ -10257,7 +10109,8 @@
           "selectors": [
             "suffix == 'physio'",
             "extension == '.tsv.gz'",
-            "sidecar.PhysioType == 'eyetrack'"
+            "sidecar.PhysioType == 'eyetrack'",
+            "sidecar.SampleCoordinateSystem == 'gaze-on-screen'"
           ]
         },
         "OnsetSourceConsistency": {
