@@ -11226,8 +11226,8 @@
           "DatasetType": "recommended",
           "EthicsApprovals": "optional",
           "Funding": "optional",
-          "GeneratedBy": "recommended if `GeneratedById` is not defined",
-          "GeneratedById": "recommended if `GeneratedById` is not defined",
+          "GeneratedBy": "recommended if `GeneratedById` is not present",
+          "GeneratedById": "recommended if `GeneratedById` is not present",
           "HowToAcknowledge": "optional",
           "Keywords": "optional",
           "License": "recommended",
@@ -11250,8 +11250,8 @@
       },
       "derivative_description": {
         "fields": {
-          "GeneratedBy": "required if `GeneratedById` is not defined",
-          "GeneratedById": "required if `GeneratedBy` is not defined"
+          "GeneratedBy": "required if `GeneratedById` is not present",
+          "GeneratedById": "required if `GeneratedBy` is not present"
         },
         "selectors": [
           "path == \"/dataset_description.json\"",
