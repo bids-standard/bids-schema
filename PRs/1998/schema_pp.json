@@ -5365,7 +5365,7 @@
         "type": "string"
       },
       "ElectrodeMaterial": {
-        "description": "Material of the electrode (for example, `Tin`, `Ag/AgCl`, `Gold`).\n",
+        "description": "Material of the electrode (for example, `Tin`, `Ag/AgCl`, `Gold`).\nIf multiple sensor devices with heterogeneous electrode materials are recorded into\nthe same data file,\nelectrode material SHOULD be recorded in the `material` column of `*_electrodes.tsv` instead.\nIf instead those devices were recorded into separate data files (distinguished for example\nby the `recording` entity),\nseparate `*_emg.json` files (similarly distinguished) MAY be included,\neach with their own `ElectrodeMaterial` values.\n",
         "display_name": "Electrode Material",
         "name": "ElectrodeMaterial",
         "type": "string"
@@ -5611,6 +5611,12 @@
         "minimum": 0,
         "name": "GYROChannelCount",
         "type": "integer"
+      },
+      "Gain": {
+        "description": "Signal gain from an in-line amplifier, applied between the EMG sensor/device and the data acquisition computer.\nSee also Preamplification.\n",
+        "display_name": "Gain",
+        "name": "Gain",
+        "type": "number"
       },
       "GeneratedBy": {
         "description": "Used to specify provenance of the dataset.\n",
@@ -6171,8 +6177,8 @@
         "name": "IntendedFor"
       },
       "InterelectrodeDistance": {
-        "description": "Distance between pairs or grids of electrodes rigidly attached to the same sensor device.\n",
-        "display_name": "Interelectrode Distance",
+        "description": "Distance between pairs or grids of electrodes rigidly attached to the same sensor device.\nIf multiple sensor devices with heterogeneous inter-electrode distances are recorded into\nthe same data file,\ninter-electrode distance SHOULD be recorded in the `interelectrode_distance` column of\n`*_electrodes.tsv` instead.\nIf instead those devices were recorded into separate data files (distinguished for example\nby the `recording` entity),\nseparate `*_emg.json` files (similarly distinguished) MAY be included,\neach with their own `InterelectrodeDistance` values.\n",
+        "display_name": "Inter-electrode Distance",
         "name": "InterelectrodeDistance",
         "type": "number",
         "unit": "mm"
@@ -7156,6 +7162,12 @@
         "description": "Frequency (in Hz) of the power grid at the geographical location of the\ninstrument (for example, `50` or `60`).\n",
         "display_name": "Power Line Frequency",
         "name": "PowerLineFrequency"
+      },
+      "Preamplification": {
+        "description": "Amplification built into an EMG bipolar sensor, electrode grid, or other device.\nSee also Gain.\n",
+        "display_name": "Preamplification",
+        "name": "Preamplification",
+        "type": "number"
       },
       "PromptRate": {
         "description": "Prompt rate for each frame (same units as `Units`, for example, `\"Bq/mL\"`).\n",
@@ -16472,8 +16484,10 @@
             "ElectrodeMaterial": "recommended",
             "ElectrodeType": "recommended",
             "EpochLength": "recommended",
+            "Gain": "recommended",
             "HardwareFilters": "recommended",
             "InterelectrodeDistance": "recommended",
+            "Preamplification": "recommended",
             "RecordingDuration": "recommended",
             "RecordingType": "recommended",
             "SubjectArtefactDescription": "recommended",
