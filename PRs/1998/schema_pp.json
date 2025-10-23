@@ -15522,11 +15522,10 @@
             "suffix == \"coordsystem\""
           ]
         },
-        "EMGPlacementSchemeInfo": {
+        "EMGPlacementSchemeDescription": {
           "fields": {
             "EMGPlacementSchemeDescription": {
-              "level": "recommended",
-              "level_addendum": "required if `EMGPlacementScheme` is `\"Other\"`"
+              "level": "required"
             }
           },
           "selectors": [
@@ -15534,6 +15533,19 @@
             "suffix == \"emg\"",
             "\"EMGPlacementScheme\" in json",
             "json.EMGPlacementScheme == \"Other\""
+          ]
+        },
+        "EMGPlacementSchemeInfo": {
+          "fields": {
+            "EMGPlacementScheme": "required",
+            "EMGPlacementSchemeDescription": {
+              "level": "optional",
+              "level_addendum": "required if `EMGPlacementScheme` is `\"Other\"`"
+            }
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"emg\""
           ]
         }
       },
