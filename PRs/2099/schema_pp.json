@@ -4039,7 +4039,7 @@
               "type": "string"
             },
             "Label": {
-              "description": "Name for the activity. This can be the name of the tool, script,\nor function used (for example \"bet\", \"recon-all\", \"myFunction.py\", \"docker\").\n",
+              "description": "Name for the activity.\n",
               "format": "label",
               "name": "Label",
               "type": "string"
@@ -4881,7 +4881,7 @@
         "type": "string"
       },
       "Digest": {
-        "description": "Object containing digests of the data described by the provEntity.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function.\n",
+        "description": "Object containing digests of the data described by the provEntity.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
         "display_name": "Digest",
         "name": "Digest",
         "type": "object"
@@ -5294,12 +5294,12 @@
         "items": {
           "properties": {
             "Dependencies": {
-              "description": "A dictionary defining the software used as dependencies and their versions as key-value pairs.\n",
+              "description": "Object containing software dependencies as keys and their versions as values.\n",
               "name": "Dependencies",
               "type": "object"
             },
             "EnvVars": {
-              "description": "A dictionary defining the environment variables as key-value pairs.",
+              "description": "Object containing environment variables as key-value pairs.",
               "name": "EnvVars",
               "type": "object"
             },
@@ -5310,7 +5310,7 @@
               "type": "string"
             },
             "Label": {
-              "description": "A name for the environment.",
+              "description": "Name for the environment.",
               "format": "label",
               "name": "Label",
               "type": "string"
@@ -7132,7 +7132,7 @@
               "type": "string"
             },
             "Digest": {
-              "description": "Object containing digests of the data described by the provEntity.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function.\n",
+              "description": "Object containing digests of the data described by the provEntity.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
               "name": "Digest",
               "type": "object"
             },
@@ -7161,7 +7161,7 @@
               "type": "string"
             },
             "Label": {
-              "description": "A name for the provEntity.",
+              "description": "Name for the provEntity.",
               "format": "label",
               "name": "Label",
               "type": "string"
