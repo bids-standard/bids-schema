@@ -2114,12 +2114,6 @@
         "name": "whole_blood_radioactivity",
         "type": "number"
       },
-      "width__probes": {
-        "description": "Physical width of the probe, for example, '5'.\nThis dimension corresponds to the x-axis of the probe's local coordinate frame.\n",
-        "display_name": "Width",
-        "name": "width",
-        "type": "number"
-      },
       "x": {
         "description": "Recorded position along the x-axis.\n",
         "display_name": "X position",
