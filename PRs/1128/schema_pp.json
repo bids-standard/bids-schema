@@ -1075,6 +1075,14 @@
         "result": 1
       },
       {
+        "expression": "min(42)",
+        "result": 42
+      },
+      {
+        "expression": "max(42)",
+        "result": 42
+      },
+      {
         "expression": "[3, 2, 1][0]",
         "result": 3
       },
@@ -9599,22 +9607,24 @@
         },
         "ASLTotalAcquiredPairsASLContextLength": {
           "checks": [
-            "aslcontext.n_rows == sidecar.TotalAcquiredPairs"
+            "count(associations.aslcontext.volume_type, \"control\") == sidecar.TotalAcquiredPairs",
+            "count(associations.aslcontext.volume_type, \"label\") == sidecar.TotalAcquiredPairs"
           ],
           "issue": {
             "code": "TOTAL_ACQUIRED_VOLUMES_NOT_CONSISTENT",
             "level": "warning",
-            "message": "The number of values for 'TotalAcquiredPairs' for this file does not match number of\nvolumes in the associated 'aslcontext.tsv'.\n'TotalAcquiredPairs' is the original number of 3D volumes acquired for each volume defined in the\nassociated 'aslcontext.tsv'.\n"
+            "message": "The number of values for 'TotalAcquiredPairs' for this file does not match number of\ncontrol-label pairs in the associated 'aslcontext.tsv'.\n'TotalAcquiredPairs' is the original number of control-label pairs\ndefined in the associated 'aslcontext.tsv'.\n"
           },
           "selectors": [
             "suffix == \"asl\"",
             "type(associations.aslcontext) != \"null\"",
-            "\"TotalAcquiredPairs\" in sidecar"
+            "\"TotalAcquiredPairs\" in sidecar",
+            "count(associations.aslcontext.volume_type, \"control\") > 0"
           ]
         },
         "BolusCutOffDelayTimeGreater": {
           "checks": [
-            "sidecar.BolusCutOffDelayTime <= 10"
+            "max(sidecar.BolusCutOffDelayTime) <= 10"
           ],
           "issue": {
             "code": "BOLUS_CUT_OFF_DELAY_TIME_GREATER",
@@ -9627,7 +9637,7 @@
         },
         "LabelingDurationGreater": {
           "checks": [
-            "sidecar.LabelingDuration <= 10"
+            "max(sidecar.LabelingDuration) <= 10"
           ],
           "issue": {
             "code": "LABELING_DURATION_GREATER",
@@ -9640,7 +9650,7 @@
         },
         "PostLabelingDelayGreater": {
           "checks": [
-            "sidecar.PostLabelingDelay <= 10"
+            "max(sidecar.PostLabelingDelay) <= 10"
           ],
           "issue": {
             "code": "POST_LABELING_DELAY_GREATER",
@@ -10571,7 +10581,7 @@
         },
         "EchoTimeGreaterThan": {
           "checks": [
-            "sidecar.EchoTime <= 1"
+            "max(sidecar.EchoTime) <= 1"
           ],
           "issue": {
             "code": "ECHO_TIME_GREATER_THAN",
