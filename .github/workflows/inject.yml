@@ -27,10 +27,10 @@ jobs:
           git config --global user.name bids-maintenance
           git config --global user.email bids.maintenance@gmail.com
 
-      - name: Install datalad
+      - name: Install git-annex and datalad
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install datalad
+          python3 -m pip install datalad git-annex
 
       - name: Run cron job
         run: |
