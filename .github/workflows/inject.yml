@@ -20,13 +20,18 @@ jobs:
       - name: Checkout this repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
       
       - name: Configure git
         run: |
           git config --global user.name bids-maintenance
           git config --global user.email bids.maintenance@gmail.com
-      
+
+      - name: Install datalad
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install datalad
+
       - name: Run cron job
         run: |
           tools/inject-schema-fully-auto
