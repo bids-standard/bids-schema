@@ -1144,6 +1144,220 @@
         ]
       }
     ],
+    "templates": {
+      "deriv": {
+        "base": {
+          "entities": {
+            "description": "optional",
+            "session": "optional",
+            "subject": "optional"
+          },
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ]
+        },
+        "dseg": {
+          "entities": {
+            "description": "optional",
+            "resolution": "optional",
+            "segmentation": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "extensions": [
+            ".nii.gz",
+            ".nii",
+            ".tsv",
+            ".json"
+          ],
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ],
+          "suffixes": [
+            "dseg"
+          ]
+        },
+        "dseg_surface": {
+          "entities": {
+            "density": "optional",
+            "description": "optional",
+            "hemisphere": "optional",
+            "segmentation": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "extensions": [
+            ".label.gii",
+            ".dlabel.nii",
+            ".tsv",
+            ".json"
+          ],
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ],
+          "suffixes": [
+            "dseg"
+          ]
+        },
+        "mask": {
+          "entities": {
+            "description": "optional",
+            "label": "optional",
+            "resolution": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "extensions": [
+            ".nii.gz",
+            ".nii",
+            ".json"
+          ],
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ],
+          "suffixes": [
+            "mask"
+          ]
+        },
+        "probseg": {
+          "entities": {
+            "description": "optional",
+            "label": "optional",
+            "resolution": "optional",
+            "segmentation": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "extensions": [
+            ".nii.gz",
+            ".nii",
+            ".json"
+          ],
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ],
+          "suffixes": [
+            "probseg"
+          ]
+        },
+        "spatial": {
+          "entities": {
+            "description": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ]
+        },
+        "surface": {
+          "entities": {
+            "density": "optional",
+            "description": "optional",
+            "hemisphere": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ]
+        },
+        "volumetric": {
+          "entities": {
+            "description": "optional",
+            "resolution": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "extensions": [
+            ".nii.gz",
+            ".nii",
+            ".json"
+          ],
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ]
+        }
+      },
+      "raw": {
+        "base": {
+          "entities": {
+            "session": "optional",
+            "subject": "required"
+          }
+        },
+        "epi": {
+          "entities": {
+            "acquisition": "optional",
+            "ceagent": "optional",
+            "chunk": "optional",
+            "direction": "optional",
+            "part": "optional",
+            "reconstruction": "optional",
+            "run": "optional",
+            "session": "optional",
+            "subject": "required"
+          }
+        },
+        "mri": {
+          "entities": {
+            "acquisition": "optional",
+            "ceagent": "optional",
+            "chunk": "optional",
+            "reconstruction": "optional",
+            "run": "optional",
+            "session": "optional",
+            "subject": "required"
+          }
+        },
+        "mrs": {
+          "entities": {
+            "acquisition": "optional",
+            "nucleus": "optional",
+            "reconstruction": "optional",
+            "run": "optional",
+            "session": "optional",
+            "subject": "required",
+            "task": "optional",
+            "volume": "optional"
+          }
+        },
+        "pet": {
+          "entities": {
+            "reconstruction": "optional",
+            "run": "optional",
+            "session": "optional",
+            "subject": "required",
+            "task": "optional",
+            "tracer": "optional"
+          }
+        },
+        "recording": {
+          "entities": {
+            "acquisition": "optional",
+            "run": "optional",
+            "session": "optional",
+            "subject": "required"
+          }
+        },
+        "task": {
+          "entities": {
+            "acquisition": "optional",
+            "run": "optional",
+            "session": "optional",
+            "subject": "required",
+            "task": "required"
+          }
+        }
+      }
+    },
     "versions": [
       "1.10.1",
       "1.10.0",
@@ -11768,7 +11982,37 @@
       },
       "deriv": {
         "imaging": {
-          "anat_nonparametric_discrete_segmentation": {
+          "anat_defacemask_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "modality": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "defacemask"
+            ]
+          },
+          "anat_discrete_segmentation": {
             "datatypes": [
               "anat"
             ],
@@ -11785,14 +12029,14 @@
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".json",
-              ".tsv"
+              ".tsv",
+              ".json"
             ],
             "selectors": [
               "dataset.dataset_description.DatasetType == 'derivative'"
@@ -11801,7 +12045,7 @@
               "dseg"
             ]
           },
-          "anat_nonparametric_discrete_surface": {
+          "anat_discrete_surface": {
             "datatypes": [
               "anat"
             ],
@@ -11815,19 +12059,18 @@
               "hemisphere": "optional",
               "part": "optional",
               "reconstruction": "optional",
-              "resolution": "optional",
               "run": "optional",
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
               ".label.gii",
               ".dlabel.nii",
-              ".json",
-              ".tsv"
+              ".tsv",
+              ".json"
             ],
             "selectors": [
               "dataset.dataset_description.DatasetType == 'derivative'"
@@ -11836,7 +12079,7 @@
               "dseg"
             ]
           },
-          "anat_nonparametric_mask": {
+          "anat_mask": {
             "datatypes": [
               "anat"
             ],
@@ -11853,7 +12096,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -11868,7 +12111,7 @@
               "mask"
             ]
           },
-          "anat_nonparametric_probabilistic_segmentation": {
+          "anat_megre_volumetric": {
             "datatypes": [
               "anat"
             ],
@@ -11877,16 +12120,14 @@
               "ceagent": "optional",
               "chunk": "optional",
               "description": "optional",
-              "echo": "optional",
-              "label": "optional",
+              "echo": "required",
               "part": "optional",
               "reconstruction": "optional",
               "resolution": "optional",
               "run": "optional",
-              "segmentation": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -11898,7 +12139,166 @@
               "dataset.dataset_description.DatasetType == 'derivative'"
             ],
             "suffixes": [
-              "probseg"
+              "MEGRE"
+            ]
+          },
+          "anat_mese_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "echo": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "MESE"
+            ]
+          },
+          "anat_mp2rage_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "optional",
+              "inversion": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "MP2RAGE"
+            ]
+          },
+          "anat_mtr_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "mtransfer": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "MTR"
+            ]
+          },
+          "anat_multiflip_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "VFA"
+            ]
+          },
+          "anat_multiinversion_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "inversion": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "IRT1"
             ]
           },
           "anat_nonparametric_volumetric": {
@@ -11909,7 +12309,6 @@
               "acquisition": "optional",
               "ceagent": "optional",
               "chunk": "optional",
-              "density": "optional",
               "description": "optional",
               "echo": "optional",
               "part": "optional",
@@ -11918,7 +12317,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -11944,131 +12343,6 @@
               "PD"
             ]
           },
-          "anat_parametric_discrete_segmentation": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "reconstruction": "optional",
-              "resolution": "optional",
-              "run": "optional",
-              "segmentation": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json",
-              ".tsv"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "dseg"
-            ]
-          },
-          "anat_parametric_discrete_surface": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "density": "optional",
-              "description": "optional",
-              "hemisphere": "optional",
-              "reconstruction": "optional",
-              "resolution": "optional",
-              "run": "optional",
-              "segmentation": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".label.gii",
-              ".dlabel.nii",
-              ".json",
-              ".tsv"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "dseg"
-            ]
-          },
-          "anat_parametric_mask": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "label": "optional",
-              "reconstruction": "optional",
-              "resolution": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "mask"
-            ]
-          },
-          "anat_parametric_probabilistic_segmentation": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "label": "optional",
-              "reconstruction": "optional",
-              "resolution": "optional",
-              "run": "optional",
-              "segmentation": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "probseg"
-            ]
-          },
           "anat_parametric_volumetric": {
             "datatypes": [
               "anat"
@@ -12077,14 +12351,13 @@
               "acquisition": "optional",
               "ceagent": "optional",
               "chunk": "optional",
-              "density": "optional",
               "description": "optional",
               "reconstruction": "optional",
               "resolution": "optional",
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -12114,7 +12387,105 @@
               "M0map"
             ]
           },
+          "anat_probabilistic_segmentation": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "label": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "segmentation": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "probseg"
+            ]
+          },
+          "anat_vfamt_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "required",
+              "mtransfer": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "MPM",
+              "MTS"
+            ]
+          },
           "dwi_discrete_segmentation": {
+            "datatypes": [
+              "dwi"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "segmentation": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".tsv",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "dseg"
+            ]
+          },
+          "dwi_dwi_volumetric": {
             "datatypes": [
               "dwi"
             ],
@@ -12129,19 +12500,18 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".json",
-              ".tsv"
+              ".json"
             ],
             "selectors": [
               "dataset.dataset_description.DatasetType == 'derivative'"
             ],
             "suffixes": [
-              "dseg"
+              "dwi"
             ]
           },
           "dwi_mask": {
@@ -12160,7 +12530,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".nii.gz",
@@ -12191,7 +12561,7 @@
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".nii.gz",
@@ -12205,6 +12575,35 @@
               "probseg"
             ]
           },
+          "dwi_sbref_volumetric": {
+            "datatypes": [
+              "dwi"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "sbref"
+            ]
+          },
           "dwi_scannerderivatives": {
             "datatypes": [
               "dwi"
@@ -12212,7 +12611,6 @@
             "entities": {
               "acquisition": "optional",
               "chunk": "optional",
-              "density": "optional",
               "description": "optional",
               "direction": "optional",
               "reconstruction": "optional",
@@ -12220,12 +12618,15 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".nii.gz",
               ".nii",
               ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
             ],
             "suffixes": [
               "ADC",
@@ -12236,14 +12637,205 @@
               "trace"
             ]
           },
-          "dwi_volumetric": {
+          "fmap_RFFieldMaps_volumetric": {
             "datatypes": [
-              "dwi"
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "optional",
+              "inversion": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1AFI",
+              "TB1TFL",
+              "TB1RFM",
+              "RB1COR"
+            ]
+          },
+          "fmap_TB1DAM_volumetric": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "flip": "required",
+              "inversion": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1DAM"
+            ]
+          },
+          "fmap_TB1EPI_volumetric": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "required",
+              "flip": "required",
+              "inversion": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1EPI"
+            ]
+          },
+          "fmap_TB1SRGE_volumetric": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "required",
+              "inversion": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1SRGE"
+            ]
+          },
+          "fmap_fieldmaps_volumetric": {
+            "datatypes": [
+              "fmap"
             ],
             "entities": {
               "acquisition": "optional",
               "chunk": "optional",
-              "density": "optional",
+              "description": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "phasediff",
+              "phase1",
+              "phase2",
+              "magnitude1",
+              "magnitude2",
+              "magnitude",
+              "fieldmap"
+            ]
+          },
+          "fmap_parametric_volumetric": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1map",
+              "RB1map"
+            ]
+          },
+          "fmap_pepolar_m0scan": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
               "description": "optional",
               "direction": "optional",
               "part": "optional",
@@ -12252,20 +12844,48 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".json",
-              ".bvec",
-              ".bval"
+              ".json"
             ],
             "selectors": [
               "dataset.dataset_description.DatasetType == 'derivative'"
             ],
             "suffixes": [
-              "dwi"
+              "m0scan"
+            ]
+          },
+          "fmap_pepolar_volumetric": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "epi"
             ]
           },
           "func_discrete_segmentation": {
@@ -12286,14 +12906,14 @@
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".json",
-              ".tsv"
+              ".tsv",
+              ".json"
             ],
             "selectors": [
               "dataset.dataset_description.DatasetType == 'derivative'"
@@ -12320,7 +12940,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -12333,6 +12953,37 @@
             ],
             "suffixes": [
               "mask"
+            ]
+          },
+          "func_phase_volumetric": {
+            "datatypes": [
+              "func"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "echo": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "phase"
             ]
           },
           "func_probabilistic_segmentation": {
@@ -12354,7 +13005,7 @@
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -12377,7 +13028,6 @@
               "acquisition": "optional",
               "ceagent": "optional",
               "chunk": "optional",
-              "density": "optional",
               "description": "optional",
               "direction": "optional",
               "echo": "optional",
@@ -12387,7 +13037,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -12403,339 +13053,66 @@
               "cbv",
               "sbref"
             ]
+          },
+          "perf_asl_volumetric": {
+            "datatypes": [
+              "perf"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "echo": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "asl",
+              "m0scan"
+            ]
+          },
+          "pet_pet_volumetric": {
+            "datatypes": [
+              "pet"
+            ],
+            "entities": {
+              "description": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "tracer": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "pet"
+            ]
           }
         },
         "preprocessed_data": {
-          "anat_defacemask_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "modality": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "defacemask"
-            ]
-          },
-          "anat_megre_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "MEGRE"
-            ]
-          },
-          "anat_mese_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "optional",
-              "echo": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "MESE"
-            ]
-          },
-          "anat_mp2rage_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "optional",
-              "flip": "optional",
-              "inversion": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "MP2RAGE"
-            ]
-          },
-          "anat_mtr_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "mtransfer": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "MTR"
-            ]
-          },
-          "anat_multiflip_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "optional",
-              "flip": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "VFA"
-            ]
-          },
-          "anat_multiinversion_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "inversion": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "IRT1"
-            ]
-          },
-          "anat_nonparametric_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "T1w",
-              "T2w",
-              "PDw",
-              "T2starw",
-              "FLAIR",
-              "inplaneT1",
-              "inplaneT2",
-              "PDT2",
-              "angio",
-              "T2star",
-              "FLASH",
-              "PD"
-            ]
-          },
-          "anat_parametric_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "T1map",
-              "T2map",
-              "T2starmap",
-              "R1map",
-              "R2map",
-              "R2starmap",
-              "PDmap",
-              "MTRmap",
-              "MTsat",
-              "UNIT1",
-              "T1rho",
-              "MWFmap",
-              "MTVmap",
-              "Chimap",
-              "S0map",
-              "M0map"
-            ]
-          },
-          "anat_vfamt_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "optional",
-              "flip": "required",
-              "mtransfer": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "MPM",
-              "MTS"
-            ]
-          },
           "beh_noncontinuous_common": {
             "datatypes": [
               "beh"
@@ -12745,8 +13122,7 @@
               "description": "optional",
               "run": "optional",
               "session": "optional",
-              "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -12770,7 +13146,7 @@
               "processing": "optional",
               "run": "optional",
               "session": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -12793,7 +13169,7 @@
               "description": "optional",
               "run": "optional",
               "session": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required",
               "tracksys": "required"
             },
@@ -12819,7 +13195,7 @@
               "description": "optional",
               "run": "optional",
               "session": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -12843,7 +13219,7 @@
               "description": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -12865,7 +13241,7 @@
               "acquisition": "optional",
               "description": "optional",
               "session": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -12889,7 +13265,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -12910,7 +13286,7 @@
               "description": "optional",
               "run": "optional",
               "session": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -12924,7 +13300,7 @@
               "electrodes"
             ]
           },
-          "channels_electrodes_optodes_common": {
+          "channels_optodes_common": {
             "datatypes": [
               "nirs"
             ],
@@ -12932,7 +13308,7 @@
               "acquisition": "optional",
               "description": "optional",
               "session": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".tsv",
@@ -12945,64 +13321,6 @@
               "optodes"
             ]
           },
-          "dwi_dwi_common": {
-            "datatypes": [
-              "dwi"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json",
-              ".bvec",
-              ".bval"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "dwi"
-            ]
-          },
-          "dwi_sbref_common": {
-            "datatypes": [
-              "dwi"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "sbref"
-            ]
-          },
           "eeg_eeg_common": {
             "datatypes": [
               "eeg"
@@ -13013,7 +13331,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -13033,312 +13351,6 @@
               "eeg"
             ]
           },
-          "fmap_RFFieldMaps_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "optional",
-              "flip": "optional",
-              "inversion": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "TB1AFI",
-              "TB1TFL",
-              "TB1RFM",
-              "RB1COR"
-            ]
-          },
-          "fmap_TB1DAM_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "flip": "required",
-              "inversion": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "TB1DAM"
-            ]
-          },
-          "fmap_TB1EPI_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "required",
-              "flip": "required",
-              "inversion": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "TB1EPI"
-            ]
-          },
-          "fmap_TB1SRGE_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "optional",
-              "flip": "required",
-              "inversion": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "TB1SRGE"
-            ]
-          },
-          "fmap_fieldmaps_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "phasediff",
-              "phase1",
-              "phase2",
-              "magnitude1",
-              "magnitude2",
-              "magnitude",
-              "fieldmap"
-            ]
-          },
-          "fmap_parametric_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "TB1map",
-              "RB1map"
-            ]
-          },
-          "fmap_pepolar_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "required",
-              "part": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json",
-              ".bval",
-              ".bvec"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "epi"
-            ]
-          },
-          "fmap_pepolar_m0scan": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "required",
-              "part": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "m0scan"
-            ]
-          },
-          "func_func_common": {
-            "datatypes": [
-              "func"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "optional",
-              "echo": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "bold",
-              "cbv",
-              "sbref"
-            ]
-          },
-          "func_phase_common": {
-            "datatypes": [
-              "func"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "optional",
-              "echo": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "phase"
-            ]
-          },
           "ieeg_ieeg_common": {
             "datatypes": [
               "ieeg"
@@ -13349,7 +13361,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -13384,7 +13396,7 @@
               "description": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".dat"
@@ -13410,7 +13422,7 @@
               "description": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".fif"
@@ -13431,7 +13443,7 @@
               "description": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".*",
@@ -13453,7 +13465,7 @@
               "description": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -13479,7 +13491,7 @@
               "session": "optional",
               "space": "optional",
               "split": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -13517,7 +13529,7 @@
               "session": "optional",
               "space": "optional",
               "stain": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".ome.tif",
@@ -13551,35 +13563,6 @@
               "XPCT"
             ]
           },
-          "perf_asl_common": {
-            "datatypes": [
-              "perf"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "description": "optional",
-              "direction": "optional",
-              "echo": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "asl",
-              "m0scan"
-            ]
-          },
           "pet_blood_common": {
             "datatypes": [
               "pet"
@@ -13591,7 +13574,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional",
               "tracer": "optional"
             },
@@ -13604,32 +13587,6 @@
             ],
             "suffixes": [
               "blood"
-            ]
-          },
-          "pet_pet_common": {
-            "datatypes": [
-              "pet"
-            ],
-            "entities": {
-              "description": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional",
-              "tracer": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "pet"
             ]
           },
           "task_events_common": {
@@ -13645,7 +13602,7 @@
               "description": "optional",
               "run": "optional",
               "session": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -14443,7 +14400,7 @@
               "run": "optional",
               "session": "optional",
               "subject": "required",
-              "task": "required",
+              "task": "optional",
               "volume": "optional"
             },
             "extensions": [
@@ -14463,7 +14420,7 @@
               "run": "optional",
               "session": "optional",
               "subject": "required",
-              "task": "required",
+              "task": "optional",
               "tracer": "optional"
             },
             "extensions": [
@@ -14639,8 +14596,9 @@
               "acquisition": "optional",
               "ceagent": "optional",
               "chunk": "optional",
-              "direction": "required",
+              "direction": "optional",
               "part": "optional",
+              "reconstruction": "optional",
               "run": "optional",
               "session": "optional",
               "subject": "required"
@@ -14664,8 +14622,9 @@
               "acquisition": "optional",
               "ceagent": "optional",
               "chunk": "optional",
-              "direction": "required",
+              "direction": "optional",
               "part": "optional",
+              "reconstruction": "optional",
               "run": "optional",
               "session": "optional",
               "subject": "required"
@@ -15529,32 +15488,6 @@
           "selectors": [
             "datatype == \"emg\"",
             "suffix == \"coordsystem\""
-          ]
-        },
-        "EMGPlacementSchemeDescription": {
-          "fields": {
-            "EMGPlacementSchemeDescription": {
-              "level": "required"
-            }
-          },
-          "selectors": [
-            "datatype == \"emg\"",
-            "suffix == \"emg\"",
-            "\"EMGPlacementScheme\" in json",
-            "json.EMGPlacementScheme == \"Other\""
-          ]
-        },
-        "EMGPlacementSchemeInfo": {
-          "fields": {
-            "EMGPlacementScheme": "required",
-            "EMGPlacementSchemeDescription": {
-              "level": "optional",
-              "level_addendum": "required if `EMGPlacementScheme` is `\"Other\"`"
-            }
-          },
-          "selectors": [
-            "datatype == \"emg\"",
-            "suffix == \"emg\""
           ]
         }
       },
@@ -16497,11 +16430,20 @@
             "suffix == \"emg\""
           ]
         },
+        "EMGPlacementSchemeDescription": {
+          "fields": {
+            "EMGPlacementSchemeDescription": "required"
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"emg\"",
+            "sidecar.EMGPlacementScheme == \"Other\""
+          ]
+        },
         "EMGRecommended": {
           "fields": {
             "EMGChannelCount": "recommended",
             "EMGGround": "recommended",
-            "EMGPlacementSchemeDescription": "recommended",
             "ElectrodeMaterial": "recommended",
             "ElectrodeType": "recommended",
             "EpochLength": "recommended",
@@ -16522,6 +16464,10 @@
         "EMGRequired": {
           "fields": {
             "EMGPlacementScheme": "required",
+            "EMGPlacementSchemeDescription": {
+              "level": "optional",
+              "level_addendum": "required if `EMGPlacementScheme` is `\"Other\"`"
+            },
             "EMGReference": "required",
             "PowerLineFrequency": "required",
             "SamplingFrequency": {
