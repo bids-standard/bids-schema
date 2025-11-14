@@ -4111,6 +4111,11 @@
         "display_name": "Path relative to the participant directory",
         "pattern": "(?!/)(?!sub-)[0-9a-zA-Z+/_\\-.]+"
       },
+      "person_name": {
+        "description": "Name for a person in a single string with clear disambiguation of First (Given) and Last (Family)\nname(s).  Should follow `Last Names, First Names` convention.\n",
+        "display_name": "Name of a person",
+        "pattern": ".+, .+"
+      },
       "rrid": {
         "description": "A [research resource identifier](https://rrid.site).\n",
         "display_name": "Research resource identifier",
@@ -4387,6 +4392,7 @@
         "description": "List of individuals who contributed to the creation/curation of the dataset.\nIt is RECOMMENDED to use `Last, First` form to ensure clear separation of\nFirst (Given) from Last (Family) name(s).\n",
         "display_name": "Authors",
         "items": {
+          "format": "person_name",
           "type": "string"
         },
         "name": "Authors",
@@ -5550,7 +5556,8 @@
           "file_relative",
           "participant_relative",
           "stimuli_relative",
-          "hed_version"
+          "hed_version",
+          "person_name"
         ],
         "name": "Format",
         "type": "string"
