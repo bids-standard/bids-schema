@@ -4243,9 +4243,17 @@
               "name": "AssociatedWith"
             },
             "Command": {
-              "description": "Command (or commands) used to run the tool, including all parameters.",
-              "name": "Command",
-              "type": "string"
+              "anyOf": [
+                {
+                  "format": "string",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Command (or commands) used to run the tool, including all parameters.\nSet to `null` to describe that the activity was performed manually.\n",
+              "name": "Command"
             },
             "EndedAtTime": {
               "description": "A timestamp tracking when this activity ended.",
