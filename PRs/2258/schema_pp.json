@@ -7207,7 +7207,7 @@
             "type": "string"
           },
           "SphericalHarmonicsDegree": {
-            "description": "Integer. The maximal spherical harmonic order *l<sub>max</sub>*; the number of volumes in the associated NIfTI image must correspond to this value as per the relationship described in [spherical harmonics bases](#spherical-harmonics-bases) section.\n",
+            "description": "Integer. The maximal spherical harmonic order *l<sub>max</sub>*;\nthe number of volumes in the associated NIfTI image must correspond to this value as per the relationship\ndescribed in the [spherical harmonics bases](#spherical-harmonics-bases) section.\n",
             "display_name": "Spherical Harmonics Degree",
             "minimum": 0,
             "name": "SphericalHarmonicsDegree",
@@ -8489,7 +8489,7 @@
         "type": "string"
       },
       "SphericalHarmonicsDegree__OrientationEncoding": {
-        "description": "Integer. The maximal spherical harmonic order *l<sub>max</sub>*; the number of volumes in the associated NIfTI image must correspond to this value as per the relationship described in [spherical harmonics bases](#spherical-harmonics-bases) section.\n",
+        "description": "Integer. The maximal spherical harmonic order *l<sub>max</sub>*;\nthe number of volumes in the associated NIfTI image must correspond to this value as per the relationship\ndescribed in the [spherical harmonics bases](#spherical-harmonics-bases) section.\n",
         "display_name": "Spherical Harmonics Degree",
         "minimum": 0,
         "name": "SphericalHarmonicsDegree",
