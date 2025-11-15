@@ -5837,7 +5837,8 @@
         "description": "Signal gain from an in-line amplifier, applied between the EMG sensor/device and the data acquisition computer.\nSee also Preamplification.\n",
         "display_name": "Gain",
         "name": "Gain",
-        "type": "number"
+        "type": "number",
+        "unit": "dB"
       },
       "GeneratedBy": {
         "description": "Used to specify provenance of the dataset.\n",
@@ -7388,7 +7389,8 @@
         "description": "Amplification built into an EMG bipolar sensor, electrode grid, or other device.\nSee also Gain.\n",
         "display_name": "Preamplification",
         "name": "Preamplification",
-        "type": "number"
+        "type": "number",
+        "unit": "dB"
       },
       "PromptRate": {
         "description": "Prompt rate for each frame (same units as `Units`, for example, `\"Bq/mL\"`).\n",
@@ -16423,6 +16425,8 @@
         },
         "EMGOptional": {
           "fields": {
+            "Gain": "optional",
+            "Preamplification": "optional",
             "SkinPreparation": "optional"
           },
           "selectors": [
@@ -16447,10 +16451,8 @@
             "ElectrodeMaterial": "recommended",
             "ElectrodeType": "recommended",
             "EpochLength": "recommended",
-            "Gain": "recommended",
             "HardwareFilters": "recommended",
             "InterelectrodeDistance": "recommended",
-            "Preamplification": "recommended",
             "RecordingDuration": "recommended",
             "RecordingType": "recommended",
             "SubjectArtefactDescription": "recommended",
