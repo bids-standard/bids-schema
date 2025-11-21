@@ -5838,7 +5838,7 @@
         "display_name": "Gain",
         "name": "Gain",
         "type": "number",
-        "unit": "dB"
+        "unit": "arbitrary"
       },
       "GeneratedBy": {
         "description": "Used to specify provenance of the dataset.\n",
@@ -7390,7 +7390,7 @@
         "display_name": "Preamplification",
         "name": "Preamplification",
         "type": "number",
-        "unit": "dB"
+        "unit": "arbitrary"
       },
       "PromptRate": {
         "description": "Prompt rate for each frame (same units as `Units`, for example, `\"Bq/mL\"`).\n",
@@ -10188,6 +10188,21 @@
         }
       },
       "emg": {
+        "EMGChannelCountReq": {
+          "checks": [
+            "sidecar.EMGChannelCount == count(associations.channels.type, \"EMG\")"
+          ],
+          "issue": {
+            "code": "EMG_CHANNEL_COUNT_MISMATCH",
+            "level": "warning",
+            "message": "The EMGChannelCount metadata does not match the number of channels\nwith type EMG in the associated channels.tsv file.\n"
+          },
+          "selectors": [
+            "suffix == \"emg\"",
+            "type(sidecar.EMGChannelCount) != \"null\"",
+            "associations.channels.type"
+          ]
+        },
         "EMGCoordSysMatch": {
           "checks": [
             "length(\n  intersects(\n    unique(columns.coordinate_system),\n    associations.coordsystems.spaces\n  )\n) == length(unique(columns.coordinate_system))\n"
@@ -16387,6 +16402,15 @@
         }
       },
       "electrophys": {
+        "EpochLengthRequired": {
+          "fields": {
+            "EpochLength": "required"
+          },
+          "selectors": [
+            "intersects([datatype], ['emg'])",
+            "sidecar.RecordingType == 'epoched'"
+          ]
+        },
         "EpochedData": {
           "fields": {
             "EpochLength": "recommended"
@@ -16425,9 +16449,19 @@
         },
         "EMGOptional": {
           "fields": {
+            "EMGGround": "optional",
+            "ElectrodeMaterial": "optional",
+            "ElectrodeType": "optional",
+            "EpochLength": {
+              "level": "optional",
+              "level_addendum": "recommended if RecordingType is \"epoched\""
+            },
             "Gain": "optional",
+            "InterelectrodeDistance": "optional",
             "Preamplification": "optional",
-            "SkinPreparation": "optional"
+            "SkinPreparation": "optional",
+            "SubjectArtefactDescription": "optional",
+            "TriggerChannelCount": "optional"
           },
           "selectors": [
             "datatype == \"emg\"",
@@ -16447,16 +16481,8 @@
         "EMGRecommended": {
           "fields": {
             "EMGChannelCount": "recommended",
-            "EMGGround": "recommended",
-            "ElectrodeMaterial": "recommended",
-            "ElectrodeType": "recommended",
-            "EpochLength": "recommended",
             "HardwareFilters": "recommended",
-            "InterelectrodeDistance": "recommended",
-            "RecordingDuration": "recommended",
-            "RecordingType": "recommended",
-            "SubjectArtefactDescription": "recommended",
-            "TriggerChannelCount": "recommended"
+            "RecordingDuration": "recommended"
           },
           "selectors": [
             "datatype == \"emg\"",
@@ -16472,6 +16498,7 @@
             },
             "EMGReference": "required",
             "PowerLineFrequency": "required",
+            "RecordingType": "required",
             "SamplingFrequency": {
               "description_addendum": "The sampling frequency of data channels that deviate from the main sampling\nfrequency SHOULD be specified in the `channels.tsv` file.\n",
               "level": "required"
