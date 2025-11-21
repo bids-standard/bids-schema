@@ -11311,6 +11311,22 @@
           ]
         }
       },
+      "provenance": {
+        "ProvenanceEntityMissing": {
+          "checks": [
+            "allequal(\n  sorted(intersects(columns.provenance_label, dataset.subjects.participant_id)),\n  sorted(dataset.subjects.participant_id)\n)\n"
+          ],
+          "issue": {
+            "code": "PROVENANCE_ENTITY_MISSING",
+            "level": "error",
+            "message": "A provenance.tsv file lists prov entities that were not found in\nthe dataset.\n"
+          },
+          "selectors": [
+            "datatype == 'provenance'",
+            "suffix == '.tsv'"
+          ]
+        }
+      },
       "references": {
         "AssociatedEmptyRoomArray": {
           "checks": [
