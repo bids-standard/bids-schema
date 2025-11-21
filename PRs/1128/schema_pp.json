@@ -1696,7 +1696,7 @@
         "type": "number"
       },
       "pupil_size": {
-        "description": "Pupil size or area of the recorded eye, in the\nunits specified in the corresponding metadata sidecar.\nIt is RECOMMENDED to indicate the particular type of pupil size that is\nbeing recorded in the `Description` field of this column.\nIt is RECOMMENDED to specify the `Units` field corresponding to this column.\n",
+        "description": "Pupil size, as area or diameter, of the recorded eye, in the\nunits specified in the corresponding metadata sidecar.\nIt is RECOMMENDED to indicate the particular type of pupil size that is\nbeing recorded in the `Description` field of this column.\nIt is RECOMMENDED to specify the `Units` field corresponding to this column.\n",
         "display_name": "Pupil size",
         "name": "pupil_size",
         "type": "number"
@@ -10350,6 +10350,21 @@
             "suffix == 'physioevents'",
             "extension == '.tsv.gz'",
             "sidecar.OnsetSource"
+          ]
+        },
+        "PupilSizeDescription": {
+          "checks": [
+            "match(sidecar.pupil_size.Description, '.*(area|diameter).*')"
+          ],
+          "issue": {
+            "code": "UNKNOWN_PUPIL_SIZE",
+            "level": "warning",
+            "message": "The `pupil_size` description in the JSON sidecar does not clearly indicate whether the size is area or diameter.\n"
+          },
+          "selectors": [
+            "suffix == 'physio'",
+            "sidecar.PhysioType == \"eyetrack\"",
+            "columns.pupil_size"
           ]
         }
       },
