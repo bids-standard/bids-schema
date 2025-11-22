@@ -9632,7 +9632,7 @@
       },
       "icephys": {
         "description": "Intracellular electrophysiological data.\n",
-        "display_name": "Inracellular Electrophysiology",
+        "display_name": "Intracellular Electrophysiology",
         "value": "icephys"
       },
       "ieeg": {
