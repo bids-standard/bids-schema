@@ -18850,6 +18850,7 @@
             "y_coordinate"
           ],
           "selectors": [
+            "suffix == \"physio\"",
             "sidecar.PhysioType == \"eyetrack\""
           ]
         }
