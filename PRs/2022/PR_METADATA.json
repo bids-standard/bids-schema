@@ -1,8 +1,8 @@
 {
   "pr_number": "2022",
-  "git_ref": "ac4682d0e12a154c4c60a36d8555878d6b8252b5",
-  "last_commit": "ac4682d0e12a154c4c60a36d8555878d6b8252b5",
-  "last_updated": "2025-11-25T02:01:55Z",
+  "git_ref": "ec562bd5e3440f60a2fd17b09fc731a6f1eadf6f",
+  "last_commit": "ec562bd5e3440f60a2fd17b09fc731a6f1eadf6f",
+  "last_updated": "2025-11-25T12:55:23Z",
   "has_schema_changes": true,
   "build_status": "success",
   "authors_count": 4
