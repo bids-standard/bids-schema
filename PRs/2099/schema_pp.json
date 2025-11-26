@@ -4280,10 +4280,8 @@
               "type": "string"
             },
             "Type": {
-              "description": "Term from a controlled vocabulary that more specifically describes the object.\n",
-              "display_name": "Type",
+              "description": "Term from a controlled vocabulary that more specifically describes the activity.",
               "format": "uri",
-              "name": "Type",
               "type": "string"
             },
             "Used": {
@@ -7399,10 +7397,8 @@
               "type": "string"
             },
             "Type": {
-              "description": "Term from a controlled vocabulary that more specifically describes the object.\n",
-              "display_name": "Type",
+              "description": "Term from a controlled vocabulary that more specifically describes the [provEntity](SPEC_ROOT/modality-agnostic-files/provenance.md#proventities).\n",
               "format": "uri",
-              "name": "Type",
               "type": "string"
             }
           },
@@ -7418,13 +7414,6 @@
         "minItems": 1,
         "name": "ProvEntities",
         "type": "array"
-      },
-      "ProvObjectType": {
-        "description": "Term from a controlled vocabulary that more specifically describes the object.\n",
-        "display_name": "Type",
-        "format": "uri",
-        "name": "Type",
-        "type": "string"
       },
       "PulseDuration": {
         "description": "Pulse duration if spectral editing was applied, in milliseconds\n",
