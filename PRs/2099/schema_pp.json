@@ -4282,6 +4282,7 @@
             "Type": {
               "description": "Term from a controlled vocabulary that more specifically describes the activity.",
               "format": "uri",
+              "name": "Type",
               "type": "string"
             },
             "Used": {
@@ -4298,7 +4299,7 @@
                   "type": "array"
                 }
               ],
-              "description": "Identifier(s) of the provEntity/provEntities or environment(s) used by the activity.\n\nRelated provEntities MUST be described as specified in the\n[ProvEntities](SPEC_ROOT/modality-agnostic-files/provenance.md#proventities) section.\n\nRelated environments MUST be described as specified in the\n[Environments](SPEC_ROOT/modality-agnostic-files/provenance.md#environments) section.\n",
+              "description": "Identifier(s) of the provEntity/provEntities or environment(s) used by the activity.\n\nRelated provEntities MUST be described as specified in the\n[ProvEntities](SPEC_ROOT/modality-agnostic-files/provenance.md#proventities) section.\n\nRelated environment(s) MUST be described as specified in the\n[Environments](SPEC_ROOT/modality-agnostic-files/provenance.md#environments) section.\n",
               "name": "Used"
             }
           },
@@ -5109,7 +5110,7 @@
         "type": "string"
       },
       "Digest": {
-        "description": "Object containing digests of the data described by the provEntity.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
+        "description": "Object containing digests of the provEntity.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
         "display_name": "Digest",
         "name": "Digest",
         "type": "object"
@@ -7360,7 +7361,7 @@
               "type": "string"
             },
             "Digest": {
-              "description": "Object containing digests of the data described by the provEntity.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
+              "description": "Object containing digests of the provEntity.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
               "display_name": "Digest",
               "name": "Digest",
               "type": "object"
@@ -7397,8 +7398,9 @@
               "type": "string"
             },
             "Type": {
-              "description": "Term from a controlled vocabulary that more specifically describes the [provEntity](SPEC_ROOT/modality-agnostic-files/provenance.md#proventities).\n",
+              "description": "Term from a controlled vocabulary that more specifically describes the provEntity.",
               "format": "uri",
+              "name": "Type",
               "type": "string"
             }
           },
@@ -7414,6 +7416,13 @@
         "minItems": 1,
         "name": "ProvEntities",
         "type": "array"
+      },
+      "ProvObjectType": {
+        "description": "Term from a controlled vocabulary that more specifically describes\nthe [provEntity](SPEC_ROOT/modality-agnostic-files/provenance.md#proventities).\n",
+        "display_name": "Type",
+        "format": "uri",
+        "name": "Type",
+        "type": "string"
       },
       "PulseDuration": {
         "description": "Pulse duration if spectral editing was applied, in milliseconds\n",
@@ -9297,8 +9306,8 @@
         "value": "XPCT"
       },
       "act": {
-        "description": "A JSON file containing objects describing activities.\n(See the [`Activities`](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section).\n",
-        "display_name": "Activities",
+        "description": "A JSON file containing objects describing activities in the context of provenance.\n(See the [`Activities`](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section).\n",
+        "display_name": "Description of activities",
         "value": "act"
       },
       "angio": {
@@ -9387,13 +9396,13 @@
         "value": "electrodes"
       },
       "ent": {
-        "description": "A JSON file containing objects describing provEntities.\n(See the [`ProvEntities`](SPEC_ROOT/modality-agnostic-files/provenance.md#proventities) section).\n",
-        "display_name": "ProvEntities",
+        "description": "A JSON file containing objects describing provEntities in the context of provenance.\n(See the [`ProvEntities`](SPEC_ROOT/modality-agnostic-files/provenance.md#proventities) section).\n",
+        "display_name": "Description of provEntities",
         "value": "ent"
       },
       "env": {
-        "description": "A JSON file containing objects describing environments.\n(See the [`Environments`](SPEC_ROOT/modality-agnostic-files/provenance.md#environments) section).\n",
-        "display_name": "Environments",
+        "description": "A JSON file containing objects describing environments in the context of provenance.\n(See the [`Environments`](SPEC_ROOT/modality-agnostic-files/provenance.md#environments) section).\n",
+        "display_name": "Description of environments",
         "value": "env"
       },
       "epi": {
@@ -9567,8 +9576,8 @@
         "value": "sessions"
       },
       "soft": {
-        "description": "A JSON file containing objects describing software.\n(See the [`Software`](SPEC_ROOT/modality-agnostic-files/provenance.md#software) section).\n",
-        "display_name": "Software",
+        "description": "A JSON file containing objects describing software in the context of provenance.\n(See the [`Software`](SPEC_ROOT/modality-agnostic-files/provenance.md#software) section).\n",
+        "display_name": "Description of software",
         "value": "soft"
       },
       "stim": {
@@ -11312,7 +11321,7 @@
           "issue": {
             "code": "PROVENANCE_ENTITY_MISSING",
             "level": "error",
-            "message": "A provenance.tsv file lists prov entities that were not found in\nthe dataset.\n"
+            "message": "A provenance.tsv file lists a \"prov\" entity that was not found in\nthe dataset.\n"
           },
           "selectors": [
             "datatype == 'provenance'",
