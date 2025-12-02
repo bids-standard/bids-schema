@@ -2261,7 +2261,7 @@
         "type": "string"
       },
       "inversion": {
-        "description": "If files belonging to an entity-linked file collection are acquired at different inversion times,\nthe `inv-<index>` entity MUST be used to distinguish individual files.\n\nThis entity represents the `\"InversionTime` metadata field.\nTherefore, if the `inv-<index>` entity is present in a filename,\n`\"InversionTime\"` MUST be defined in the associated metadata.\nPlease note that the `<index>` denotes the number/index (in the form of a nonnegative integer),\nnot the `\"InversionTime\"` value of the separate JSON file.\n",
+        "description": "If files belonging to an entity-linked file collection are acquired at different inversion times,\nthe `inv-<index>` entity MUST be used to distinguish individual files.\n\nThis entity represents the `\"InversionTime\"` metadata field.\nTherefore, if the `inv-<index>` entity is present in a filename,\n`\"InversionTime\"` MUST be defined in the associated metadata.\nPlease note that the `<index>` denotes the number/index (in the form of a nonnegative integer),\nnot the `\"InversionTime\"` value of the separate JSON file.\n",
         "display_name": "Inversion Time",
         "format": "index",
         "name": "inv",
