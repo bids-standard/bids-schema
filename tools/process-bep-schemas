@@ -11,6 +11,7 @@ import sys
 import shutil
 import subprocess
 import tempfile
+import filecmp
 from pathlib import Path
 from functools import lru_cache
 
@@ -114,9 +115,15 @@ def main():
                     metadata = json.load(f)
                     if metadata.get('pr_number') == int(pr_number):
                         # Check if PR number matches and schema exists
-                        if (bep_schema_dir / 'schema.json').exists():
-                            print(f"  BEP {bep_number} is already up to date")
-                            need_update = False
+                        bep_schema_file = bep_schema_dir / 'schema.json'
+                        pr_schema_file = pr_schema_dir / 'schema.json'
+                        if bep_schema_file.exists() and pr_schema_file.exists():
+                            # Compare file contents to detect PR updates
+                            if filecmp.cmp(bep_schema_file, pr_schema_file, shallow=False):
+                                print(f"  BEP {bep_number} is already up to date")
+                                need_update = False
+                            else:
+                                print(f"  BEP {bep_number} schema differs from PR, needs sync")
 
         if need_update:
             print(f"  Syncing BEP {bep_number} from PR #{pr_number}")
