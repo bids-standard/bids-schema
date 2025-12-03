@@ -72,7 +72,6 @@
       "events": {
         "inherit": true,
         "selectors": [
-          "\"task\" in entities",
           "extension != '.json'"
         ],
         "target": {
@@ -1045,6 +1044,14 @@
         "result": 1
       },
       {
+        "expression": "min(42)",
+        "result": 42
+      },
+      {
+        "expression": "max(42)",
+        "result": 42
+      },
+      {
         "expression": "[3, 2, 1][0]",
         "result": 3
       },
@@ -1089,6 +1096,220 @@
         ]
       }
     ],
+    "templates": {
+      "deriv": {
+        "base": {
+          "entities": {
+            "description": "optional",
+            "session": "optional",
+            "subject": "optional"
+          },
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ]
+        },
+        "dseg": {
+          "entities": {
+            "description": "optional",
+            "resolution": "optional",
+            "segmentation": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "extensions": [
+            ".nii.gz",
+            ".nii",
+            ".tsv",
+            ".json"
+          ],
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ],
+          "suffixes": [
+            "dseg"
+          ]
+        },
+        "dseg_surface": {
+          "entities": {
+            "density": "optional",
+            "description": "optional",
+            "hemisphere": "optional",
+            "segmentation": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "extensions": [
+            ".label.gii",
+            ".dlabel.nii",
+            ".tsv",
+            ".json"
+          ],
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ],
+          "suffixes": [
+            "dseg"
+          ]
+        },
+        "mask": {
+          "entities": {
+            "description": "optional",
+            "label": "optional",
+            "resolution": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "extensions": [
+            ".nii.gz",
+            ".nii",
+            ".json"
+          ],
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ],
+          "suffixes": [
+            "mask"
+          ]
+        },
+        "probseg": {
+          "entities": {
+            "description": "optional",
+            "label": "optional",
+            "resolution": "optional",
+            "segmentation": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "extensions": [
+            ".nii.gz",
+            ".nii",
+            ".json"
+          ],
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ],
+          "suffixes": [
+            "probseg"
+          ]
+        },
+        "spatial": {
+          "entities": {
+            "description": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ]
+        },
+        "surface": {
+          "entities": {
+            "density": "optional",
+            "description": "optional",
+            "hemisphere": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ]
+        },
+        "volumetric": {
+          "entities": {
+            "description": "optional",
+            "resolution": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "extensions": [
+            ".nii.gz",
+            ".nii",
+            ".json"
+          ],
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ]
+        }
+      },
+      "raw": {
+        "base": {
+          "entities": {
+            "session": "optional",
+            "subject": "required"
+          }
+        },
+        "epi": {
+          "entities": {
+            "acquisition": "optional",
+            "ceagent": "optional",
+            "chunk": "optional",
+            "direction": "optional",
+            "part": "optional",
+            "reconstruction": "optional",
+            "run": "optional",
+            "session": "optional",
+            "subject": "required"
+          }
+        },
+        "mri": {
+          "entities": {
+            "acquisition": "optional",
+            "ceagent": "optional",
+            "chunk": "optional",
+            "reconstruction": "optional",
+            "run": "optional",
+            "session": "optional",
+            "subject": "required"
+          }
+        },
+        "mrs": {
+          "entities": {
+            "acquisition": "optional",
+            "nucleus": "optional",
+            "reconstruction": "optional",
+            "run": "optional",
+            "session": "optional",
+            "subject": "required",
+            "task": "optional",
+            "volume": "optional"
+          }
+        },
+        "pet": {
+          "entities": {
+            "reconstruction": "optional",
+            "run": "optional",
+            "session": "optional",
+            "subject": "required",
+            "task": "optional",
+            "tracer": "optional"
+          }
+        },
+        "recording": {
+          "entities": {
+            "acquisition": "optional",
+            "run": "optional",
+            "session": "optional",
+            "subject": "required"
+          }
+        },
+        "task": {
+          "entities": {
+            "acquisition": "optional",
+            "run": "optional",
+            "session": "optional",
+            "subject": "required",
+            "task": "required"
+          }
+        }
+      }
+    },
     "versions": [
       "1.10.1",
       "1.10.0",
@@ -1217,6 +1438,12 @@
       },
       "description__optode": {
         "description": "Free-form text description of the optode, or other information of interest.\n",
+        "display_name": "Description",
+        "name": "description",
+        "type": "string"
+      },
+      "description__provenance": {
+        "description": "Free-form text description of the provenance file(s).\n",
         "display_name": "Description",
         "name": "description",
         "type": "string"
@@ -1430,6 +1657,13 @@
         "display_name": "Plasma radioactivity",
         "name": "plasma_radioactivity",
         "type": "number"
+      },
+      "provenance_label": {
+        "description": "An identifier of the form `prov-<label>`,\nmatching a `prov` entity found in the dataset.\n",
+        "display_name": "Provenance label",
+        "name": "provenance_label",
+        "pattern": "^prov-[0-9a-zA-Z+]+$",
+        "type": "string"
       },
       "reference__eeg": {
         "description": "Name of the reference electrode(s).\nThis column is not needed when it is common to all channels.\nIn that case the reference electrode(s) can be specified in `*_eeg.json` as `EEGReference`).\n",
@@ -2038,7 +2272,7 @@
         "type": "string"
       },
       "inversion": {
-        "description": "If files belonging to an entity-linked file collection are acquired at different inversion times,\nthe `inv-<index>` entity MUST be used to distinguish individual files.\n\nThis entity represents the `\"InversionTime` metadata field.\nTherefore, if the `inv-<index>` entity is present in a filename,\n`\"InversionTime\"` MUST be defined in the associated metadata.\nPlease note that the `<index>` denotes the number/index (in the form of a nonnegative integer),\nnot the `\"InversionTime\"` value of the separate JSON file.\n",
+        "description": "If files belonging to an entity-linked file collection are acquired at different inversion times,\nthe `inv-<index>` entity MUST be used to distinguish individual files.\n\nThis entity represents the `\"InversionTime\"` metadata field.\nTherefore, if the `inv-<index>` entity is present in a filename,\n`\"InversionTime\"` MUST be defined in the associated metadata.\nPlease note that the `<index>` denotes the number/index (in the form of a nonnegative integer),\nnot the `\"InversionTime\"` value of the separate JSON file.\n",
         "display_name": "Inversion Time",
         "format": "index",
         "name": "inv",
@@ -2097,7 +2331,7 @@
         "type": "string"
       },
       "prov": {
-        "description": "A grouping of provenance records.\nDefining multiple provenance records groups is appropriate when several processings have been performed on data.\n",
+        "description": "The `prov-<label>` entity allows to group related provenance files, using an arbitrary value for `<label>`.\n",
         "display_name": "Provenance group",
         "format": "label",
         "name": "prov",
@@ -3242,12 +3476,12 @@
         "value": "ex vivo"
       },
       "fsLR": {
-        "description": "The `fsLR` is a **dual template** providing both volumetric and surface coordinates references.\nThe volumetric template corresponds to `MNI152NLin6Asym`.\nSurface templates are given at several sampling densities:\n164k (used by HCP pipelines for 3T and 7T anatomical analysis),\n59k (used by HCP pipelines for 7T MRI bold and DWI analysis),\n32k (used by HCP pipelines for 3T MRI bold and DWI analysis), or\n4k (used by HCP pipelines for MEG analysis) fsaverage_LR surface reconstructed from the T1w image.\n\nUsed by Freesurfer.\n",
+        "description": "The `fsLR` is a surface template.\nAdditionally, by convention,\n`fsLR` is used as shorthand for a **dual template** providing both volumetric and surface\ncoordinates references,\nwhere the surface template is `fsLR` and the volumetric template corresponds to `MNI152NLin6Asym`.\nSurface templates are given at several sampling densities:\n164k (used by HCP pipelines for 3T and 7T anatomical analysis),\n59k (used by HCP pipelines for 7T MRI bold and DWI analysis),\n32k (used by HCP pipelines for 3T MRI bold and DWI analysis), or\n4k (used by HCP pipelines for MEG analysis) fsaverage_LR surface reconstructed from the T1w image.\n\nUsed by Freesurfer and Connectome Workbench.\n",
         "display_name": "fsLR",
         "value": "fsLR"
       },
       "fsaverage": {
-        "description": "The `fsaverage` is a **dual template** providing both volumetric and surface coordinates references.\nThe volumetric template corresponds to a FreeSurfer variant of `MNI305` space.\nThe `fsaverage` atlas also defines a surface reference system (formerly described as fsaverage[3|4|5|6|sym]).\n\nUsed by Freesurfer.\n",
+        "description": "The `fsaverage` is a surface reference system\n(formerly described as fsaverage\\[3\\|4\\|5\\|6\\|sym\\]).\nAdditionally, by convention,\n`fsaverage` is used as shorthand for a **dual template** providing both volumetric and\nsurface coordinates references,\nwhere the surface template is `fsaverage` and the volumetric template corresponds to a\nFreeSurfer variant of `MNI305` space.\n\nUsed by Freesurfer.\n",
         "display_name": "fsaverage",
         "value": "fsaverage"
       },
@@ -3272,7 +3506,7 @@
         "value": "fsaverage6"
       },
       "fsaverageSym": {
-        "description": "The `fsaverage` is a **dual template** providing both volumetric and surface coordinates references.\nThe volumetric template corresponds to a FreeSurfer variant of `MNI305` space.\nThe `fsaverageSym` atlas also defines a symmetric surface reference system\n(formerly described as `fsaveragesym`).\n\nUsed by Freesurfer.\n",
+        "description": "The `fsaverageSym` is a symmetric surface reference system\n(formerly described as `fsaveragesym`).\nAdditionally, by convention,\n`fsaverageSym` is used as shorthand for a **dual template** providing both volumetric and\nsurface coordinates references,\nwhere the surface template is `fsaverageSym` and the volumetric template corresponds to a\nFreeSurfer variant of `MNI305` space.\n\nUsed by Freesurfer.\n",
         "display_name": "fsaverageSym",
         "value": "fsaverageSym"
       },
@@ -3827,7 +4061,7 @@
       },
       "prov": {
         "description": "A directory in which to store provenance metadata.\nSee the [Provenance section](SPEC_ROOT/modality-agnostic-files/provenance.md)\nfor more information.\n",
-        "display_name": "Provenance Records",
+        "display_name": "Provenance",
         "file_type": "directory"
       },
       "samples": {
@@ -3987,7 +4221,7 @@
         "type": "array"
       },
       "Activities": {
-        "description": "Describe Activities provenance records.\n",
+        "description": "Objects describing activities.",
         "display_name": "Activities",
         "items": {
           "properties": {
@@ -4005,43 +4239,63 @@
                   "type": "array"
                 }
               ],
-              "description": "Identifier(s) of the software package(s) used to compute this activity.\nThe corresponding Software must be defined with its own Software record).\n",
+              "description": "Identifier(s) of the software package(s) used to compute the activity.\n\nRelated software MUST be described as specified in the\n[Software](SPEC_ROOT/modality-agnostic-files/provenance.md#software) section.\n",
               "name": "AssociatedWith"
             },
             "Command": {
-              "description": "Command(s) used to run the tool, including all parameters.",
-              "name": "Command",
-              "type": "string"
+              "anyOf": [
+                {
+                  "format": "string",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Command (or commands) used to run the tool, including all parameters.\n\nSet to `null` to describe that the activity was performed manually.\n",
+              "name": "Command"
             },
             "EndedAtTime": {
-              "description": "A timestamp tracking when this activity ended.",
+              "description": "Timestamp tracking when the activity ended.",
               "format": "date",
               "name": "EndedAtTime",
               "type": "string"
             },
             "Id": {
-              "description": "Identifier for the activity.",
+              "description": "Identifier for the activity (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
               "format": "uri",
               "name": "Id",
               "type": "string"
             },
             "Label": {
-              "description": "Name of the tool, script, or function used (for example \"bet\", \"recon-all\", \"myFunc\", \"docker\").",
+              "description": "Name for the activity.\n",
               "format": "label",
               "name": "Label",
               "type": "string"
             },
             "StartedAtTime": {
-              "description": "A timestamp tracking when this activity started.",
+              "description": "Timestamp tracking when the activity started.",
               "format": "date",
               "name": "StartedAtTime",
               "type": "string"
             },
             "Type": {
-              "description": "A term from a controlled vocabulary that more specifically describes the Activity.",
-              "format": "uri",
-              "name": "Type",
-              "type": "string"
+              "anyOf": [
+                {
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              ],
+              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the activity.\n",
+              "name": "Type"
             },
             "Used": {
               "anyOf": [
@@ -4057,7 +4311,7 @@
                   "type": "array"
                 }
               ],
-              "description": "Identifier(s) of entity(ies) or environment(s) used by this activity.\nThe corresponding Entities (resp. Environments) must be defined with\ntheir own Entity (resp. Environment) record.\n",
+              "description": "Identifier(s) of the input and output data or environment(s) used by the activity.\n\nRelated input and output data MUST be described as specified in the\n[Input and output data](SPEC_ROOT/modality-agnostic-files/provenance.md#input-and-output-data) section.\n\nRelated environment(s) MUST be described as specified in the\n[Environments](SPEC_ROOT/modality-agnostic-files/provenance.md#environments) section.\n",
               "name": "Used"
             }
           },
@@ -4662,7 +4916,7 @@
         "type": "string"
       },
       "DOI": {
-        "description": "Used to specify the locations of all source datasets.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
+        "description": "A Digital Object Identifier (DOI) is a persistent, resolvable name for a digital resource.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
         "display_name": "DOI",
         "name": "DOI",
         "type": "string"
@@ -4688,6 +4942,31 @@
         "name": "DatasetDOI",
         "type": "string"
       },
+      "DatasetDigest": {
+        "description": "Object containing digests of the dataset.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
+        "display_name": "Digest",
+        "name": "Digest",
+        "type": "object"
+      },
+      "DatasetGeneratedById": {
+        "anyOf": [
+          {
+            "format": "uri",
+            "type": "string"
+          },
+          {
+            "items": {
+              "format": "uri",
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        ],
+        "description": "Identifier(s) of the activity/activities responsible for the creation of the dataset.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+        "display_name": "Generated By",
+        "name": "GeneratedBy"
+      },
       "DatasetLinks": {
         "additionalProperties": {
           "format": "uri",
@@ -4697,6 +4976,105 @@
         "display_name": "Dataset Links",
         "name": "DatasetLinks",
         "type": "object"
+      },
+      "DatasetProvEntities": {
+        "description": "Objects describing datasets.",
+        "display_name": "Datasets",
+        "items": {
+          "properties": {
+            "AtLocation": {
+              "description": "Relative path to the dataset on disk.",
+              "name": "AtLocation",
+              "type": "string"
+            },
+            "Digest": {
+              "description": "Object containing digests of the dataset.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
+              "display_name": "Digest",
+              "name": "Digest",
+              "type": "object"
+            },
+            "GeneratedBy": {
+              "anyOf": [
+                {
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              ],
+              "description": "Identifier(s) of the activity/activities responsible for the creation of the dataset.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+              "display_name": "Generated By",
+              "name": "GeneratedBy"
+            },
+            "Id": {
+              "description": "Identifier for the dataset (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
+              "format": "uri",
+              "name": "Id",
+              "type": "string"
+            },
+            "Label": {
+              "description": "Name for the dataset.",
+              "format": "label",
+              "name": "Label",
+              "type": "string"
+            },
+            "Type": {
+              "anyOf": [
+                {
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              ],
+              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the dataset.\n",
+              "display_name": "Type",
+              "name": "Type"
+            }
+          },
+          "recommended": [
+            "Digest"
+          ],
+          "required": [
+            "Id",
+            "Label"
+          ],
+          "type": "object"
+        },
+        "minItems": 1,
+        "name": "Datasets",
+        "type": "array"
+      },
+      "DatasetProvType": {
+        "anyOf": [
+          {
+            "format": "uri",
+            "type": "string"
+          },
+          {
+            "items": {
+              "format": "uri",
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        ],
+        "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the dataset.\n",
+        "display_name": "Type",
+        "name": "Type"
       },
       "DatasetType": {
         "description": "The interpretation of the dataset.\nFor backwards compatibility, the default value is `\"raw\"`.\n",
@@ -4817,7 +5195,7 @@
         "type": "string"
       },
       "Description__GeneratedBy": {
-        "description": "Plain-text description of the pipeline or process that generated the outputs.\nRECOMMENDED if `Name` is `\"Manual\"`.\n",
+        "description": "Plain-text description of the pipeline or process that generated the dataset.\nRECOMMENDED if `Name` is `\"Manual\"`.\n",
         "display_name": "Pipeline Description",
         "name": "Description",
         "type": "string"
@@ -4866,12 +5244,6 @@
         "display_name": "Dewar Position",
         "name": "DewarPosition",
         "type": "string"
-      },
-      "Digest": {
-        "description": "Object containing checksum(s) of a file.\nIt takes the form {\"type_of_digest\": \"value\"}.\n",
-        "display_name": "Digest",
-        "name": "Digest",
-        "type": "object"
       },
       "DigitizedHeadPoints": {
         "description": "`true` or `false` value indicating whether head points outlining the\nscalp/face surface are contained within this recording.\n",
@@ -5275,106 +5647,35 @@
         "name": "EncodingTechnique",
         "type": "string"
       },
-      "Entities": {
-        "description": "Describe Entities provenance records.\n",
-        "display_name": "Entities",
-        "items": {
-          "properties": {
-            "AtLocation": {
-              "description": "For input files, this is the relative path to the file on disk.\n",
-              "name": "AtLocation",
-              "type": "string"
-            },
-            "Digest": {
-              "description": "For files, this would include checksums of files.\nIt would take the form {\"\": \"value\"}.\n",
-              "name": "Digest",
-              "type": "object"
-            },
-            "GeneratedBy": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "format": "uri",
-                    "type": "string"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Identifier(s) of the Activity(ies) which generated this Entity.\nThe corresponding Activity must be defined with its own Activity record.\n",
-              "name": "GeneratedBy"
-            },
-            "Id": {
-              "description": "Identifier for the entity.",
-              "format": "bids_uri",
-              "name": "Id",
-              "type": "string"
-            },
-            "Label": {
-              "description": "A name for the entity.",
-              "format": "label",
-              "name": "Label",
-              "type": "string"
-            },
-            "Type": {
-              "description": "A term from a controlled vocabulary that more specifically describes the Entity.",
-              "format": "uri",
-              "name": "Type",
-              "type": "string"
-            }
-          },
-          "recommended": [
-            "Digest"
-          ],
-          "required": [
-            "Id",
-            "Label"
-          ],
-          "type": "object"
-        },
-        "minItems": 1,
-        "name": "Entities",
-        "type": "array"
-      },
-      "EntityType": {
-        "description": "A term from a controlled vocabulary that more specifically describes an Entity provenance record.\nSee the [`Entity` records](SPEC_ROOT/modality-agnostic-files/provenance.md#entity-records) section.\n",
-        "display_name": "Type",
-        "format": "uri",
-        "name": "Type",
-        "type": "string"
-      },
       "Environments": {
-        "description": "Describe Environments provenance records.\n",
+        "description": "Objects describing environments.",
         "display_name": "Environments",
         "items": {
           "properties": {
             "Dependencies": {
-              "description": "A dictionary defining the software used and their versions as key-value pairs.\n",
+              "description": "Object containing names of the software dependencies as keys and their versions as values.\n",
               "name": "Dependencies",
               "type": "object"
             },
             "EnvVars": {
-              "description": "A dictionary defining the environment variables as key-value pairs.\n",
+              "description": "Object containing environment variables as key-value pairs.",
               "name": "EnvVars",
               "type": "object"
             },
             "Id": {
-              "description": "Identifier for the environment (this identifier will be used to associated activities with this environment).\n",
+              "description": "Identifier for the environment (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
               "format": "uri",
               "name": "Id",
               "type": "string"
             },
             "Label": {
-              "description": "A name for the environment.",
+              "description": "Name for the environment.",
               "format": "label",
               "name": "Label",
               "type": "string"
             },
             "OperatingSystem": {
-              "description": "Name of the operating system.",
+              "description": "Name of the operating system for the environment.",
               "name": "OperatingSystem",
               "type": "string"
             }
@@ -5509,6 +5810,130 @@
         "name": "FiducialsDescription",
         "type": "string"
       },
+      "FileDigest": {
+        "description": "Object containing digests of the file.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
+        "display_name": "Digest",
+        "name": "Digest",
+        "type": "object"
+      },
+      "FileGeneratedById": {
+        "anyOf": [
+          {
+            "format": "uri",
+            "type": "string"
+          },
+          {
+            "items": {
+              "format": "uri",
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        ],
+        "description": "Identifier(s) of the activity/activities responsible for the creation of the file.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+        "display_name": "Generated By",
+        "name": "GeneratedBy"
+      },
+      "FileProvEntities": {
+        "description": "Objects describing files.",
+        "display_name": "Files",
+        "items": {
+          "properties": {
+            "AtLocation": {
+              "description": "Relative path to the file on disk.",
+              "name": "AtLocation",
+              "type": "string"
+            },
+            "Digest": {
+              "description": "Object containing digests of the file.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
+              "display_name": "Digest",
+              "name": "Digest",
+              "type": "object"
+            },
+            "GeneratedBy": {
+              "anyOf": [
+                {
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              ],
+              "description": "Identifier(s) of the activity/activities responsible for the creation of the file.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+              "display_name": "Generated By",
+              "name": "GeneratedBy"
+            },
+            "Id": {
+              "description": "Identifier for the file (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
+              "format": "uri",
+              "name": "Id",
+              "type": "string"
+            },
+            "Label": {
+              "description": "Name for the file.",
+              "format": "label",
+              "name": "Label",
+              "type": "string"
+            },
+            "Type": {
+              "anyOf": [
+                {
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              ],
+              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the file.\n",
+              "display_name": "Type",
+              "name": "Type"
+            }
+          },
+          "recommended": [
+            "Digest"
+          ],
+          "required": [
+            "Id",
+            "Label"
+          ],
+          "type": "object"
+        },
+        "minItems": 1,
+        "name": "Files",
+        "type": "array"
+      },
+      "FileType": {
+        "anyOf": [
+          {
+            "format": "uri",
+            "type": "string"
+          },
+          {
+            "items": {
+              "format": "uri",
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        ],
+        "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the file.\n",
+        "display_name": "Type",
+        "name": "Type"
+      },
       "FlipAngle": {
         "anyOf": [
           {
@@ -5620,7 +6045,7 @@
         "type": "integer"
       },
       "GeneratedBy": {
-        "description": "Used to specify provenance of the dataset.\nSee the [Provenance section](SPEC_ROOT/modality-agnostic-files/provenance.md#provenance-at-dataset-level)\nfor more information.\n",
+        "description": "Used to specify provenance of the dataset.",
         "display_name": "Generated By",
         "items": {
           "properties": {
@@ -5636,14 +6061,23 @@
               "display_name": "Container",
               "name": "Container",
               "properties": {
-                "Tag": {
+                "ContainerTag": {
+                  "description": "Tag of software container image used to produce the dataset\n",
+                  "display_name": "Container Tag",
+                  "name": "ContainerTag",
                   "type": "string"
                 },
-                "Type": {
+                "ContainerType": {
+                  "description": "Type of software container image used to produce the dataset\n",
+                  "display_name": "Container Type",
+                  "name": "ContainerType",
                   "type": "string"
                 },
-                "URI": {
+                "ContainerURI": {
+                  "description": "URI for software container image used to produce the dataset\n",
+                  "display_name": "Container URI",
                   "format": "uri",
+                  "name": "ContainerURI",
                   "type": "string"
                 }
               },
@@ -5660,27 +6094,20 @@
               "name": "Description",
               "type": "string"
             },
-            "Id": {
-              "description": "When using the `Id` property, the object describes an Activity responsible for the creation of the dataset.\nThe value for `Id` is the `Id` of the corresponding Activity provenance record.\nThis provenance record MUST be described inside a\n[provenance file](SPEC_ROOT/modality-agnostic-files/provenance.md#provenance-files)\nof the dataset.\n",
-              "format": "uri",
-              "name": "Id",
-              "type": "string"
-            },
             "Name": {
-              "description": "Name of the pipeline, process or Activity provenance record that generated the outputs.\nUse `\"Manual\"` to indicate the derivatives were generated by hand, or adjusted manually after an\ninitial run of an automated pipeline.\n",
+              "description": "Name of the pipeline or process that generated the dataset. Use `\"Manual\"` to\nindicate the derivatives were generated by hand, or adjusted manually after an\ninitial run of an automated pipeline.\n",
               "display_name": "Pipeline Name",
               "name": "Name",
               "type": "string"
             },
             "Version": {
-              "description": "Used to specify a version of the pipeline or process that generated the dataset.",
+              "description": "Version of the pipeline or process that generated the dataset.",
               "display_name": "Pipeline Version",
               "name": "Version",
               "type": "string"
             }
           },
           "recommended": [
-            "Id",
             "Version"
           ],
           "required": [
@@ -5691,24 +6118,6 @@
         "minItems": 1,
         "name": "GeneratedBy",
         "type": "array"
-      },
-      "GeneratedById": {
-        "anyOf": [
-          {
-            "format": "uri",
-            "type": "string"
-          },
-          {
-            "items": {
-              "format": "uri",
-              "type": "string"
-            },
-            "type": "array"
-          }
-        ],
-        "description": "Specify the Id(s) of Activity (or Activities) responsible for the creation of the data file.\nThe corresponding Activity (or Activities) MUST be described inside a\n[provenance file](SPEC_ROOT/modality-agnostic-files/provenance.md#provenance-files) of the dataset.\n",
-        "display_name": "Generated By",
-        "name": "GeneratedBy"
       },
       "GeneticLevel": {
         "anyOf": [
@@ -6857,7 +7266,7 @@
         "type": "string"
       },
       "Name__GeneratedBy": {
-        "description": "Name of the pipeline or process that generated the outputs. Use `\"Manual\"` to\nindicate the derivatives were generated by hand, or adjusted manually after an\ninitial run of an automated pipeline.\n",
+        "description": "Name of the pipeline or process that generated the dataset. Use `\"Manual\"` to\nindicate the derivatives were generated by hand, or adjusted manually after an\ninitial run of an automated pipeline.\n",
         "display_name": "Pipeline Name",
         "name": "Name",
         "type": "string"
@@ -7174,6 +7583,79 @@
           "type": "number"
         },
         "name": "PromptRate",
+        "type": "array"
+      },
+      "ProvEntities": {
+        "description": "Objects describing prov:Entity objects other than files or datasets.",
+        "display_name": "Entities",
+        "items": {
+          "properties": {
+            "Digest": {
+              "description": "Object containing digests of the prov:Entity.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
+              "name": "Digest",
+              "type": "object"
+            },
+            "GeneratedBy": {
+              "anyOf": [
+                {
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              ],
+              "description": "Identifier(s) of the activity/activities responsible for the creation of the prov:Entity.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+              "display_name": "Generated By",
+              "name": "GeneratedBy"
+            },
+            "Id": {
+              "description": "Identifier for the prov:Entity (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
+              "format": "uri",
+              "name": "Id",
+              "type": "string"
+            },
+            "Label": {
+              "description": "Name for the prov:Entity.",
+              "format": "label",
+              "name": "Label",
+              "type": "string"
+            },
+            "Type": {
+              "anyOf": [
+                {
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              ],
+              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the prov:Entity.\u0153\n",
+              "name": "Type"
+            }
+          },
+          "recommended": [
+            "Digest"
+          ],
+          "required": [
+            "Id",
+            "Label"
+          ],
+          "type": "object"
+        },
+        "minItems": 1,
+        "name": "Entities",
         "type": "array"
       },
       "PulseDuration": {
@@ -7807,10 +8289,11 @@
               "format": "uri",
               "type": "string"
             },
+            "minItems": 1,
             "type": "array"
           }
         ],
-        "description": "Specify the Id(s) of Activity (or Activities) responsible for the creation of the sidecar JSON file.\nThe corresponding Activity (or Activities) MUST be described inside a\n[provenance file](SPEC_ROOT/modality-agnostic-files/provenance.md#provenance-files) of the dataset.\n",
+        "description": "Identifier(s) of the activity/activities responsible for the creation of the sidecar JSON file.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
         "display_name": "Sidecar Generated By",
         "name": "SidecarGeneratedBy"
       },
@@ -7863,24 +8346,24 @@
         "type": "array"
       },
       "Software": {
-        "description": "Describe Software provenance records.\n",
+        "description": "Objects describing software.",
         "display_name": "Software",
         "items": {
           "properties": {
             "ActedOnBehalfOf": {
-              "description": "Identifier of another software package that was responsible for using this software package\nin the context of the activities associated to it.\nThe corresponding software must be defined with its own Software record.\nExample: if software A launches software B to perform activity C, then B ActedOnBehalfOf A.\n",
+              "description": "Identifier of another software package that was responsible for using the software package\nin the context of the activities associated to it.\n\nExample: if software A launches software B to perform activity C, then B ActedOnBehalfOf A.\n\nRelated software MUST be described as specified in the\n[Software](SPEC_ROOT/modality-agnostic-files/provenance.md#software) section.\n",
               "format": "uri",
               "name": "ActedOnBehalfOf",
               "type": "string"
             },
             "AltIdentifier": {
-              "description": "URI of the RRID for this software package (cf. https://rrid.site/).\n",
+              "description": "URI of the RRID for the software package (cf. https://rrid.site/).",
               "format": "uri",
               "name": "AltIdentifier",
               "type": "string"
             },
             "Id": {
-              "description": "that will be used to associate activities with this software package\n(for example \"urn:1264-1233-11231-12312\", \"urn:bet-o1ef4rt\")\n",
+              "description": "Identifier for the software package (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
               "format": "uri",
               "name": "Id",
               "type": "string"
@@ -7953,18 +8436,18 @@
         "type": "string"
       },
       "SourceDatasets": {
-        "description": "Used to specify the locations and relevant attributes of all source datasets.\nValid keys in each object include `\"URL\"`, `\"DOI\"` (see\n[URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator)), and\n`\"Version\"` with\n[string](https://www.w3schools.com/js/js_json_datatypes.asp)\nvalues.\n",
+        "description": "Used to specify the locations and relevant attributes of all source datasets (BIDS or not).\nValid keys in each object include `\"URL\"`, `\"DOI\"` (see\n[URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator)), and\n`\"Version\"` with\n[string](https://www.w3schools.com/js/js_json_datatypes.asp)\nvalues.\n",
         "display_name": "Source Datasets",
         "items": {
           "properties": {
             "DOI": {
-              "description": "Used to specify the locations of all source datasets.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
+              "description": "A Digital Object Identifier (DOI) is a persistent, resolvable name for a digital resource.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
               "display_name": "DOI",
               "name": "DOI",
               "type": "string"
             },
             "URL": {
-              "description": "Used to specify the locations of all source datasets.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
+              "description": "A Uniform Resource Locator (URL) is a structured reference to an object that\nincludes a resource transfer scheme and a location.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
               "display_name": "URL",
               "format": "uri",
               "name": "URL",
@@ -8445,7 +8928,7 @@
         "type": "string"
       },
       "URL": {
-        "description": "Used to specify the locations of all source datasets.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
+        "description": "A Uniform Resource Locator (URL) is a structured reference to an object that\nincludes a resource transfer scheme and a location.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
         "display_name": "URL",
         "format": "uri",
         "name": "URL",
@@ -8496,7 +8979,7 @@
         "type": "string"
       },
       "Version__GeneratedBy": {
-        "description": "Version of the pipeline",
+        "description": "Version of the pipeline or process that generated the dataset.",
         "display_name": "Pipeline Version",
         "name": "Version",
         "type": "string"
@@ -9057,8 +9540,8 @@
         "value": "XPCT"
       },
       "act": {
-        "description": "Provenance Activity records for a group of provenance.\nActivities represent the transformations that have been applied to the data.\nFiles with the `act` suffix must define the `Activities` metadata, which is an array of `Activity` records.\nSee the [`Activity` records](SPEC_ROOT/modality-agnostic-files/provenance.md#activity-records) section.\n",
-        "display_name": "Provenance Activity Records",
+        "description": "A JSON file containing objects describing activities in the context of provenance.\n(See the [`Activities`](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section).\n",
+        "display_name": "Description of activities",
         "value": "act"
       },
       "angio": {
@@ -9147,13 +9630,13 @@
         "value": "electrodes"
       },
       "ent": {
-        "description": "Provenance Entity records for a group of provenance.\nEntities are inputs and outputs for Activities.\nFiles with the `ent` suffix must define the `Entities` metadata, which is an array of `Entity` records.\nSee the [`Entity` records](SPEC_ROOT/modality-agnostic-files/provenance.md#entity-records) section.\n",
-        "display_name": "Provenance Entity Records",
+        "description": "A JSON file containing objects describing  input and output data in the context of provenance.\n(See the [`Input and output data`](SPEC_ROOT/modality-agnostic-files/provenance.md#-input-and-output-data)\nsection).\n",
+        "display_name": "Description of input and output data",
         "value": "ent"
       },
       "env": {
-        "description": "Provenance Environment records for a group of provenance.\nEnvironments specify the software environment in which the provenance record was obtained.\nFiles with the `env` suffix must define the `Environments` metadata, which is an array of `Environment` records.\nSee the [`Environment` records](SPEC_ROOT/modality-agnostic-files/provenance.md#environment-records) section.\n",
-        "display_name": "Provenance Environment Records",
+        "description": "A JSON file containing objects describing environments in the context of provenance.\n(See the [`Environments`](SPEC_ROOT/modality-agnostic-files/provenance.md#environments) section).\n",
+        "display_name": "Description of environments",
         "value": "env"
       },
       "epi": {
@@ -9327,8 +9810,8 @@
         "value": "sessions"
       },
       "soft": {
-        "description": "Provenance Software records for a group of provenance.\nSoftware specifies the software package with which transformations were applied to the data.\nFiles with the `soft` suffix must define the `Software` metadata, which is an array of `Software` records.\nSee the [`Software` records](SPEC_ROOT/modality-agnostic-files/provenance.md#software-records) section.\n",
-        "display_name": "Provenance Software Records",
+        "description": "A JSON file containing objects describing software in the context of provenance.\n(See the [`Software`](SPEC_ROOT/modality-agnostic-files/provenance.md#software) section).\n",
+        "display_name": "Description of software",
         "value": "soft"
       },
       "stim": {
@@ -9611,22 +10094,24 @@
         },
         "ASLTotalAcquiredPairsASLContextLength": {
           "checks": [
-            "aslcontext.n_rows == sidecar.TotalAcquiredPairs"
+            "count(associations.aslcontext.volume_type, \"control\") == sidecar.TotalAcquiredPairs",
+            "count(associations.aslcontext.volume_type, \"label\") == sidecar.TotalAcquiredPairs"
           ],
           "issue": {
             "code": "TOTAL_ACQUIRED_VOLUMES_NOT_CONSISTENT",
             "level": "warning",
-            "message": "The number of values for 'TotalAcquiredPairs' for this file does not match number of\nvolumes in the associated 'aslcontext.tsv'.\n'TotalAcquiredPairs' is the original number of 3D volumes acquired for each volume defined in the\nassociated 'aslcontext.tsv'.\n"
+            "message": "The number of values for 'TotalAcquiredPairs' for this file does not match number of\ncontrol-label pairs in the associated 'aslcontext.tsv'.\n'TotalAcquiredPairs' is the original number of control-label pairs\ndefined in the associated 'aslcontext.tsv'.\n"
           },
           "selectors": [
             "suffix == \"asl\"",
             "type(associations.aslcontext) != \"null\"",
-            "\"TotalAcquiredPairs\" in sidecar"
+            "\"TotalAcquiredPairs\" in sidecar",
+            "count(associations.aslcontext.volume_type, \"control\") > 0"
           ]
         },
         "BolusCutOffDelayTimeGreater": {
           "checks": [
-            "sidecar.BolusCutOffDelayTime <= 10"
+            "max(sidecar.BolusCutOffDelayTime) <= 10"
           ],
           "issue": {
             "code": "BOLUS_CUT_OFF_DELAY_TIME_GREATER",
@@ -9639,7 +10124,7 @@
         },
         "LabelingDurationGreater": {
           "checks": [
-            "sidecar.LabelingDuration <= 10"
+            "max(sidecar.LabelingDuration) <= 10"
           ],
           "issue": {
             "code": "LABELING_DURATION_GREATER",
@@ -9652,7 +10137,7 @@
         },
         "PostLabelingDelayGreater": {
           "checks": [
-            "sidecar.PostLabelingDelay <= 10"
+            "max(sidecar.PostLabelingDelay) <= 10"
           ],
           "issue": {
             "code": "POST_LABELING_DELAY_GREATER",
@@ -10547,7 +11032,7 @@
         },
         "EchoTimeGreaterThan": {
           "checks": [
-            "sidecar.EchoTime <= 1"
+            "max(sidecar.EchoTime) <= 1"
           ],
           "issue": {
             "code": "ECHO_TIME_GREATER_THAN",
@@ -11062,6 +11547,22 @@
           ]
         }
       },
+      "provenance": {
+        "ProvenanceEntityMissing": {
+          "checks": [
+            "allequal(\n  sorted(intersects(columns.provenance_label, dataset.subjects.participant_id)),\n  sorted(dataset.subjects.participant_id)\n)\n"
+          ],
+          "issue": {
+            "code": "PROVENANCE_ENTITY_MISSING",
+            "level": "error",
+            "message": "A provenance.tsv file lists a \"prov\" entity that was not found in\nthe dataset.\n"
+          },
+          "selectors": [
+            "datatype == 'provenance'",
+            "suffix == '.tsv'"
+          ]
+        }
+      },
       "references": {
         "AssociatedEmptyRoomArray": {
           "checks": [
@@ -11208,7 +11709,8 @@
           "DatasetType": "recommended",
           "EthicsApprovals": "optional",
           "Funding": "optional",
-          "GeneratedBy": "recommended",
+          "GeneratedBy": "recommended if `GeneratedById` is not present",
+          "GeneratedById": "recommended if `GeneratedById` is not present",
           "HowToAcknowledge": "optional",
           "Keywords": "optional",
           "License": "recommended",
@@ -11231,7 +11733,8 @@
       },
       "derivative_description": {
         "fields": {
-          "GeneratedBy": "required"
+          "GeneratedBy": "required if `GeneratedById` is not present",
+          "GeneratedById": "required if `GeneratedBy` is not present"
         },
         "selectors": [
           "path == \"/dataset_description.json\"",
@@ -11432,12 +11935,18 @@
           "name": "logs",
           "opaque": true
         },
+        "prov": {
+          "level": "optional",
+          "name": "prov",
+          "opaque": false
+        },
         "root": {
           "subdirs": [
             "code",
             "docs",
             "derivatives",
             "logs",
+            "prov",
             "sourcedata"
           ]
         },
@@ -11479,8 +11988,8 @@
       "resolution",
       "density",
       "label",
-      "description",
-      "prov"
+      "prov",
+      "description"
     ],
     "errors": {
       "BFile": {
@@ -11756,6 +12265,7 @@
               "prov"
             ],
             "entities": {
+              "description": "optional",
               "prov": "required"
             },
             "extensions": [
@@ -11789,6 +12299,14 @@
             ],
             "level": "optional",
             "stem": "*"
+          },
+          "provenance": {
+            "extensions": [
+              ".tsv",
+              ".json"
+            ],
+            "level": "optional",
+            "stem": "provenance"
           },
           "samples": {
             "extensions": [
@@ -11829,7 +12347,37 @@
       },
       "deriv": {
         "imaging": {
-          "anat_nonparametric_discrete_segmentation": {
+          "anat_defacemask_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "modality": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "defacemask"
+            ]
+          },
+          "anat_discrete_segmentation": {
             "datatypes": [
               "anat"
             ],
@@ -11846,14 +12394,14 @@
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".json",
-              ".tsv"
+              ".tsv",
+              ".json"
             ],
             "selectors": [
               "dataset.dataset_description.DatasetType == 'derivative'"
@@ -11862,7 +12410,7 @@
               "dseg"
             ]
           },
-          "anat_nonparametric_discrete_surface": {
+          "anat_discrete_surface": {
             "datatypes": [
               "anat"
             ],
@@ -11876,19 +12424,18 @@
               "hemisphere": "optional",
               "part": "optional",
               "reconstruction": "optional",
-              "resolution": "optional",
               "run": "optional",
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
               ".label.gii",
               ".dlabel.nii",
-              ".json",
-              ".tsv"
+              ".tsv",
+              ".json"
             ],
             "selectors": [
               "dataset.dataset_description.DatasetType == 'derivative'"
@@ -11897,7 +12444,7 @@
               "dseg"
             ]
           },
-          "anat_nonparametric_mask": {
+          "anat_mask": {
             "datatypes": [
               "anat"
             ],
@@ -11914,7 +12461,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -11929,7 +12476,7 @@
               "mask"
             ]
           },
-          "anat_nonparametric_probabilistic_segmentation": {
+          "anat_megre_volumetric": {
             "datatypes": [
               "anat"
             ],
@@ -11938,16 +12485,14 @@
               "ceagent": "optional",
               "chunk": "optional",
               "description": "optional",
-              "echo": "optional",
-              "label": "optional",
+              "echo": "required",
               "part": "optional",
               "reconstruction": "optional",
               "resolution": "optional",
               "run": "optional",
-              "segmentation": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -11959,7 +12504,166 @@
               "dataset.dataset_description.DatasetType == 'derivative'"
             ],
             "suffixes": [
-              "probseg"
+              "MEGRE"
+            ]
+          },
+          "anat_mese_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "echo": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "MESE"
+            ]
+          },
+          "anat_mp2rage_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "optional",
+              "inversion": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "MP2RAGE"
+            ]
+          },
+          "anat_mtr_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "mtransfer": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "MTR"
+            ]
+          },
+          "anat_multiflip_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "VFA"
+            ]
+          },
+          "anat_multiinversion_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "inversion": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "IRT1"
             ]
           },
           "anat_nonparametric_volumetric": {
@@ -11970,7 +12674,6 @@
               "acquisition": "optional",
               "ceagent": "optional",
               "chunk": "optional",
-              "density": "optional",
               "description": "optional",
               "echo": "optional",
               "part": "optional",
@@ -11979,7 +12682,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -12005,131 +12708,6 @@
               "PD"
             ]
           },
-          "anat_parametric_discrete_segmentation": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "reconstruction": "optional",
-              "resolution": "optional",
-              "run": "optional",
-              "segmentation": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json",
-              ".tsv"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "dseg"
-            ]
-          },
-          "anat_parametric_discrete_surface": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "density": "optional",
-              "description": "optional",
-              "hemisphere": "optional",
-              "reconstruction": "optional",
-              "resolution": "optional",
-              "run": "optional",
-              "segmentation": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".label.gii",
-              ".dlabel.nii",
-              ".json",
-              ".tsv"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "dseg"
-            ]
-          },
-          "anat_parametric_mask": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "label": "optional",
-              "reconstruction": "optional",
-              "resolution": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "mask"
-            ]
-          },
-          "anat_parametric_probabilistic_segmentation": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "label": "optional",
-              "reconstruction": "optional",
-              "resolution": "optional",
-              "run": "optional",
-              "segmentation": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "probseg"
-            ]
-          },
           "anat_parametric_volumetric": {
             "datatypes": [
               "anat"
@@ -12138,14 +12716,13 @@
               "acquisition": "optional",
               "ceagent": "optional",
               "chunk": "optional",
-              "density": "optional",
               "description": "optional",
               "reconstruction": "optional",
               "resolution": "optional",
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -12175,7 +12752,105 @@
               "M0map"
             ]
           },
+          "anat_probabilistic_segmentation": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "label": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "segmentation": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "probseg"
+            ]
+          },
+          "anat_vfamt_volumetric": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "required",
+              "mtransfer": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "MPM",
+              "MTS"
+            ]
+          },
           "dwi_discrete_segmentation": {
+            "datatypes": [
+              "dwi"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "segmentation": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".tsv",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "dseg"
+            ]
+          },
+          "dwi_dwi_volumetric": {
             "datatypes": [
               "dwi"
             ],
@@ -12190,19 +12865,18 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".json",
-              ".tsv"
+              ".json"
             ],
             "selectors": [
               "dataset.dataset_description.DatasetType == 'derivative'"
             ],
             "suffixes": [
-              "dseg"
+              "dwi"
             ]
           },
           "dwi_mask": {
@@ -12221,7 +12895,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".nii.gz",
@@ -12252,7 +12926,7 @@
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".nii.gz",
@@ -12266,6 +12940,35 @@
               "probseg"
             ]
           },
+          "dwi_sbref_volumetric": {
+            "datatypes": [
+              "dwi"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "sbref"
+            ]
+          },
           "dwi_scannerderivatives": {
             "datatypes": [
               "dwi"
@@ -12273,7 +12976,6 @@
             "entities": {
               "acquisition": "optional",
               "chunk": "optional",
-              "density": "optional",
               "description": "optional",
               "direction": "optional",
               "reconstruction": "optional",
@@ -12281,12 +12983,15 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".nii.gz",
               ".nii",
               ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
             ],
             "suffixes": [
               "ADC",
@@ -12297,14 +13002,205 @@
               "trace"
             ]
           },
-          "dwi_volumetric": {
+          "fmap_RFFieldMaps_volumetric": {
             "datatypes": [
-              "dwi"
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "optional",
+              "inversion": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1AFI",
+              "TB1TFL",
+              "TB1RFM",
+              "RB1COR"
+            ]
+          },
+          "fmap_TB1DAM_volumetric": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "flip": "required",
+              "inversion": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1DAM"
+            ]
+          },
+          "fmap_TB1EPI_volumetric": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "required",
+              "flip": "required",
+              "inversion": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1EPI"
+            ]
+          },
+          "fmap_TB1SRGE_volumetric": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "required",
+              "inversion": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1SRGE"
+            ]
+          },
+          "fmap_fieldmaps_volumetric": {
+            "datatypes": [
+              "fmap"
             ],
             "entities": {
               "acquisition": "optional",
               "chunk": "optional",
-              "density": "optional",
+              "description": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "phasediff",
+              "phase1",
+              "phase2",
+              "magnitude1",
+              "magnitude2",
+              "magnitude",
+              "fieldmap"
+            ]
+          },
+          "fmap_parametric_volumetric": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1map",
+              "RB1map"
+            ]
+          },
+          "fmap_pepolar_m0scan": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
               "description": "optional",
               "direction": "optional",
               "part": "optional",
@@ -12313,20 +13209,48 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".json",
-              ".bvec",
-              ".bval"
+              ".json"
             ],
             "selectors": [
               "dataset.dataset_description.DatasetType == 'derivative'"
             ],
             "suffixes": [
-              "dwi"
+              "m0scan"
+            ]
+          },
+          "fmap_pepolar_volumetric": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "epi"
             ]
           },
           "func_discrete_segmentation": {
@@ -12347,14 +13271,14 @@
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".json",
-              ".tsv"
+              ".tsv",
+              ".json"
             ],
             "selectors": [
               "dataset.dataset_description.DatasetType == 'derivative'"
@@ -12381,7 +13305,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -12394,6 +13318,37 @@
             ],
             "suffixes": [
               "mask"
+            ]
+          },
+          "func_phase_volumetric": {
+            "datatypes": [
+              "func"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "echo": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "phase"
             ]
           },
           "func_probabilistic_segmentation": {
@@ -12415,7 +13370,7 @@
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -12438,7 +13393,6 @@
               "acquisition": "optional",
               "ceagent": "optional",
               "chunk": "optional",
-              "density": "optional",
               "description": "optional",
               "direction": "optional",
               "echo": "optional",
@@ -12448,7 +13402,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -12464,339 +13418,66 @@
               "cbv",
               "sbref"
             ]
+          },
+          "perf_asl_volumetric": {
+            "datatypes": [
+              "perf"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "echo": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "asl",
+              "m0scan"
+            ]
+          },
+          "pet_pet_volumetric": {
+            "datatypes": [
+              "pet"
+            ],
+            "entities": {
+              "description": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "tracer": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "pet"
+            ]
           }
         },
         "preprocessed_data": {
-          "anat_defacemask_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "modality": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "defacemask"
-            ]
-          },
-          "anat_megre_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "MEGRE"
-            ]
-          },
-          "anat_mese_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "optional",
-              "echo": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "MESE"
-            ]
-          },
-          "anat_mp2rage_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "optional",
-              "flip": "optional",
-              "inversion": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "MP2RAGE"
-            ]
-          },
-          "anat_mtr_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "mtransfer": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "MTR"
-            ]
-          },
-          "anat_multiflip_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "optional",
-              "flip": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "VFA"
-            ]
-          },
-          "anat_multiinversion_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "inversion": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "IRT1"
-            ]
-          },
-          "anat_nonparametric_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "T1w",
-              "T2w",
-              "PDw",
-              "T2starw",
-              "FLAIR",
-              "inplaneT1",
-              "inplaneT2",
-              "PDT2",
-              "angio",
-              "T2star",
-              "FLASH",
-              "PD"
-            ]
-          },
-          "anat_parametric_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "T1map",
-              "T2map",
-              "T2starmap",
-              "R1map",
-              "R2map",
-              "R2starmap",
-              "PDmap",
-              "MTRmap",
-              "MTsat",
-              "UNIT1",
-              "T1rho",
-              "MWFmap",
-              "MTVmap",
-              "Chimap",
-              "S0map",
-              "M0map"
-            ]
-          },
-          "anat_vfamt_common": {
-            "datatypes": [
-              "anat"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "optional",
-              "flip": "required",
-              "mtransfer": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "MPM",
-              "MTS"
-            ]
-          },
           "beh_noncontinuous_common": {
             "datatypes": [
               "beh"
@@ -12806,8 +13487,7 @@
               "description": "optional",
               "run": "optional",
               "session": "optional",
-              "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -12831,7 +13511,7 @@
               "processing": "optional",
               "run": "optional",
               "session": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -12854,7 +13534,7 @@
               "description": "optional",
               "run": "optional",
               "session": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required",
               "tracksys": "required"
             },
@@ -12880,7 +13560,7 @@
               "description": "optional",
               "run": "optional",
               "session": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -12904,7 +13584,7 @@
               "description": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -12926,7 +13606,7 @@
               "acquisition": "optional",
               "description": "optional",
               "session": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -12950,7 +13630,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -12975,7 +13655,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -12989,7 +13669,7 @@
               "electrodes"
             ]
           },
-          "channels_electrodes_optodes_common": {
+          "channels_optodes_common": {
             "datatypes": [
               "nirs"
             ],
@@ -12997,7 +13677,7 @@
               "acquisition": "optional",
               "description": "optional",
               "session": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".tsv",
@@ -13010,64 +13690,6 @@
               "optodes"
             ]
           },
-          "dwi_dwi_common": {
-            "datatypes": [
-              "dwi"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json",
-              ".bvec",
-              ".bval"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "dwi"
-            ]
-          },
-          "dwi_sbref_common": {
-            "datatypes": [
-              "dwi"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "sbref"
-            ]
-          },
           "eeg_eeg_common": {
             "datatypes": [
               "eeg"
@@ -13078,7 +13700,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -13098,312 +13720,6 @@
               "eeg"
             ]
           },
-          "fmap_RFFieldMaps_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "optional",
-              "flip": "optional",
-              "inversion": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "TB1AFI",
-              "TB1TFL",
-              "TB1RFM",
-              "RB1COR"
-            ]
-          },
-          "fmap_TB1DAM_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "flip": "required",
-              "inversion": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "TB1DAM"
-            ]
-          },
-          "fmap_TB1EPI_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "required",
-              "flip": "required",
-              "inversion": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "TB1EPI"
-            ]
-          },
-          "fmap_TB1SRGE_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "echo": "optional",
-              "flip": "required",
-              "inversion": "required",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "TB1SRGE"
-            ]
-          },
-          "fmap_fieldmaps_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "phasediff",
-              "phase1",
-              "phase2",
-              "magnitude1",
-              "magnitude2",
-              "magnitude",
-              "fieldmap"
-            ]
-          },
-          "fmap_parametric_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "TB1map",
-              "RB1map"
-            ]
-          },
-          "fmap_pepolar_common": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "required",
-              "part": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json",
-              ".bval",
-              ".bvec"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "epi"
-            ]
-          },
-          "fmap_pepolar_m0scan": {
-            "datatypes": [
-              "fmap"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "required",
-              "part": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "m0scan"
-            ]
-          },
-          "func_func_common": {
-            "datatypes": [
-              "func"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "optional",
-              "echo": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "bold",
-              "cbv",
-              "sbref"
-            ]
-          },
-          "func_phase_common": {
-            "datatypes": [
-              "func"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "ceagent": "optional",
-              "chunk": "optional",
-              "description": "optional",
-              "direction": "optional",
-              "echo": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "phase"
-            ]
-          },
           "ieeg_ieeg_common": {
             "datatypes": [
               "ieeg"
@@ -13414,7 +13730,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -13449,7 +13765,7 @@
               "description": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".dat"
@@ -13475,7 +13791,7 @@
               "description": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".fif"
@@ -13496,7 +13812,7 @@
               "description": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".*",
@@ -13518,7 +13834,7 @@
               "description": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional"
             },
             "extensions": [
@@ -13544,7 +13860,7 @@
               "session": "optional",
               "space": "optional",
               "split": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -13582,7 +13898,7 @@
               "session": "optional",
               "space": "optional",
               "stain": "optional",
-              "subject": "required"
+              "subject": "optional"
             },
             "extensions": [
               ".ome.tif",
@@ -13616,35 +13932,6 @@
               "XPCT"
             ]
           },
-          "perf_asl_common": {
-            "datatypes": [
-              "perf"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "description": "optional",
-              "direction": "optional",
-              "echo": "optional",
-              "part": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "asl",
-              "m0scan"
-            ]
-          },
           "pet_blood_common": {
             "datatypes": [
               "pet"
@@ -13656,7 +13943,7 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "optional",
               "tracer": "optional"
             },
@@ -13669,32 +13956,6 @@
             ],
             "suffixes": [
               "blood"
-            ]
-          },
-          "pet_pet_common": {
-            "datatypes": [
-              "pet"
-            ],
-            "entities": {
-              "description": "optional",
-              "reconstruction": "optional",
-              "run": "optional",
-              "session": "optional",
-              "space": "optional",
-              "subject": "required",
-              "task": "optional",
-              "tracer": "optional"
-            },
-            "extensions": [
-              ".nii.gz",
-              ".nii",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "pet"
             ]
           },
           "task_events_common": {
@@ -13710,7 +13971,7 @@
               "description": "optional",
               "run": "optional",
               "session": "optional",
-              "subject": "required",
+              "subject": "optional",
               "task": "required"
             },
             "extensions": [
@@ -14389,7 +14650,7 @@
               "run": "optional",
               "session": "optional",
               "subject": "required",
-              "task": "required",
+              "task": "optional",
               "volume": "optional"
             },
             "extensions": [
@@ -14409,7 +14670,7 @@
               "run": "optional",
               "session": "optional",
               "subject": "required",
-              "task": "required",
+              "task": "optional",
               "tracer": "optional"
             },
             "extensions": [
@@ -14585,8 +14846,9 @@
               "acquisition": "optional",
               "ceagent": "optional",
               "chunk": "optional",
-              "direction": "required",
+              "direction": "optional",
               "part": "optional",
+              "reconstruction": "optional",
               "run": "optional",
               "session": "optional",
               "subject": "required"
@@ -14610,8 +14872,9 @@
               "acquisition": "optional",
               "ceagent": "optional",
               "chunk": "optional",
-              "direction": "required",
+              "direction": "optional",
               "part": "optional",
+              "reconstruction": "optional",
               "run": "optional",
               "session": "optional",
               "subject": "required"
@@ -15718,6 +15981,44 @@
             "datatype == \"nirs\"",
             "suffix == \"coordsystem\"",
             "json.FiducialsCoordinateSystem == \"other\""
+          ]
+        }
+      },
+      "prov": {
+        "ActivitiesProvenanceFile": {
+          "fields": {
+            "Activities": "required"
+          },
+          "selectors": [
+            "datatype == \"prov\"",
+            "suffix == \"act\""
+          ]
+        },
+        "EnvironmentsProvenanceFile": {
+          "fields": {
+            "Environments": "required"
+          },
+          "selectors": [
+            "datatype == \"prov\"",
+            "suffix == \"env\""
+          ]
+        },
+        "ProvEntitiesProvenanceFile": {
+          "fields": {
+            "ProvEntities": "required"
+          },
+          "selectors": [
+            "datatype == \"prov\"",
+            "suffix == \"ent\""
+          ]
+        },
+        "SoftwareProvenanceFile": {
+          "fields": {
+            "Software": "required"
+          },
+          "selectors": [
+            "datatype == \"prov\"",
+            "suffix == \"soft\""
           ]
         }
       }
@@ -18512,6 +18813,27 @@
           ],
           "selectors": [
             "datatype == 'phenotype'"
+          ]
+        },
+        "Provenance": {
+          "additional_columns": "allowed",
+          "columns": {
+            "description__provenance": "optional",
+            "provenance_label": {
+              "description_addendum": "There MUST be exactly one row for each `prov-<label>` entity.\n",
+              "level": "required"
+            }
+          },
+          "index_columns": [
+            "provenance_label"
+          ],
+          "initial_columns": [
+            "provenance_label"
+          ],
+          "selectors": [
+            "datatype == 'prov'",
+            "stem == 'provenance'",
+            "extension == '.tsv'"
           ]
         },
         "Samples": {
