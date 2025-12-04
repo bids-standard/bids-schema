@@ -6035,7 +6035,7 @@
         "type": "string"
       },
       "Height": {
-        "description": "Height of the video in pixels (for example, `1920`).\n",
+        "description": "Height of the video in pixels (for example, `1080`).\n",
         "display_name": "Video Height",
         "minimum": 1,
         "name": "Height",
@@ -8558,7 +8558,7 @@
         "type": "boolean"
       },
       "Width": {
-        "description": "Width of the video in pixels (for example, `1080`).\n",
+        "description": "Width of the video in pixels (for example, `1920`).\n",
         "display_name": "Video Width",
         "minimum": 1,
         "name": "Width",
