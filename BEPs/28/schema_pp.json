@@ -36,7 +36,7 @@
       "channels": {
         "inherit": true,
         "selectors": [
-          "intersects([suffix], ['eeg', 'ieeg', 'meg', 'nirs', 'motion', 'optodes'])",
+          "intersects([suffix], ['eeg', 'emg', 'ieeg', 'meg', 'nirs', 'motion', 'optodes'])",
           "extension != '.json'"
         ],
         "target": {
@@ -55,10 +55,25 @@
           "suffix": "coordsystem"
         }
       },
+      "coordsystems": {
+        "inherit": true,
+        "selectors": [
+          "datatype == 'emg'",
+          "intersects([suffix], ['emg', 'electrodes'])",
+          "extension != '.json'"
+        ],
+        "target": {
+          "entities": [
+            "space"
+          ],
+          "extension": ".json",
+          "suffix": "coordsystem"
+        }
+      },
       "electrodes": {
         "inherit": true,
         "selectors": [
-          "intersects([suffix], ['eeg', 'ieeg', 'meg'])",
+          "intersects([suffix], ['eeg', 'emg', 'ieeg', 'meg'])",
           "extension != '.json'"
         ],
         "target": {
@@ -248,7 +263,7 @@
             },
             "coordsystem": {
               "additionalProperties": false,
-              "description": "Coordinate system file",
+              "description": "Coordinate system file (first found)",
               "properties": {
                 "path": {
                   "description": "Path to associated coordsystem file",
@@ -257,6 +272,39 @@
               },
               "required": [
                 "path"
+              ],
+              "type": "object"
+            },
+            "coordsystems": {
+              "additionalProperties": false,
+              "description": "Coordinate system files (all)",
+              "properties": {
+                "ParentCoordinateSystems": {
+                  "description": "ParentCoordinateSystem fields loaded from files",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "paths": {
+                  "description": "Paths to associated coordsystem files",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "spaces": {
+                  "description": "Space entity labels extracted from file names",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "paths",
+                "spaces",
+                "ParentCoordinateSystems"
               ],
               "type": "object"
             },
@@ -1410,6 +1458,12 @@
         "name": "component",
         "type": "string"
       },
+      "coordinate_system": {
+        "description": "Name of the coordinate system defined in `coordsystem.json` in which the electrode's\n`x`, `y`, and (optionally) `z` coordinates are given.\n",
+        "display_name": "Coordinate System",
+        "name": "coordinate_system",
+        "type": "string"
+      },
       "derived_from": {
         "description": "`sample-<label>` entity from which a sample is derived,\nfor example a slice of tissue (`sample-02`) derived from a block of tissue (`sample-01`).\n",
         "display_name": "Derived from",
@@ -1487,6 +1541,19 @@
         "name": "group",
         "type": "string"
       },
+      "group__emg": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ],
+        "description": "Which group the electrode or channel belongs to (typically this indicates electrodes\nor bipolar channels on the same grid, strip, or other device).\n",
+        "display_name": "Electrode or channel group",
+        "name": "group"
+      },
       "handedness": {
         "definition": {
           "Description": "String value indicating one of \"left\", \"right\", or \"ambidextrous\".",
@@ -1525,7 +1592,7 @@
         "type": "string"
       },
       "high_cutoff": {
-        "description": "Frequencies used for the low-pass filter applied to the channel in Hz.\nIf no low-pass filter applied, use `n/a`.\nNote that hardware anti-aliasing in A/D conversion of all MEG/EEG electronics\napplies a low-pass filter; specify its frequency here if applicable.\n",
+        "description": "Frequencies used for the low-pass filter applied to the channel in Hz.\nIf no low-pass filter applied, use `n/a`.\nNote that hardware anti-aliasing in A/D conversion of all MEG/EEG/EMG electronics\napplies a low-pass filter; specify its frequency here if applicable.\n",
         "display_name": "High cutoff",
         "minimum": 0,
         "name": "high_cutoff",
@@ -1551,6 +1618,13 @@
         "display_name": "Label index",
         "name": "index",
         "type": "integer"
+      },
+      "interelectrode_distance": {
+        "description": "Distance between adjacent electrodes (in a pair or grid) that are rigidly attached to\nthe same sensor device, or between the `signal_electrode` and its `reference`\nwhen each is independently placed.\n",
+        "display_name": "Interelectrode Distance",
+        "name": "interelectrode_distance",
+        "type": "number",
+        "unit": "mm"
       },
       "low_cutoff": {
         "description": "Frequencies used for the high-pass filter applied to the channel in Hz.\nIf no high-pass filter applied, use `n/a`.\n",
@@ -1652,6 +1726,22 @@
         "name": "placement",
         "type": "string"
       },
+      "placement_description": {
+        "description": "Additional details of the approach to EMG sensor placement.\nSee description of the `EMGPlacementSchemeDescription` field in `*_emg.json`.\n",
+        "display_name": "Placement Scheme Description",
+        "name": "placement_description",
+        "type": "string"
+      },
+      "placement_scheme": {
+        "description": "A description of the electrode placement procedure used.\nSee description of the `EMGPlacementScheme` field in `*_emg.json`.\n",
+        "display_name": "Placement Scheme",
+        "enum": [
+          "measured",
+          "other"
+        ],
+        "name": "placement_scheme",
+        "type": "string"
+      },
       "plasma_radioactivity": {
         "description": "Radioactivity in plasma, in unit of plasma radioactivity (for example, `kBq/mL`).\n",
         "display_name": "Plasma radioactivity",
@@ -1668,6 +1758,12 @@
       "reference__eeg": {
         "description": "Name of the reference electrode(s).\nThis column is not needed when it is common to all channels.\nIn that case the reference electrode(s) can be specified in `*_eeg.json` as `EEGReference`).\n",
         "display_name": "Electrode reference",
+        "name": "reference",
+        "type": "string"
+      },
+      "reference__emg": {
+        "description": "The reference for the given channel.\nWhen the reference is an electrode in `*_electrodes.tsv`, use the name of that electrode.\nFor channels originating from bipolar devices, use `\"bipolar\"`.\nFor non-EMG channels (for example, trigger channels, microphones) use `\"n/a\"`.\n",
+        "display_name": "Reference electrode",
         "name": "reference",
         "type": "string"
       },
@@ -1771,6 +1867,12 @@
         "name": "short_channel",
         "type": "boolean"
       },
+      "signal_electrode": {
+        "description": "The name of the electrode from which the `reference`'s signal is subtracted to yield the channel's data.\nFor channels originating from bipolar devices, the `signal_electrode` MAY be the same as the channel `name`.\n",
+        "display_name": "Signal electrode",
+        "name": "signal_electrode",
+        "type": "string"
+      },
       "size": {
         "description": "Surface area of the electrode, units MUST be in `mm^2`.\n",
         "display_name": "Electrode size",
@@ -1842,6 +1944,12 @@
         "display_name": "Strain RRID",
         "format": "rrid",
         "name": "strain_rrid",
+        "type": "string"
+      },
+      "target_muscle": {
+        "description": "Name of the muscle(s) from which the EMG signal in this channel is believed to originate.\nWhen exact muscle is unknown (such as when using electrode grids that cover multiple muscles),\ngroups of muscles may be named instead (for example \"flexors of the left forearm\").\n",
+        "display_name": "Target muscle",
+        "name": "target_muscle",
         "type": "string"
       },
       "template_x": {
@@ -2061,11 +2169,11 @@
     },
     "common_principles": {
       "data_acquisition": {
-        "description": "A continuous uninterrupted block of time during which a brain scanning instrument was acquiring data according to\nparticular scanning sequence/protocol.\n",
+        "description": "A continuous uninterrupted block of time during which a brain scanning instrument\nor an electromyography recording device was acquiring data\naccording to a particular scanning sequence/protocol.\n",
         "display_name": "Data acquisition"
       },
       "data_type": {
-        "description": "A functional group of different types of data.\nData files are contained in a directory named for the data type.\nBIDS defines the following data types:\n\n    1.  `func` (task based and resting state functional MRI)\n\n    2.  `dwi` (diffusion weighted imaging)\n\n    3.  `fmap` (field inhomogeneity mapping data such as field maps)\n\n    4.  `anat` (structural imaging such as T1, T2, PD, and so on)\n\n    5.  `perf` (perfusion)\n\n    6.  `meg` (magnetoencephalography)\n\n    7.  `eeg` (electroencephalography)\n\n    8.  `ieeg` (intracranial electroencephalography)\n\n    9.  `beh` (behavioral)\n\n    10. `pet` (positron emission tomography)\n\n    11. `micr` (microscopy)\n\n    12. `nirs` (near infrared spectroscopy)\n\n    13. `motion` (motion)\n\n    14. `mrs` (magnetic resonance spectroscopy)\n\n    15. `phenotype` (measurement and survey data)\n\nFor files that are subject- and session- specific, the data type directory\nis nested inside those directories.\n`phenotype` data files are aggregated across subjects and sessions,\nand so the `phenotype/` directory is placed in the dataset root.\n",
+        "description": "A functional group of different types of data.\nData files are contained in a directory named for the data type.\nBIDS defines the following data types:\n\n    1.  `func` (task based and resting state functional MRI)\n\n    2.  `dwi` (diffusion weighted imaging)\n\n    3.  `fmap` (field inhomogeneity mapping data such as field maps)\n\n    4.  `anat` (structural imaging such as T1, T2, PD, and so on)\n\n    5.  `perf` (perfusion)\n\n    6.  `meg` (magnetoencephalography)\n\n    7.  `eeg` (electroencephalography)\n\n    8.  `ieeg` (intracranial electroencephalography)\n\n    9.  `beh` (behavioral)\n\n    10. `pet` (positron emission tomography)\n\n    11. `micr` (microscopy)\n\n    12. `nirs` (near infrared spectroscopy)\n\n    13. `motion` (motion)\n\n    14. `mrs` (magnetic resonance spectroscopy)\n\n    15. `phenotype` (measurement and survey data)\n\n    16. `emg` (electromyography)\n\nFor files that are subject- and session- specific, the data type directory\nis nested inside those directories.\n`phenotype` data files are aggregated across subjects and sessions,\nand so the `phenotype/` directory is placed in the dataset root.\n",
         "display_name": "Data type"
       },
       "dataset": {
@@ -2141,6 +2249,11 @@
         "description": "Electroencephalography",
         "display_name": "Electroencephalography",
         "value": "eeg"
+      },
+      "emg": {
+        "description": "Measurements of muscular activity.",
+        "display_name": "Electromyography",
+        "value": "emg"
       },
       "fmap": {
         "description": "MRI scans for estimating B0 inhomogeneity-induced distortions.\n",
@@ -2562,6 +2675,7 @@
         "display_name": "ECG",
         "tags": [
           "eeg",
+          "emg",
           "meg",
           "ieeg",
           "fnirs"
@@ -2604,6 +2718,7 @@
         "display_name": "EMG",
         "tags": [
           "eeg",
+          "emg",
           "meg",
           "ieeg",
           "fnirs"
@@ -2615,6 +2730,7 @@
         "display_name": "EOG",
         "tags": [
           "eeg",
+          "emg",
           "meg",
           "ieeg",
           "fnirs"
@@ -2723,6 +2839,7 @@
         "display_name": "HEOG",
         "tags": [
           "eeg",
+          "emg",
           "meg",
           "ieeg",
           "fnirs"
@@ -2777,9 +2894,10 @@
         "value": "KitYokogawa"
       },
       "LATENCY": {
-        "description": "Latency of samples in seconds from recording onset.\nMUST be in form of `ss[.000000]`,\nwhere `[.000000]` is an optional subsecond resolution between 1 and 6 decimal points.\n",
+        "description": "Latency of samples in seconds from recording onset.\nMUST be in form of `ss[.000000]`,\nwhere `[.000000]` is an optional subsecond resolution between 1 and 6 decimal points.\nNote that `LATENCY` channels typically contain timestamps from an _external_ clock\nsource, often with the intent of synchronizing data across multiple devices.\n",
         "display_name": "LATENCY",
         "tags": [
+          "emg",
           "motion"
         ],
         "value": "LATENCY"
@@ -2867,6 +2985,7 @@
         "display_name": "MISC",
         "tags": [
           "eeg",
+          "emg",
           "meg",
           "ieeg",
           "fnirs",
@@ -3054,6 +3173,7 @@
         "description": "Position in space, one channel for each spatial axis.\nColumn `component` for the axis MUST be added to the `*_channels.tsv` file (x, y or z).\n",
         "display_name": "POS",
         "tags": [
+          "emg",
           "motion"
         ],
         "value": "POS"
@@ -3092,6 +3212,7 @@
         "display_name": "REF",
         "tags": [
           "eeg",
+          "emg",
           "ieeg"
         ],
         "value": "REF"
@@ -3140,10 +3261,11 @@
         "value": "SINCHANN"
       },
       "SYSCLOCK": {
-        "description": "System time showing elapsed time since trial started.\n",
+        "description": "Elapsed time since trial/recording start, as provided by the recording device.\nFor device-external timestamp signals, use `LATENCY`.\nFor TTL-based synchronization signals, use `TRIG`.\n",
         "display_name": "SYSCLOCK",
         "tags": [
           "eeg",
+          "emg",
           "meg",
           "ieeg",
           "fnirs"
@@ -3173,6 +3295,7 @@
         "display_name": "TRIG",
         "tags": [
           "eeg",
+          "emg",
           "meg",
           "ieeg",
           "fnirs"
@@ -3262,6 +3385,7 @@
         "display_name": "VEOG",
         "tags": [
           "eeg",
+          "emg",
           "meg",
           "ieeg",
           "fnirs"
@@ -3278,6 +3402,12 @@
           "CapTrak",
           "EEGLAB",
           "EEGLAB-HJ",
+          "Other"
+        ],
+        "type": "string"
+      },
+      "_EMGCoordSys": {
+        "enum": [
           "Other"
         ],
         "type": "string"
@@ -4466,6 +4596,23 @@
         "name": "AnatomicalLandmarkCoordinates",
         "type": "object"
       },
+      "AnchorCoordinates": {
+        "description": "Coordinates of the `AnchorElectrode` in the parent (anatomical) coordinate system.\nThis should be an array of numbers of length 3, in the units given in\n`EMGCoordinateSystemUnits` within the JSON object named in `ParentCoordinateSystem`.\n",
+        "display_name": "Anchor Coordinates",
+        "items": {
+          "type": "number"
+        },
+        "maxItems": 3,
+        "minItems": 1,
+        "name": "AnchorCoordinates",
+        "type": "array"
+      },
+      "AnchorElectrode": {
+        "description": "Name of the electrode in the child (device) coordinate system whose coordinates in\nthe parent (anatomical) coordinate system are given in `AnchorCoordinates`.\n",
+        "display_name": "Anchor Electrode",
+        "name": "AnchorElectrode",
+        "type": "string"
+      },
       "ArterialSpinLabelingType": {
         "description": "The arterial spin labeling type.\n",
         "display_name": "Arterial Spin Labeling Type",
@@ -4942,122 +5089,6 @@
         "name": "DatasetDOI",
         "type": "string"
       },
-      "DatasetDigest": {
-        "description": "Object containing digests of the dataset.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
-        "display_name": "Digest",
-        "name": "Digest",
-        "type": "object"
-      },
-      "DatasetGeneratedBy": {
-        "anyOf": [
-          {
-            "format": "uri",
-            "type": "string"
-          },
-          {
-            "items": {
-              "format": "uri",
-              "type": "string"
-            },
-            "minItems": 1,
-            "type": "array"
-          },
-          {
-            "items": {
-              "properties": {
-                "CodeURL": {
-                  "description": "URL where the code used to generate the dataset may be found.",
-                  "display_name": "Code URL",
-                  "format": "uri",
-                  "name": "CodeURL",
-                  "type": "string"
-                },
-                "Container": {
-                  "description": "Used to specify the location and relevant attributes of software container image\nused to produce the dataset. Valid keys in this object include `Type`, `Tag` and\n[`URI`][uri] with [string][] values.\n",
-                  "display_name": "Container",
-                  "name": "Container",
-                  "properties": {
-                    "ContainerTag": {
-                      "description": "Tag of software container image used to produce the dataset\n",
-                      "display_name": "Container Tag",
-                      "name": "ContainerTag",
-                      "type": "string"
-                    },
-                    "ContainerType": {
-                      "description": "Type of software container image used to produce the dataset\n",
-                      "display_name": "Container Type",
-                      "name": "ContainerType",
-                      "type": "string"
-                    },
-                    "ContainerURI": {
-                      "description": "URI for software container image used to produce the dataset\n",
-                      "display_name": "Container URI",
-                      "format": "uri",
-                      "name": "ContainerURI",
-                      "type": "string"
-                    }
-                  },
-                  "recommended": [
-                    "Type",
-                    "Tag",
-                    "URI"
-                  ],
-                  "type": "object"
-                },
-                "Description": {
-                  "description": "Plain-text description of the pipeline or process that generated the dataset.\nRECOMMENDED if `Name` is `\"Manual\"`.\n",
-                  "display_name": "Pipeline Description",
-                  "name": "Description",
-                  "type": "string"
-                },
-                "Name": {
-                  "description": "Name of the pipeline or process that generated the dataset. Use `\"Manual\"` to\nindicate the derivatives were generated by hand, or adjusted manually after an\ninitial run of an automated pipeline.\n",
-                  "display_name": "Pipeline Name",
-                  "name": "Name",
-                  "type": "string"
-                },
-                "Version": {
-                  "description": "Version of the pipeline or process that generated the dataset.",
-                  "display_name": "Pipeline Version",
-                  "name": "Version",
-                  "type": "string"
-                }
-              },
-              "recommended": [
-                "Version"
-              ],
-              "required": [
-                "Name"
-              ],
-              "type": "object"
-            },
-            "minItems": 1,
-            "type": "array"
-          }
-        ],
-        "description": "Description of the dataset provenance (see\n[Provenance of a BIDS dataset](SPEC_ROOT/modality-agnostic-files/provenance.html#provenance-of-a-bids-dataset)).\n",
-        "display_name": "Generated By",
-        "name": "GeneratedBy"
-      },
-      "DatasetGeneratedById": {
-        "anyOf": [
-          {
-            "format": "uri",
-            "type": "string"
-          },
-          {
-            "items": {
-              "format": "uri",
-              "type": "string"
-            },
-            "minItems": 1,
-            "type": "array"
-          }
-        ],
-        "description": "Identifier(s) of the activity/activities responsible for the creation of the dataset.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
-        "display_name": "Generated By",
-        "name": "GeneratedBy"
-      },
       "DatasetLinks": {
         "additionalProperties": {
           "format": "uri",
@@ -5068,7 +5099,18 @@
         "name": "DatasetLinks",
         "type": "object"
       },
-      "DatasetProvEntities": {
+      "DatasetType": {
+        "description": "The interpretation of the dataset.\nFor backwards compatibility, the default value is `\"raw\"`.\n",
+        "display_name": "Dataset Type",
+        "enum": [
+          "raw",
+          "derivative",
+          "study"
+        ],
+        "name": "DatasetType",
+        "type": "string"
+      },
+      "Datasets__ProvEntities": {
         "description": "Objects describing datasets.",
         "display_name": "Datasets",
         "items": {
@@ -5147,36 +5189,6 @@
         "minItems": 1,
         "name": "Datasets",
         "type": "array"
-      },
-      "DatasetProvType": {
-        "anyOf": [
-          {
-            "format": "uri",
-            "type": "string"
-          },
-          {
-            "items": {
-              "format": "uri",
-              "type": "string"
-            },
-            "minItems": 1,
-            "type": "array"
-          }
-        ],
-        "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the dataset.\n",
-        "display_name": "Type",
-        "name": "Type"
-      },
-      "DatasetType": {
-        "description": "The interpretation of the dataset.\nFor backwards compatibility, the default value is `\"raw\"`.\n",
-        "display_name": "Dataset Type",
-        "enum": [
-          "raw",
-          "derivative",
-          "study"
-        ],
-        "name": "DatasetType",
-        "type": "string"
       },
       "DecayCorrectionFactor": {
         "description": "Decay correction factor for each frame.\n",
@@ -5335,6 +5347,18 @@
         "display_name": "Dewar Position",
         "name": "DewarPosition",
         "type": "string"
+      },
+      "Digest__Dataset": {
+        "description": "Object containing digests of the dataset.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
+        "display_name": "Digest",
+        "name": "Digest",
+        "type": "object"
+      },
+      "Digest__File": {
+        "description": "Object containing digests of the file.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
+        "display_name": "Digest",
+        "name": "Digest",
+        "type": "object"
       },
       "DigitizedHeadPoints": {
         "description": "`true` or `false` value indicating whether head points outlining the\nscalp/face surface are contained within this recording.\n",
@@ -5571,6 +5595,63 @@
         "name": "EMGChannelCount",
         "type": "integer"
       },
+      "EMGCoordinateSystem": {
+        "description": "Defines the coordinate system for the EMG sensors.\n\nSee the\n[Coordinate Systems Appendix](SPEC_ROOT/appendices/coordinate-systems.md)\nfor a list of restricted keywords for coordinate systems.\nIf `\"Other\"`, provide definition of the coordinate system in\n`EMGCoordinateSystemDescription`.\n",
+        "display_name": "EMG Coordinate System",
+        "enum": [
+          "Other"
+        ],
+        "name": "EMGCoordinateSystem",
+        "type": "string"
+      },
+      "EMGCoordinateSystemDescription": {
+        "description": "Free-form text description of the coordinate system, typically defining the origin\nand positive x,y,z axis directions, relative to anatomical landmarks.\nMay also include a link to a documentation page or paper describing the\nsystem in greater detail.\n",
+        "display_name": "EMG Coordinate System Description",
+        "name": "EMGCoordinateSystemDescription",
+        "type": "string"
+      },
+      "EMGCoordinateUnits": {
+        "description": "Units of the coordinates of `EMGCoordinateSystem`.\n",
+        "display_name": "EMG Coordinate Units",
+        "enum": [
+          "m",
+          "mm",
+          "cm",
+          "percent",
+          "n/a"
+        ],
+        "name": "EMGCoordinateUnits",
+        "type": "string"
+      },
+      "EMGGround": {
+        "description": "Description of the location of the ground electrode\n(for example, `\"right radial styloid process\"`).\n",
+        "display_name": "EMG Ground",
+        "name": "EMGGround",
+        "type": "string"
+      },
+      "EMGPlacementScheme": {
+        "description": "The way in which electrode placement locations were determined.\nIf electrode locations are provided as coordinates in `*_electrodes.tsv` in reference\nto a coordinate system defined in `*_coordsystem.json`, then specify `\"Measured\"`.\nIf approach to placement varied across sensor devices, specify `\"ChannelSpecific\"`\nand include placement details in the `placement_scheme` column of `*_channels.tsv`.\nIf a standardized electrode placement procedure (for example, SENIAM 8) was followed,\nor if an ad-hoc procedure was followed, specify `\"Other\"` and provide details in\n`EMGPlacementSchemeDescription`.\n",
+        "display_name": "EMG Placement Scheme",
+        "enum": [
+          "ChannelSpecific",
+          "Measured",
+          "Other"
+        ],
+        "name": "EMGPlacementScheme",
+        "type": "string"
+      },
+      "EMGPlacementSchemeDescription": {
+        "description": "Additional details of the approach to EMG sensor placement.\nDescriptions SHOULD NOT simply give the name of the targeted muscle (use the\n`target_muscle` column in `*_channels.tsv` for that), but rather SHOULD reflect the\nprocess used by the researcher(s) when placing electrodes.\nFor example, EMG electrode sites may be chosen by *measured distance* from anatomical\nlandmarks, by *visual reference* to (parts of) target muscles, by *palpation* of the\nskin to locate target muscles, or by *functional localization* (temporary electrode\nplacement at several sites during prescribed behavior, until a site yielding strong\nEMG signal is found).\n",
+        "display_name": "EMG Placement Scheme Description",
+        "name": "EMGPlacementSchemeDescription",
+        "type": "string"
+      },
+      "EMGReference": {
+        "description": "Description of the approach to signal referencing.\nIf the same signal source is used as reference for all channels (often called a\n\"monopolar\" recording), specify the signal source (typically an electrode name).\nIf different channels have different reference electrodes, this field SHOULD contain\nthe string `\"ChannelSpecific\"` and each channel's reference SHOULD be given in the\n`reference` column of `*_channels.tsv`.\nFor bipolar recording devices (where a single sensor unit contains two rigidly\nseparated contacts, and the paired contacts are not listed independently in\n`*_electrodes.tsv`), this field SHOULD be `\"Bipolar\"`.\n",
+        "display_name": "EMG Reference",
+        "name": "EMGReference",
+        "type": "string"
+      },
       "EOGChannelCount": {
         "description": "Number of EOG channels.\n",
         "display_name": "EOG Channel Count",
@@ -5732,11 +5813,96 @@
         "name": "ElectrodeManufacturersModelName",
         "type": "string"
       },
+      "ElectrodeMaterial": {
+        "description": "Material of the electrode (for example, `Tin`, `Ag/AgCl`, `Gold`).\nIf multiple sensor devices with heterogeneous electrode materials are recorded into\nthe same data file,\nelectrode material SHOULD be recorded in the `material` column of `*_electrodes.tsv` instead.\nIf instead those devices were recorded into separate data files (distinguished for example\nby the `recording` entity),\nseparate `*_emg.json` files (similarly distinguished) MAY be included,\neach with their own `ElectrodeMaterial` values.\n",
+        "display_name": "Electrode Material",
+        "name": "ElectrodeMaterial",
+        "type": "string"
+      },
+      "ElectrodeType": {
+        "description": "Type of the electrode (for example, cup, ring, clip-on, wire, needle).\n",
+        "display_name": "Electrode type",
+        "name": "ElectrodeType",
+        "type": "string"
+      },
       "EncodingTechnique": {
         "description": "The encoding technique used during readout.\nFor example, `\"Cartesian\"`, `\"EPSI\"`, `\"Spiral\"`,\nor `\"Density-weighted concentric ring trajectory\"`.\n",
         "display_name": "Encoding Technique",
         "name": "EncodingTechnique",
         "type": "string"
+      },
+      "Entities__ProvEntities": {
+        "description": "Objects describing prov:Entity objects other than files or datasets.",
+        "display_name": "Entities",
+        "items": {
+          "properties": {
+            "Digest": {
+              "description": "Object containing digests of the prov:Entity.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
+              "name": "Digest",
+              "type": "object"
+            },
+            "GeneratedBy": {
+              "anyOf": [
+                {
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              ],
+              "description": "Identifier(s) of the activity/activities responsible for the creation of the prov:Entity.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+              "display_name": "Generated By",
+              "name": "GeneratedBy"
+            },
+            "Id": {
+              "description": "Identifier for the prov:Entity (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
+              "format": "uri",
+              "name": "Id",
+              "type": "string"
+            },
+            "Label": {
+              "description": "Name for the prov:Entity.",
+              "format": "label",
+              "name": "Label",
+              "type": "string"
+            },
+            "Type": {
+              "anyOf": [
+                {
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              ],
+              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the prov:Entity.\n",
+              "name": "Type"
+            }
+          },
+          "recommended": [
+            "Digest"
+          ],
+          "required": [
+            "Id",
+            "Label"
+          ],
+          "type": "object"
+        },
+        "minItems": 1,
+        "name": "Entities",
+        "type": "array"
       },
       "Environments": {
         "description": "Objects describing environments.",
@@ -5901,32 +6067,7 @@
         "name": "FiducialsDescription",
         "type": "string"
       },
-      "FileDigest": {
-        "description": "Object containing digests of the file.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
-        "display_name": "Digest",
-        "name": "Digest",
-        "type": "object"
-      },
-      "FileGeneratedById": {
-        "anyOf": [
-          {
-            "format": "uri",
-            "type": "string"
-          },
-          {
-            "items": {
-              "format": "uri",
-              "type": "string"
-            },
-            "minItems": 1,
-            "type": "array"
-          }
-        ],
-        "description": "Identifier(s) of the activity/activities responsible for the creation of the file.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
-        "display_name": "Generated By",
-        "name": "GeneratedBy"
-      },
-      "FileProvEntities": {
+      "Files__ProvEntities": {
         "description": "Objects describing files.",
         "display_name": "Files",
         "items": {
@@ -6005,25 +6146,6 @@
         "minItems": 1,
         "name": "Files",
         "type": "array"
-      },
-      "FileType": {
-        "anyOf": [
-          {
-            "format": "uri",
-            "type": "string"
-          },
-          {
-            "items": {
-              "format": "uri",
-              "type": "string"
-            },
-            "minItems": 1,
-            "type": "array"
-          }
-        ],
-        "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the file.\n",
-        "display_name": "Type",
-        "name": "Type"
       },
       "FlipAngle": {
         "anyOf": [
@@ -6135,6 +6257,13 @@
         "name": "GYROChannelCount",
         "type": "integer"
       },
+      "Gain": {
+        "description": "Signal gain from an in-line amplifier, applied between the EMG sensor/device and the data acquisition computer.\nSee also Preamplification.\n",
+        "display_name": "Gain",
+        "name": "Gain",
+        "type": "number",
+        "unit": "arbitrary"
+      },
       "GeneratedBy": {
         "description": "Used to specify provenance of the dataset.",
         "display_name": "Generated By",
@@ -6209,6 +6338,135 @@
         "minItems": 1,
         "name": "GeneratedBy",
         "type": "array"
+      },
+      "GeneratedBy__Dataset": {
+        "anyOf": [
+          {
+            "format": "uri",
+            "type": "string"
+          },
+          {
+            "items": {
+              "format": "uri",
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          {
+            "items": {
+              "properties": {
+                "CodeURL": {
+                  "description": "URL where the code used to generate the dataset may be found.",
+                  "display_name": "Code URL",
+                  "format": "uri",
+                  "name": "CodeURL",
+                  "type": "string"
+                },
+                "Container": {
+                  "description": "Used to specify the location and relevant attributes of software container image\nused to produce the dataset. Valid keys in this object include `Type`, `Tag` and\n[`URI`][uri] with [string][] values.\n",
+                  "display_name": "Container",
+                  "name": "Container",
+                  "properties": {
+                    "ContainerTag": {
+                      "description": "Tag of software container image used to produce the dataset\n",
+                      "display_name": "Container Tag",
+                      "name": "ContainerTag",
+                      "type": "string"
+                    },
+                    "ContainerType": {
+                      "description": "Type of software container image used to produce the dataset\n",
+                      "display_name": "Container Type",
+                      "name": "ContainerType",
+                      "type": "string"
+                    },
+                    "ContainerURI": {
+                      "description": "URI for software container image used to produce the dataset\n",
+                      "display_name": "Container URI",
+                      "format": "uri",
+                      "name": "ContainerURI",
+                      "type": "string"
+                    }
+                  },
+                  "recommended": [
+                    "Type",
+                    "Tag",
+                    "URI"
+                  ],
+                  "type": "object"
+                },
+                "Description": {
+                  "description": "Plain-text description of the pipeline or process that generated the dataset.\nRECOMMENDED if `Name` is `\"Manual\"`.\n",
+                  "display_name": "Pipeline Description",
+                  "name": "Description",
+                  "type": "string"
+                },
+                "Name": {
+                  "description": "Name of the pipeline or process that generated the dataset. Use `\"Manual\"` to\nindicate the derivatives were generated by hand, or adjusted manually after an\ninitial run of an automated pipeline.\n",
+                  "display_name": "Pipeline Name",
+                  "name": "Name",
+                  "type": "string"
+                },
+                "Version": {
+                  "description": "Version of the pipeline or process that generated the dataset.",
+                  "display_name": "Pipeline Version",
+                  "name": "Version",
+                  "type": "string"
+                }
+              },
+              "recommended": [
+                "Version"
+              ],
+              "required": [
+                "Name"
+              ],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        ],
+        "description": "Description of the dataset provenance (see\n[Provenance of a BIDS dataset](SPEC_ROOT/modality-agnostic-files/provenance.html#provenance-of-a-bids-dataset)).\n",
+        "display_name": "Generated By",
+        "name": "GeneratedBy"
+      },
+      "GeneratedBy__Id__Dataset": {
+        "anyOf": [
+          {
+            "format": "uri",
+            "type": "string"
+          },
+          {
+            "items": {
+              "format": "uri",
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        ],
+        "description": "Identifier(s) of the activity/activities responsible for the creation of the dataset.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+        "display_name": "Generated By",
+        "name": "GeneratedBy"
+      },
+      "GeneratedBy__Id__File": {
+        "anyOf": [
+          {
+            "format": "uri",
+            "type": "string"
+          },
+          {
+            "items": {
+              "format": "uri",
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        ],
+        "description": "Identifier(s) of the activity/activities responsible for the creation of the file.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+        "display_name": "Generated By",
+        "name": "GeneratedBy"
       },
       "GeneticLevel": {
         "anyOf": [
@@ -6692,6 +6950,13 @@
         "description": "The paths to files for which the associated file is intended to be used.\nContains one or more [BIDS URIs](SPEC_ROOT/common-principles.md#bids-uri).\nUsing forward-slash separated paths relative to the dataset root is\n[DEPRECATED](SPEC_ROOT/common-principles.md#definitions).\n",
         "display_name": "Intended For",
         "name": "IntendedFor"
+      },
+      "InterelectrodeDistance": {
+        "description": "Distance between pairs or grids of electrodes rigidly attached to the same sensor device.\nIf multiple sensor devices with heterogeneous inter-electrode distances are recorded into\nthe same data file,\ninter-electrode distance SHOULD be recorded in the `interelectrode_distance` column of\n`*_electrodes.tsv` instead.\nIf instead those devices were recorded into separate data files (distinguished for example\nby the `recording` entity),\nseparate `*_emg.json` files (similarly distinguished) MAY be included,\neach with their own `InterelectrodeDistance` values.\n",
+        "display_name": "Inter-electrode Distance",
+        "name": "InterelectrodeDistance",
+        "type": "number",
+        "unit": "mm"
       },
       "InversionTime": {
         "description": "The inversion time (TI) for the acquisition, specified in seconds.\nInversion time is the time after the middle of inverting RF pulse to middle\nof excitation pulse to detect the amount of longitudinal magnetization.\nCorresponds to [DICOM Tag 0018, 0082](https://dicomlookup.com/dicomtags/(0018,0082)) `Inversion Time`\n(please note that the DICOM term is in milliseconds not seconds).\n",
@@ -7501,6 +7766,12 @@
         "name": "ParallelReductionFactorOutOfPlane",
         "type": "number"
       },
+      "ParentCoordinateSystem": {
+        "description": "The name of a JSON mapping key that defines the parent (anatomical) coordinate system\nin which this child (device) coordinate system is anchored.\n",
+        "display_name": "Parent Coordinate System",
+        "name": "ParentCoordinateSystem",
+        "type": "string"
+      },
       "PartialFourier": {
         "description": "The fraction of partial Fourier information collected.\n",
         "display_name": "Partial Fourier",
@@ -7667,6 +7938,13 @@
         "display_name": "Power Line Frequency",
         "name": "PowerLineFrequency"
       },
+      "Preamplification": {
+        "description": "Amplification built into an EMG bipolar sensor, electrode grid, or other device.\nSee also Gain.\n",
+        "display_name": "Preamplification",
+        "name": "Preamplification",
+        "type": "number",
+        "unit": "arbitrary"
+      },
       "PromptRate": {
         "description": "Prompt rate for each frame (same units as `Units`, for example, `\"Bq/mL\"`).\n",
         "display_name": "Prompt Rate",
@@ -7674,79 +7952,6 @@
           "type": "number"
         },
         "name": "PromptRate",
-        "type": "array"
-      },
-      "ProvEntities": {
-        "description": "Objects describing prov:Entity objects other than files or datasets.",
-        "display_name": "Entities",
-        "items": {
-          "properties": {
-            "Digest": {
-              "description": "Object containing digests of the prov:Entity.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
-              "name": "Digest",
-              "type": "object"
-            },
-            "GeneratedBy": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "format": "uri",
-                    "type": "string"
-                  },
-                  "minItems": 1,
-                  "type": "array"
-                }
-              ],
-              "description": "Identifier(s) of the activity/activities responsible for the creation of the prov:Entity.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
-              "display_name": "Generated By",
-              "name": "GeneratedBy"
-            },
-            "Id": {
-              "description": "Identifier for the prov:Entity (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
-              "format": "uri",
-              "name": "Id",
-              "type": "string"
-            },
-            "Label": {
-              "description": "Name for the prov:Entity.",
-              "format": "label",
-              "name": "Label",
-              "type": "string"
-            },
-            "Type": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "format": "uri",
-                    "type": "string"
-                  },
-                  "minItems": 1,
-                  "type": "array"
-                }
-              ],
-              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the prov:Entity.\u0153\n",
-              "name": "Type"
-            }
-          },
-          "recommended": [
-            "Digest"
-          ],
-          "required": [
-            "Id",
-            "Label"
-          ],
-          "type": "object"
-        },
-        "minItems": 1,
-        "name": "Entities",
         "type": "array"
       },
       "PulseDuration": {
@@ -8397,6 +8602,12 @@
         "name": "SinglesRate",
         "type": "array"
       },
+      "SkinPreparation": {
+        "description": "How skin was prepared prior to sensor device placement, for example, `\"alcohol wipe\"`\nor `\"abrasive gel\"`.\n",
+        "display_name": "Skin Preparation",
+        "name": "SkinPreparation",
+        "type": "string"
+      },
       "SkullStripped": {
         "description": "Whether the volume was skull stripped (non-brain voxels set to zero) or not.\n",
         "display_name": "Skull Stripped",
@@ -9018,6 +9229,44 @@
         "name": "Type",
         "type": "string"
       },
+      "Type__Dataset": {
+        "anyOf": [
+          {
+            "format": "uri",
+            "type": "string"
+          },
+          {
+            "items": {
+              "format": "uri",
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        ],
+        "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the dataset.\n",
+        "display_name": "Type",
+        "name": "Type"
+      },
+      "Type__File": {
+        "anyOf": [
+          {
+            "format": "uri",
+            "type": "string"
+          },
+          {
+            "items": {
+              "format": "uri",
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        ],
+        "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the file.\n",
+        "display_name": "Type",
+        "name": "Type"
+      },
       "URL": {
         "description": "A Uniform Resource Locator (URL) is a structured reference to an object that\nincludes a resource transfer scheme and a location.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
         "display_name": "URL",
@@ -9255,6 +9504,10 @@
       "eeg": {
         "description": "Data acquired with EEG.\n",
         "display_name": "Electroencephalography"
+      },
+      "emg": {
+        "description": "Data acquired with EMG.\n",
+        "display_name": "Electromyography"
       },
       "ieeg": {
         "description": "Data acquired with iEEG.\n",
@@ -9719,6 +9972,11 @@
         "description": "File that gives the location of (i)EEG electrodes.\n",
         "display_name": "Electrodes",
         "value": "electrodes"
+      },
+      "emg": {
+        "description": "Electromyography recording data.\n",
+        "display_name": "Electromyography",
+        "value": "emg"
       },
       "ent": {
         "description": "A JSON file containing objects describing  input and output data in the context of provenance.\n(See the [`Input and output data`](SPEC_ROOT/modality-agnostic-files/provenance.md#-input-and-output-data)\nsection).\n",
@@ -10276,7 +10534,7 @@
         },
         "RequiredCoordsystem": {
           "checks": [
-            "associations.coordsystem != null"
+            "associations.coordsystem != null || associations.coordsystems != null"
           ],
           "issue": {
             "code": "REQUIRED_COORDSYSTEM",
@@ -10285,7 +10543,8 @@
           },
           "selectors": [
             "suffix == \"electrodes\"",
-            "extension == \".tsv\""
+            "extension == \".tsv\"",
+            "datatype != \"emg\""
           ]
         }
       },
@@ -10601,6 +10860,53 @@
             "suffix == \"eeg\"",
             "type(sidecar.TriggerChannelCount) != \"null\"",
             "associations.channels.type"
+          ]
+        }
+      },
+      "emg": {
+        "EMGChannelCountReq": {
+          "checks": [
+            "sidecar.EMGChannelCount == count(associations.channels.type, \"EMG\")"
+          ],
+          "issue": {
+            "code": "EMG_CHANNEL_COUNT_MISMATCH",
+            "level": "warning",
+            "message": "The EMGChannelCount metadata does not match the number of channels\nwith type EMG in the associated channels.tsv file.\n"
+          },
+          "selectors": [
+            "suffix == \"emg\"",
+            "type(sidecar.EMGChannelCount) != \"null\"",
+            "associations.channels.type"
+          ]
+        },
+        "EMGCoordSysMatch": {
+          "checks": [
+            "length(\n  intersects(\n    unique(columns.coordinate_system),\n    associations.coordsystems.spaces\n  )\n) == length(unique(columns.coordinate_system))\n"
+          ],
+          "issue": {
+            "code": "EMG_COORD_SYS_MISMATCH",
+            "level": "error",
+            "message": "Some values in the coordinate_system column of *_electrodes.tsv are not present as\nspace entities in *_coordsystem.json files.\n"
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"electrodes\"",
+            "columns.coordinate_system"
+          ]
+        },
+        "EMGCoordSysParents": {
+          "checks": [
+            "length(\n  intersects(\n    unique(associations.coordsystems.ParentCoordinateSystems),\n    associations.coordsystems.spaces\n  )\n) == length(unique(associations.coordsystems.ParentCoordinateSystems))\n"
+          ],
+          "issue": {
+            "code": "EMG_COORD_SYS_PARENTS",
+            "level": "error",
+            "message": "Some parent coordinate systems were not found."
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"electrodes\"",
+            "length(associations.coordsystems.ParentCoordinateSystems)"
           ]
         }
       },
@@ -11797,18 +12103,18 @@
           },
           "BIDSVersion": "required",
           "DatasetDOI": "optional",
-          "DatasetDigest": "optional",
-          "DatasetGeneratedBy": "recommended",
-          "DatasetProvType": "optional",
           "DatasetType": "recommended",
+          "Digest__Dataset": "optional",
           "EthicsApprovals": "optional",
           "Funding": "optional",
+          "GeneratedBy__Dataset": "recommended",
           "HowToAcknowledge": "optional",
           "Keywords": "optional",
           "License": "recommended",
           "Name": "required",
           "ReferencesAndLinks": "optional",
-          "SourceDatasets": "recommended"
+          "SourceDatasets": "recommended",
+          "Type__Dataset": "optional"
         },
         "selectors": [
           "path == \"/dataset_description.json\""
@@ -11825,7 +12131,7 @@
       },
       "derivative_description": {
         "fields": {
-          "DatasetGeneratedBy": "required"
+          "GeneratedBy__Dataset": "required"
         },
         "selectors": [
           "path == \"/dataset_description.json\"",
@@ -12294,7 +12600,8 @@
         "level": "error",
         "message": "A json sidecar file was found without a corresponding data file.\n",
         "selectors": [
-          "extension == \".json\""
+          "extension == \".json\"",
+          "suffix != \"coordsystem\" || modality != \"emg\""
         ]
       },
       "WrongNewLine": {
@@ -13760,16 +14067,12 @@
             ]
           },
           "channels_electrodes_common": {
-            "datatypes": [
-              "eeg",
-              "ieeg"
-            ],
+            "datatypes": [],
             "entities": {
               "acquisition": "optional",
               "description": "optional",
               "run": "optional",
               "session": "optional",
-              "space": "optional",
               "subject": "optional",
               "task": "optional"
             },
@@ -14447,6 +14750,26 @@
               "channels"
             ]
           },
+          "channels__emg": {
+            "datatypes": [
+              "emg"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "recording": "optional",
+              "run": "optional",
+              "session": "optional",
+              "subject": "required",
+              "task": "required"
+            },
+            "extensions": [
+              ".json",
+              ".tsv"
+            ],
+            "suffixes": [
+              "channels"
+            ]
+          },
           "channels__meg": {
             "datatypes": [
               "meg"
@@ -14524,7 +14847,43 @@
               "coordsystem"
             ]
           },
+          "coordsystem__emg": {
+            "datatypes": [
+              "emg"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "recording": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "required",
+              "task": "optional"
+            },
+            "extensions": [
+              ".json"
+            ],
+            "suffixes": [
+              "coordsystem"
+            ]
+          },
           "electrodes": {
+            "datatypes": [],
+            "entities": {
+              "acquisition": "optional",
+              "run": "optional",
+              "session": "optional",
+              "subject": "required",
+              "task": "optional"
+            },
+            "extensions": [
+              ".json",
+              ".tsv"
+            ],
+            "suffixes": [
+              "electrodes"
+            ]
+          },
+          "electrodes__eeg": {
             "datatypes": [
               "eeg",
               "ieeg"
@@ -14534,6 +14893,26 @@
               "run": "optional",
               "session": "optional",
               "space": "optional",
+              "subject": "required",
+              "task": "optional"
+            },
+            "extensions": [
+              ".json",
+              ".tsv"
+            ],
+            "suffixes": [
+              "electrodes"
+            ]
+          },
+          "electrodes__emg": {
+            "datatypes": [
+              "emg"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "recording": "optional",
+              "run": "optional",
+              "session": "optional",
               "subject": "required",
               "task": "optional"
             },
@@ -14688,6 +15067,29 @@
             ]
           }
         },
+        "emg": {
+          "emg": {
+            "datatypes": [
+              "emg"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "recording": "optional",
+              "run": "optional",
+              "session": "optional",
+              "subject": "required",
+              "task": "required"
+            },
+            "extensions": [
+              ".json",
+              ".edf",
+              ".bdf"
+            ],
+            "suffixes": [
+              "emg"
+            ]
+          }
+        },
         "events": {
           "events": {
             "datatypes": [
@@ -14699,6 +15101,26 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "run": "optional",
+              "session": "optional",
+              "subject": "required",
+              "task": "required"
+            },
+            "extensions": [
+              ".tsv",
+              ".json"
+            ],
+            "suffixes": [
+              "events"
+            ]
+          },
+          "events__emg": {
+            "datatypes": [
+              "emg"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "recording": "optional",
               "run": "optional",
               "session": "optional",
               "subject": "required",
@@ -15498,6 +15920,25 @@
               "photo"
             ]
           },
+          "photo__emg": {
+            "datatypes": [
+              "emg"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "recording": "optional",
+              "session": "optional",
+              "subject": "required"
+            },
+            "extensions": [
+              ".jpg",
+              ".png",
+              ".tif"
+            ],
+            "suffixes": [
+              "photo"
+            ]
+          },
           "photo__micr": {
             "datatypes": [
               "micr"
@@ -15786,6 +16227,56 @@
           },
           "selectors": [
             "datatype == \"eeg\"",
+            "suffix == \"coordsystem\""
+          ]
+        }
+      },
+      "emg": {
+        "EMGChildCoordSystem": {
+          "fields": {
+            "AnchorCoordinates": "required",
+            "AnchorElectrode": "required"
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"coordsystem\"",
+            "\"ParentCoordinateSystem\" in json"
+          ]
+        },
+        "EMGCoordsystemOther": {
+          "fields": {
+            "EMGCoordinateSystemDescription": "required"
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"coordsystem\"",
+            "\"EMGCoordinateSystem\" in json",
+            "json.EMGCoordinateSystem == \"Other\""
+          ]
+        },
+        "EMGCoordsystemPositions": {
+          "fields": {
+            "AnchorCoordinates": {
+              "level": "optional",
+              "level_addendum": "required if `ParentCoordinateSystem` is present"
+            },
+            "AnchorElectrode": {
+              "level": "optional",
+              "level_addendum": "required if `ParentCoordinateSystem` is present"
+            },
+            "EMGCoordinateSystem": {
+              "description_addendum": "`\"Other\"` is the only valid value until standardized names become available for EMG coordinate systems.\n",
+              "level": "required"
+            },
+            "EMGCoordinateSystemDescription": {
+              "level": "recommended",
+              "level_addendum": "required if `EMGCoordinateSystem` is `\"Other\"`"
+            },
+            "EMGCoordinateUnits": "required",
+            "ParentCoordinateSystem": "optional"
+          },
+          "selectors": [
+            "datatype == \"emg\"",
             "suffix == \"coordsystem\""
           ]
         }
@@ -16109,6 +16600,17 @@
             "suffix == \"act\""
           ]
         },
+        "DatasetsProvenanceFile": {
+          "fields": {
+            "Datasets__ProvEntities": "required"
+          },
+          "selectors": [
+            "datatype == \"prov\"",
+            "suffix == \"ent\"",
+            "!(\"Files\" in json)",
+            "!(\"Entities\" in json)"
+          ]
+        },
         "EnvironmentsProvenanceFile": {
           "fields": {
             "Environments": "required"
@@ -16118,13 +16620,26 @@
             "suffix == \"env\""
           ]
         },
-        "ProvEntitiesProvenanceFile": {
+        "FilesProvenanceFile": {
           "fields": {
-            "ProvEntities": "required"
+            "Files__ProvEntities": "required"
           },
           "selectors": [
             "datatype == \"prov\"",
-            "suffix == \"ent\""
+            "suffix == \"ent\"",
+            "!(\"Datasets\" in json)",
+            "!(\"Entities\" in json)"
+          ]
+        },
+        "ProvEntitiesProvenanceFile": {
+          "fields": {
+            "Entities__ProvEntities": "required"
+          },
+          "selectors": [
+            "datatype == \"prov\"",
+            "suffix == \"ent\"",
+            "!(\"Files\" in json)",
+            "!(\"Datasets\" in json)"
           ]
         },
         "SoftwareProvenanceFile": {
@@ -16151,6 +16666,11 @@
       "eeg": {
         "datatypes": [
           "eeg"
+        ]
+      },
+      "emg": {
+        "datatypes": [
+          "emg"
         ]
       },
       "ieeg": {
@@ -16717,6 +17237,15 @@
         }
       },
       "electrophys": {
+        "EpochLengthRequired": {
+          "fields": {
+            "EpochLength": "required"
+          },
+          "selectors": [
+            "intersects([datatype], ['emg'])",
+            "sidecar.RecordingType == 'epoched'"
+          ]
+        },
         "EpochedData": {
           "fields": {
             "EpochLength": "recommended"
@@ -16724,6 +17253,113 @@
           "selectors": [
             "intersects([datatype], ['eeg', 'meg', 'ieeg'])",
             "sidecar.RecordingType == 'epoched'"
+          ]
+        }
+      },
+      "emg": {
+        "EMGHardware": {
+          "fields": {
+            "DeviceSerialNumber": "recommended",
+            "ElectrodeManufacturer": "recommended",
+            "ElectrodeManufacturersModelName": "recommended",
+            "Manufacturer": "recommended",
+            "ManufacturersModelName": "recommended",
+            "SoftwareVersions": "recommended"
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"emg\""
+          ]
+        },
+        "EMGInstitutionInformation": {
+          "fields": {
+            "InstitutionAddress": "recommended",
+            "InstitutionName": "recommended",
+            "InstitutionalDepartmentName": "recommended"
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"emg\""
+          ]
+        },
+        "EMGOptional": {
+          "fields": {
+            "EMGGround": "optional",
+            "ElectrodeMaterial": "optional",
+            "ElectrodeType": "optional",
+            "EpochLength": {
+              "level": "optional",
+              "level_addendum": "recommended if RecordingType is \"epoched\""
+            },
+            "Gain": "optional",
+            "InterelectrodeDistance": "optional",
+            "Preamplification": "optional",
+            "SkinPreparation": "optional",
+            "SubjectArtefactDescription": "optional",
+            "TriggerChannelCount": "optional"
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"emg\""
+          ]
+        },
+        "EMGPlacementSchemeDescription": {
+          "fields": {
+            "EMGPlacementSchemeDescription": "required"
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"emg\"",
+            "sidecar.EMGPlacementScheme == \"Other\""
+          ]
+        },
+        "EMGRecommended": {
+          "fields": {
+            "EMGChannelCount": "recommended",
+            "HardwareFilters": "recommended",
+            "RecordingDuration": "recommended"
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"emg\""
+          ]
+        },
+        "EMGRequired": {
+          "fields": {
+            "EMGPlacementScheme": "required",
+            "EMGPlacementSchemeDescription": {
+              "level": "optional",
+              "level_addendum": "required if `EMGPlacementScheme` is `\"Other\"`"
+            },
+            "EMGReference": "required",
+            "PowerLineFrequency": "required",
+            "RecordingType": "required",
+            "SamplingFrequency": {
+              "description_addendum": "The sampling frequency of data channels that deviate from the main sampling\nfrequency SHOULD be specified in the `channels.tsv` file.\n",
+              "level": "required"
+            },
+            "SoftwareFilters": "required"
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"emg\""
+          ]
+        },
+        "EMGTaskInformation": {
+          "fields": {
+            "Instructions": {
+              "description_addendum": "This is especially important in context of resting state recordings, to distinguish\nresting positions with different postures (for example, `\"seated\"`, `\"reclined\"`).\n",
+              "level": "recommended"
+            },
+            "TaskDescription": "recommended",
+            "TaskName": {
+              "description_addendum": "A recommended convention is to name resting state task using labels\nbeginning with `rest`.\n",
+              "level": "required"
+            }
+          },
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"emg\""
           ]
         }
       },
@@ -18517,10 +19153,10 @@
       "prov": {
         "CommonProvenanceFields": {
           "fields": {
-            "FileDigest": "optional",
-            "FileGeneratedById": "optional",
-            "FileType": "optional",
-            "SidecarGeneratedBy": "optional"
+            "Digest__File": "optional",
+            "GeneratedBy__Id__File": "optional",
+            "SidecarGeneratedBy": "optional",
+            "Type__File": "optional"
           },
           "selectors": [
             "true == true"
@@ -18751,6 +19387,73 @@
           ],
           "selectors": [
             "datatype == \"eeg\"",
+            "suffix == \"electrodes\"",
+            "extension == \".tsv\""
+          ]
+        }
+      },
+      "emg": {
+        "EMGChannels": {
+          "additional_columns": "allowed_if_defined",
+          "columns": {
+            "description": "optional",
+            "group__emg": "recommended",
+            "high_cutoff": "optional",
+            "interelectrode_distance": "recommended",
+            "low_cutoff": "optional",
+            "name__channels": "required",
+            "notch": "optional",
+            "placement_description": "recommended",
+            "placement_scheme": "recommended",
+            "reference__emg": "recommended",
+            "sampling_frequency": "optional",
+            "signal_electrode": "recommended",
+            "status": "optional",
+            "status_description": "optional",
+            "target_muscle": "recommended",
+            "type__channels": "required",
+            "units": "required"
+          },
+          "index_columns": [
+            "name__channels"
+          ],
+          "initial_columns": [
+            "name__channels",
+            "type__channels",
+            "units"
+          ],
+          "selectors": [
+            "datatype == \"emg\"",
+            "suffix == \"channels\"",
+            "extension == \".tsv\""
+          ]
+        },
+        "EMGElectrodes": {
+          "additional_columns": "allowed_if_defined",
+          "columns": {
+            "coordinate_system": "recommended",
+            "group__emg": "recommended",
+            "impedance": "recommended",
+            "material": "recommended",
+            "name__electrodes": "required",
+            "type__electrodes": "recommended",
+            "x": "required",
+            "y": "required",
+            "z": "optional"
+          },
+          "index_columns": [
+            "name__electrodes",
+            "group__emg"
+          ],
+          "initial_columns": [
+            "name__electrodes",
+            "x",
+            "y",
+            "z",
+            "coordinate_system"
+          ],
+          "selectors": [
+            "datatype == \"emg\"",
             "suffix == \"electrodes\"",
             "extension == \".tsv\""
           ]
