@@ -1994,7 +1994,7 @@
         "type": "string"
       },
       "reference__microephys": {
-        "description": "The reference for the given channel.\nWhen the reference is an electrode in `*_electrodes.tsv`, use the name of that electrode.\nIf a corresponding electrode is not not applicable, use \"n/a\"\n",
+        "description": "The reference for the given channel.\nWhen the reference is an electrode in `*_electrodes.tsv`, use the name of that electrode.\nIf a corresponding electrode is not applicable, use \"n/a\"\n",
         "display_name": "Reference",
         "name": "reference",
         "type": "string"
@@ -19791,7 +19791,7 @@
           "columns": {
             "electrode_shape": "optional",
             "external_pipette_diameter": "optional",
-            "hemisphere": "required",
+            "hemisphere": "recommended",
             "impedance": "recommended",
             "internal_pipette_diameter": "optional",
             "location": "recommended",
@@ -19811,7 +19811,6 @@
           "initial_columns": [
             "name__electrodes",
             "probe_name",
-            "hemisphere",
             "x",
             "y",
             "z"
