@@ -47,7 +47,7 @@
       "coordsystem": {
         "inherit": true,
         "selectors": [
-          "intersects([suffix], ['eeg', 'ieeg', 'meg', 'nirs', 'motion', 'electrodes', 'optodes', 'ecephys', 'icephys']])",
+          "intersects([suffix], ['eeg', 'ieeg', 'meg', 'nirs', 'motion', 'electrodes', 'optodes', 'ecephys', 'icephys'])",
           "extension != '.json'"
         ],
         "target": {
@@ -1851,7 +1851,7 @@
       "material__probes": {
         "description": "A textual description of the base material of the probe.\n",
         "display_name": "Material",
-        "name": "material__probes",
+        "name": "material",
         "type": "string"
       },
       "metabolite_parent_fraction": {
@@ -2128,12 +2128,6 @@
         "unit": "mm^2"
       },
       "software_filters": {
-        "description": "List of temporal and/or spatial software filters applied\n(for example, `SSS`, `SpatialCompensation`).\nNote that parameters should be defined in the general MEG sidecar .json file.\nIndicate `n/a` in the absence of software filters applied.\n",
-        "display_name": "Software filters",
-        "name": "software_filters",
-        "type": "string"
-      },
-      "software_filters__channels": {
         "anyOf": [
           {
             "type": "string"
@@ -2145,7 +2139,7 @@
             "type": "string"
           }
         ],
-        "description": "List of temporal and/or spatial software filters applied\n(for example, `SSS`, `SpatialCompensation`).\nNote that parameters should be defined in the general microephys sidecar .json file.\nIndicate `n/a` in the absence of software filters applied.\n",
+        "description": "List of temporal and/or spatial software filters applied.\n\nFor detailed filter parameters, use the `SoftwareFilters` field in the\nmodality sidecar JSON (for example, `*_ieeg.json`, `*_ecephys.json`, `*_icephys.json`).\n\nUse `n/a` if no software filters were applied.\n",
         "display_name": "Software filters",
         "name": "software_filters"
       },
@@ -2491,22 +2485,52 @@
         "type": "number"
       },
       "z": {
-        "description": "Recorded position along the z-axis.\n",
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "enum": [
+              "n/a"
+            ],
+            "type": "string"
+          }
+        ],
+        "description": "Recorded position along the z-axis.\n\nFor 2D electrode localizations, this SHOULD be a column of `n/a` values.\n",
         "display_name": "Z position",
-        "name": "z",
-        "type": "number"
+        "name": "z"
       },
       "z__electrodes": {
-        "description": "Recorded position along the local depth-axis relative\nto the probe origin (see `_probes.tsv`)\n",
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "enum": [
+              "n/a"
+            ],
+            "type": "string"
+          }
+        ],
+        "description": "Recorded position along the local depth-axis relative\nto the probe origin (see `_probes.tsv`).\n\nFor 2D electrode localizations (for example, when the coordinate system is\n`Pixels`), this SHOULD be a column of `n/a` values.\n",
         "display_name": "Electrode Z position",
-        "name": "z",
-        "type": "number"
+        "name": "z"
       },
       "z__optodes": {
-        "description": "Recorded position along the z-axis.\n`\"n/a\"` if not available.\n",
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "enum": [
+              "n/a"
+            ],
+            "type": "string"
+          }
+        ],
+        "description": "Recorded position along the z-axis.\n\"`n/a`\" if not available.\n",
         "display_name": "Z position",
-        "name": "z",
-        "type": "number"
+        "name": "z"
       }
     },
     "common_principles": {
