@@ -1,8 +1,8 @@
 {
   "pr_number": "2099",
-  "git_ref": "8856f484c27a868b1b7a44118f5886dda87c94d3",
-  "last_commit": "8856f484c27a868b1b7a44118f5886dda87c94d3",
-  "last_updated": "2025-12-09T02:05:04Z",
+  "git_ref": "cdea944f0f8eb3f683052a5462a7e0b17fa083c9",
+  "last_commit": "cdea944f0f8eb3f683052a5462a7e0b17fa083c9",
+  "last_updated": "2025-12-16T12:59:20Z",
   "has_schema_changes": true,
   "build_status": "success",
   "authors_count": 5
