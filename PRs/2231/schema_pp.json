@@ -4565,6 +4565,13 @@
         "name": "AttenuationCorrectionMethodReference",
         "type": "string"
       },
+      "AudioBitDepth": {
+        "description": "Number of bits per sample in the audio recording.\n\nCommon values include `16`, `24`, or `32`.\n",
+        "display_name": "Audio Bit Depth",
+        "minimum": 1,
+        "name": "AudioBitDepth",
+        "type": "integer"
+      },
       "AudioChannelCount": {
         "description": "Number of audio channels in the recording (for example, `2` for stereo).\n",
         "display_name": "Audio Channel Count",
@@ -4761,6 +4768,12 @@
           "double-coil"
         ],
         "name": "CASLType",
+        "type": "string"
+      },
+      "CameraPosition": {
+        "description": "Free-form description of the camera placement relative to the subject or scene.\n\nExamples include \"front\", \"profile-left\", \"ceiling\", \"room-corner\", or \"overhead\".\n",
+        "display_name": "Camera Position",
+        "name": "CameraPosition",
         "type": "string"
       },
       "CapManufacturer": {
@@ -16305,8 +16318,10 @@
         },
         "AudioVideoStreams": {
           "fields": {
+            "AudioBitDepth": "optional",
             "AudioChannelCount": "optional",
             "AudioSampleRate": "optional",
+            "CameraPosition": "optional",
             "Duration": "optional",
             "FrameRate": "optional",
             "Height": "optional",
