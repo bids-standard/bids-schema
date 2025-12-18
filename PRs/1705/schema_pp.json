@@ -4690,7 +4690,7 @@
         "file_type": "directory"
       },
       "probes": {
-        "description": "A directory to store probe using the ProbeInterface specification format. This folder can be used to also store the associated probe figures.\nThis is primarily intended for use with Microelectrode Electrophysiology data, see more information in the\n[relevant section](SPEC_ROOT/modality-specific-files/microelectrode-electrophysiology.md#probeinterface-library).\n",
+        "description": "A directory to store probe using the ProbeInterface specification format.\nThis directory can be used to also store the associated probe figures.\nThis is primarily intended for use with Microelectrode Electrophysiology data, see more information in the\n[relevant section](SPEC_ROOT/modality-specific-files/microelectrode-electrophysiology.md#probeinterface-library).\n",
         "display_name": "Probes",
         "file_type": "directory"
       },
