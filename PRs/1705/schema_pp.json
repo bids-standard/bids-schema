@@ -2127,7 +2127,7 @@
         "type": "number",
         "unit": "mm^2"
       },
-      "software_filters": {
+      "software_filter_types": {
         "anyOf": [
           {
             "type": "string"
@@ -2139,6 +2139,11 @@
             "type": "string"
           }
         ],
+        "description": "The types of software filters applied to this channel.\nThe `Levels` for this column SHOULD be defined in the accompanying\n`*_channels.json` file, mapping each filter type key to its description.\nUse `n/a` if no software filters were applied to this channel.\n",
+        "display_name": "Software filter types",
+        "name": "software_filter_types"
+      },
+      "software_filters": {
         "description": "List of temporal and/or spatial software filters applied.\n\nFor detailed filter parameters, use the `SoftwareFilters` field in the\nmodality sidecar JSON (for example, `*_ieeg.json`, `*_ecephys.json`, `*_icephys.json`).\n\nUse `n/a` if no software filters were applied.\n",
         "display_name": "Software filters",
         "name": "software_filters"
@@ -19780,12 +19785,14 @@
             "description": "optional",
             "gain": "recommended",
             "ground": "optional",
-            "hardware_filters": "recommended",
+            "high_cutoff": "optional",
+            "low_cutoff": "optional",
             "name__channels": "required",
+            "notch": "optional",
             "recording_mode": "recommended",
             "reference__microephys": "required",
             "sampling_frequency": "optional",
-            "software_filters": "recommended",
+            "software_filter_types": "optional",
             "status": "optional",
             "status_description": "optional",
             "stream_id": "optional",
