@@ -1484,8 +1484,8 @@
       "associated_brain_region_id": {
         "description": "An identifier of the associated brain region based on the Uberon ontology\nfor anatomical structures in animals, for example \"UBERON:0010415\"\n",
         "display_name": "Associated brain region identifier",
-        "name": "associated_uberon_brain_region_id",
-        "type": "number"
+        "name": "associated_brain_region_id",
+        "type": "string"
       },
       "associated_brain_region_quality_type": {
         "description": "The method used to identify the associated brain region (estimated|proof)\ndepending on anatomical pictures proofing the location or indirect estimation of the location.\n",
@@ -1870,6 +1870,12 @@
         "name": "metabolite_polar_fraction",
         "type": "number"
       },
+      "model__probes": {
+        "description": "The model name or number of the probe (for example, `Neuropixels 1.0`, `A1x32-Poly3-5mm-25s-177`).\n",
+        "display_name": "Probe model",
+        "name": "model",
+        "type": "string"
+      },
       "name__channels": {
         "description": "Label of the channel.\n",
         "display_name": "Channel name",
@@ -2127,7 +2133,7 @@
         "type": "number",
         "unit": "mm^2"
       },
-      "software_filters": {
+      "software_filter_types": {
         "anyOf": [
           {
             "type": "string"
@@ -2139,6 +2145,11 @@
             "type": "string"
           }
         ],
+        "description": "The types of software filters applied to this channel.\nThe `Levels` for this column SHOULD be defined in the accompanying\n`*_channels.json` file, mapping each filter type key to its description.\nUse `n/a` if no software filters were applied to this channel.\n",
+        "display_name": "Software filter types",
+        "name": "software_filter_types"
+      },
+      "software_filters": {
         "description": "List of temporal and/or spatial software filters applied.\n\nFor detailed filter parameters, use the `SoftwareFilters` field in the\nmodality sidecar JSON (for example, `*_ieeg.json`, `*_ecephys.json`, `*_icephys.json`).\n\nUse `n/a` if no software filters were applied.\n",
         "display_name": "Software filters",
         "name": "software_filters"
@@ -2455,7 +2466,7 @@
         "type": "number"
       },
       "x__electrodes": {
-        "description": "If no `_space` entity used, it is the position along the local width-axis relative\nto the probe origin (see `_probes.tsv`, also `dimension_unit` column there in).\nOtherwise, the position relative to the origin of the coordinate system along\nthe first axis relative to the in the `MicroephysCoordinateUnits` of the corresponding\n`_coordsystem.json` file.\n",
+        "description": "When no [`space-<label>`](SPEC_ROOT/appendices/entities.md#space) entity is used in the filename,\nthe position along the local width-axis relative to the probe origin\n(see `coordinate_reference_point` in `*_probes.tsv`).\nUnits are specified by the `dimension_unit` column in `*_probes.tsv`.\n\nWhen a `space-<label>` entity is used in the filename,\nthe position relative to the origin of the coordinate system along the first axis.\nUnits are specified by `MicroephysCoordinateUnits` in the corresponding `*_coordsystem.json` file.\n",
         "display_name": "Electrode X position",
         "name": "x",
         "type": "number"
@@ -2473,7 +2484,7 @@
         "type": "number"
       },
       "y__electrodes": {
-        "description": "Recorded position along the local height-axis relative\nto the probe origin (see `_probes.tsv`)\n",
+        "description": "When no [`space-<label>`](SPEC_ROOT/appendices/entities.md#space) entity is used in the filename,\nthe position along the local height-axis relative to the probe origin\n(see `coordinate_reference_point` in `*_probes.tsv`).\nUnits are specified by the `dimension_unit` column in `*_probes.tsv`.\n\nWhen a `space-<label>` entity is used in the filename,\nthe position relative to the origin of the coordinate system along the second axis.\nUnits are specified by `MicroephysCoordinateUnits` in the corresponding `*_coordsystem.json` file.\n",
         "display_name": "Electrode Y position",
         "name": "y",
         "type": "number"
@@ -2512,7 +2523,7 @@
             "type": "string"
           }
         ],
-        "description": "Recorded position along the local depth-axis relative\nto the probe origin (see `_probes.tsv`).\n\nFor 2D electrode localizations (for example, when the coordinate system is\n`Pixels`), this SHOULD be a column of `n/a` values.\n",
+        "description": "When no [`space-<label>`](SPEC_ROOT/appendices/entities.md#space) entity is used in the filename,\nthe position along the local depth-axis relative to the probe origin\n(see `coordinate_reference_point` in `*_probes.tsv`).\nUnits are specified by the `dimension_unit` column in `*_probes.tsv`.\n\nWhen a `space-<label>` entity is used in the filename,\nthe position relative to the origin of the coordinate system along the third axis.\nUnits are specified by `MicroephysCoordinateUnits` in the corresponding `*_coordsystem.json` file.\n\nFor 2D electrode localizations (for example, when the coordinate system is\n`Pixels`), this SHOULD be a column of `n/a` values.\n",
         "display_name": "Electrode Z position",
         "name": "z"
       },
@@ -3017,6 +3028,11 @@
         "display_name": "Continuous arterial spin labeling",
         "value": "CASL"
       },
+      "CHARM": {
+        "description": "Cortical Hierarchy Atlas of the Rhesus Macaque (RRID:SCR_023283), a modern MRI-based atlas for the macaque brain.\nProvides hierarchical cortical parcellation based on anatomical connectivity patterns.\nReference: Jung B, Taylor PA, Seidlitz J, Sponheim C, Perkins P, Ungerleider LG, Glen D, Messinger A.\nA comprehensive macaque fMRI pipeline and hierarchical atlas. NeuroImage. 2021;235:117997.\n[doi:10.1016/j.neuroimage.2021.117997](https://doi.org/10.1016/j.neuroimage.2021.117997).\n",
+        "display_name": "CHARM",
+        "value": "CHARM"
+      },
       "COMBINED": {
         "description": "A spoiling type: COMBINED\n",
         "display_name": "COMBINED",
@@ -3036,6 +3052,11 @@
         "description": "RAS orientation and the origin between the ears.\n",
         "display_name": "Chieti ITAB",
         "value": "ChietiItab"
+      },
+      "D99": {
+        "description": "Digital version of the Saleem and Logothetis macaque brain atlas (RRID:SCR_014606).\nProvides detailed parcellation of the rhesus macaque brain based on histological sections.\nReference: Reveley C, Gruslys A, Ye FQ, Glen D, Samaha J, Russ BE, Saad Z, Seth AK, Leopold DA, Saleem KS.\nThree-Dimensional Digital Template Atlas of the Macaque Brain. Cereb Cortex. 2017;27(9):4463-4477.\n[doi:10.1093/cercor/bhw248](https://doi.org/10.1093/cercor/bhw248).\n",
+        "display_name": "D99",
+        "value": "D99"
       },
       "DAC": {
         "description": "Digital to Analog output.\n",
@@ -3175,6 +3196,11 @@
         "description": "A face mask.\n",
         "display_name": "Face mask",
         "value": "Face"
+      },
+      "FranklinPaxinos": {
+        "description": "The Franklin and Paxinos mouse brain atlas (RRID:SCR_007127),\na widely used stereotaxic coordinate system for the mouse brain.\nProvides standardized coordinates based on skull landmarks (bregma, lambda) for targeting brain structures.\nReference: Franklin KBJ, Paxinos G. The Mouse Brain in Stereotaxic Coordinates. Academic Press.\nMultiple editions available; users should specify the edition used in `MicroephysCoordinateSystemDescription`.\n",
+        "display_name": "Franklin-Paxinos",
+        "value": "FranklinPaxinos"
       },
       "GADOLINIUM": {
         "description": "A Contrast Bolus Ingredient: Gadolinium\n",
@@ -3476,6 +3502,11 @@
         ],
         "value": "MUA"
       },
+      "MarmosetBrainAtlas": {
+        "description": "A standardized 3D coordinate system for the common marmoset brain (RRID:SCR_023286).\nProvides high-resolution anatomical reference for marmoset brain studies.\nReference: Liu C, Ye FQ, Yen CC, Newman JD, Glen D, Leopold DA, Silva AC.\nA digital 3D atlas of the marmoset brain based on multi-modal MRI. NeuroImage. 2018;169:106-116.\n[doi:10.1016/j.neuroimage.2017.12.004](https://doi.org/10.1016/j.neuroimage.2017.12.004).\n",
+        "display_name": "Marmoset Brain Atlas",
+        "value": "MarmosetBrainAtlas"
+      },
       "Metabolomic": {
         "description": "Data link to participants' products of cellular metabolic functions.\n",
         "display_name": "Metabolomic",
@@ -3628,6 +3659,16 @@
         ],
         "value": "PUPIL"
       },
+      "PaxinosMacaque": {
+        "description": "The Paxinos rhesus macaque brain atlas (RRID:SCR_016249), a stereotaxic coordinate system for the macaque brain.\nProvides standardized coordinates based on stereotaxic landmarks for targeting brain structures.\nReference: Paxinos G, Huang XF, Petrides M, Toga AW.\nThe Rhesus Monkey Brain in Stereotaxic Coordinates. Academic Press.\nMultiple editions available; users should specify the edition used in `MicroephysCoordinateSystemDescription`.\n",
+        "display_name": "Paxinos Macaque",
+        "value": "PaxinosMacaque"
+      },
+      "PaxinosWatson": {
+        "description": "The Paxinos and Watson rat brain atlas (RRID:SCR_006369),\na widely used stereotaxic coordinate system for the rat brain.\nProvides standardized coordinates based on skull landmarks (bregma, lambda) for targeting brain structures.\nReference: Paxinos G, Watson C. The Rat Brain in Stereotaxic Coordinates. Academic Press.\nMultiple editions available; users should specify the edition used in `MicroephysCoordinateSystemDescription`.\n",
+        "display_name": "Paxinos-Watson",
+        "value": "PaxinosWatson"
+      },
       "Pixels": {
         "description": "If electrodes are localized in 2D space (only x and y are\nspecified and z is n/a), then the positions in this file must correspond to\nthe locations expressed in pixels on the photo/drawing/rendering of the\nelectrodes on the brain. In this case, coordinates must be (row,column)\npairs, with (0,0) corresponding to the upper left pixel and (N,0)\ncorresponding to the lower left pixel.\n",
         "display_name": "Pixels",
@@ -3741,9 +3782,14 @@
         "value": "Separate"
       },
       "Stereotaxic": {
-        "description": "A generic stereotaxic coordinate system commonly used in animal neuroscience for surgical\ntargeting and electrode localization. The origin is at bregma, a skull landmark defined as\nthe intersection of the coronal and sagittal sutures. The x-axis corresponds to the\nanterior-posterior (AP) axis with posterior being positive. The y-axis corresponds to the\ndorsal-ventral (DV) or superior-inferior (SI) axis with ventral/inferior being positive.\nThe z-axis corresponds to the medial-lateral (ML) axis with right being positive.\nUnits are typically in millimeters or micrometers. When using this coordinate system,\nthe specific anatomical reference point and units should be specified in\n`MicroephysCoordinateSystemDescription`.\n",
+        "description": "A generic stereotaxic coordinate system commonly used in animal neuroscience for surgical\ntargeting and electrode localization. The origin is at bregma, a skull landmark defined as\nthe intersection of the coronal and sagittal sutures. The x-axis corresponds to the\nanterior-posterior (AP) axis with anterior being positive. The y-axis corresponds to the\nmedial-lateral (ML) axis with right being positive. The z-axis corresponds to the\ndorsal-ventral (DV) axis with ventral/inferior being positive.\nUnits are typically in millimeters or micrometers. When using this coordinate system,\nthe specific anatomical reference point and units should be specified in\n`MicroephysCoordinateSystemDescription`.\n",
         "display_name": "Stereotaxic",
         "value": "Stereotaxic"
+      },
+      "SwansonRat": {
+        "description": "The Swanson rat brain atlas (RRID:SCR_007367), a widely used stereotaxic coordinate system for the rat brain.\nProvides detailed cytoarchitectonic parcellation and standardized coordinates for targeting brain structures.\nReference: Swanson LW. Brain Maps: Structure of the Rat Brain. Elsevier.\nMultiple editions available; users should specify the edition used in `MicroephysCoordinateSystemDescription`.\n",
+        "display_name": "Swanson Rat",
+        "value": "SwansonRat"
       },
       "TEMP": {
         "description": "Temperature.\n",
@@ -3925,6 +3971,13 @@
           "AllenCCFv3",
           "WaxholmSpace",
           "WistarRatAtlas",
+          "PaxinosWatson",
+          "FranklinPaxinos",
+          "SwansonRat",
+          "CHARM",
+          "D99",
+          "PaxinosMacaque",
+          "MarmosetBrainAtlas",
           "individual",
           "Other"
         ],
@@ -7421,6 +7474,13 @@
           "AllenCCFv3",
           "WaxholmSpace",
           "WistarRatAtlas",
+          "PaxinosWatson",
+          "FranklinPaxinos",
+          "SwansonRat",
+          "CHARM",
+          "D99",
+          "PaxinosMacaque",
+          "MarmosetBrainAtlas",
           "individual",
           "Other",
           "ICBM452AirSpace",
@@ -7469,6 +7529,7 @@
           "m",
           "mm",
           "cm",
+          "um",
           "pixels"
         ],
         "name": "MicroephysCoordinateUnits",
@@ -16547,7 +16608,7 @@
         "microephysCoordsystemGeneral": {
           "fields": {
             "IntendedFor": {
-              "description_addendum": "# TODO\n",
+              "description_addendum": "This field can be used to indicate the data files for which\nthis coordinate system applies.\n",
               "level": "optional"
             }
           },
@@ -18100,6 +18161,10 @@
               "description_addendum": "The serial number of the components of the setup,\nrecommended to add serial numbers and versions of\nALL components constituting the setup.\n",
               "level": "recommended"
             },
+            "EpochLength": {
+              "level": "optional",
+              "level_addendum": "recommended if RecordingType is \"epoched\""
+            },
             "Manufacturer": {
               "description_addendum": "For example, `\"TDT\"`, `\"Blackrock\"`.",
               "level": "recommended"
@@ -18107,7 +18172,9 @@
             "ManufacturersModelName": "recommended",
             "ManufacturersModelVersion": "recommended",
             "PowerLineFrequency": "required",
+            "RecordingDuration": "recommended",
             "RecordingSetupName": "recommended",
+            "RecordingType": "recommended",
             "SamplingFrequency": {
               "description_addendum": "Internal (maximum) sampling frequency (in Hz)\nof the recording (for example, \"24000\").\n",
               "level": "required"
@@ -19780,12 +19847,14 @@
             "description": "optional",
             "gain": "recommended",
             "ground": "optional",
-            "hardware_filters": "recommended",
+            "high_cutoff": "optional",
+            "low_cutoff": "optional",
             "name__channels": "required",
+            "notch": "optional",
             "recording_mode": "recommended",
             "reference__microephys": "required",
             "sampling_frequency": "optional",
-            "software_filters": "recommended",
+            "software_filter_types": "optional",
             "status": "optional",
             "status_description": "optional",
             "stream_id": "optional",
@@ -19825,9 +19894,9 @@
             "probe_name": "required",
             "shank_id": "optional",
             "size": "optional",
-            "x": "required",
-            "y": "required",
-            "z": "required"
+            "x__electrodes": "required",
+            "y__electrodes": "required",
+            "z__electrodes": "required"
           },
           "index_columns": [
             "name__electrodes"
@@ -19835,9 +19904,9 @@
           "initial_columns": [
             "name__electrodes",
             "probe_name",
-            "x",
-            "y",
-            "z"
+            "x__electrodes",
+            "y__electrodes",
+            "z__electrodes"
           ],
           "selectors": [
             "datatype == [\"ecephys\", \"icephys\"]",
@@ -19866,6 +19935,7 @@
             "hemisphere__probes": "recommended",
             "manufacturer__probes": "recommended",
             "material__probes": "optional",
+            "model__probes": "recommended",
             "probe_name": "required",
             "reference_atlas": "recommended",
             "rotation_angle": "recommended",
