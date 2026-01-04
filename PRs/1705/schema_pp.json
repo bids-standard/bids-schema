@@ -1727,22 +1727,6 @@
         "display_name": "Subject handedness",
         "name": "handedness"
       },
-      "hardware_filters": {
-        "anyOf": [
-          {
-            "type": "string"
-          },
-          {
-            "enum": [
-              "n/a"
-            ],
-            "type": "string"
-          }
-        ],
-        "description": "List of hardware (amplifier) filter keys applied.\nNote that parameters should be defined in the general microephys sidecar .json file.\nIndicate `n/a` in the absence of hardware filters applied.\n",
-        "display_name": "Hardware filters",
-        "name": "hardware_filters"
-      },
       "height__probes": {
         "description": "Physical height of the probe, for example, '0.3'.\nThis dimension should be omitted or set to 0 for one-dimensional (linear) probes.\nThis dimension corresponds to the y-axis of the probe's local coordinate frame.\n",
         "display_name": "Probe height",
@@ -2148,11 +2132,6 @@
         "description": "The types of software filters applied to this channel.\nThe `Levels` for this column SHOULD be defined in the accompanying\n`*_channels.json` file, mapping each filter type key to its description.\nUse `n/a` if no software filters were applied to this channel.\n",
         "display_name": "Software filter types",
         "name": "software_filter_types"
-      },
-      "software_filters": {
-        "description": "List of temporal and/or spatial software filters applied.\n\nFor detailed filter parameters, use the `SoftwareFilters` field in the\nmodality sidecar JSON (for example, `*_ieeg.json`, `*_ecephys.json`, `*_icephys.json`).\n\nUse `n/a` if no software filters were applied.\n",
-        "display_name": "Software filters",
-        "name": "software_filters"
       },
       "source__channels": {
         "description": "Name of the source as specified in the `*_optodes.tsv` file.\n`n/a` for channels that do not contain fNIRS signals (for example, acceleration).\n",
@@ -3198,7 +3177,7 @@
         "value": "Face"
       },
       "FranklinPaxinos": {
-        "description": "The Franklin and Paxinos mouse brain atlas (RRID:SCR_007127), a widely used stereotaxic coordinate system for the mouse brain.\nProvides standardized coordinates based on skull landmarks (bregma, lambda) for targeting brain structures.\nReference: Franklin KBJ, Paxinos G. The Mouse Brain in Stereotaxic Coordinates. Academic Press.\nMultiple editions available; users should specify the edition used in `MicroephysCoordinateSystemDescription`.\n",
+        "description": "The Franklin and Paxinos mouse brain atlas (RRID:SCR_007127),\na widely used stereotaxic coordinate system for the mouse brain.\nProvides standardized coordinates based on skull landmarks (bregma, lambda) for targeting brain structures.\nReference: Franklin KBJ, Paxinos G. The Mouse Brain in Stereotaxic Coordinates. Academic Press.\nMultiple editions available; users should specify the edition used in `MicroephysCoordinateSystemDescription`.\n",
         "display_name": "Franklin-Paxinos",
         "value": "FranklinPaxinos"
       },
@@ -3660,12 +3639,12 @@
         "value": "PUPIL"
       },
       "PaxinosMacaque": {
-        "description": "The Paxinos rhesus macaque brain atlas (RRID:SCR_016249), a stereotaxic coordinate system for the macaque brain.\nProvides standardized coordinates based on stereotaxic landmarks for targeting brain structures.\nReference: Paxinos G, Huang XF, Petrides M, Toga AW. The Rhesus Monkey Brain in Stereotaxic Coordinates. Academic Press.\nMultiple editions available; users should specify the edition used in `MicroephysCoordinateSystemDescription`.\n",
+        "description": "The Paxinos rhesus macaque brain atlas (RRID:SCR_016249), a stereotaxic coordinate system for the macaque brain.\nProvides standardized coordinates based on stereotaxic landmarks for targeting brain structures.\nReference: Paxinos G, Huang XF, Petrides M, Toga AW.\nThe Rhesus Monkey Brain in Stereotaxic Coordinates. Academic Press.\nMultiple editions available; users should specify the edition used in `MicroephysCoordinateSystemDescription`.\n",
         "display_name": "Paxinos Macaque",
         "value": "PaxinosMacaque"
       },
       "PaxinosWatson": {
-        "description": "The Paxinos and Watson rat brain atlas (RRID:SCR_006369), a widely used stereotaxic coordinate system for the rat brain.\nProvides standardized coordinates based on skull landmarks (bregma, lambda) for targeting brain structures.\nReference: Paxinos G, Watson C. The Rat Brain in Stereotaxic Coordinates. Academic Press.\nMultiple editions available; users should specify the edition used in `MicroephysCoordinateSystemDescription`.\n",
+        "description": "The Paxinos and Watson rat brain atlas (RRID:SCR_006369),\na widely used stereotaxic coordinate system for the rat brain.\nProvides standardized coordinates based on skull landmarks (bregma, lambda) for targeting brain structures.\nReference: Paxinos G, Watson C. The Rat Brain in Stereotaxic Coordinates. Academic Press.\nMultiple editions available; users should specify the edition used in `MicroephysCoordinateSystemDescription`.\n",
         "display_name": "Paxinos-Watson",
         "value": "PaxinosWatson"
       },
