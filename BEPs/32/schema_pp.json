@@ -51,6 +51,9 @@
           "extension != '.json'"
         ],
         "target": {
+          "entities": [
+            "space"
+          ],
           "extension": ".json",
           "suffix": "coordsystem"
         }
@@ -1537,12 +1540,6 @@
         "name": "component",
         "type": "string"
       },
-      "contact_count": {
-        "description": "Number of miscellaneous analog contacts for auxiliary signals.\n",
-        "display_name": "Contact count",
-        "name": "contact_count",
-        "type": "number"
-      },
       "coordinate_reference_point": {
         "description": "Point of the probe that is described by the probe coordinates and\non which the yaw, pitch, and roll rotations are applied.\n",
         "display_name": "Coordinate reference point",
@@ -2132,6 +2129,12 @@
         "description": "The types of software filters applied to this channel.\nThe `Levels` for this column SHOULD be defined in the accompanying\n`*_channels.json` file, mapping each filter type key to its description.\nUse `n/a` if no software filters were applied to this channel.\n",
         "display_name": "Software filter types",
         "name": "software_filter_types"
+      },
+      "software_filters": {
+        "description": "List of temporal and/or spatial software filters applied\n(for example, `SSS`, `SpatialCompensation`).\nNote that parameters should be defined in the general MEG sidecar .json file.\nIndicate `n/a` in the absence of software filters applied.\n",
+        "display_name": "Software filters",
+        "name": "software_filters",
+        "type": "string"
       },
       "source__channels": {
         "description": "Name of the source as specified in the `*_optodes.tsv` file.\n`n/a` for channels that do not contain fNIRS signals (for example, acceleration).\n",
@@ -6155,7 +6158,7 @@
       },
       "ElectrodeType": {
         "description": "Type of the electrode (for example, cup, ring, clip-on, wire, needle).\n",
-        "display_name": "Electrode type",
+        "display_name": "Electrode Type",
         "name": "ElectrodeType",
         "type": "string"
       },
@@ -6962,7 +6965,7 @@
       },
       "InterelectrodeDistance": {
         "description": "Distance between pairs or grids of electrodes rigidly attached to the same sensor device.\nIf multiple sensor devices with heterogeneous inter-electrode distances are recorded into\nthe same data file,\ninter-electrode distance SHOULD be recorded in the `interelectrode_distance` column of\n`*_electrodes.tsv` instead.\nIf instead those devices were recorded into separate data files (distinguished for example\nby the `recording` entity),\nseparate `*_emg.json` files (similarly distinguished) MAY be included,\neach with their own `InterelectrodeDistance` values.\n",
-        "display_name": "Inter-electrode Distance",
+        "display_name": "Interelectrode Distance",
         "name": "InterelectrodeDistance",
         "type": "number",
         "unit": "mm"
@@ -7495,9 +7498,9 @@
         "type": "string"
       },
       "MicroephysCoordinateSystemPhoto": {
-        "description": "A link to a photo or drawing of the microelectrode probe system.\n",
+        "description": "Path to the photo or image file defining the coordinate system when\n`MicroephysCoordinateUnits` is `\"pixels\"`.\nShould be a [BIDS URI](SPEC_ROOT/common-principles.md#bids-uri).\n",
         "display_name": "Microephys Coordinate System Photo",
-        "format": "uri",
+        "format": "bids_uri",
         "name": "MicroephysCoordinateSystemPhoto",
         "type": "string"
       },
@@ -10131,11 +10134,6 @@
         "display_name": "Physiological recording",
         "value": "physio"
       },
-      "probe": {
-        "description": "A probe with one or more recording contacts.\n",
-        "display_name": "A recording probe",
-        "value": "probe"
-      },
       "probes": {
         "description": "Physical devices used for recording microelectrode electrophysiology data, whether chronically or acutely implanted.\n",
         "display_name": "Implanted physical devices",
@@ -11397,21 +11395,20 @@
         }
       },
       "microephys": {
-        "MatchingSpaceLabels": {
+        "MicroephysRequiredCoordsystemWithSpace": {
           "checks": [
-            "associations.coordsystem.entities.space == entities.space"
+            "associations.coordsystem != null"
           ],
           "issue": {
-            "code": "MICROEPHYS_SPACE_MISMATCH",
+            "code": "MICROEPHYS_COORDSYSTEM_REQUIRED",
             "level": "error",
-            "message": "The space entity in electrodes.tsv must match the space entity in the\ncorresponding coordsystem.json file for microelectrode electrophysiology data.\n"
+            "message": "For microelectrode electrophysiology data, if an electrodes.tsv file has a\nspace-<label> entity, a corresponding coordsystem.json file with the same\nspace label must also be present.\n"
           },
           "selectors": [
             "intersects([datatype], [\"ecephys\", \"icephys\"])",
             "suffix == \"electrodes\"",
             "extension == \".tsv\"",
-            "\"space\" in entities",
-            "associations.coordsystem != null"
+            "\"space\" in entities"
           ]
         },
         "RequiredCoordsystem": {
@@ -11427,22 +11424,6 @@
             "suffix == \"electrodes\"",
             "extension == \".tsv\"",
             "!intersects([datatype], [\"ecephys\", \"icephys\"])"
-          ]
-        },
-        "RequiredElectrodesWithSpace": {
-          "checks": [
-            "associations.electrodes != null"
-          ],
-          "issue": {
-            "code": "MICROEPHYS_ELECTRODES_SPACE_REQUIRED",
-            "level": "error",
-            "message": "If a coordsystem.json file with a space entity is present for microelectrode\nelectrophysiology data, a corresponding electrodes.tsv file with the same\nspace entity must also be present.\n"
-          },
-          "selectors": [
-            "intersects([datatype], [\"ecephys\", \"icephys\"])",
-            "suffix == \"coordsystem\"",
-            "extension == \".json\"",
-            "\"space\" in entities"
           ]
         }
       },
@@ -14850,7 +14831,7 @@
               "coordsystem"
             ]
           },
-          "coordsystem_microephys": {
+          "coordsystem__microephys": {
             "datatypes": [
               "icephys",
               "ecephys"
@@ -16592,8 +16573,8 @@
             }
           },
           "selectors": [
-            "datatype == [\"ecephys\", \"icephys\"]",
-            "suffix == [\"coordsystem\"]"
+            "intersects([datatype], [\"ecephys\", \"icephys\"])",
+            "suffix == \"coordsystem\""
           ]
         },
         "microephysCoordsystemOther": {
@@ -16601,8 +16582,8 @@
             "MicroephysCoordinateSystemDescription": "required"
           },
           "selectors": [
-            "datatype == [\"ecephys\", \"icephys\"]",
-            "suffix == [\"coordsystem\"]",
+            "intersects([datatype], [\"ecephys\", \"icephys\"])",
+            "suffix == \"coordsystem\"",
             "\"MicroephysCoordinateSystem\" in json",
             "json.MicroephysCoordinateSystem == \"Other\""
           ]
@@ -16621,8 +16602,8 @@
             "MicroephysCoordinateUnits": "required"
           },
           "selectors": [
-            "datatype == [\"ecephys\", \"icephys\"]",
-            "suffix == [\"coordsystem\"]"
+            "intersects([datatype], [\"ecephys\", \"icephys\"])",
+            "suffix == \"coordsystem\""
           ]
         }
       },
@@ -18092,8 +18073,8 @@
             "InstitutionalDepartmentName": "recommended"
           },
           "selectors": [
-            "datatype == [\"ecephys\", \"icephys\"]",
-            "suffix == [\"ecephys\", \"icephys\"]"
+            "intersects([datatype], [\"ecephys\", \"icephys\"])",
+            "intersects([suffix], [\"ecephys\", \"icephys\"])"
           ]
         },
         "microephysPharmaceuticals": {
@@ -18105,8 +18086,8 @@
             "PharmaceuticalName": "recommended"
           },
           "selectors": [
-            "datatype == [\"ecephys\", \"icephys\"]",
-            "suffix == [\"ecephys\", \"icephys\"]"
+            "intersects([datatype], [\"ecephys\", \"icephys\"])",
+            "intersects([suffix], [\"ecephys\", \"icephys\"])"
           ]
         },
         "microephysProcessing": {
@@ -18115,8 +18096,8 @@
             "SoftwareFilters": "required"
           },
           "selectors": [
-            "datatype == [\"ecephys\", \"icephys\"]",
-            "suffix == [\"ecephys\", \"icephys\"]"
+            "intersects([datatype], [\"ecephys\", \"icephys\"])",
+            "intersects([suffix], [\"ecephys\", \"icephys\"])"
           ]
         },
         "microephysSample": {
@@ -18130,8 +18111,8 @@
             "SliceThickness": "optional"
           },
           "selectors": [
-            "datatype == [\"ecephys\", \"icephys\"]",
-            "suffix == [\"ecephys\", \"icephys\"]"
+            "intersects([datatype], [\"ecephys\", \"icephys\"])",
+            "intersects([suffix], [\"ecephys\", \"icephys\"])"
           ]
         },
         "microephysSetup": {
@@ -18165,8 +18146,8 @@
             "SoftwareVersions": "recommended"
           },
           "selectors": [
-            "datatype == [\"ecephys\", \"icephys\"]",
-            "suffix == [\"ecephys\", \"icephys\"]"
+            "intersects([datatype], [\"ecephys\", \"icephys\"])",
+            "intersects([suffix], [\"ecephys\", \"icephys\"])"
           ]
         },
         "microephysSupplementary": {
@@ -18174,8 +18155,8 @@
             "SupplementarySignals": "optional"
           },
           "selectors": [
-            "datatype == [\"ecephys\", \"icephys\"]",
-            "suffix == [\"ecephys\", \"icephys\"]"
+            "intersects([datatype], [\"ecephys\", \"icephys\"])",
+            "intersects([suffix], [\"ecephys\", \"icephys\"])"
           ]
         },
         "microephysTaskInformation": {
@@ -18193,8 +18174,8 @@
             }
           },
           "selectors": [
-            "datatype == [\"ecephys\", \"icephys\"]",
-            "suffix == [\"ecephys\", \"icephys\"]"
+            "intersects([datatype], [\"ecephys\", \"icephys\"])",
+            "intersects([suffix], [\"ecephys\", \"icephys\"])"
           ]
         }
       },
@@ -19853,7 +19834,7 @@
             "sampling_frequency"
           ],
           "selectors": [
-            "datatype == [\"ecephys\", \"icephys\"]",
+            "intersects([datatype], [\"ecephys\", \"icephys\"])",
             "suffix == \"channels\"",
             "extension == \".tsv\""
           ]
@@ -19888,7 +19869,7 @@
             "z__electrodes"
           ],
           "selectors": [
-            "datatype == [\"ecephys\", \"icephys\"]",
+            "intersects([datatype], [\"ecephys\", \"icephys\"])",
             "suffix == \"electrodes\"",
             "extension == \".tsv\""
           ]
@@ -19934,7 +19915,7 @@
             "ML_angle"
           ],
           "selectors": [
-            "datatype == [\"ecephys\", \"icephys\"]",
+            "intersects([datatype], [\"ecephys\", \"icephys\"])",
             "suffix == \"probes\"",
             "extension == \".tsv\""
           ]
