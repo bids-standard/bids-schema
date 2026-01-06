@@ -1559,10 +1559,11 @@
         "type": "string"
       },
       "depth__probes": {
-        "description": "Physical depth of the probe, for example, '0.3'.\nThis dimension should be omitted or set to 0 for two-dimensional (shank-type) probes.\nThis dimension corresponds to the z-axis of the probe's local coordinate frame.\n",
+        "description": "Physical depth of the probe in mm, for example, '0.3'.\nThis dimension should be omitted or set to 0 for two-dimensional (shank-type) probes.\nThis dimension corresponds to the z-axis of the probe's local coordinate frame.\n",
         "display_name": "Depth",
         "name": "depth",
-        "type": "number"
+        "type": "number",
+        "unit": "mm"
       },
       "derived_from": {
         "description": "`sample-<label>` entity from which a sample is derived,\nfor example a slice of tissue (`sample-02`) derived from a block of tissue (`sample-01`).\n",
@@ -1618,12 +1619,6 @@
         "description": "Size of the group (grid/strip/probe) that this electrode belongs to.\nMust be of form `[AxB]` with the smallest dimension first (for example, `[1x8]`).\n",
         "display_name": "Dimension",
         "name": "dimension",
-        "type": "string"
-      },
-      "dimension_unit": {
-        "description": "Spatial units for a position or a physical dimension of electrodes, such as\n'width', 'height' or 'depth' of the probe.\nFor example, `um`.\n",
-        "display_name": "Dimension unit",
-        "name": "dimension_unit",
         "type": "string"
       },
       "duration": {
@@ -1725,10 +1720,11 @@
         "name": "handedness"
       },
       "height__probes": {
-        "description": "Physical height of the probe, for example, '0.3'.\nThis dimension should be omitted or set to 0 for one-dimensional (linear) probes.\nThis dimension corresponds to the y-axis of the probe's local coordinate frame.\n",
+        "description": "Physical height of the probe in mm, for example, '0.3'.\nThis dimension should be omitted or set to 0 for one-dimensional (linear) probes.\nThis dimension corresponds to the y-axis of the probe's local coordinate frame.\n",
         "display_name": "Probe height",
         "name": "height",
-        "type": "number"
+        "type": "number",
+        "unit": "mm"
       },
       "hemisphere": {
         "description": "The hemisphere in which the electrode is placed.\n",
@@ -2114,6 +2110,13 @@
         "type": "number",
         "unit": "mm^2"
       },
+      "size__microephys": {
+        "description": "Surface area of the electrode, units MUST be in `um^2`.\n",
+        "display_name": "Electrode size",
+        "name": "size",
+        "type": "number",
+        "unit": "um^2"
+      },
       "software_filter_types": {
         "anyOf": [
           {
@@ -2200,13 +2203,6 @@
         "description": "Data stream of the recording the signal.\n",
         "display_name": "Stream ID",
         "name": "stream_id",
-        "type": "string"
-      },
-      "surgery_date": {
-        "description": "Date(s) of surgery. Datetime format and their anonymization\nare described in [Units](SPEC_ROOT/common-principles.md#units).\nThe details of the surgery should be described in the sidecar json file.\n",
-        "display_name": "Surgery date",
-        "format": "datetime",
-        "name": "surgery_date",
         "type": "string"
       },
       "target_muscle": {
@@ -2376,13 +2372,6 @@
         "name": "units",
         "type": "string"
       },
-      "units__channels": {
-        "description": "Physical unit of the value represented in this channel,\nfor example, `V` for Volt, or `uV` for micro Volt\n(see [Units](SPEC_ROOT/common-principles.md#units)).\n",
-        "display_name": "Units",
-        "format": "unit",
-        "name": "units",
-        "type": "string"
-      },
       "units__motion": {
         "description": "Physical or virtual unit of the value represented in this channel,\nfor example, '\"rad\"' or '\"deg\"' for angular quantities or '\"m\"' for position data.\nIf motion data is recorded in a virtual space and deviate from standard SI units,\nthe unit used MUST be specified in the sidecar `*_motion.json`\nfile (for example `\"vm\"` for virtual meters). `\"rad\"` is used for Euler angles\nand `\"n/a\"` for quaternions.\nFor guidelines about units see the [Appendix](SPEC_ROOT/appendices/units.md)\nand [Common Principles](SPEC_ROOT/common-principles.md#units) pages.\n",
         "display_name": "Units",
@@ -2436,20 +2425,15 @@
         "type": "number"
       },
       "width__probes": {
-        "description": "Physical width of the probe, for example, '5'.\nThis dimension corresponds to the x-axis of the probe's local coordinate frame.\n",
+        "description": "Physical width of the probe in mm, for example, '5'.\nThis dimension corresponds to the x-axis of the probe's local coordinate frame.\n",
         "display_name": "Width",
         "name": "width",
-        "type": "number"
+        "type": "number",
+        "unit": "mm"
       },
       "x": {
         "description": "Recorded position along the x-axis.\n",
         "display_name": "X position",
-        "name": "x",
-        "type": "number"
-      },
-      "x__electrodes": {
-        "description": "When no [`space-<label>`](SPEC_ROOT/appendices/entities.md#space) entity is used in the filename,\nthe position along the local width-axis relative to the probe origin\n(see `coordinate_reference_point` in `*_probes.tsv`).\nUnits are specified by the `dimension_unit` column in `*_probes.tsv`.\n\nWhen a `space-<label>` entity is used in the filename,\nthe position relative to the origin of the coordinate system along the first axis.\nUnits are specified by `MicroephysCoordinateUnits` in the corresponding `*_coordsystem.json` file.\n",
-        "display_name": "Electrode X position",
         "name": "x",
         "type": "number"
       },
@@ -2462,12 +2446,6 @@
       "y": {
         "description": "Recorded position along the y-axis.\n",
         "display_name": "Y position",
-        "name": "y",
-        "type": "number"
-      },
-      "y__electrodes": {
-        "description": "When no [`space-<label>`](SPEC_ROOT/appendices/entities.md#space) entity is used in the filename,\nthe position along the local height-axis relative to the probe origin\n(see `coordinate_reference_point` in `*_probes.tsv`).\nUnits are specified by the `dimension_unit` column in `*_probes.tsv`.\n\nWhen a `space-<label>` entity is used in the filename,\nthe position relative to the origin of the coordinate system along the second axis.\nUnits are specified by `MicroephysCoordinateUnits` in the corresponding `*_coordsystem.json` file.\n",
-        "display_name": "Electrode Y position",
         "name": "y",
         "type": "number"
       },
@@ -2491,22 +2469,6 @@
         ],
         "description": "Recorded position along the z-axis.\n\nFor 2D electrode localizations, this SHOULD be a column of `n/a` values.\n",
         "display_name": "Z position",
-        "name": "z"
-      },
-      "z__electrodes": {
-        "anyOf": [
-          {
-            "type": "number"
-          },
-          {
-            "enum": [
-              "n/a"
-            ],
-            "type": "string"
-          }
-        ],
-        "description": "When no [`space-<label>`](SPEC_ROOT/appendices/entities.md#space) entity is used in the filename,\nthe position along the local depth-axis relative to the probe origin\n(see `coordinate_reference_point` in `*_probes.tsv`).\nUnits are specified by the `dimension_unit` column in `*_probes.tsv`.\n\nWhen a `space-<label>` entity is used in the filename,\nthe position relative to the origin of the coordinate system along the third axis.\nUnits are specified by `MicroephysCoordinateUnits` in the corresponding `*_coordsystem.json` file.\n\nFor 2D electrode localizations (for example, when the coordinate system is\n`Pixels`), this SHOULD be a column of `n/a` values.\n",
-        "display_name": "Electrode Z position",
         "name": "z"
       },
       "z__optodes": {
@@ -7448,7 +7410,7 @@
         "type": "boolean"
       },
       "MicroephysCoordinateSystem": {
-        "description": "Defines the coordinate system for the microelectrode probes.\nSee the\n[Coordinate Systems Appendix](SPEC_ROOT/appendices/coordinate-systems.md)\nfor a list of restricted keywords for coordinate systems.\nIf `\"Other\"`, provide definition of the coordinate system in\n`\"MicroephysCoordinateSystemDescription\"`. If positions correspond to\npixel indices in a 2D image (of either a volume-rendering,\nsurface-rendering, operative photo, or operative drawing),\nthis MUST be \"Pixels\". For more information, see the section\non 2D coordinate systems.\nFor a list of valid values for this field, see the associated glossary entry.\n",
+        "description": "Defines the coordinate system for the microelectrode probes.\nSee the\n[Coordinate Systems Appendix](SPEC_ROOT/appendices/coordinate-systems.md)\nfor a list of restricted keywords for coordinate systems.\nIf `\"Other\"`, provide definition of the coordinate system in\n`\"MicroephysCoordinateSystemDescription\"`. If positions correspond to\npixel indices in a 2D image (of either a volume-rendering,\nsurface-rendering, operative photo, or operative drawing),\nthis MUST be \"Pixels\". For more information, see the section\n[allowed 2D coordinate systems](SPEC_ROOT/modality-specific-files/\\\nmicroelectrode-electrophysiology.md#allowed-2d-coordinate-systems).\nFor a list of valid values for this field, see the associated glossary entry.\n",
         "display_name": "Microephys Coordinate System",
         "enum": [
           "Pixels",
@@ -11409,21 +11371,6 @@
             "suffix == \"electrodes\"",
             "extension == \".tsv\"",
             "\"space\" in entities"
-          ]
-        },
-        "RequiredCoordsystem": {
-          "checks": [
-            "associations.coordsystem != null"
-          ],
-          "issue": {
-            "code": "REQUIRED_COORDSYSTEM",
-            "level": "error",
-            "message": "If an electrodes.tsv file is provided, an associated coordsystem.json must also be present.\n"
-          },
-          "selectors": [
-            "suffix == \"electrodes\"",
-            "extension == \".tsv\"",
-            "!intersects([datatype], [\"ecephys\", \"icephys\"])"
           ]
         }
       },
@@ -19656,27 +19603,27 @@
           "columns": {
             "HED": "optional",
             "channel": {
-              "description_addendum": "Note that this column only applies to data types where\nchannels are specified, such as EEG, iEEG, MEG or NIRS.\n",
+              "description_addendum": "Note that this column only applies to data types where\nchannels are specified, such as EEG, iEEG, MEG, NIRS or microephys.\n",
               "level": "optional"
             },
             "data_entity_id": {
-              "description_addendum": "Note that this column only applies to\nmicroelectrode eleectrophysiology data type.\n",
+              "description_addendum": "Note that this column only applies to\nmicroelectrode electrophysiology data type.\n",
               "level": "optional"
             },
             "duration": "required",
             "duration_index": {
-              "description_addendum": "Note that this column only applies to\nmicroelectrode eleectrophysiology data type.\n",
+              "description_addendum": "Note that this column only applies to\nmicroelectrode electrophysiology data type.\n",
               "level": "optional"
             },
             "onset": "required",
             "onset_index": {
-              "description_addendum": "Note that this column only applies to\nmicroelectrode eleectrophysiology data type.\n",
+              "description_addendum": "Note that this column only applies to\nmicroelectrode electrophysiology data type.\n",
               "level": "optional"
             },
             "response_time": "optional",
             "stim_file": "optional",
             "trial_id": {
-              "description_addendum": "Note that this column only applies to\nmicroelectrode eleectrophysiology data type.\n",
+              "description_addendum": "Note that this column only applies to\nmicroelectrode electrophysiology data type.\n",
               "level": "optional"
             },
             "trial_type": "optional"
@@ -19821,7 +19768,7 @@
             "time_offset": "optional",
             "time_reference_channel": "optional",
             "type__channels": "required",
-            "units__channels": "required"
+            "units": "required"
           },
           "index_columns": [
             "name__channels"
@@ -19830,7 +19777,7 @@
             "name__channels",
             "reference__microephys",
             "type__channels",
-            "units__channels",
+            "units",
             "sampling_frequency"
           ],
           "selectors": [
@@ -19853,10 +19800,19 @@
             "pipette_solution": "optional",
             "probe_name": "required",
             "shank_id": "optional",
-            "size": "optional",
-            "x__electrodes": "required",
-            "y__electrodes": "required",
-            "z__electrodes": "required"
+            "size__microephys": "optional",
+            "x": {
+              "description_addendum": "When no [`space-<label>`](SPEC_ROOT/appendices/entities.md#space) entity is used in the filename,\nthe position along the local width-axis relative to the probe origin\n(see `coordinate_reference_point` in `*_probes.tsv`) in micrometers (um).\nWhen a `space-<label>` entity is used in the filename,\nthe position relative to the origin of the coordinate system along the first axis.\nUnits are specified by `MicroephysCoordinateUnits` in the corresponding `*_coordsystem.json` file.\n",
+              "level": "required"
+            },
+            "y": {
+              "description_addendum": "When no [`space-<label>`](SPEC_ROOT/appendices/entities.md#space) entity is used in the filename,\nthe position along the local height-axis relative to the probe origin\n(see `coordinate_reference_point` in `*_probes.tsv`) in micrometers (um).\nWhen a `space-<label>` entity is used in the filename,\nthe position relative to the origin of the coordinate system along the second axis.\nUnits are specified by `MicroephysCoordinateUnits` in the corresponding `*_coordsystem.json` file.\n",
+              "level": "required"
+            },
+            "z": {
+              "description_addendum": "When no [`space-<label>`](SPEC_ROOT/appendices/entities.md#space) entity is used in the filename,\nthe position along the local depth-axis relative to the probe origin\n(see `coordinate_reference_point` in `*_probes.tsv`) in micrometers (um).\nWhen a `space-<label>` entity is used in the filename,\nthe position relative to the origin of the coordinate system along the third axis.\nUnits are specified by `MicroephysCoordinateUnits` in the corresponding `*_coordsystem.json` file.\nFor 2D electrode localizations (for example, when the coordinate system is\n`Pixels`), this SHOULD be a column of `n/a` values.\n",
+              "level": "required"
+            }
           },
           "index_columns": [
             "name__electrodes"
@@ -19864,9 +19820,9 @@
           "initial_columns": [
             "name__electrodes",
             "probe_name",
-            "x__electrodes",
-            "y__electrodes",
-            "z__electrodes"
+            "x",
+            "y",
+            "z"
           ],
           "selectors": [
             "intersects([datatype], [\"ecephys\", \"icephys\"])",
@@ -19889,7 +19845,6 @@
             "coordinate_reference_point": "recommended",
             "depth__probes": "optional",
             "device_serial_number": "recommended",
-            "dimension_unit": "optional",
             "electrode_count": "optional",
             "height__probes": "optional",
             "hemisphere__probes": "recommended",
