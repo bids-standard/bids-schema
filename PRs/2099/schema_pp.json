@@ -4382,7 +4382,7 @@
                   "type": "null"
                 }
               ],
-              "description": "Command (or commands) used to run the tool, including all parameters.\n\nSet to `null` to describe that the activity was performed manually.\n",
+              "description": "Command (or commands) performed by the activity, including all parameters.\n\nSet to `null` to describe that the activity was performed manually.\n",
               "name": "Command"
             },
             "EndedAtTime": {
@@ -8653,13 +8653,13 @@
         "items": {
           "properties": {
             "ActedOnBehalfOf": {
-              "description": "Identifier of another software package that was responsible for using the software package\nin the context of the activities associated to it.\n\nExample: if software A launches software B to perform activity C, then B ActedOnBehalfOf A.\n\nRelated software MUST be described as specified in the\n[Software](SPEC_ROOT/modality-agnostic-files/provenance.md#software) section.\n",
+              "description": "Identifier of another software package that triggered the use of the software package.\n\nExample: if software A launches software B to perform activity C, then B ActedOnBehalfOf A.\n\nRelated software MUST be described as specified in the\n[Software](SPEC_ROOT/modality-agnostic-files/provenance.md#software) section.\n",
               "format": "uri",
               "name": "ActedOnBehalfOf",
               "type": "string"
             },
             "AltIdentifier": {
-              "description": "URI of the RRID for the software package (cf. https://rrid.site/).",
+              "description": "URI of an alternative identifier (such as [RRID](https://rrid.site/)) for the software package.",
               "format": "uri",
               "name": "AltIdentifier",
               "type": "string"
