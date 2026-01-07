@@ -8406,7 +8406,7 @@
         "name": "SpatialReference"
       },
       "Species": {
-        "description": "The species from which the atlas was derived. For example, \"human\", \"macaque\", \"rat\", or \"mouse\".\n",
+        "description": "The `species` column SHOULD be a binomial species name from the\n[NCBI Taxonomy](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi)\n(for example, `homo sapiens`, `mus musculus`, `rattus norvegicus`).\nFor backwards compatibility, if `species` is absent, the participant is assumed to be\n`homo sapiens`.\n",
         "display_name": "Species",
         "name": "Species",
         "type": "string"
