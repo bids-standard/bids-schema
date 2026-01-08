@@ -12687,7 +12687,6 @@
               "prov"
             ],
             "entities": {
-              "description": "optional",
               "prov": "required"
             },
             "extensions": [
