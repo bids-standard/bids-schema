@@ -13,6 +13,16 @@
           "suffix": "aslcontext"
         }
       },
+      "atlas_description": {
+        "selectors": [
+          "entities.atlas",
+          "extension != '.json'"
+        ],
+        "target": {
+          "extension": ".json",
+          "suffix": "description"
+        }
+      },
       "bval": {
         "inherit": true,
         "selectors": [
@@ -180,6 +190,20 @@
               "required": [
                 "path",
                 "n_rows"
+              ],
+              "type": "object"
+            },
+            "atlas_description": {
+              "additionalProperties": false,
+              "description": "Atlas description file",
+              "properties": {
+                "path": {
+                  "description": "Path to associated atlas description file",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path"
               ],
               "type": "object"
             },
@@ -1158,6 +1182,14 @@
       }
     ],
     "templates": {
+      "atlas": {
+        "base": {
+          "entities": {
+            "cohort": "optional",
+            "template": "required"
+          }
+        }
+      },
       "deriv": {
         "base": {
           "entities": {
@@ -1171,8 +1203,10 @@
         },
         "dseg": {
           "entities": {
+            "atlas": "optional",
             "description": "optional",
             "resolution": "optional",
+            "scale": "optional",
             "segmentation": "optional",
             "session": "optional",
             "space": "optional",
@@ -1193,9 +1227,11 @@
         },
         "dseg_surface": {
           "entities": {
+            "atlas": "optional",
             "density": "optional",
             "description": "optional",
             "hemisphere": "optional",
+            "scale": "optional",
             "segmentation": "optional",
             "session": "optional",
             "space": "optional",
@@ -1237,9 +1273,11 @@
         },
         "probseg": {
           "entities": {
+            "atlas": "optional",
             "description": "optional",
             "label": "optional",
             "resolution": "optional",
+            "scale": "optional",
             "segmentation": "optional",
             "session": "optional",
             "space": "optional",
@@ -1552,12 +1590,6 @@
         "name": "coordinate_system",
         "type": "string"
       },
-      "data_entity_id": {
-        "description": "The corresponding (UUID) identifier of the recording trace in the data file.\nThe same `data_entity_id` can be listed multiple times with different\n`onset` and `duration` values to select a subset of a recording trace.\n",
-        "display_name": "Data entity ID",
-        "name": "data_entity_id",
-        "type": "string"
-      },
       "depth__probes": {
         "description": "Physical depth of the probe in mm, for example, '0.3'.\nThis dimension should be omitted or set to 0 for two-dimensional (shank-type) probes.\nThis dimension corresponds to the z-axis of the probe's local coordinate frame.\n",
         "display_name": "Depth",
@@ -1629,17 +1661,17 @@
         "type": "number",
         "unit": "s"
       },
-      "duration_index": {
-        "description": "Number of recording samples included in the event.\n",
-        "display_name": "Duration index",
-        "name": "duration_index",
-        "type": "number"
-      },
       "electrode_count": {
         "description": "Number of miscellaneous analog electrodes for auxiliary signals (for example, '2').\n",
         "display_name": "Electrode count",
         "name": "electrode_count",
         "type": "number"
+      },
+      "electrode_name": {
+        "description": "Name of the electrode contact point.\n",
+        "display_name": "Electrode name",
+        "name": "electrode_name",
+        "type": "string"
       },
       "electrode_shape": {
         "description": "Description of the shape of the electrode (for example, `square`, `circle`).\n",
@@ -1890,12 +1922,6 @@
         "type": "number",
         "unit": "s"
       },
-      "onset_index": {
-        "description": "Index of the onset recording sample (0 based) within the data entity.\n",
-        "display_name": "Onset index",
-        "name": "onset_index",
-        "type": "integer"
-      },
       "participant_id": {
         "description": "A participant identifier of the form `sub-<label>`,\nmatching a participant entity found in the dataset.\n",
         "display_name": "Participant ID",
@@ -1947,7 +1973,7 @@
         "type": "number"
       },
       "probe_name": {
-        "description": "A unique identifier of the probe, can be identical with the `device_serial_number`.\n(expected to match probe_name listed in `*_electrodes.tsv`).\n",
+        "description": "A unique identifier of the probe, can be identical with the `device_serial_number`.\n",
         "display_name": "Probe name",
         "name": "probe_name",
         "type": "string"
@@ -2255,12 +2281,6 @@
         "name": "tracked_point",
         "type": "string"
       },
-      "trial_id": {
-        "description": "If the data entity belongs to set of data_entities forming a trial,\nthey have to be linked to the same trial_id.\nThis can be used for example for group stimulation and response records.\nThe optional `trial_type` events.tsv column can be used to provide\nfurther information on the trial like such as `electric stimulation`,\n`rest`, or `pharmaceutical stimulation`.\n",
-        "display_name": "Trial ID",
-        "name": "trial_id",
-        "type": "string"
-      },
       "trial_type": {
         "description": "Primary categorisation of each trial to identify them as instances of the\nexperimental conditions.\nFor example: for a response inhibition task, it could take on values `go` and\n`no-go` to refer to response initiation and response inhibition experimental\nconditions.\n",
         "display_name": "Trial type",
@@ -2489,6 +2509,10 @@
       }
     },
     "common_principles": {
+      "atlas": {
+        "description": "An *atlas* is structured neuroanatomical or neurofunctional information expressed as spatial annotations,\nsuch as anatomical landmarks, segmentations, parcellations, probabilistic maps, or feature maps,\ntypically defined in relation to a *space* engendered by a specific *template*.\nWithin BIDS, atlases provide standardized spatially-organized knowledge to label, localize,\nand interpret data features.\nAtlases often rely on or embed templates as their reference framework.\nIn BIDS, templates establish the spatial coordinate frames for atlases,\nindependently of whether or not they are considered part of specific atlases' outcomes.\n",
+        "display_name": "Atlas"
+      },
       "data_acquisition": {
         "description": "A continuous uninterrupted block of time during which a brain scanning instrument\nor an electromyography recording device was acquiring data\naccording to a particular scanning sequence/protocol.\n",
         "display_name": "Data acquisition"
@@ -2537,6 +2561,10 @@
         "description": "A logical grouping of neuroimaging and behavioral data consistent across subjects.\nSession can (but doesn't have to) be synonymous to a visit in a longitudinal study.\nIn general, subjects will stay in the scanner during one session.\nHowever, for example, if a subject has to leave the scanner room\nand then be re-positioned on the scanner bed,\nthe set of MRI acquisitions will still be considered as a session\nand match sessions acquired in other subjects.\nSimilarly, in situations where different data types are obtained over several visits\n(for example fMRI on one day followed by DWI the day after) those can be grouped in one session.\nDefining multiple sessions is appropriate when several identical or similar data acquisitions\nare planned and performed on all -or most- subjects,\noften in the case of some intervention between sessions (for example, training).\nIn the [PET](SPEC_ROOT/modality-specific-files/positron-emission-tomography.md) context,\na session may also indicate a group of related scans, taken in one or more visits.\n",
         "display_name": "Session"
       },
+      "space": {
+        "description": "A space in BIDS is a reference [coordinate system](SPEC_ROOT/appendices/coordinate-systems.md)\ndefined by neuroimaging data, which may originate from an individual participant (native space)\nor a standardized reference derived from multiple participants (template space).\n",
+        "display_name": "Space"
+      },
       "subject": {
         "description": "A person or animal participating in the study.\nUsed interchangeably with term **Participant**.\n",
         "display_name": "Subject"
@@ -2548,6 +2576,10 @@
       "task": {
         "description": "A set of structured activities performed by the participant.\nTasks are usually accompanied by stimuli and responses, and can greatly vary in complexity.\nFor the purpose of this specification we consider the so-called \"resting state\" a task.\nIn the context of brain scanning, a task is always tied to one data acquisition.\nTherefore, even if during one acquisition the subject performed multiple conceptually different behaviors\n(with different sets of instructions) they will be considered one (combined) task.\n",
         "display_name": "Task"
+      },
+      "template": {
+        "description": "A template (sometimes called an *atlas template*) is any aggregation of data across subjects.\nTemplates MAY operationalize the notion of a common spatial frame of reference\n(see *space*) beyond individual subjects.\nIn practical BIDS usage, templates can be recognized (via the `tpl-` entity) as\nstandard spaces that enable analyses of data from multiple individuals.\n",
+        "display_name": "Template"
       }
     },
     "datatypes": {
@@ -2650,6 +2682,13 @@
         "name": "acq",
         "type": "string"
       },
+      "atlas": {
+        "description": "The `atlas-<label>` entity identifies files that are part of, or derived from, an atlas.\n",
+        "display_name": "Atlas",
+        "format": "label",
+        "name": "atlas",
+        "type": "string"
+      },
       "ceagent": {
         "description": "The `ce-<label>` entity can be used to distinguish sequences using different contrast enhanced images.\nThe label is the name of the contrast agent.\n\nThis entity represents the `\"ContrastBolusIngredient\"` metadata field.\nTherefore, if the `ce-<label>` entity is present in a filename,\n`\"ContrastBolusIngredient\"` MAY also be added in the JSON file, with the same label.\n",
         "display_name": "Contrast Enhancing Agent",
@@ -2662,6 +2701,13 @@
         "display_name": "Chunk",
         "format": "index",
         "name": "chunk",
+        "type": "string"
+      },
+      "cohort": {
+        "description": "A set of subjects sharing one or more common characteristics.\n\nIn the context of a template, the `cohort-<label>` entity identifies a subset of\nsubjects or sessions that were used to construct template variations.\nFor example, a developmental template may use scans from participants of different ages,\nlongitudinal sessions of the same participants, or a combination of the two.\n",
+        "display_name": "Cohort",
+        "format": "label",
+        "name": "cohort",
         "type": "string"
       },
       "density": {
@@ -2804,8 +2850,15 @@
         "name": "sample",
         "type": "string"
       },
+      "scale": {
+        "description": "The `scale-<label>` key/value pair corresponds to a custom label the user\nMAY use to distinguish segmentations that entail different levels of\n*regional resolution* (scales), often indicated by the number of ROIs.\nSee ([Bijsterbosch et al., 2020](https://doi.org/10.1038/s41593-020-00726-z))\nfor further details on *regional resolution* or, as defined by the authors of\nthe manuscript, the *brain units*.\n\nFor example, the [Schaefer 2018 atlas](https://doi.org/10.1093/cercor/bhx179)\nis distributed within *FreeSurfer* with ten different scales\n(100, 200, 300, 400, 500, 600, 700, 800, 900, and 1000 regions) for each of\nits three different parcellations (*7 networks*, *17 networks*, and\n*Kong's variation of 17 networks*).\n\nThis entity is only applicable to derivative data.\n",
+        "display_name": "Scale",
+        "format": "label",
+        "name": "scale",
+        "type": "string"
+      },
       "segmentation": {
-        "description": "The `seg-<label>` key/value pair corresponds to a custom label the user\nMAY use to distinguish different segmentations.\n\nThis entity is only applicable to derivative data.\n",
+        "description": "The `seg-<label>` key/value pair corresponds to a custom label the user\nMAY use to distinguish specific partitions of the data space\n(segmentations or parcellations).\n\nSegmentations and parcellations MAY or MAY NOT be associated with\n[atlases](SPEC_ROOT/common-principles.md#definitions).\nTherefore, `seg-<label>` SHOULD NOT be used to designate\n[atlases](SPEC_ROOT/common-principles.md#definitions).\nPlease refer to the [template and atlas section](SPEC_ROOT/derivatives/atlas.md)\nfor detailed specifications on their combined use.\nWhen a segmentation is a *realization* of an atlas' segmentation or parcellation,\n`seg-<label>` SHOULD be employed to distinguish them.\nFor example, the [Yeo 2011 atlas](https://doi.org/10.1152/jn.00338.2011)\nis distributed within *FreeSurfer* with two different parcellations:\nthe *7 networks* MAY be described with `seg-7n`, for instance, and\nthe *17 networks* MAY correspondingly be described with `seg-17n`.\n\nThis entity is only applicable to derivative data.\n",
         "display_name": "Segmentation",
         "format": "label",
         "name": "seg",
@@ -2851,6 +2904,13 @@
         "display_name": "Task",
         "format": "label",
         "name": "task",
+        "type": "string"
+      },
+      "template": {
+        "description": "A standardized space of analysis specified or generated by one or more averages of features\nwith respect to which group-level and atlas-derived results are provided.\nThe `<label>` SHOULD follow the modality-specific conventions listed in the\n[Coordinate Systems Appendix](SPEC_ROOT/appendices/coordinate-systems.md).\n",
+        "display_name": "Template",
+        "format": "label",
+        "name": "tpl",
         "type": "string"
       },
       "tracer": {
@@ -3418,10 +3478,10 @@
         "display_name": "MNI152NLin2009cSym",
         "value": "MNI152NLin2009cSym"
       },
-      "MNI152NLin6ASym": {
+      "MNI152NLin6Asym": {
         "description": "A variation of `MNI152NLin6Sym` built by A. Janke that is released as the _MNI template_ of FSL.\nVolumetric templates included with\n[HCP-Pipelines](https://github.com/Washington-University/HCPpipelines/tree/master/global/templates)\ncorrespond to this template too.\n\nUsed by FSL and HPC-Pipelines.\n",
-        "display_name": "MNI152NLin6ASym",
-        "value": "MNI152NLin6ASym"
+        "display_name": "MNI152NLin6Asym",
+        "value": "MNI152NLin6Asym"
       },
       "MNI152NLin6Sym": {
         "description": "Also known as symmetric ICBM 6th generation (non-linear coregistration).\n\nUsed by FSL.\n",
@@ -3944,7 +4004,7 @@
           "MNI152NLin2009bAsym",
           "MNI152NLin2009cAsym",
           "MNI152NLin6Sym",
-          "MNI152NLin6ASym",
+          "MNI152NLin6Asym",
           "MNI305",
           "NIHPD",
           "OASIS30AntsOASISAnts",
@@ -4916,7 +4976,7 @@
           "MNI152NLin2009bAsym",
           "MNI152NLin2009cAsym",
           "MNI152NLin6Sym",
-          "MNI152NLin6ASym",
+          "MNI152NLin6Asym",
           "MNI305",
           "NIHPD",
           "OASIS30AntsOASISAnts",
@@ -5044,6 +5104,18 @@
         "description": "One or more [BIDS URIs](SPEC_ROOT/common-principles.md#bids-uri)\npointing to empty-room file(s) associated with the subject's MEG recording.\nUsing forward-slash separated paths relative to the dataset root is\n[DEPRECATED](SPEC_ROOT/common-principles.md#definitions).\n",
         "display_name": "Associated Empty Room",
         "name": "AssociatedEmptyRoom"
+      },
+      "AtlasName": {
+        "description": "Name of the atlas.\n",
+        "display_name": "Name",
+        "name": "Name",
+        "type": "string"
+      },
+      "AtlasSampleSize": {
+        "description": "Number of items (typically, independent participants;\nalthough it could also refer to, for example, sessions)\nthat were employed to create the corresponding atlas.\n",
+        "display_name": "Atlas' sample size",
+        "name": "SampleSize",
+        "type": "number"
       },
       "AttenuationCorrection": {
         "description": "Short description of the attenuation correction method used.\n",
@@ -5447,6 +5519,26 @@
         "name": "ContrastBolusIngredient",
         "type": "string"
       },
+      "CoordinateReportStrategy": {
+        "description": "Indicate the method of coordinate reporting in statistically significant clusters.\nCould be the \"peak\" statistical coordinate in the cluster or the\n\"center_of_mass\" of the cluster.\n",
+        "display_name": "CoordinateReportStrategy",
+        "enum": [
+          "peak",
+          "center_of_mass",
+          "other"
+        ],
+        "name": "CoordinateReportStrategy",
+        "type": "string"
+      },
+      "Curators": {
+        "description": "List of curators who helped make the atlas accessible in a database or dataset.\n",
+        "display_name": "Curators",
+        "items": {
+          "type": "string"
+        },
+        "name": "Curators",
+        "type": "array"
+      },
       "DCOffsetCorrection": {
         "description": "A description of the method (if any) used to correct for a DC offset.\nIf the method used was subtracting the mean value for each channel,\nuse \"mean\".\n",
         "display_name": "DC Offset Correction",
@@ -5602,6 +5694,12 @@
         "name": "Derivative",
         "type": "boolean"
       },
+      "DerivedFrom": {
+        "description": "Indicate what data modality the atlas was derived from; for example, \"cytoarchitecture\", \"resting-state\", or \"task\".\n",
+        "display_name": "DerivedFrom",
+        "name": "DerivedFrom",
+        "type": "string"
+      },
       "Description": {
         "description": "Free-form natural language description.\n",
         "display_name": "Description",
@@ -5694,7 +5792,7 @@
           "MNI152NLin2009bAsym",
           "MNI152NLin2009cAsym",
           "MNI152NLin6Sym",
-          "MNI152NLin6ASym",
+          "MNI152NLin6Asym",
           "MNI305",
           "NIHPD",
           "OASIS30AntsOASISAnts",
@@ -5826,7 +5924,7 @@
           "MNI152NLin2009bAsym",
           "MNI152NLin2009cAsym",
           "MNI152NLin6Sym",
-          "MNI152NLin6ASym",
+          "MNI152NLin6Asym",
           "MNI305",
           "NIHPD",
           "OASIS30AntsOASISAnts",
@@ -6187,7 +6285,7 @@
           "MNI152NLin2009bAsym",
           "MNI152NLin2009cAsym",
           "MNI152NLin6Sym",
-          "MNI152NLin6ASym",
+          "MNI152NLin6Asym",
           "MNI305",
           "NIHPD",
           "OASIS30AntsOASISAnts",
@@ -6623,7 +6721,7 @@
           "MNI152NLin2009bAsym",
           "MNI152NLin2009cAsym",
           "MNI152NLin6Sym",
-          "MNI152NLin6ASym",
+          "MNI152NLin6Asym",
           "MNI305",
           "NIHPD",
           "OASIS30AntsOASISAnts",
@@ -7069,6 +7167,12 @@
         "type": "number",
         "unit": "mm"
       },
+      "LevelType": {
+        "description": "Indicate what analysis level the atlas was derived from; for example, \"group\" or \"individual\".\n",
+        "display_name": "LevelType",
+        "name": "LevelType",
+        "type": "string"
+      },
       "Levels": {
         "additionalProperties": {
           "anyOf": [
@@ -7180,7 +7284,7 @@
           "MNI152NLin2009bAsym",
           "MNI152NLin2009cAsym",
           "MNI152NLin6Sym",
-          "MNI152NLin6ASym",
+          "MNI152NLin6Asym",
           "MNI305",
           "NIHPD",
           "OASIS30AntsOASISAnts",
@@ -7442,7 +7546,7 @@
           "MNI152NLin2009bAsym",
           "MNI152NLin2009cAsym",
           "MNI152NLin6Sym",
-          "MNI152NLin6ASym",
+          "MNI152NLin6Asym",
           "MNI305",
           "NIHPD",
           "OASIS30AntsOASISAnts",
@@ -7592,7 +7696,7 @@
           "MNI152NLin2009bAsym",
           "MNI152NLin2009cAsym",
           "MNI152NLin6Sym",
-          "MNI152NLin6ASym",
+          "MNI152NLin6Asym",
           "MNI305",
           "NIHPD",
           "OASIS30AntsOASISAnts",
@@ -8049,6 +8153,13 @@
         "minimum": 0,
         "name": "Purity",
         "type": "number"
+      },
+      "RRID": {
+        "description": "[Research Resource Identifier](https://rrid.site) of the file,\ndataset or atlas being described.\n",
+        "display_name": "RRID",
+        "format": "rrid",
+        "name": "RRID",
+        "type": "string"
       },
       "RandomRate": {
         "description": "Random rate for each frame (same units as `\"Units\"`, for example, `\"Bq/mL\"`).\n",
@@ -8818,9 +8929,15 @@
             "type": "object"
           }
         ],
-        "description": "For images with a single reference, the value MUST be a single string.\nFor images with multiple references, such as surface and volume references,\na JSON object MUST be used.\n",
+        "description": "String or object describing the reference image to which the current image is aligned.\nFor images with a single reference, the value MUST be a single string.\nFor images with multiple references, such as surface and volume references,\na JSON object MUST be used.\n",
         "display_name": "Spatial Reference",
         "name": "SpatialReference"
+      },
+      "Species": {
+        "description": "The `species` column SHOULD be a binomial species name from the\n[NCBI Taxonomy](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi)\n(for example, `homo sapiens`, `mus musculus`, `rattus norvegicus`).\nFor backwards compatibility, if `species` is absent, the participant is assumed to be\n`homo sapiens`.\n",
+        "display_name": "Species",
+        "name": "Species",
+        "type": "string"
       },
       "SpecificRadioactivity": {
         "anyOf": [
@@ -9376,7 +9493,7 @@
           "MNI152NLin2009bAsym",
           "MNI152NLin2009cAsym",
           "MNI152NLin6Sym",
-          "MNI152NLin6ASym",
+          "MNI152NLin6Asym",
           "MNI305",
           "NIHPD",
           "OASIS30AntsOASISAnts",
@@ -9905,6 +10022,11 @@
         "description": "A binary mask that was used to remove facial features from an anatomical MRI\nimage.\n",
         "display_name": "Defacing Mask",
         "value": "defacemask"
+      },
+      "description": {
+        "description": "A JSON file describing the entities that occur in the filename.\n\nAt present, this is used for atlas descriptions.\n\nThis file MUST be located at the root of the dataset.\n",
+        "display_name": "Description file",
+        "value": "description"
       },
       "descriptions": {
         "description": "A TSV file describing labels found for the `desc` entity in a Derivatives dataset.\n\nThis file MAY be located at the root of the derivative dataset,\nor at the subject or session level.\n\nThe use of `descriptions.tsv` files together with the desc entity are helpful to\ndocument how files are generated,\neven if their use may not be sufficient to provide full computational reproducibility.\n",
@@ -10454,6 +10576,40 @@
           "selectors": [
             "suffix == \"asl\"",
             "sidecar.PostLabelingDelay != null"
+          ]
+        }
+      },
+      "atlas": {
+        "AtlasDescriptionRecommended": {
+          "checks": [
+            "associations.atlas_description"
+          ],
+          "issue": {
+            "code": "ATLAS_DESCRIPTION_RECOMMENDED",
+            "level": "warning",
+            "message": "No /atlas-{entities.atlas}_description.json could be found.\n"
+          },
+          "selectors": [
+            "dataset.dataset_description.DatasetType == \"derivative\"",
+            "entities.atlas",
+            "type(entities.template) == 'null'",
+            "extension != '.json'"
+          ]
+        },
+        "AtlasDescriptionRequired": {
+          "checks": [
+            "associations.atlas_description"
+          ],
+          "issue": {
+            "code": "ATLAS_DESCRIPTION_REQUIRED",
+            "level": "error",
+            "message": "No /atlas-{entities.atlas}_description.json could be found.\n"
+          },
+          "selectors": [
+            "dataset.dataset_description.DatasetType == \"derivative\"",
+            "entities.atlas",
+            "entities.template",
+            "extension != '.json'"
           ]
         }
       },
@@ -12033,6 +12189,9 @@
       "task",
       "event",
       "run",
+      "template",
+      "atlas",
+      "space",
       "index",
       "label",
       "suffix",
@@ -12040,6 +12199,27 @@
       "deprecated"
     ],
     "dataset_metadata": {
+      "atlas_description": {
+        "fields": {
+          "AtlasName": "required",
+          "AtlasSampleSize": "optional",
+          "Authors": "recommended",
+          "Curators": "optional",
+          "DerivedFrom": "optional",
+          "Description": "recommended",
+          "Funding": "optional",
+          "LevelType": "optional",
+          "License": "required",
+          "RRID": "optional",
+          "ReferencesAndLinks": "optional",
+          "Species": "optional"
+        },
+        "selectors": [
+          "suffix == 'description'",
+          "extension == '.json'",
+          "entities.atlas"
+        ]
+      },
       "dataset_authors": {
         "fields": {
           "Authors": {
@@ -12118,6 +12298,14 @@
           "name": "code",
           "opaque": true
         },
+        "cohort": {
+          "entity": "cohort",
+          "level": "optional",
+          "opaque": false,
+          "subdirs": [
+            "datatype"
+          ]
+        },
         "datatype": {
           "level": "optional",
           "opaque": false,
@@ -12152,7 +12340,8 @@
             "phenotype",
             "sourcedata",
             "stimuli",
-            "subject"
+            "subject",
+            "template"
           ]
         },
         "session": {
@@ -12179,6 +12368,15 @@
           "opaque": false,
           "subdirs": [
             "session",
+            "datatype"
+          ]
+        },
+        "template": {
+          "entity": "template",
+          "level": "optional",
+          "opaque": false,
+          "subdirs": [
+            "cohort",
             "datatype"
           ]
         }
@@ -12303,7 +12501,9 @@
     },
     "entities": [
       "subject",
+      "template",
       "session",
+      "cohort",
       "sample",
       "task",
       "tracksys",
@@ -12328,7 +12528,9 @@
       "split",
       "recording",
       "chunk",
+      "atlas",
       "segmentation",
+      "scale",
       "resolution",
       "density",
       "label",
@@ -12661,6 +12863,22 @@
         }
       },
       "deriv": {
+        "atlas": {
+          "atlas_description": {
+            "entities": {
+              "atlas": "required"
+            },
+            "extensions": [
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "description"
+            ]
+          }
+        },
         "imaging": {
           "anat_defacemask_volumetric": {
             "datatypes": [
@@ -12692,12 +12910,45 @@
               "defacemask"
             ]
           },
+          "anat_defacemask_volumetric_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "modality": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "defacemask"
+            ]
+          },
           "anat_discrete_segmentation": {
             "datatypes": [
               "anat"
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "description": "optional",
@@ -12706,11 +12957,49 @@
               "reconstruction": "optional",
               "resolution": "optional",
               "run": "optional",
+              "scale": "optional",
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
               "subject": "optional",
               "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".tsv",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "dseg"
+            ]
+          },
+          "anat_discrete_segmentation_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "atlas": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "scale": "optional",
+              "segmentation": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
             },
             "extensions": [
               ".nii.gz",
@@ -12731,6 +13020,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "density": "optional",
@@ -12740,11 +13030,50 @@
               "part": "optional",
               "reconstruction": "optional",
               "run": "optional",
+              "scale": "optional",
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
               "subject": "optional",
               "task": "optional"
+            },
+            "extensions": [
+              ".label.gii",
+              ".dlabel.nii",
+              ".tsv",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "dseg"
+            ]
+          },
+          "anat_discrete_surface_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "atlas": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "density": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "hemisphere": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "run": "optional",
+              "scale": "optional",
+              "segmentation": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
             },
             "extensions": [
               ".label.gii",
@@ -12791,6 +13120,40 @@
               "mask"
             ]
           },
+          "anat_mask_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "label": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "mask"
+            ]
+          },
           "anat_megre_volumetric": {
             "datatypes": [
               "anat"
@@ -12809,6 +13172,39 @@
               "space": "optional",
               "subject": "optional",
               "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "MEGRE"
+            ]
+          },
+          "anat_megre_volumetric_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "echo": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
             },
             "extensions": [
               ".nii.gz",
@@ -12841,6 +13237,40 @@
               "space": "optional",
               "subject": "optional",
               "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "MESE"
+            ]
+          },
+          "anat_mese_volumetric_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "echo": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
             },
             "extensions": [
               ".nii.gz",
@@ -12887,6 +13317,41 @@
               "MP2RAGE"
             ]
           },
+          "anat_mp2rage_volumetric_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "optional",
+              "inversion": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "MP2RAGE"
+            ]
+          },
           "anat_mtr_volumetric": {
             "datatypes": [
               "anat"
@@ -12905,6 +13370,39 @@
               "space": "optional",
               "subject": "optional",
               "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "MTR"
+            ]
+          },
+          "anat_mtr_volumetric_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "mtransfer": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
             },
             "extensions": [
               ".nii.gz",
@@ -12950,6 +13448,40 @@
               "VFA"
             ]
           },
+          "anat_multiflip_volumetric_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "VFA"
+            ]
+          },
           "anat_multiinversion_volumetric": {
             "datatypes": [
               "anat"
@@ -12981,6 +13513,39 @@
               "IRT1"
             ]
           },
+          "anat_multiinversion_volumetric_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "inversion": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "IRT1"
+            ]
+          },
           "anat_nonparametric_volumetric": {
             "datatypes": [
               "anat"
@@ -12999,6 +13564,50 @@
               "space": "optional",
               "subject": "optional",
               "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "T1w",
+              "T2w",
+              "PDw",
+              "T2starw",
+              "FLAIR",
+              "inplaneT1",
+              "inplaneT2",
+              "PDT2",
+              "angio",
+              "T2star",
+              "FLASH",
+              "PD"
+            ]
+          },
+          "anat_nonparametric_volumetric_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
             },
             "extensions": [
               ".nii.gz",
@@ -13067,12 +13676,59 @@
               "M0map"
             ]
           },
+          "anat_parametric_volumetric_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "T1map",
+              "T2map",
+              "T2starmap",
+              "R1map",
+              "R2map",
+              "R2starmap",
+              "PDmap",
+              "MTRmap",
+              "MTsat",
+              "UNIT1",
+              "T1rho",
+              "MWFmap",
+              "MTVmap",
+              "Chimap",
+              "S0map",
+              "M0map"
+            ]
+          },
           "anat_probabilistic_segmentation": {
             "datatypes": [
               "anat"
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "description": "optional",
@@ -13082,11 +13738,49 @@
               "reconstruction": "optional",
               "resolution": "optional",
               "run": "optional",
+              "scale": "optional",
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
               "subject": "optional",
               "task": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "probseg"
+            ]
+          },
+          "anat_probabilistic_segmentation_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "atlas": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "label": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "scale": "optional",
+              "segmentation": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
             },
             "extensions": [
               ".nii.gz",
@@ -13134,12 +13828,49 @@
               "MTS"
             ]
           },
+          "anat_vfamt_volumetric_atlas": {
+            "datatypes": [
+              "anat"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "required",
+              "mtransfer": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "MPM",
+              "MTS"
+            ]
+          },
           "dwi_discrete_segmentation": {
             "datatypes": [
               "dwi"
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "chunk": "optional",
               "description": "optional",
               "direction": "optional",
@@ -13147,10 +13878,46 @@
               "reconstruction": "optional",
               "resolution": "optional",
               "run": "optional",
+              "scale": "optional",
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
               "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".tsv",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "dseg"
+            ]
+          },
+          "dwi_discrete_segmentation_atlas": {
+            "datatypes": [
+              "dwi"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "atlas": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "scale": "optional",
+              "segmentation": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
             },
             "extensions": [
               ".nii.gz",
@@ -13194,6 +13961,37 @@
               "dwi"
             ]
           },
+          "dwi_dwi_volumetric_atlas": {
+            "datatypes": [
+              "dwi"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "dwi"
+            ]
+          },
           "dwi_mask": {
             "datatypes": [
               "dwi"
@@ -13224,12 +14022,45 @@
               "mask"
             ]
           },
+          "dwi_mask_atlas": {
+            "datatypes": [
+              "dwi"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "label": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "mask"
+            ]
+          },
           "dwi_probabilistic_segmentation": {
             "datatypes": [
               "dwi"
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "chunk": "optional",
               "description": "optional",
               "direction": "optional",
@@ -13238,10 +14069,46 @@
               "reconstruction": "optional",
               "resolution": "optional",
               "run": "optional",
+              "scale": "optional",
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
               "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "probseg"
+            ]
+          },
+          "dwi_probabilistic_segmentation_atlas": {
+            "datatypes": [
+              "dwi"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "atlas": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "label": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "scale": "optional",
+              "segmentation": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
             },
             "extensions": [
               ".nii.gz",
@@ -13284,7 +14151,36 @@
               "sbref"
             ]
           },
-          "dwi_scannerderivatives": {
+          "dwi_sbref_volumetric_atlas": {
+            "datatypes": [
+              "dwi"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "sbref"
+            ]
+          },
+          "dwi_scannerderivatives_volumetric": {
             "datatypes": [
               "dwi"
             ],
@@ -13299,6 +14195,41 @@
               "session": "optional",
               "space": "optional",
               "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "ADC",
+              "FA",
+              "S0map",
+              "colFA",
+              "expADC",
+              "trace"
+            ]
+          },
+          "dwi_scannerderivatives_volumetric_atlas": {
+            "datatypes": [
+              "dwi"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
             },
             "extensions": [
               ".nii.gz",
@@ -13352,6 +14283,43 @@
               "RB1COR"
             ]
           },
+          "fmap_RFFieldMaps_volumetric_atlas": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "optional",
+              "inversion": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1AFI",
+              "TB1TFL",
+              "TB1RFM",
+              "RB1COR"
+            ]
+          },
           "fmap_TB1DAM_volumetric": {
             "datatypes": [
               "fmap"
@@ -13370,6 +14338,39 @@
               "session": "optional",
               "space": "optional",
               "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1DAM"
+            ]
+          },
+          "fmap_TB1DAM_volumetric_atlas": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "flip": "required",
+              "inversion": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
             },
             "extensions": [
               ".nii.gz",
@@ -13415,6 +14416,40 @@
               "TB1EPI"
             ]
           },
+          "fmap_TB1EPI_volumetric_atlas": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "echo": "required",
+              "flip": "required",
+              "inversion": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1EPI"
+            ]
+          },
           "fmap_TB1SRGE_volumetric": {
             "datatypes": [
               "fmap"
@@ -13447,6 +14482,40 @@
               "TB1SRGE"
             ]
           },
+          "fmap_TB1SRGE_volumetric_atlas": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "echo": "optional",
+              "flip": "required",
+              "inversion": "required",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1SRGE"
+            ]
+          },
           "fmap_fieldmaps_volumetric": {
             "datatypes": [
               "fmap"
@@ -13460,6 +14529,40 @@
               "session": "optional",
               "space": "optional",
               "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "phasediff",
+              "phase1",
+              "phase2",
+              "magnitude1",
+              "magnitude2",
+              "magnitude",
+              "fieldmap"
+            ]
+          },
+          "fmap_fieldmaps_volumetric_atlas": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
             },
             "extensions": [
               ".nii.gz",
@@ -13508,7 +14611,38 @@
               "RB1map"
             ]
           },
-          "fmap_pepolar_m0scan": {
+          "fmap_parametric_volumetric_atlas": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TB1map",
+              "RB1map"
+            ]
+          },
+          "fmap_pepolar_m0scan_volumetric": {
             "datatypes": [
               "fmap"
             ],
@@ -13525,6 +14659,38 @@
               "session": "optional",
               "space": "optional",
               "subject": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "m0scan"
+            ]
+          },
+          "fmap_pepolar_m0scan_volumetric_atlas": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
             },
             "extensions": [
               ".nii.gz",
@@ -13568,12 +14734,45 @@
               "epi"
             ]
           },
+          "fmap_pepolar_volumetric_atlas": {
+            "datatypes": [
+              "fmap"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "epi"
+            ]
+          },
           "func_discrete_segmentation": {
             "datatypes": [
               "func"
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "description": "optional",
@@ -13583,6 +14782,7 @@
               "reconstruction": "optional",
               "resolution": "optional",
               "run": "optional",
+              "scale": "optional",
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
@@ -13602,7 +14802,78 @@
               "dseg"
             ]
           },
+          "func_discrete_segmentation_atlas": {
+            "datatypes": [
+              "func"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "atlas": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "echo": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "scale": "optional",
+              "segmentation": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "required",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".tsv",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "dseg"
+            ]
+          },
           "func_mask": {
+            "datatypes": [
+              "func"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "echo": "optional",
+              "label": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "mask"
+            ]
+          },
+          "func_mask_atlas": {
             "datatypes": [
               "func"
             ],
@@ -13672,6 +14943,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "description": "optional",
@@ -13682,11 +14954,50 @@
               "reconstruction": "optional",
               "resolution": "optional",
               "run": "optional",
+              "scale": "optional",
               "segmentation": "optional",
               "session": "optional",
               "space": "optional",
               "subject": "optional",
               "task": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "probseg"
+            ]
+          },
+          "func_probabilistic_segmentation_atlas": {
+            "datatypes": [
+              "func"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "atlas": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "echo": "optional",
+              "label": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "scale": "optional",
+              "segmentation": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "required",
+              "template": "required"
             },
             "extensions": [
               ".nii.gz",
@@ -13734,6 +15045,42 @@
               "sbref"
             ]
           },
+          "func_volumetric_atlas": {
+            "datatypes": [
+              "func"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "ceagent": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "echo": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "required",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "bold",
+              "cbv",
+              "sbref"
+            ]
+          },
           "perf_asl_volumetric": {
             "datatypes": [
               "perf"
@@ -13764,7 +15111,66 @@
               "m0scan"
             ]
           },
+          "perf_asl_volumetric_atlas": {
+            "datatypes": [
+              "perf"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "direction": "optional",
+              "echo": "optional",
+              "part": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "asl",
+              "m0scan"
+            ]
+          },
           "pet_pet_volumetric": {
+            "datatypes": [
+              "pet"
+            ],
+            "entities": {
+              "description": "optional",
+              "reconstruction": "optional",
+              "resolution": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "tracer": "optional"
+            },
+            "extensions": [
+              ".nii.gz",
+              ".nii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "pet"
+            ]
+          },
+          "pet_pet_volumetric_atlas": {
             "datatypes": [
               "pet"
             ],
@@ -14031,6 +15437,33 @@
               "eeg"
             ]
           },
+          "events_common": {
+            "datatypes": [
+              "beh",
+              "eeg",
+              "ieeg",
+              "meg",
+              "nirs"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "description": "optional",
+              "run": "optional",
+              "session": "optional",
+              "subject": "optional",
+              "task": "required"
+            },
+            "extensions": [
+              ".tsv",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "events"
+            ]
+          },
           "ieeg_ieeg_common": {
             "datatypes": [
               "ieeg"
@@ -14196,6 +15629,55 @@
               "meg"
             ]
           },
+          "micr_microscopy_atlas": {
+            "datatypes": [
+              "micr"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "chunk": "optional",
+              "cohort": "optional",
+              "description": "optional",
+              "run": "optional",
+              "sample": "required",
+              "session": "optional",
+              "space": "optional",
+              "stain": "optional",
+              "subject": "optional",
+              "template": "required"
+            },
+            "extensions": [
+              ".ome.tif",
+              ".ome.btf",
+              ".ome.zarr/",
+              ".png",
+              ".tif",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "TEM",
+              "SEM",
+              "uCT",
+              "BF",
+              "DF",
+              "PC",
+              "DIC",
+              "FLUO",
+              "CONF",
+              "PLI",
+              "CARS",
+              "2PE",
+              "MPE",
+              "SR",
+              "NLO",
+              "OCT",
+              "SPIM",
+              "XPCT"
+            ]
+          },
           "micr_microscopy_common": {
             "datatypes": [
               "micr"
@@ -14267,33 +15749,6 @@
             ],
             "suffixes": [
               "blood"
-            ]
-          },
-          "task_events_common": {
-            "datatypes": [
-              "beh",
-              "eeg",
-              "ieeg",
-              "meg",
-              "nirs"
-            ],
-            "entities": {
-              "acquisition": "optional",
-              "description": "optional",
-              "run": "optional",
-              "session": "optional",
-              "subject": "optional",
-              "task": "required"
-            },
-            "extensions": [
-              ".tsv",
-              ".json"
-            ],
-            "selectors": [
-              "dataset.dataset_description.DatasetType == 'derivative'"
-            ],
-            "suffixes": [
-              "events"
             ]
           }
         },
@@ -17048,6 +18503,18 @@
         }
       },
       "derivatives": {
+        "atlas": {
+          "TemplateNonStandard": {
+            "fields": {
+              "SpatialReference": "required"
+            },
+            "selectors": [
+              "dataset.dataset_description.DatasetType == \"derivative\"",
+              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.tpl])",
+              "type(entities.space) == 'null' || !intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.space])\n"
+            ]
+          }
+        },
         "common_derivatives": {
           "CommonDerivativeFields": {
             "fields": {
@@ -17112,11 +18579,13 @@
           },
           "SegmentationCommon": {
             "fields": {
-              "Manual": "optional"
+              "CoordinateReportStrategy": "optional",
+              "Manual": "optional",
+              "SpatialReference": "recommended"
             },
             "selectors": [
               "dataset.dataset_description.DatasetType == \"derivative\"",
-              "intersects([suffix], [\"dseg\", \"probseg\"])"
+              "intersects([suffix], [\"dseg\", \"probseg\", \"mask\"])"
             ]
           },
           "SpatialReferenceEntity": {
@@ -17137,7 +18606,8 @@
             },
             "selectors": [
               "dataset.dataset_description.DatasetType == \"derivative\"",
-              "!intersects(schema.objects.metadata._StandardTemplateCoordSys, [entities.space])"
+              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.space])",
+              "type(entities.tpl) == 'null' || !intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.tpl])"
             ]
           }
         }
@@ -19606,26 +21076,10 @@
               "description_addendum": "Note that this column only applies to data types where\nchannels are specified, such as EEG, iEEG, MEG, NIRS or microephys.\n",
               "level": "optional"
             },
-            "data_entity_id": {
-              "description_addendum": "Note that this column only applies to\nmicroelectrode electrophysiology data type.\n",
-              "level": "optional"
-            },
             "duration": "required",
-            "duration_index": {
-              "description_addendum": "Note that this column only applies to\nmicroelectrode electrophysiology data type.\n",
-              "level": "optional"
-            },
             "onset": "required",
-            "onset_index": {
-              "description_addendum": "Note that this column only applies to\nmicroelectrode electrophysiology data type.\n",
-              "level": "optional"
-            },
             "response_time": "optional",
             "stim_file": "optional",
-            "trial_id": {
-              "description_addendum": "Note that this column only applies to\nmicroelectrode electrophysiology data type.\n",
-              "level": "optional"
-            },
             "trial_type": "optional"
           },
           "initial_columns": [
@@ -19752,6 +21206,10 @@
           "columns": {
             "channel_label": "optional",
             "description": "optional",
+            "electrode_name": {
+              "description_addendum": "The value MUST match a `name` entry in the corresponding `*_electrodes.tsv` file,\nlinking this channel to its associated electrode contact point.\nFor channels not associated with an electrode, use `n/a`.\n",
+              "level": "required"
+            },
             "gain": "recommended",
             "ground": "optional",
             "high_cutoff": "optional",
@@ -19759,7 +21217,7 @@
             "name__channels": "required",
             "notch": "optional",
             "recording_mode": "recommended",
-            "reference__microephys": "required",
+            "reference__microephys": "optional",
             "sampling_frequency": "optional",
             "software_filter_types": "optional",
             "status": "optional",
@@ -19775,7 +21233,7 @@
           ],
           "initial_columns": [
             "name__channels",
-            "reference__microephys",
+            "electrode_name",
             "type__channels",
             "units",
             "sampling_frequency"
@@ -19798,7 +21256,10 @@
             "material": "optional",
             "name__electrodes": "required",
             "pipette_solution": "optional",
-            "probe_name": "required",
+            "probe_name": {
+              "description_addendum": "The value MUST match a `probe_name` entry in the corresponding `*_probes.tsv` file,\nlinking this electrode to its associated probe.\nFor electrodes not associated with a probe, use `n/a`.\n",
+              "level": "required"
+            },
             "shank_id": "optional",
             "size__microephys": "optional",
             "x": {
