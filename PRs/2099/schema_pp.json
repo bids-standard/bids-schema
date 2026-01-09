@@ -8003,9 +8003,9 @@
         "name": "PromptRate",
         "type": "array"
       },
-      "ProvEntities": {
+      "ProvEntity": {
         "description": "Objects describing prov:Entity objects other than files or datasets.",
-        "display_name": "prov:Entities",
+        "display_name": "prov:Entity",
         "items": {
           "properties": {
             "Digest": {
@@ -8073,7 +8073,7 @@
           "type": "object"
         },
         "minItems": 1,
-        "name": "prov:Entities",
+        "name": "prov:Entity",
         "type": "array"
       },
       "PulseDuration": {
@@ -18080,7 +18080,7 @@
             "datatype == \"prov\"",
             "suffix == \"ent\"",
             "!(\"Files\" in json)",
-            "!(\"Entities\" in json)"
+            "!(\"prov:Entity\" in json)"
           ]
         },
         "EnvironmentsProvenanceFile": {
@@ -18100,12 +18100,12 @@
             "datatype == \"prov\"",
             "suffix == \"ent\"",
             "!(\"Datasets\" in json)",
-            "!(\"Entities\" in json)"
+            "!(\"prov:Entity\" in json)"
           ]
         },
-        "ProvEntitiesProvenanceFile": {
+        "ProvEntityProvenanceFile": {
           "fields": {
-            "ProvEntities": "required"
+            "ProvEntity": "required"
           },
           "selectors": [
             "datatype == \"prov\"",
