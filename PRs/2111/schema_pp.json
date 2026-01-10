@@ -7365,7 +7365,7 @@
             "type": "array"
           }
         ],
-        "description": "Dose amount of pharmaceutical coadministered with tracer.\n",
+        "description": "Dose amount of administered pharmaceutical.\n",
         "display_name": "Pharmaceutical Dose Amount",
         "name": "PharmaceuticalDoseAmount"
       },
@@ -7401,7 +7401,7 @@
         "type": "string"
       },
       "PharmaceuticalName": {
-        "description": "Name of pharmaceutical coadministered with tracer.\n",
+        "description": "Name of pharmaceutical.\n",
         "display_name": "Pharmaceutical Name",
         "name": "PharmaceuticalName",
         "type": "string"
@@ -19617,17 +19617,17 @@
           "fields": {
             "Anaesthesia": "optional",
             "PharmaceuticalDoseAmount": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 0028](https://dicomlookup.com/dicomtags/(0008,0028)) `Intervention Drug Dose`.\n",
+              "description_addendum": "For pharmaceutical co-administered with tracer.\nCorresponds to [DICOM Tag 0018, 0028](https://dicomlookup.com/dicomtags/(0018,0028)) `Intervention Drug Dose`.\n",
               "level": "recommended"
             },
             "PharmaceuticalDoseRegimen": "recommended",
             "PharmaceuticalDoseTime": {
-              "description_addendum": "Corresponds to a combination of DICOM Tags (0008,0027) `Intervention Drug Stop Time`\nand (0008,0035) `Intervention Drug Start Time`.\n",
+              "description_addendum": "Corresponds to a combination of DICOM Tags\n[0018, 0027](https://dicomlookup.com/dicomtags/(0018,0027)) `Intervention Drug Stop Time` and\n[0018, 0035](https://dicomlookup.com/dicomtags/(0018,0035)) `Intervention Drug Start Time`.\n",
               "level": "recommended"
             },
             "PharmaceuticalDoseUnits": "recommended",
             "PharmaceuticalName": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 0034](https://dicomlookup.com/dicomtags/(0008,0034)) `Intervention Drug Name`.\n",
+              "description_addendum": "For pharmaceutical co-administered with tracer.\nCorresponds to [DICOM Tag 0018, 0034](https://dicomlookup.com/dicomtags/(0018,0034)) `Intervention Drug Name`.\n",
               "level": "recommended"
             }
           },
