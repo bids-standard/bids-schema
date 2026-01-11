@@ -9494,10 +9494,20 @@
         "display_name": "Audio Recording",
         "value": "audio"
       },
+      "audiovideo": {
+        "description": "Combined audio and video recording of a behaving subject.\nThis suffix is used for files that contain both audio and video streams.\n",
+        "display_name": "Audio-Video Recording",
+        "value": "audiovideo"
+      },
       "beh": {
         "description": "Behavioral recordings from tasks.\nThese files are similar to events files, but do not include the `\"onset\"` and\n`\"duration\"` columns that are mandatory for events files.\n",
         "display_name": "Behavioral recording",
         "value": "beh"
+      },
+      "behimage": {
+        "description": "Still image captured during behavioral experiments.\nThis may include training frames for pose estimation, snapshots of behavioral setups,\nor individual frames extracted from video recordings.\n",
+        "display_name": "Behavioral Image",
+        "value": "image"
       },
       "blood": {
         "description": "Blood measurements of radioactivity stored in\n[tabular files](SPEC_ROOT/common-principles.md#tabular-files)\nand located in the `pet/` directory along with the corresponding PET data.\n",
@@ -15552,6 +15562,50 @@
               "audio"
             ]
           },
+          "audiovideo": {
+            "datatypes": [
+              "beh"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "recording": "optional",
+              "run": "optional",
+              "session": "optional",
+              "split": "optional",
+              "subject": "required",
+              "task": "optional"
+            },
+            "extensions": [
+              ".mp4",
+              ".mkv",
+              ".avi",
+              ".json"
+            ],
+            "suffixes": [
+              "audiovideo"
+            ]
+          },
+          "image": {
+            "datatypes": [
+              "beh"
+            ],
+            "entities": {
+              "acquisition": "optional",
+              "recording": "optional",
+              "run": "optional",
+              "session": "optional",
+              "subject": "required",
+              "task": "optional"
+            },
+            "extensions": [
+              ".jpg",
+              ".png",
+              ".json"
+            ],
+            "suffixes": [
+              "behimage"
+            ]
+          },
           "noncontinuous": {
             "datatypes": [
               "beh"
@@ -17779,30 +17833,35 @@
         }
       },
       "beh": {
-        "AudioVideoDevice": {
-          "fields": {
-            "Device": "optional",
-            "DeviceSerialNumber": "optional"
-          },
-          "selectors": [
-            "datatype == \"beh\"",
-            "intersects([suffix], [\"audio\", \"video\"])"
-          ]
-        },
-        "AudioVideoStreams": {
+        "AudioStreams": {
           "fields": {
             "AudioBitDepth": "optional",
             "AudioChannelCount": "optional",
-            "AudioSampleRate": "optional",
-            "CameraPosition": "optional",
-            "Duration": "optional",
-            "FrameRate": "optional",
-            "Height": "optional",
-            "Width": "optional"
+            "AudioSampleRate": "optional"
           },
           "selectors": [
             "datatype == \"beh\"",
-            "intersects([suffix], [\"audio\", \"video\"])"
+            "intersects([suffix], [\"audio\", \"audiovideo\"])"
+          ]
+        },
+        "AudioVideoDuration": {
+          "fields": {
+            "Duration": "optional"
+          },
+          "selectors": [
+            "datatype == \"beh\"",
+            "intersects([suffix], [\"audio\", \"video\", \"audiovideo\"])"
+          ]
+        },
+        "AudioVideoImageDevice": {
+          "fields": {
+            "Device": "optional",
+            "DeviceSerialNumber": "optional",
+            "License": "optional"
+          },
+          "selectors": [
+            "datatype == \"beh\"",
+            "intersects([suffix], [\"audio\", \"video\", \"audiovideo\", \"behimage\"])"
           ]
         },
         "BEHInstitutionInformation": {
@@ -17827,6 +17886,29 @@
           "selectors": [
             "datatype == \"beh\"",
             "intersects([suffix], [\"beh\", \"events\"])"
+          ]
+        },
+        "ImageProperties": {
+          "fields": {
+            "CameraPosition": "optional",
+            "Height": "optional",
+            "Width": "optional"
+          },
+          "selectors": [
+            "datatype == \"beh\"",
+            "suffix == \"behimage\""
+          ]
+        },
+        "VideoStreams": {
+          "fields": {
+            "CameraPosition": "optional",
+            "FrameRate": "optional",
+            "Height": "optional",
+            "Width": "optional"
+          },
+          "selectors": [
+            "datatype == \"beh\"",
+            "intersects([suffix], [\"video\", \"audiovideo\"])"
           ]
         }
       },
