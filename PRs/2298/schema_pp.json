@@ -7401,7 +7401,7 @@
         "type": "string"
       },
       "PharmaceuticalName": {
-        "description": "Name of administered pharmaceutical.\nNote that this is distinct from any radiotracer or contrast agent used in the scan protocol.\nCorresponds to [DICOM Tag 0018, 0034](https://dicomlookup.com/dicomtags/(0018,0034)) `Intervention Drug Name`.\n",
+        "description": "Name of administered pharmaceutical.\nNote that this is distinct from any radiotracer or contrast agent used in the scan protocol.\nThis partly matches [DICOM Tag 0018, 0034](https://dicomlookup.com/dicomtags/(0018,0034)) `Intervention Drug Name`.\n",
         "display_name": "Pharmaceutical Name",
         "name": "PharmaceuticalName",
         "type": "string"
@@ -8678,7 +8678,7 @@
         "type": "string"
       },
       "TracerName": {
-        "description": "Name of the tracer compound used (for example, `\"CIMBI-36\"`)\nCorresponds to DICOM Tags (0008,0105) `Mapping Resource` and\n(0008,0122) `Mapping Resource Name`.\n",
+        "description": "Name of the tracer compound used (for example, `\"CIMBI-36\"`)\nCorresponds to [DICOM Tag 0054, 0300](https://dicomlookup.com/dicomtags/(0054,0300)) `Radionuclide Code Sequence`,\nextracted from the fields [0008, 0122](https://dicomlookup.com/dicomtags/(0008,0122)) `Mapping Resource Name`\nand/or [0008, 0105](https://dicomlookup.com/dicomtags/(0008,0105)) `Mapping Resource`.\n",
         "display_name": "Tracer Name",
         "name": "TracerName",
         "type": "string"
@@ -8690,7 +8690,7 @@
         "type": "string"
       },
       "TracerRadionuclide": {
-        "description": "Radioisotope labeling tracer (for example, `\"C11\"`).\nCorresponds to DICOM Tags (0008,0104) `CodeValue` and (0008,0104) `CodeMeaning`.\n",
+        "description": "Radioisotope labeling tracer (for example, `\"C11\"`).\nCorresponds to [DICOM Tag 0054, 0300](https://dicomlookup.com/dicomtags/(0054,0300)) `Radionuclide Code Sequence`,\nextracted from the fields [0008, 0100](https://dicomlookup.com/dicomtags/(0008,0100)) `Code Value`\nand/or [0008, 0104](https://dicomlookup.com/dicomtags/(0008,0104)) `Code Meaning`.\n",
         "display_name": "Tracer Radionuclide",
         "name": "TracerRadionuclide",
         "type": "string"
@@ -19659,13 +19659,9 @@
             "SpecificRadioactivityUnits": "required",
             "TracerMolecularWeight": "recommended",
             "TracerMolecularWeightUnits": "recommended",
-            "TracerName": {
-              "level": "required"
-            },
+            "TracerName": "required",
             "TracerRadLex": "recommended",
-            "TracerRadionuclide": {
-              "level": "required"
-            },
+            "TracerRadionuclide": "required",
             "TracerSNOMED": "recommended"
           },
           "selectors": [
