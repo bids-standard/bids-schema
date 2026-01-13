@@ -9504,11 +9504,6 @@
         "display_name": "Behavioral recording",
         "value": "beh"
       },
-      "behimage": {
-        "description": "Still image captured during behavioral experiments.\nThis may include training frames for pose estimation, snapshots of behavioral setups,\nor individual frames extracted from video recordings.\n",
-        "display_name": "Behavioral Image",
-        "value": "image"
-      },
       "blood": {
         "description": "Blood measurements of radioactivity stored in\n[tabular files](SPEC_ROOT/common-principles.md#tabular-files)\nand located in the `pet/` directory along with the corresponding PET data.\n",
         "display_name": "Blood recording data",
@@ -9608,6 +9603,11 @@
         "description": "Intracranial electroencephalography recording data.\n",
         "display_name": "Intracranial Electroencephalography",
         "value": "ieeg"
+      },
+      "image": {
+        "description": "Still image captured during behavioral experiments.\nThis may include training frames for pose estimation, snapshots of behavioral setups,\nor individual frames extracted from video recordings.\n",
+        "display_name": "Behavioral Image",
+        "value": "image"
       },
       "inplaneT1": {
         "description": "In arbitrary units (arbitrary).\nT1 weighted structural image matched to a functional (task) image.\n",
@@ -15603,7 +15603,7 @@
               ".json"
             ],
             "suffixes": [
-              "behimage"
+              "image"
             ]
           },
           "noncontinuous": {
