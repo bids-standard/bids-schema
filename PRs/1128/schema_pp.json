@@ -5869,21 +5869,6 @@
         "name": "EthicsApprovals",
         "type": "array"
       },
-      "EventIdentifier": {
-        "description": "The message sent to the eye-tracker which disambiguates the belonging\nof the sample to a certain event, condition or group.\nThis can be a unique trial identifier, or in the case of\ncontinuous presentation (for example video) the annotated event of interest.\n",
-        "display_name": "Event Identifier",
-        "name": "EventIdentifier",
-        "type": "string"
-      },
-      "EyeCameraSettings": {
-        "description": "A field to store any settings that influence the resolution\nand quality of the eye imagery.\nFor example, `{\"Autowhitebalance\": true}`.\n",
-        "display_name": "Eye Camera Settings",
-        "items": {
-          "type": "object"
-        },
-        "name": "EyeCameraSettings",
-        "type": "object"
-      },
       "EyeTrackerDistance": {
         "anyOf": [
           {
@@ -5909,15 +5894,6 @@
         "display_name": "Eye-Tracking Method",
         "name": "EyeTrackingMethod",
         "type": "string"
-      },
-      "FeatureDetectionSettings": {
-        "description": "Description of feature detection settings.\nFor example, minimum/maximum pupil size.\n",
-        "display_name": "Feature Detection Settings",
-        "items": {
-          "type": "object"
-        },
-        "name": "FeatureDetectionSettings",
-        "type": "object"
       },
       "FiducialsCoordinateSystem": {
         "description": "Defines the coordinate system for the fiducials.\nPreferably the same as the `\"EEGCoordinateSystem\"`.\nSee the\n[Coordinate Systems Appendix](SPEC_ROOT/appendices/coordinate-systems.md)\nfor a list of restricted keywords for coordinate systems.\nIf `\"Other\"`, provide definition of the coordinate system in\n`\"FiducialsCoordinateSystemDescription\"`.\n",
@@ -6127,15 +6103,6 @@
         "name": "Gain",
         "type": "number",
         "unit": "arbitrary"
-      },
-      "GazeMappingSettings": {
-        "description": "Description of gaze-mapping settings.\nFor example, threshold on pupil confidence required for gaze mapping.\n",
-        "display_name": "Gaze Mapping Settings",
-        "items": {
-          "type": "object"
-        },
-        "name": "GazeMappingSettings",
-        "type": "object"
       },
       "GeneratedBy": {
         "description": "Used to specify provenance of the dataset.\n",
@@ -8293,15 +8260,6 @@
         "name": "ScatterFraction",
         "type": "array"
       },
-      "ScreenAOIDefinition": {
-        "description": "A description of the shape of the Screen AOIs and what coordinates are used.\n`[\"square\", [\"x_start\", \"x_stop\", \"y_start\", \"y_stop\"]]`\nOther options:\n`\"custom\"/\"circle\"/\"triangle\", [[\"x\", \"y\"], [\"x\", \"y\"], [\"x\", \"y\"], and so on.]`\n",
-        "display_name": "Definition of the eye-tracking Screen Area of Interest",
-        "items": {
-          "type": "object"
-        },
-        "name": "ScreenAOIDefinition",
-        "type": "object"
-      },
       "ScreenDistance": {
         "anyOf": [
           {
@@ -8885,12 +8843,6 @@
           "HeadStabilization"
         ],
         "type": "object"
-      },
-      "StopTime_eyetrack": {
-        "description": "Eye-tracking timestamp corresponding to the offset (stop) of the run.\n",
-        "display_name": "Eye-tracking recording stop time",
-        "name": "StopTime",
-        "type": "number"
       },
       "SubjectArtefactDescription": {
         "description": "Freeform description of the observed subject artifact and its possible cause\n(for example, `\"Vagus Nerve Stimulator\"`, `\"non-removable implant\"`).\nIf this field is set to `\"n/a\"`, it will be interpreted as absence of major\nsource of artifacts except cardiac and blinks.\n",
@@ -18028,17 +17980,13 @@
             "CalibrationPosition": "recommended",
             "CalibrationType": "recommended",
             "CalibrationUnit": "recommended",
-            "EyeCameraSettings": "recommended",
             "EyeTrackerDistance": "recommended",
             "EyeTrackingMethod": "recommended",
-            "FeatureDetectionSettings": "recommended",
-            "GazeMappingSettings": "recommended",
             "MaximalCalibrationError": "recommended",
             "PupilFitMethod": "recommended",
             "RawDataFilters": "recommended",
             "RecordedEye": "required",
-            "SampleCoordinateSystem": "required",
-            "ScreenAOIDefinition": "recommended"
+            "SampleCoordinateSystem": "required"
           },
           "selectors": [
             "suffix == \"physio\"",
