@@ -4463,6 +4463,11 @@
               "description": "Command (or commands) performed by the activity, including all parameters.\n\nSet to `null` to describe that the activity was performed manually.\n",
               "name": "Command"
             },
+            "Description": {
+              "description": "Plain-text description of the activity.\n\nRECOMMENDED if `Command` is set to `null`.\n",
+              "name": "Description",
+              "type": "string"
+            },
             "EndedAtTime": {
               "description": "Timestamp tracking when the activity ended.",
               "format": "date",
