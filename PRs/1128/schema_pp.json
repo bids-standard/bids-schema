@@ -17975,16 +17975,16 @@
         },
         "EyeTrack": {
           "fields": {
-            "AverageCalibrationError": "recommended",
-            "CalibrationCount": "recommended",
-            "CalibrationPosition": "recommended",
-            "CalibrationType": "recommended",
-            "CalibrationUnit": "recommended",
-            "EyeTrackerDistance": "recommended",
-            "EyeTrackingMethod": "recommended",
-            "MaximalCalibrationError": "recommended",
-            "PupilFitMethod": "recommended",
-            "RawDataFilters": "recommended",
+            "AverageCalibrationError": "optional",
+            "CalibrationCount": "optional",
+            "CalibrationPosition": "optional",
+            "CalibrationType": "optional",
+            "CalibrationUnit": "optional",
+            "EyeTrackerDistance": "optional",
+            "EyeTrackingMethod": "optional",
+            "MaximalCalibrationError": "optional",
+            "PupilFitMethod": "optional",
+            "RawDataFilters": "optional",
             "RecordedEye": "required",
             "SampleCoordinateSystem": "required"
           },
@@ -18005,10 +18005,10 @@
         },
         "PhysioHardware": {
           "fields": {
-            "DeviceSerialNumber": "recommended",
-            "Manufacturer": "recommended",
-            "ManufacturersModelName": "recommended",
-            "SoftwareVersions": "recommended"
+            "DeviceSerialNumber": "optional",
+            "Manufacturer": "optional",
+            "ManufacturersModelName": "optional",
+            "SoftwareVersions": "optional"
           },
           "selectors": [
             "suffix == \"physio\""
