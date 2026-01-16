@@ -8793,10 +8793,22 @@
               "type": "string"
             },
             "AltIdentifier": {
-              "description": "URI of an alternative identifier (such as [RRID](https://rrid.site/)) for the software package.",
-              "format": "uri",
-              "name": "AltIdentifier",
-              "type": "string"
+              "anyOf": [
+                {
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              ],
+              "description": "URI(s) of (an) alternative identifier(s) (such as [RRID](https://rrid.site/))\nfor the software package.\n",
+              "name": "AltIdentifier"
             },
             "Id": {
               "description": "Identifier for the software package (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
