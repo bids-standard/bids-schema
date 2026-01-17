@@ -1,9 +1,0 @@
-{
-  "bep_number": "20",
-  "title": "Eye Tracking including Gaze Position and Pupil Size",
-  "pr_number": 1128,
-  "pull_request": "https://github.com/bids-standard/bids-specification/pull/1128",
-  "google_doc": "",
-  "status": "review",
-  "authors_count": 12
-}
