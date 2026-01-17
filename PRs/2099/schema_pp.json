@@ -145,6 +145,16 @@
           ],
           "suffix": "magnitude1"
         }
+      },
+      "physio": {
+        "inherit": false,
+        "selectors": [
+          "extension != '.json'"
+        ],
+        "target": {
+          "extension": ".tsv.gz",
+          "suffix": "physio"
+        }
       }
     },
     "context": {
@@ -360,6 +370,10 @@
                 "path": {
                   "description": "Path to associated events file",
                   "type": "string"
+                },
+                "sidecar": {
+                  "description": "Sidecar metadata constructed via the inheritance principle",
+                  "type": "object"
                 }
               },
               "required": [
@@ -402,6 +416,23 @@
                 "path": {
                   "description": "Path to associated magnitude1 file",
                   "type": "string"
+                }
+              },
+              "required": [
+                "path"
+              ],
+              "type": "object"
+            },
+            "physio": {
+              "description": "Physiological recording file",
+              "properties": {
+                "path": {
+                  "description": "Path to associated physio file",
+                  "type": "string"
+                },
+                "sidecar": {
+                  "description": "Sidecar metadata constructed via the inheritance principle",
+                  "type": "object"
                 }
               },
               "required": [
@@ -1689,6 +1720,12 @@
         "name": "material",
         "type": "string"
       },
+      "message": {
+        "description": "Brief free-text description of a message (for example in a log generated\nby a device), or other information of interest.\n",
+        "display_name": "Message",
+        "name": "message",
+        "type": "string"
+      },
       "metabolite_parent_fraction": {
         "description": "Parent fraction of the radiotracer (0-1).\n",
         "display_name": "Metabolite parent fraction",
@@ -1742,6 +1779,12 @@
         "type": "number",
         "unit": "s"
       },
+      "onset__physioevents": {
+        "description": "Onset of the event relative to the timeline defined by the corresponding\nphysiological recording file.\n\nTypically, it will correspond to a timestamp issued by the recording device.\n",
+        "display_name": "Onset of events in physiological recordings",
+        "name": "onset",
+        "type": "number"
+      },
       "participant_id": {
         "description": "A participant identifier of the form `sub-<label>`,\nmatching a participant entity found in the dataset.\n",
         "display_name": "Participant ID",
@@ -1786,12 +1829,18 @@
         "name": "plasma_radioactivity",
         "type": "number"
       },
-      "provenance_label": {
+      "provenance_id": {
         "description": "An identifier of the form `prov-<label>`,\nmatching a `prov` entity found in the dataset.\n",
-        "display_name": "Provenance label",
-        "name": "provenance_label",
+        "display_name": "Provenance ID",
+        "name": "provenance_id",
         "pattern": "^prov-[0-9a-zA-Z+]+$",
         "type": "string"
+      },
+      "pupil_size": {
+        "description": "Pupil size, as area or diameter, of the recorded eye, in the\nunits specified in the corresponding metadata sidecar.\nIt is RECOMMENDED to indicate the particular type of pupil size that is\nbeing recorded in the `Description` field of this column.\nIt is RECOMMENDED to specify the `Units` field corresponding to this column.\n",
+        "display_name": "Pupil size",
+        "name": "pupil_size",
+        "type": "number"
       },
       "reference__eeg": {
         "description": "Name of the reference electrode(s).\nThis column is not needed when it is common to all channels.\nIn that case the reference electrode(s) can be specified in `*_eeg.json` as `EEGReference`).\n",
@@ -2015,6 +2064,12 @@
         "type": "number",
         "unit": "s"
       },
+      "timestamp__eyetrack": {
+        "description": "Timestamp issued by the eye-tracker indexing the continuous recordings corresponding to\nthe sampled eye.\n",
+        "display_name": "Eye-tracking recording timestamp",
+        "name": "timestamp",
+        "type": "number"
+      },
       "tracked_point__channels": {
         "description": "Label of the point that is being tracked, for example, label of a tracker\nor a marker (for example,`\"LeftFoot\"`, `\"RightWrist\"`).\n",
         "display_name": "Tracked point channel",
@@ -2180,6 +2235,12 @@
         "name": "x",
         "type": "number"
       },
+      "x_coordinate": {
+        "description": "Gaze position x-coordinate of the recorded eye, in the coordinate\nunits specified in the corresponding metadata sidecar.\n",
+        "display_name": "Gaze x-coordinate",
+        "name": "x_coordinate",
+        "type": "number"
+      },
       "y": {
         "description": "Recorded position along the y-axis.\n",
         "display_name": "Y position",
@@ -2190,6 +2251,12 @@
         "description": "Recorded position along the y-axis.\n`\"n/a\"` if not available.\n",
         "display_name": "Y position",
         "name": "y",
+        "type": "number"
+      },
+      "y_coordinate": {
+        "description": "Gaze position y-coordinate of the recorded eye, in the coordinate\nunits specified in the corresponding metadata sidecar.\n",
+        "display_name": "Gaze y-coordinate",
+        "name": "y_coordinate",
         "type": "number"
       },
       "z": {
@@ -3274,6 +3341,16 @@
           "fnirs"
         ],
         "value": "PUPIL"
+      },
+      "PhysioTypeEyetrack": {
+        "description": "A specific physiological recording type: eye-tracking.\n",
+        "display_name": "Eye-tracking recording",
+        "value": "eyetrack"
+      },
+      "PhysioTypeGeneric": {
+        "description": "Unspecified physiological recording.\n",
+        "display_name": "Generic Physiological Recording",
+        "value": "generic"
       },
       "Pixels": {
         "description": "If electrodes are localized in 2D space (only x and y are\nspecified and z is n/a), then the positions in this file must correspond to\nthe locations expressed in pixels on the photo/drawing/rendering of the\nelectrodes on the brain. In this case, coordinates must be (row,column)\npairs, with (0,0) corresponding to the upper left pixel and (N,0)\ncorresponding to the lower left pixel.\n",
@@ -4770,6 +4847,13 @@
         "name": "Authors",
         "type": "array"
       },
+      "AverageCalibrationError": {
+        "description": "Average calibration error in degrees of visual angle.\n",
+        "display_name": "Average Calibration Error",
+        "name": "AverageCalibrationError",
+        "type": "number",
+        "unit": "degree"
+      },
       "B0FieldIdentifier": {
         "anyOf": [
           {
@@ -4934,6 +5018,44 @@
           "double-coil"
         ],
         "name": "CASLType",
+        "type": "string"
+      },
+      "CalibrationCount": {
+        "description": "The number of calibrations corresponding to this run.\n",
+        "display_name": "Calibration Count",
+        "minimum": 0,
+        "name": "CalibrationCount",
+        "type": "integer"
+      },
+      "CalibrationPosition": {
+        "description": "A list of `[x, y]` coordinates in the `CalibrationUnit`.\nFor example, using 5 positions calibration presented on an HD screen,\nit could be `[[960,50],[960,540],[960,1030],[50,540],[1870,540]]`.\n",
+        "display_name": "Calibration Position",
+        "items": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "name": "CalibrationPosition",
+        "type": "array"
+      },
+      "CalibrationType": {
+        "description": "The type of the calibration procedure executed last.\nFor example the `\"H3\"` for horizontal calibration with 3 positions\nor `\"HV9\"` for horizontal and vertical calibration with 9 positions,\nor one point calibration.\n",
+        "display_name": "Calibration Type",
+        "name": "CalibrationType",
+        "type": "string"
+      },
+      "CalibrationUnit": {
+        "description": "Unit of `\"CalibrationPosition\"`.\n",
+        "display_name": "Calibration Unit",
+        "enum": [
+          "pixel",
+          "mm",
+          "cm"
+        ],
+        "name": "CalibrationUnit",
         "type": "string"
       },
       "CapManufacturer": {
@@ -6022,6 +6144,32 @@
         },
         "name": "EthicsApprovals",
         "type": "array"
+      },
+      "EyeTrackerDistance": {
+        "anyOf": [
+          {
+            "type": "number",
+            "unit": "m"
+          },
+          {
+            "items": {
+              "type": "number",
+              "unit": "m"
+            },
+            "maxItems": 3,
+            "minItems": 3,
+            "type": "array"
+          }
+        ],
+        "description": "Distance (in meters) between the eye-tracker and the participant eye(s).\nDistance can either be expressed as a single numeric value indicating the shortest distance\nbetween the participant's eye and the eye-tracker's camera, or a three-coordinates array\nindicating the X, Y, Z distances between the participant's eye and the eye-tracker's\ncamera.\n",
+        "display_name": "Eye-Tracker Distance",
+        "name": "EyeTrackerDistance"
+      },
+      "EyeTrackingMethod": {
+        "description": "Method used to track gaze or pupil position:\n\"P\u2013CR\" for video based eye-tracking using pupil and corneal reflection;\n\"DPI\" for Dual-Purkinje Imaging system, \"SSC\" for scleral search coils;\n\"EOG\" for electro-oculogram; \"Limbus\" for trackers estimating limbus borders\nbetween the iris and sclera; or other.\n",
+        "display_name": "Eye-Tracking Method",
+        "name": "EyeTrackingMethod",
+        "type": "string"
       },
       "FiducialsCoordinateSystem": {
         "description": "Defines the coordinate system for the fiducials.\nPreferably the same as the `\"EEGCoordinateSystem\"`.\nSee the\n[Coordinate Systems Appendix](SPEC_ROOT/appendices/coordinate-systems.md)\nfor a list of restricted keywords for coordinate systems.\nIf `\"Other\"`, provide definition of the coordinate system in\n`\"FiducialsCoordinateSystemDescription\"`.\n",
@@ -7438,6 +7586,13 @@
         "type": "number",
         "unit": "mm"
       },
+      "MaximalCalibrationError": {
+        "description": "Maximal calibration error in degrees of visual angle.\n",
+        "display_name": "Maximal Calibration Error",
+        "name": "MaximalCalibrationError",
+        "type": "number",
+        "unit": "degree"
+      },
       "Maximum": {
         "description": "Maximum value a column entry is permitted to have.\n",
         "display_name": "Maximum value",
@@ -7761,6 +7916,12 @@
         "name": "ORNTChannelCount",
         "type": "integer"
       },
+      "OnsetSource": {
+        "description": "An existing column name in an corresponding recoding data TSV file that\nindexes or is correspondent to the `\"onset\"` column of the present TSV file.\nFor example, `\"timestamp\"` column.\n",
+        "display_name": "Column Name of the Onset Source",
+        "name": "OnsetSource",
+        "type": "string"
+      },
       "OperatingSystem": {
         "description": "Operating system used to run the stimuli presentation software\n(for formatting recommendations, see examples below this table).\n",
         "display_name": "Operating System",
@@ -7909,6 +8070,16 @@
         "description": "Description of the photo.\n",
         "display_name": "Photo Description",
         "name": "PhotoDescription",
+        "type": "string"
+      },
+      "PhysioType": {
+        "description": "Defines the specific type of physiological recording.\nFor backwards compatibility, the default value is `\"generic\"`.\n",
+        "display_name": "Physiological Recording Type",
+        "enum": [
+          "generic",
+          "eyetrack"
+        ],
+        "name": "PhysioType",
         "type": "string"
       },
       "PixelSize": {
@@ -8119,6 +8290,12 @@
         "name": "PulseSequenceType",
         "type": "string"
       },
+      "PupilFitMethod": {
+        "description": "The method employed for fitting the pupil, for example\n`\"centre-of-mass\"` or `\"ellipse\"`.\nIf `\"centre-of-mass\"` or `\"ellipse\"` method is used, it is RECOMMENDED to\nuse these exact labels.\n",
+        "display_name": "Pupil Fit Method",
+        "name": "PupilFitMethod",
+        "type": "string"
+      },
       "Purity": {
         "description": "Purity of the radiolabeled compound (between 0 and 100%).\n",
         "display_name": "Purity",
@@ -8142,6 +8319,12 @@
         },
         "name": "RandomRate",
         "type": "array"
+      },
+      "RawDataFilters": {
+        "description": "Filter settings applied to eye-movement raw data.\n",
+        "display_name": "Raw Data Filters",
+        "name": "RawDataFilters",
+        "type": "string"
       },
       "RawSources": {
         "description": "A list of paths relative to dataset root pointing to the BIDS-Raw file(s)\nthat were used in the creation of this derivative.\nThis field is DEPRECATED, and this metadata SHOULD be recorded in the\n`Sources` field using [BIDS URIs](SPEC_ROOT/common-principles.md#bids-uri)\nto distinguish sources from different datasets.\n",
@@ -8256,6 +8439,17 @@
         },
         "name": "ReconMethodParameterValues",
         "type": "array"
+      },
+      "RecordedEye": {
+        "description": "Indicates the eye being tracked, for example, `\"left\"` or `\"right\"`.\nIt SHOULD be set to `\"cyclopean\"` for recordings combining both eyes\nas potentially generated by binocular eye-trackers.\n",
+        "display_name": "Recorded Eye",
+        "enum": [
+          "left",
+          "right",
+          "cyclopean"
+        ],
+        "name": "RecordedEye",
+        "type": "string"
       },
       "RecordingDuration": {
         "description": "Length of the recording in seconds (for example, `3600`).\n",
@@ -8404,6 +8598,18 @@
         "minimum": 0,
         "name": "SEEGChannelCount",
         "type": "integer"
+      },
+      "SampleCoordinateSystem": {
+        "description": "Coordinate system of the gaze position recordings.\nGenerally eye-trackers are set to use `\"gaze-on-screen\"` coordinate system, but you may use\n`\"eye-in-head\"` or `\"gaze-in-world\"`.\nIf none of the three default options properly describe the coordinate system, the\n`\"custom\"` keyword MUST be employed and the coordinate system MUST be described\nusing additional metadata entries.\n",
+        "display_name": "Coordinate System of the Gaze Position",
+        "enum": [
+          "gaze-on-screen",
+          "eye-in-head",
+          "gaze-in-world",
+          "custom"
+        ],
+        "name": "SampleCoordinateSystem",
+        "type": "string"
       },
       "SampleEmbedding": {
         "description": "Description of the tissue sample embedding (for example: `\"Epoxy resin\"`).\n",
@@ -8619,15 +8825,41 @@
             "unit": "m"
           },
           {
+            "items": {
+              "type": "number"
+            },
+            "maxItems": 3,
+            "minItems": 3,
+            "type": "array"
+          },
+          {
             "enum": [
               "n/a"
             ],
             "type": "string"
           }
         ],
-        "description": "Distance between the participant's eye and the screen. If no screen was used, use `n/a`.\n",
+        "description": "Distance between the participant's eye and the screen. If no screen was used, use `n/a`.\nDistance can either be expressed as a single numeric value indicating the shortest distance between\nthe participant's eye and the screen, or a three-coordinates array indicating the X, Y, Z distances\nbetween the participant's eye and the center of the screen.\n",
         "display_name": "Screen Distance",
         "name": "ScreenDistance"
+      },
+      "ScreenOrigin": {
+        "description": "Location of the spatial coordinates' origin for the visual stimuli presentation,\ndescribed by a list of two keywords such as (\"top\", \"left\") if the coordinates\nrefer to the top-left corner of the screen, or (\"center\", \"center\") if the position\n(0, 0) is at the center or the screen's extent.\n",
+        "display_name": "Screen Coordinate System's Origin",
+        "items": {
+          "enum": [
+            "top",
+            "bottom",
+            "left",
+            "right",
+            "center"
+          ],
+          "type": "string"
+        },
+        "maxItems": 2,
+        "minItems": 2,
+        "name": "ScreenOrigin",
+        "type": "array"
       },
       "ScreenRefreshRate": {
         "description": "Refresh rate of the screen (when used), in Hertz (equivalent to frames per second, \"FPS\").\n",
@@ -8653,7 +8885,7 @@
             "type": "string"
           }
         ],
-        "description": "Screen resolution in pixel\n(for example `[1920, 1200]` for a screen of 1920-width by 1080-height pixels),\nif no screen use `n/a`.\n",
+        "description": "Screen resolution in pixel\n(for example `[1920, 1200]` for a screen of 1920-width by 1080-height pixels),\nif no screen use `n/a`.\n`ScreenResolution` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings with `SampleCoordinateSystem` matching `\"gaze-on-screen\"`.\n",
         "display_name": "Screen Resolution",
         "name": "ScreenResolution"
       },
@@ -8675,7 +8907,7 @@
             "type": "string"
           }
         ],
-        "description": "Screen size in m, excluding potential screen borders\n(for example `[0.472, 0.295]` for a screen of 47.2-width by 29.5-height cm),\nif no screen use `n/a`.\n",
+        "description": "Screen size in m, excluding potential screen borders\n(for example `[0.472, 0.295]` for a screen of 47.2-width by 29.5-height cm),\nif no screen use `n/a`.\n`ScreenSize` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings with `SampleCoordinateSystem` matching `\"gaze-on-screen\"`.\n",
         "display_name": "Screen Size",
         "name": "ScreenSize"
       },
@@ -9126,15 +9358,41 @@
                 "unit": "m"
               },
               {
+                "items": {
+                  "type": "number"
+                },
+                "maxItems": 3,
+                "minItems": 3,
+                "type": "array"
+              },
+              {
                 "enum": [
                   "n/a"
                 ],
                 "type": "string"
               }
             ],
-            "description": "Distance between the participant's eye and the screen. If no screen was used, use `n/a`.\n",
+            "description": "Distance between the participant's eye and the screen. If no screen was used, use `n/a`.\nDistance can either be expressed as a single numeric value indicating the shortest distance between\nthe participant's eye and the screen, or a three-coordinates array indicating the X, Y, Z distances\nbetween the participant's eye and the center of the screen.\n",
             "display_name": "Screen Distance",
             "name": "ScreenDistance"
+          },
+          "ScreenOrigin": {
+            "description": "Location of the spatial coordinates' origin for the visual stimuli presentation,\ndescribed by a list of two keywords such as (\"top\", \"left\") if the coordinates\nrefer to the top-left corner of the screen, or (\"center\", \"center\") if the position\n(0, 0) is at the center or the screen's extent.\n",
+            "display_name": "Screen Coordinate System's Origin",
+            "items": {
+              "enum": [
+                "top",
+                "bottom",
+                "left",
+                "right",
+                "center"
+              ],
+              "type": "string"
+            },
+            "maxItems": 2,
+            "minItems": 2,
+            "name": "ScreenOrigin",
+            "type": "array"
           },
           "ScreenRefreshRate": {
             "description": "Refresh rate of the screen (when used), in Hertz (equivalent to frames per second, \"FPS\").\n",
@@ -9160,7 +9418,7 @@
                 "type": "string"
               }
             ],
-            "description": "Screen resolution in pixel\n(for example `[1920, 1200]` for a screen of 1920-width by 1080-height pixels),\nif no screen use `n/a`.\n",
+            "description": "Screen resolution in pixel\n(for example `[1920, 1200]` for a screen of 1920-width by 1080-height pixels),\nif no screen use `n/a`.\n`ScreenResolution` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings with `SampleCoordinateSystem` matching `\"gaze-on-screen\"`.\n",
             "display_name": "Screen Resolution",
             "name": "ScreenResolution"
           },
@@ -9182,7 +9440,7 @@
                 "type": "string"
               }
             ],
-            "description": "Screen size in m, excluding potential screen borders\n(for example `[0.472, 0.295]` for a screen of 47.2-width by 29.5-height cm),\nif no screen use `n/a`.\n",
+            "description": "Screen size in m, excluding potential screen borders\n(for example `[0.472, 0.295]` for a screen of 47.2-width by 29.5-height cm),\nif no screen use `n/a`.\n`ScreenSize` is REQUIRED when the experiment included simultaneous eye-tracking\nrecordings with `SampleCoordinateSystem` matching `\"gaze-on-screen\"`.\n",
             "display_name": "Screen Size",
             "name": "ScreenSize"
           },
@@ -9209,6 +9467,7 @@
         "recommended": [
           "OperatingSystem",
           "ScreenDistance",
+          "ScreenOrigin",
           "ScreenRefreshRate",
           "ScreenResolution",
           "ScreenSize",
@@ -10295,6 +10554,11 @@
         "display_name": "Physiological recording",
         "value": "physio"
       },
+      "physioevents": {
+        "description": "Event timing information corresponding to physiological recordings and other\nasynchronous data such as messages.\n",
+        "display_name": "Physiological events and asynchronous data",
+        "value": "physioevents"
+      },
       "probseg": {
         "description": "A probabilistic segmentation.\n\nThis suffix may only be used in derivative datasets.\n",
         "display_name": "Probabilistic Segmentation",
@@ -11175,6 +11439,57 @@
           "selectors": [
             "suffix == \"events\"",
             "extension == \".tsv\""
+          ]
+        }
+      },
+      "eyetrack": {
+        "EyetrackingStimulusPresentation": {
+          "checks": [
+            "associations.events.sidecar.StimulusPresentation.ScreenDistance != 'n/a'",
+            "\"ScreenOrigin\" in associations.events.sidecar.StimulusPresentation",
+            "associations.events.sidecar.StimulusPresentation.ScreenResolution != 'n/a'",
+            "associations.events.sidecar.StimulusPresentation.ScreenSize != 'n/a'"
+          ],
+          "issue": {
+            "code": "INCOMPLETE_STIMULUS_PRESENTATION",
+            "level": "error",
+            "message": "`StimulusPresentation` metadata for the events file associated with {path}\n({associations.events.path}) must have `ScreenDistance`, `ScreenOrigin`,\n`ScreenResolution` and `ScreenSize` fields.\n"
+          },
+          "selectors": [
+            "suffix == 'physio'",
+            "extension == '.tsv.gz'",
+            "sidecar.PhysioType == 'eyetrack'",
+            "sidecar.SampleCoordinateSystem == 'gaze-on-screen'"
+          ]
+        },
+        "OnsetSourceConsistency": {
+          "checks": [
+            "intersects([sidecar.OnsetSource], associations.physio.sidecar.Columns)"
+          ],
+          "issue": {
+            "code": "MISSING_ONSET_COLUMN",
+            "level": "error",
+            "message": "The `physioevents.tsv.gz` file declared a `OnsetSource` of {sidecar.OnsetSource}, but no such column was found in {associations.physio.path}.\n"
+          },
+          "selectors": [
+            "suffix == 'physioevents'",
+            "extension == '.tsv.gz'",
+            "sidecar.OnsetSource"
+          ]
+        },
+        "PupilSizeDescription": {
+          "checks": [
+            "match(sidecar.pupil_size.Description, '.*(area|diameter).*')"
+          ],
+          "issue": {
+            "code": "UNKNOWN_PUPIL_SIZE",
+            "level": "warning",
+            "message": "The `pupil_size` description in the JSON sidecar does not clearly indicate whether the size is area or diameter.\n"
+          },
+          "selectors": [
+            "suffix == 'physio'",
+            "sidecar.PhysioType == \"eyetrack\"",
+            "columns.pupil_size"
           ]
         }
       },
@@ -12138,7 +12453,7 @@
       "provenance": {
         "ProvenanceEntityMissing": {
           "checks": [
-            "allequal(\n  sorted(intersects(columns.provenance_label, dataset.subjects.participant_id)),\n  sorted(dataset.subjects.participant_id)\n)\n"
+            "allequal(\n  sorted(intersects(columns.provenance_id, dataset.subjects.participant_id)),\n  sorted(dataset.subjects.participant_id)\n)\n"
           ],
           "issue": {
             "code": "PROVENANCE_ENTITY_MISSING",
@@ -17471,6 +17786,7 @@
             ],
             "suffixes": [
               "physio",
+              "physioevents",
               "stim"
             ]
           },
@@ -17498,6 +17814,7 @@
             ],
             "suffixes": [
               "physio",
+              "physioevents",
               "stim"
             ]
           },
@@ -17522,6 +17839,7 @@
             ],
             "suffixes": [
               "physio",
+              "physioevents",
               "stim"
             ]
           },
@@ -17544,6 +17862,7 @@
             ],
             "suffixes": [
               "physio",
+              "physioevents",
               "stim"
             ]
           },
@@ -17566,6 +17885,7 @@
             ],
             "suffixes": [
               "physio",
+              "physioevents",
               "stim"
             ]
           },
@@ -17589,6 +17909,7 @@
             ],
             "suffixes": [
               "physio",
+              "physioevents",
               "stim"
             ]
           },
@@ -17611,6 +17932,7 @@
             ],
             "suffixes": [
               "physio",
+              "physioevents",
               "stim"
             ]
           }
@@ -18499,15 +18821,61 @@
             "intersects([suffix], [\"physio\", \"stim\"])"
           ]
         },
+        "EyeTrack": {
+          "fields": {
+            "AverageCalibrationError": "optional",
+            "CalibrationCount": "optional",
+            "CalibrationPosition": "optional",
+            "CalibrationType": "optional",
+            "CalibrationUnit": "optional",
+            "EyeTrackerDistance": "optional",
+            "EyeTrackingMethod": "optional",
+            "MaximalCalibrationError": "optional",
+            "PupilFitMethod": "optional",
+            "RawDataFilters": "optional",
+            "RecordedEye": "required",
+            "SampleCoordinateSystem": "required"
+          },
+          "selectors": [
+            "suffix == \"physio\"",
+            "sidecar.PhysioType == \"eyetrack\""
+          ]
+        },
+        "PhysioEvents": {
+          "fields": {
+            "Columns": "required",
+            "Description": "recommended",
+            "OnsetSource": "required"
+          },
+          "selectors": [
+            "suffix == \"physioevents\""
+          ]
+        },
         "PhysioHardware": {
           "fields": {
-            "DeviceSerialNumber": "recommended",
-            "Manufacturer": "recommended",
-            "ManufacturersModelName": "recommended",
-            "SoftwareVersions": "recommended"
+            "DeviceSerialNumber": "optional",
+            "Manufacturer": "optional",
+            "ManufacturersModelName": "optional",
+            "SoftwareVersions": "optional"
           },
           "selectors": [
             "suffix == \"physio\""
+          ]
+        },
+        "PhysioTypeRecommended": {
+          "fields": {
+            "PhysioType": "recommended"
+          },
+          "selectors": [
+            "suffix == \"physio\""
+          ]
+        },
+        "PhysioTypeRequired": {
+          "fields": {
+            "PhysioType": "required"
+          },
+          "selectors": [
+            "false"
           ]
         }
       },
@@ -21154,16 +21522,16 @@
           "additional_columns": "allowed",
           "columns": {
             "description__provenance": "optional",
-            "provenance_label": {
+            "provenance_id": {
               "description_addendum": "There MUST be exactly one row for each `prov-<label>` entity.\n",
               "level": "required"
             }
           },
           "index_columns": [
-            "provenance_label"
+            "provenance_id"
           ],
           "initial_columns": [
-            "provenance_label"
+            "provenance_id"
           ],
           "selectors": [
             "datatype == 'prov'",
@@ -21448,6 +21816,39 @@
           },
           "selectors": [
             "suffix == \"physio\""
+          ]
+        },
+        "PhysioEventsColumns": {
+          "additional_columns": "allowed",
+          "columns": {
+            "duration": "recommended",
+            "message": "optional",
+            "onset__physioevents": "required",
+            "trial_type": "optional"
+          },
+          "initial_columns": [
+            "onset__physioevents"
+          ],
+          "selectors": [
+            "suffix == \"physioevents\""
+          ]
+        },
+        "PhysioEyeTracking": {
+          "additional_columns": "allowed",
+          "columns": {
+            "pupil_size": "optional",
+            "timestamp__eyetrack": "required",
+            "x_coordinate": "required",
+            "y_coordinate": "required"
+          },
+          "initial_columns": [
+            "timestamp__eyetrack",
+            "x_coordinate",
+            "y_coordinate"
+          ],
+          "selectors": [
+            "suffix == \"physio\"",
+            "sidecar.PhysioType == \"eyetrack\""
           ]
         }
       }
