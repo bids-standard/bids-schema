@@ -10414,10 +10414,10 @@
           "issue": {
             "code": "AUTHORS_AND_CITATION_FILE_MUTUALLY_EXCLUSIVE",
             "level": "error",
-            "message": "'CITATION.cff' file found. The \"Authors\" field of 'dataset_description.json'\nmust be removed to avoid inconsistency.\n"
+            "message": "{path} file found. The \"Authors\" field of 'dataset_description.json'\nmust be removed to avoid inconsistency.\n"
           },
           "selectors": [
-            "path == '/CITATION.cff'"
+            "intersects([path], ['/CITATION.cff', '/datacite.yml'])"
           ]
         },
         "SingleSourceCitationFields": {
@@ -10433,6 +10433,19 @@
           },
           "selectors": [
             "path == '/CITATION.cff'"
+          ]
+        },
+        "SingleSourceDataciteFields": {
+          "checks": [
+            "!(\"License\" in dataset.dataset_description)"
+          ],
+          "issue": {
+            "code": "SINGLE_SOURCE_CITATION_FIELDS",
+            "level": "warning",
+            "message": "datacite.yml file found. The \"License\" field of 'dataset_description.json'\nshould be removed to avoid inconsistency.\n"
+          },
+          "selectors": [
+            "path == '/datacite.yml'"
           ]
         },
         "SubjectFolders": {
@@ -11673,10 +11686,25 @@
       "pet": {
         "PETFrameConsistency": {
           "checks": [
-            "length(sidecar.FrameDuration) == nifti_header.dim[4]"
+            "length(sidecar.FrameDuration) == length(sidecar.FrameTimesStart)"
           ],
           "issue": {
             "code": "PET_FRAME_CONSISTENCY",
+            "level": "error",
+            "message": "The number of frames as defined by FrameDuration and FrameTimesStart do not match in the\nassociated '.json' file.\n"
+          },
+          "selectors": [
+            "suffix == 'pet'",
+            "sidecar.FrameDuration",
+            "sidecar.FrameTimesStart"
+          ]
+        },
+        "PETFrameConsistencyFrameDuration": {
+          "checks": [
+            "length(sidecar.FrameDuration) == nifti_header.dim[4]"
+          ],
+          "issue": {
+            "code": "PET_FRAME_CONSISTENCY_FRAME_DURATION",
             "level": "error",
             "message": "The number of frames in this scan does not match the number of frames (as defined by FrameDuration) in the\nassociated '.json' file.\n"
           },
@@ -11684,6 +11712,21 @@
             "suffix == 'pet'",
             "type(nifti_header) != \"null\"",
             "sidecar.FrameDuration"
+          ]
+        },
+        "PETFrameConsistencyFrameTimesStart": {
+          "checks": [
+            "length(sidecar.FrameTimesStart) == nifti_header.dim[4]"
+          ],
+          "issue": {
+            "code": "PET_FRAME_CONSISTENCY_FRAME_TIMES_START",
+            "level": "error",
+            "message": "The number of frames in this scan does not match the number of frames (as defined by FrameTimesStart) in the\nassociated '.json' file.\n"
+          },
+          "selectors": [
+            "suffix == 'pet'",
+            "type(nifti_header) != \"null\"",
+            "sidecar.FrameTimesStart"
           ]
         }
       },
@@ -11913,11 +11956,13 @@
               "message": "The Authors field of dataset_description.json should contain an array of fields -\nwith one author per field. This was triggered because there are no authors, which\nwill make DOI registration from dataset metadata impossible.\n"
             },
             "level": "recommended"
-          }
+          },
+          "License": "recommended"
         },
         "selectors": [
           "path == \"/dataset_description.json\"",
-          "!exists(\"CITATION.cff\", \"dataset\")"
+          "!exists(\"CITATION.cff\", \"dataset\")",
+          "!exists(\"datacite.yml\", \"dataset\")"
         ]
       },
       "dataset_description": {
@@ -11925,17 +11970,25 @@
           "Acknowledgements": "optional",
           "Authors": {
             "level": "optional",
-            "level_addendum": "recommended if no CITATION.cff file is present"
+            "level_addendum": "recommended if neither `CITATION.cff` nor `datacite.yml` is present"
           },
           "BIDSVersion": "required",
           "DatasetDOI": "optional",
+          "DatasetLinks": {
+            "level": "optional",
+            "level_addendum": "required if [BIDS URIs](SPEC_ROOT/common-principles.md#bids-uri) are used"
+          },
           "DatasetType": "recommended",
           "EthicsApprovals": "optional",
           "Funding": "optional",
           "GeneratedBy": "recommended",
+          "HEDVersion": "recommended",
           "HowToAcknowledge": "optional",
           "Keywords": "optional",
-          "License": "recommended",
+          "License": {
+            "level": "optional",
+            "level_addendum": "recommended if neither `CITATION.cff` nor `datacite.yml` is present"
+          },
           "Name": "required",
           "ReferencesAndLinks": "optional",
           "SourceDatasets": "recommended"
