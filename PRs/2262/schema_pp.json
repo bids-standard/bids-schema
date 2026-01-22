@@ -11674,10 +11674,25 @@
       "pet": {
         "PETFrameConsistency": {
           "checks": [
-            "length(sidecar.FrameDuration) == nifti_header.dim[4]"
+            "length(sidecar.FrameDuration) == length(sidecar.FrameTimesStart)"
           ],
           "issue": {
             "code": "PET_FRAME_CONSISTENCY",
+            "level": "error",
+            "message": "The number of frames as defined by FrameDuration and FrameTimesStart do not match in the\nassociated '.json' file.\n"
+          },
+          "selectors": [
+            "suffix == 'pet'",
+            "sidecar.FrameDuration",
+            "sidecar.FrameTimesStart"
+          ]
+        },
+        "PETFrameConsistencyFrameDuration": {
+          "checks": [
+            "length(sidecar.FrameDuration) == nifti_header.dim[4]"
+          ],
+          "issue": {
+            "code": "PET_FRAME_CONSISTENCY_FRAME_DURATION",
             "level": "error",
             "message": "The number of frames in this scan does not match the number of frames (as defined by FrameDuration) in the\nassociated '.json' file.\n"
           },
@@ -11685,6 +11700,21 @@
             "suffix == 'pet'",
             "type(nifti_header) != \"null\"",
             "sidecar.FrameDuration"
+          ]
+        },
+        "PETFrameConsistencyFrameTimesStart": {
+          "checks": [
+            "length(sidecar.FrameTimesStart) == nifti_header.dim[4]"
+          ],
+          "issue": {
+            "code": "PET_FRAME_CONSISTENCY_FRAME_TIMES_START",
+            "level": "error",
+            "message": "The number of frames in this scan does not match the number of frames (as defined by FrameTimesStart) in the\nassociated '.json' file.\n"
+          },
+          "selectors": [
+            "suffix == 'pet'",
+            "type(nifti_header) != \"null\"",
+            "sidecar.FrameTimesStart"
           ]
         }
       },
