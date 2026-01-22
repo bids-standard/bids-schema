@@ -20755,9 +20755,8 @@
               "level_addendum": "required if there are multiple runs within any session"
             },
             "session_id": {
-              "description_addendum": "A `session_id` column MUST be added to all tabular files in the phenotype directory\nas soon as multiple sessions are present in the data set\nregardless of whether those sessions are in the\n`phenotype/` data, `sub-<label>/` data, or a combination of the two.\n",
-              "level": "optional",
-              "level_addendum": "required if sessions are defined in the dataset"
+              "description_addendum": "A `session_id` column SHOULD be added to all tabular files in the phenotype directory\nas soon as multiple sessions are present in the data set.\n",
+              "level": "optional"
             }
           },
           "index_columns": [
@@ -20790,9 +20789,8 @@
               "level_addendum": "required if there are multiple runs within any session"
             },
             "session_id": {
-              "description_addendum": "A `session_id` column MUST be added to all tabular files in the phenotype directory\nas soon as multiple sessions are present in the data set\nregardless of whether those sessions are in the\n`phenotype/` data, `sub-<label>/` data, or a combination of the two.\n",
-              "level": "optional",
-              "level_addendum": "required if sessions are defined in the dataset"
+              "description_addendum": "A `session_id` column SHOULD be added to all tabular files in the phenotype directory\nas soon as multiple sessions are present in the data set.\n",
+              "level": "optional"
             }
           },
           "index_columns": [
