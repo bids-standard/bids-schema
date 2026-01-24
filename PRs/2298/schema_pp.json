@@ -4093,12 +4093,12 @@
         "value": ".bdf"
       },
       "bval": {
-        "description": "A space-delimited file containing gradient directions (b-vectors) of diffusion measurement.\n\nThe `bval` file contains the *b*-values (in s/mm<sup>2</sup>) corresponding to the\nvolumes in the relevant NIfTI file, with 0 designating *b*=0 volumes.\n",
+        "description": "A space-delimited file containing diffusion-encoding weightings (b-values).\n\nThe `bval` file contains the *b*-values (in s/mm<sup>2</sup>) corresponding to the\nvolumes in the relevant NIfTI file, with 0 designating *b*=0 volumes.\n",
         "display_name": "FSL-Format Gradient Amplitudes",
         "value": ".bval"
       },
       "bvec": {
-        "description": "A space-delimited file containing gradient directions (b-vectors) of diffusion measurement.\n\nThe `bvec` file contains 3 rows with *N* space-delimited floating-point numbers,\ncorresponding to the *N* volumes in the corresponding NIfTI file.\n\nAcross these three rows,\neach column encodes three elements of a 3-vector for the corresponding image volume;\neach vector MUST be either of unit norm,\nor optionally the vector `[0.0,0.0,0.0]`\nfor *non-diffusion-weighted* (also called *b*=0 or *low-b*) volumes.\nThese values are to be interpreted as cosine values with respect to the image axis orientations\nas defined by the corresponding NIfTI image header transformation;\n*unless* the image axes defined in the corresponding NIfTI image header\nform a right-handed coordinate system\n(that is, the 3x3 matrix of direction cosines has a positive determinant),\nin which case the sign of the first element of each 3-vector must be inverted\nfor this interpretation to be valid.\n\nNote that this definition of orientations with respect to the NIfTI image axes\nis *not* equivalent to the DICOM convention,\nwhere orientations are instead defined with respect to the scanner device's coordinate system\n(see [Coordinate systems](SPEC_ROOT/appendices/coordinate-systems.md)).\n",
+        "description": "A space-delimited file containing diffusion-encoding gradients (b-vectors).\n\nThe `bvec` file contains 3 rows with *N* space-delimited floating-point numbers,\ncorresponding to the *N* volumes in the corresponding NIfTI file.\n\nAcross these three rows,\neach column encodes three elements of a 3-vector for the corresponding image volume;\neach vector MUST be either of unit norm,\nor optionally the vector `[0.0,0.0,0.0]`\nfor *non-diffusion-weighted* (also called *b*=0 or *low-b*) volumes.\nThese values are to be interpreted as cosine values with respect to the image axis orientations\nas defined by the corresponding NIfTI image header transformation;\n*unless* the image axes defined in the corresponding NIfTI image header\nform a right-handed coordinate system\n(that is, the 3x3 matrix of direction cosines has a positive determinant),\nin which case the sign of the first element of each 3-vector must be inverted\nfor this interpretation to be valid.\n\nNote that this definition of orientations with respect to the NIfTI image axes\nis *not* equivalent to the DICOM convention,\nwhere orientations are instead defined with respect to the scanner device's coordinate system\n(see [Coordinate systems](SPEC_ROOT/appendices/coordinate-systems.md)).\n",
         "display_name": "FSL-Format Gradient Directions",
         "value": ".bvec"
       },
@@ -11668,10 +11668,25 @@
       "pet": {
         "PETFrameConsistency": {
           "checks": [
-            "length(sidecar.FrameDuration) == nifti_header.dim[4]"
+            "length(sidecar.FrameDuration) == length(sidecar.FrameTimesStart)"
           ],
           "issue": {
             "code": "PET_FRAME_CONSISTENCY",
+            "level": "error",
+            "message": "The number of frames as defined by FrameDuration and FrameTimesStart do not match in the\nassociated '.json' file.\n"
+          },
+          "selectors": [
+            "suffix == 'pet'",
+            "sidecar.FrameDuration",
+            "sidecar.FrameTimesStart"
+          ]
+        },
+        "PETFrameConsistencyFrameDuration": {
+          "checks": [
+            "length(sidecar.FrameDuration) == nifti_header.dim[4]"
+          ],
+          "issue": {
+            "code": "PET_FRAME_CONSISTENCY_FRAME_DURATION",
             "level": "error",
             "message": "The number of frames in this scan does not match the number of frames (as defined by FrameDuration) in the\nassociated '.json' file.\n"
           },
@@ -11679,6 +11694,21 @@
             "suffix == 'pet'",
             "type(nifti_header) != \"null\"",
             "sidecar.FrameDuration"
+          ]
+        },
+        "PETFrameConsistencyFrameTimesStart": {
+          "checks": [
+            "length(sidecar.FrameTimesStart) == nifti_header.dim[4]"
+          ],
+          "issue": {
+            "code": "PET_FRAME_CONSISTENCY_FRAME_TIMES_START",
+            "level": "error",
+            "message": "The number of frames in this scan does not match the number of frames (as defined by FrameTimesStart) in the\nassociated '.json' file.\n"
+          },
+          "selectors": [
+            "suffix == 'pet'",
+            "type(nifti_header) != \"null\"",
+            "sidecar.FrameTimesStart"
           ]
         }
       },
@@ -11920,14 +11950,19 @@
           "Acknowledgements": "optional",
           "Authors": {
             "level": "optional",
-            "level_addendum": "recommended if no CITATION.cff file is present"
+            "level_addendum": "recommended if `CITATION.cff` is not present"
           },
           "BIDSVersion": "required",
           "DatasetDOI": "optional",
+          "DatasetLinks": {
+            "level": "optional",
+            "level_addendum": "required if [BIDS URIs](SPEC_ROOT/common-principles.md#bids-uri) are used"
+          },
           "DatasetType": "recommended",
           "EthicsApprovals": "optional",
           "Funding": "optional",
           "GeneratedBy": "recommended",
+          "HEDVersion": "recommended",
           "HowToAcknowledge": "optional",
           "Keywords": "optional",
           "License": "recommended",
@@ -18135,6 +18170,7 @@
             },
             "selectors": [
               "dataset.dataset_description.DatasetType == \"derivative\"",
+              "\"space\" in entities",
               "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.space])",
               "type(entities.tpl) == 'null' || !intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.tpl])"
             ]
