@@ -11950,14 +11950,19 @@
           "Acknowledgements": "optional",
           "Authors": {
             "level": "optional",
-            "level_addendum": "recommended if no CITATION.cff file is present"
+            "level_addendum": "recommended if `CITATION.cff` is not present"
           },
           "BIDSVersion": "required",
           "DatasetDOI": "optional",
+          "DatasetLinks": {
+            "level": "optional",
+            "level_addendum": "required if [BIDS URIs](SPEC_ROOT/common-principles.md#bids-uri) are used"
+          },
           "DatasetType": "recommended",
           "EthicsApprovals": "optional",
           "Funding": "optional",
           "GeneratedBy": "recommended",
+          "HEDVersion": "recommended",
           "HowToAcknowledge": "optional",
           "Keywords": "optional",
           "License": "recommended",
