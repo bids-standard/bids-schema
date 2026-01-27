@@ -4805,6 +4805,13 @@
         "display_name": "Based On",
         "name": "BasedOn"
       },
+      "BigDelta": {
+        "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the time between the leading edges of two successive\ndiffusion-encoding gradient pulses (\u0394), specified in seconds.\n",
+        "display_name": "Diffusion Gradient Separation",
+        "name": "BigDelta",
+        "type": "number",
+        "unit": "s"
+      },
       "BloodDensity": {
         "description": "Measured blood density. Unit of blood density should be in `\"g/mL\"`.\n",
         "display_name": "Blood Density",
@@ -5369,20 +5376,6 @@
         "display_name": "Dewar Position",
         "name": "DewarPosition",
         "type": "string"
-      },
-      "DiffGradientDuration": {
-        "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the duration of a diffusion-encoding gradient pulse (\u03b4),\nspecified in milliseconds.\n",
-        "display_name": "Diffusion Gradient Duration",
-        "name": "DiffGradientDuration",
-        "type": "number",
-        "unit": "ms"
-      },
-      "DiffGradientSeparation": {
-        "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the time between the leading edges of two successive\ndiffusion-encoding gradient pulses (\u0394), specified in milliseconds.\n",
-        "display_name": "Diffusion Gradient Separation",
-        "name": "DiffGradientSeparation",
-        "type": "number",
-        "unit": "ms"
       },
       "DigitizedHeadPoints": {
         "description": "`true` or `false` value indicating whether head points outlining the\nscalp/face surface are contained within this recording.\n",
@@ -8449,6 +8442,13 @@
         },
         "name": "SliceTiming",
         "type": "array"
+      },
+      "SmallDelta": {
+        "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the duration of a diffusion-encoding gradient pulse (\u03b4),\nspecified in seconds.\n",
+        "display_name": "Diffusion Gradient Duration",
+        "name": "SmallDelta",
+        "type": "number",
+        "unit": "s"
       },
       "SoftwareFilters": {
         "anyOf": [
@@ -18088,8 +18088,9 @@
             },
             "selectors": [
               "dataset.dataset_description.DatasetType == \"derivative\"",
-              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.tpl])",
-              "type(entities.space) == 'null' || !intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.space])\n"
+              "\"template\" in entities",
+              "type(entities.space) == 'null'",
+              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.template])"
             ]
           }
         },
@@ -18185,8 +18186,7 @@
             "selectors": [
               "dataset.dataset_description.DatasetType == \"derivative\"",
               "\"space\" in entities",
-              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.space])",
-              "type(entities.tpl) == 'null' || !intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.tpl])"
+              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.space])"
             ]
           }
         }
@@ -18204,9 +18204,9 @@
         },
         "MRIDiffusionOtherMetadata": {
           "fields": {
-            "DiffGradientDuration": "recommended",
-            "DiffGradientSeparation": "recommended",
+            "BigDelta": "recommended",
             "PhaseEncodingDirection": "recommended",
+            "SmallDelta": "recommended",
             "TotalReadoutTime": "recommended"
           },
           "selectors": [
