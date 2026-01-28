@@ -4807,7 +4807,7 @@
       },
       "BigDelta": {
         "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the time between the leading edges of two successive\ndiffusion-encoding gradient pulses (\u0394), specified in seconds.\n",
-        "display_name": "Diffusion Gradient Separation",
+        "display_name": "Diffusion Big Delta (\u0394)",
         "name": "BigDelta",
         "type": "number",
         "unit": "s"
@@ -8445,7 +8445,7 @@
       },
       "SmallDelta": {
         "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the duration of a diffusion-encoding gradient pulse (\u03b4),\nspecified in seconds.\n",
-        "display_name": "Diffusion Gradient Duration",
+        "display_name": "Diffusion Small Delta (\u03b4)",
         "name": "SmallDelta",
         "type": "number",
         "unit": "s"
