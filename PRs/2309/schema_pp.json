@@ -1,5 +1,5 @@
 {
-  "bids_version": "1.10.2-dev",
+  "bids_version": "1.11.0",
   "meta": {
     "associations": {
       "aslcontext": {
@@ -1428,6 +1428,7 @@
       }
     },
     "versions": [
+      "1.11.0",
       "1.10.1",
       "1.10.0",
       "1.9.0",
@@ -4806,11 +4807,24 @@
         "name": "BasedOn"
       },
       "BigDelta": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "unit": "s"
+          },
+          {
+            "items": {
+              "exclusiveMinimum": 0,
+              "type": "number",
+              "unit": "s"
+            },
+            "type": "array"
+          }
+        ],
         "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the time between the leading edges of two successive\ndiffusion-encoding gradient pulses (\u0394), specified in seconds.\n",
         "display_name": "Diffusion Big Delta (\u0394)",
-        "name": "BigDelta",
-        "type": "number",
-        "unit": "s"
+        "name": "BigDelta"
       },
       "BloodDensity": {
         "description": "Measured blood density. Unit of blood density should be in `\"g/mL\"`.\n",
@@ -8444,11 +8458,24 @@
         "type": "array"
       },
       "SmallDelta": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "unit": "s"
+          },
+          {
+            "items": {
+              "exclusiveMinimum": 0,
+              "type": "number",
+              "unit": "s"
+            },
+            "type": "array"
+          }
+        ],
         "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the duration of a diffusion-encoding gradient pulse (\u03b4),\nspecified in seconds.\n",
         "display_name": "Diffusion Small Delta (\u03b4)",
-        "name": "SmallDelta",
-        "type": "number",
-        "unit": "s"
+        "name": "SmallDelta"
       },
       "SoftwareFilters": {
         "anyOf": [
@@ -21024,5 +21051,5 @@
       }
     }
   },
-  "schema_version": "1.2.0-dev"
+  "schema_version": "1.2.0"
 }
