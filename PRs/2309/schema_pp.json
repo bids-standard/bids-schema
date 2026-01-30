@@ -4822,7 +4822,7 @@
             "type": "array"
           }
         ],
-        "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the time between the leading edges of two successive\ndiffusion-encoding gradient pulses (\u0394), specified in seconds.\n",
+        "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the time between the leading edges of two successive\ndiffusion-encoding gradient pulses (\u0394), specified in seconds.\nThe value may be an array, if \u0394 varies by volume, in which case the number\nof values MUST correspond to the number of volumes in the data file.\n",
         "display_name": "Diffusion Big Delta (\u0394)",
         "name": "BigDelta"
       },
@@ -8473,7 +8473,7 @@
             "type": "array"
           }
         ],
-        "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the duration of a diffusion-encoding gradient pulse (\u03b4),\nspecified in seconds.\n",
+        "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the duration of a diffusion-encoding gradient pulse (\u03b4),\nspecified in seconds.\nThe value may be an array, if \u03b4 varies by volume, in which case the number\nof values MUST correspond to the number of volumes in the data file.\n",
         "display_name": "Diffusion Small Delta (\u03b4)",
         "name": "SmallDelta"
       },
@@ -11252,6 +11252,21 @@
         }
       },
       "mri": {
+        "BigDeltaNotConsistent": {
+          "checks": [
+            "length(sidecar.BigDelta) == nifti_header.dim[4]"
+          ],
+          "issue": {
+            "code": "BIGDELTA_NOT_CONSISTENT",
+            "level": "error",
+            "message": "The number of values for 'BigDelta' for this file does\nnot match the 4th dimension of the NIfTI header.\n"
+          },
+          "selectors": [
+            "modality == \"mri\"",
+            "type(sidecar.BigDelta) == \"array\"",
+            "type(nifti_header) != \"null\""
+          ]
+        },
         "BolusCutOffDelayTimeNotMonotonicallyIncreasing": {
           "checks": [
             "allequal(sorted(sidecar.BolusCutOffDelayTime), sidecar.BolusCutOffDelayTime)"
@@ -11374,6 +11389,21 @@
             "type(sidecar.SliceTiming) != \"null\"",
             "type(nifti_header) != \"null\"",
             "sidecar.SliceEncodingDirection"
+          ]
+        },
+        "SmallDeltaNotConsistent": {
+          "checks": [
+            "length(sidecar.SmallDelta) == nifti_header.dim[4]"
+          ],
+          "issue": {
+            "code": "SMALLDELTA_NOT_CONSISTENT",
+            "level": "error",
+            "message": "The number of values for 'SmallDelta' for this file does\nnot match the 4th dimension of the NIfTI header.\n"
+          },
+          "selectors": [
+            "modality == \"mri\"",
+            "type(sidecar.SmallDelta) == \"array\"",
+            "type(nifti_header) != \"null\""
           ]
         },
         "TotalReadoutTimeGreaterThan": {
