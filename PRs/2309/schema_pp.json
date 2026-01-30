@@ -18231,9 +18231,9 @@
         },
         "MRIDiffusionOtherMetadata": {
           "fields": {
-            "BigDelta": "recommended",
+            "BigDelta": "optional",
             "PhaseEncodingDirection": "recommended",
-            "SmallDelta": "recommended",
+            "SmallDelta": "optional",
             "TotalReadoutTime": "recommended"
           },
           "selectors": [
