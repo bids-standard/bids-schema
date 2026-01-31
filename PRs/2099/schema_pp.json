@@ -2574,7 +2574,7 @@
         "name": "proc",
         "type": "string"
       },
-      "prov": {
+      "provenance": {
         "description": "The `prov-<label>` entity allows to group related provenance files, using an arbitrary value for `<label>`.\n",
         "display_name": "Provenance group",
         "format": "label",
@@ -4118,12 +4118,12 @@
         "value": ".bdf"
       },
       "bval": {
-        "description": "A space-delimited file containing gradient directions (b-vectors) of diffusion measurement.\n\nThe `bval` file contains the *b*-values (in s/mm<sup>2</sup>) corresponding to the\nvolumes in the relevant NIfTI file, with 0 designating *b*=0 volumes.\n",
+        "description": "A space-delimited file containing diffusion-encoding weightings (b-values).\n\nThe `bval` file contains the *b*-values (in s/mm<sup>2</sup>) corresponding to the\nvolumes in the relevant NIfTI file, with 0 designating *b*=0 volumes.\n",
         "display_name": "FSL-Format Gradient Amplitudes",
         "value": ".bval"
       },
       "bvec": {
-        "description": "A space-delimited file containing gradient directions (b-vectors) of diffusion measurement.\n\nThe `bvec` file contains 3 rows with *N* space-delimited floating-point numbers,\ncorresponding to the *N* volumes in the corresponding NIfTI file.\n\nAcross these three rows,\neach column encodes three elements of a 3-vector for the corresponding image volume;\neach vector MUST be either of unit norm,\nor optionally the vector `[0.0,0.0,0.0]`\nfor *non-diffusion-weighted* (also called *b*=0 or *low-b*) volumes.\nThese values are to be interpreted as cosine values with respect to the image axis orientations\nas defined by the corresponding NIfTI image header transformation;\n*unless* the image axes defined in the corresponding NIfTI image header\nform a right-handed coordinate system\n(that is, the 3x3 matrix of direction cosines has a positive determinant),\nin which case the sign of the first element of each 3-vector must be inverted\nfor this interpretation to be valid.\n\nNote that this definition of orientations with respect to the NIfTI image axes\nis *not* equivalent to the DICOM convention,\nwhere orientations are instead defined with respect to the scanner device's coordinate system\n(see [Coordinate systems](SPEC_ROOT/appendices/coordinate-systems.md)).\n",
+        "description": "A space-delimited file containing diffusion-encoding gradients (b-vectors).\n\nThe `bvec` file contains 3 rows with *N* space-delimited floating-point numbers,\ncorresponding to the *N* volumes in the corresponding NIfTI file.\n\nAcross these three rows,\neach column encodes three elements of a 3-vector for the corresponding image volume;\neach vector MUST be either of unit norm,\nor optionally the vector `[0.0,0.0,0.0]`\nfor *non-diffusion-weighted* (also called *b*=0 or *low-b*) volumes.\nThese values are to be interpreted as cosine values with respect to the image axis orientations\nas defined by the corresponding NIfTI image header transformation;\n*unless* the image axes defined in the corresponding NIfTI image header\nform a right-handed coordinate system\n(that is, the 3x3 matrix of direction cosines has a positive determinant),\nin which case the sign of the first element of each 3-vector must be inverted\nfor this interpretation to be valid.\n\nNote that this definition of orientations with respect to the NIfTI image axes\nis *not* equivalent to the DICOM convention,\nwhere orientations are instead defined with respect to the scanner device's coordinate system\n(see [Coordinate systems](SPEC_ROOT/appendices/coordinate-systems.md)).\n",
         "display_name": "FSL-Format Gradient Directions",
         "value": ".bvec"
       },
@@ -4547,7 +4547,7 @@
             },
             "EndedAtTime": {
               "description": "Timestamp tracking when the activity ended.",
-              "format": "date",
+              "format": "datetime",
               "name": "EndedAtTime",
               "type": "string"
             },
@@ -4565,7 +4565,7 @@
             },
             "StartedAtTime": {
               "description": "Timestamp tracking when the activity started.",
-              "format": "date",
+              "format": "datetime",
               "name": "StartedAtTime",
               "type": "string"
             },
@@ -12483,7 +12483,7 @@
       "provenance": {
         "ProvenanceEntityMissing": {
           "checks": [
-            "allequal(\n  sorted(intersects(columns.provenance_id, dataset.subjects.participant_id)),\n  sorted(dataset.subjects.participant_id)\n)\n"
+            "allequal(\n  sorted(intersects(columns.provenance_id, dataset.prov.entities)),\n  sorted(dataset.prov.entities)\n)\n"
           ],
           "issue": {
             "code": "PROVENANCE_ENTITY_MISSING",
@@ -12491,8 +12491,8 @@
             "message": "A provenance.tsv file lists a \"prov\" entity that was not found in\nthe dataset.\n"
           },
           "selectors": [
-            "datatype == 'provenance'",
-            "suffix == '.tsv'"
+            "suffix == 'provenance'",
+            "extension == '.tsv'"
           ]
         }
       },
@@ -12659,15 +12659,20 @@
           "Acknowledgements": "optional",
           "Authors": {
             "level": "optional",
-            "level_addendum": "recommended if no CITATION.cff file is present"
+            "level_addendum": "recommended if `CITATION.cff` is not present"
           },
           "BIDSVersion": "required",
           "DatasetDOI": "optional",
+          "DatasetLinks": {
+            "level": "optional",
+            "level_addendum": "required if [BIDS URIs](SPEC_ROOT/common-principles.md#bids-uri) are used"
+          },
           "DatasetType": "recommended",
           "Digest__Dataset": "optional",
           "EthicsApprovals": "optional",
           "Funding": "optional",
           "GeneratedBy__Dataset": "recommended",
+          "HEDVersion": "recommended",
           "HowToAcknowledge": "optional",
           "Keywords": "optional",
           "License": "recommended",
@@ -12991,7 +12996,7 @@
       "resolution",
       "density",
       "label",
-      "prov",
+      "provenance",
       "description"
     ],
     "errors": {
@@ -13269,7 +13274,7 @@
               "prov"
             ],
             "entities": {
-              "prov": "required"
+              "provenance": "required"
             },
             "extensions": [
               ".json"
@@ -18452,6 +18457,26 @@
             "!(\"prov:Entity\" in json)"
           ]
         },
+        "EntitiesProvenanceFile": {
+          "fields": {
+            "Dataset": {
+              "level": "optional",
+              "level_addendum": "required if `Files` and `prov:Entity` fields are absent"
+            },
+            "Files": {
+              "level": "optional",
+              "level_addendum": "required if `prov:Entity` and `Datasets` fields are absent"
+            },
+            "ProvEntity": {
+              "level": "optional",
+              "level_addendum": "required if `Files` and `Datasets` fields are absent"
+            }
+          },
+          "selectors": [
+            "datatype == \"prov\"",
+            "suffix == \"ent\""
+          ]
+        },
         "EnvironmentsProvenanceFile": {
           "fields": {
             "Environments": "required"
@@ -18917,8 +18942,9 @@
             },
             "selectors": [
               "dataset.dataset_description.DatasetType == \"derivative\"",
-              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.tpl])",
-              "type(entities.space) == 'null' || !intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.space])\n"
+              "\"template\" in entities",
+              "type(entities.space) == 'null'",
+              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.template])"
             ]
           }
         },
@@ -19014,8 +19040,7 @@
             "selectors": [
               "dataset.dataset_description.DatasetType == \"derivative\"",
               "\"space\" in entities",
-              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.space])",
-              "type(entities.tpl) == 'null' || !intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.tpl])"
+              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.space])"
             ]
           }
         }
@@ -21061,9 +21086,7 @@
             "SidecarGeneratedBy": "optional",
             "Type__File": "optional"
           },
-          "selectors": [
-            "true == true"
-          ]
+          "selectors": []
         }
       },
       "qmri": {
@@ -21550,7 +21573,7 @@
           ]
         },
         "Provenance": {
-          "additional_columns": "allowed",
+          "additional_columns": "allowed_if_defined",
           "columns": {
             "description__provenance": "optional",
             "provenance_id": {
@@ -21566,7 +21589,7 @@
           ],
           "selectors": [
             "datatype == 'prov'",
-            "stem == 'provenance'",
+            "suffix == 'provenance'",
             "extension == '.tsv'"
           ]
         },
