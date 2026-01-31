@@ -11262,7 +11262,7 @@
             "message": "The number of values for 'BigDelta' for this file does\nnot match the 4th dimension of the NIfTI header.\n"
           },
           "selectors": [
-            "modality == \"mri\"",
+            "suffix == \"dwi\"",
             "type(sidecar.BigDelta) == \"array\"",
             "type(nifti_header) != \"null\""
           ]
@@ -11401,7 +11401,7 @@
             "message": "The number of values for 'SmallDelta' for this file does\nnot match the 4th dimension of the NIfTI header.\n"
           },
           "selectors": [
-            "modality == \"mri\"",
+            "suffix == \"dwi\"",
             "type(sidecar.SmallDelta) == \"array\"",
             "type(nifti_header) != \"null\""
           ]
