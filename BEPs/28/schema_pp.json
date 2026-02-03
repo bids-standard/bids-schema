@@ -4511,21 +4511,14 @@
         "items": {
           "properties": {
             "AssociatedWith": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "format": "uri",
-                    "type": "string"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Identifier(s) of the software package(s) used to compute the activity.\n\nRelated software MUST be described as specified in the\n[Software](SPEC_ROOT/modality-agnostic-files/provenance.md#software) section.\n",
-              "name": "AssociatedWith"
+              "description": "Identifier(s) of the software package(s) used to compute the activity.\n\nRelated software MUST be described as specified in the\n[Software](SPEC_ROOT/modality-agnostic-files/provenance.md#software) section.\n\nCorresponds to\n[W3C PROV `prov:wasAssociatedWith`](https://www.w3.org/TR/2013/REC-prov-o-20130430/#wasAssociatedWith).\n",
+              "items": {
+                "format": "uri",
+                "type": "string"
+              },
+              "minItems": 1,
+              "name": "AssociatedWith",
+              "type": "array"
             },
             "Command": {
               "anyOf": [
@@ -4546,63 +4539,48 @@
               "type": "string"
             },
             "EndedAtTime": {
-              "description": "Timestamp tracking when the activity ended.",
+              "description": "Timestamp tracking when the activity ended.\n\nCorresponds to [W3C PROV `prov:endedAtTime`](https://www.w3.org/TR/2013/REC-prov-o-20130430/#endedAtTime).\n",
               "format": "datetime",
               "name": "EndedAtTime",
               "type": "string"
             },
             "Id": {
-              "description": "Identifier for the activity (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
+              "description": "Identifier for the activity (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).Corresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).",
               "format": "uri",
               "name": "Id",
               "type": "string"
             },
             "Label": {
-              "description": "Name for the activity.\n",
+              "description": "Name for the activity.\n\nCorresponds to [RDF Schema `rdfs:label`](https://www.w3.org/TR/rdf-schema/#ch_label).\n",
               "format": "label",
               "name": "Label",
               "type": "string"
             },
             "StartedAtTime": {
-              "description": "Timestamp tracking when the activity started.",
+              "description": "Timestamp tracking when the activity started.\n\nCorresponds to [W3C PROV `prov:startedAtTime`](https://www.w3.org/TR/2013/REC-prov-o-20130430/#startedAtTime).\n",
               "format": "datetime",
               "name": "StartedAtTime",
               "type": "string"
             },
             "Type": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "format": "uri",
-                    "type": "string"
-                  },
-                  "minItems": 1,
-                  "type": "array"
-                }
-              ],
-              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the activity.\n",
-              "name": "Type"
+              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the activity.\n\nCorresponds to [JSON-LD `@type`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
+              "items": {
+                "format": "uri",
+                "type": "string"
+              },
+              "minItems": 1,
+              "name": "Type",
+              "type": "array"
             },
             "Used": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "format": "uri",
-                    "type": "string"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Identifier(s) of the input and output data or environment(s) used by the activity.\n\nRelated input and output data MUST be described as specified in the\n[Input and output data](SPEC_ROOT/modality-agnostic-files/provenance.md#input-and-output-data) section.\n\nRelated environment(s) MUST be described as specified in the\n[Environments](SPEC_ROOT/modality-agnostic-files/provenance.md#environments) section.\n",
-              "name": "Used"
+              "description": "Identifier(s) of the input and output data or environment(s) used by the activity.\n\nRelated input and output data MUST be described as specified in the\n[Input and output data](SPEC_ROOT/modality-agnostic-files/provenance.md#input-and-output-data) section.\n\nRelated environment(s) MUST be described as specified in the\n[Environments](SPEC_ROOT/modality-agnostic-files/provenance.md#environments) section.\n\nCorresponds to [W3C PROV `prov:used`](https://www.w3.org/TR/2013/REC-prov-o-20130430/#used).\n",
+              "items": {
+                "format": "uri",
+                "type": "string"
+              },
+              "minItems": 1,
+              "name": "Used",
+              "type": "array"
             }
           },
           "required": [
@@ -5364,54 +5342,38 @@
               "type": "object"
             },
             "GeneratedBy": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "format": "uri",
-                    "type": "string"
-                  },
-                  "minItems": 1,
-                  "type": "array"
-                }
-              ],
-              "description": "Identifier(s) of the activity/activities responsible for the creation of the dataset.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+              "description": "Identifier(s) of the activity/activities responsible for the creation of the dataset.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n\nCorresponds to [W3C PROV `prov:wasGeneratedBy`](https://www.w3.org/TR/2013/REC-prov-o-20130430/#wasGeneratedBy).\n",
               "display_name": "Generated By",
-              "name": "GeneratedBy"
+              "items": {
+                "format": "uri",
+                "type": "string"
+              },
+              "minItems": 1,
+              "name": "GeneratedBy",
+              "type": "array"
             },
             "Id": {
-              "description": "Identifier for the dataset (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
+              "description": "Identifier for the dataset (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).Corresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).",
               "format": "uri",
               "name": "Id",
               "type": "string"
             },
             "Label": {
-              "description": "Name for the dataset.",
+              "description": "Name for the dataset.\n\nCorresponds to [RDF Schema `rdfs:label`](https://www.w3.org/TR/rdf-schema/#ch_label).\n",
               "format": "label",
               "name": "Label",
               "type": "string"
             },
             "Type": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "format": "uri",
-                    "type": "string"
-                  },
-                  "minItems": 1,
-                  "type": "array"
-                }
-              ],
-              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the dataset.\n",
+              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the dataset.\n\nCorresponds to [JSON-LD `@type`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
               "display_name": "Type",
-              "name": "Type"
+              "items": {
+                "format": "uri",
+                "type": "string"
+              },
+              "minItems": 1,
+              "name": "Type",
+              "type": "array"
             }
           },
           "recommended": [
@@ -5593,6 +5555,12 @@
       },
       "Digest__Dataset": {
         "description": "Object containing digests of the dataset.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
+        "display_name": "Digest",
+        "name": "Digest",
+        "type": "object"
+      },
+      "Digest__Environment": {
+        "description": "Object containing digests of the environment.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
         "display_name": "Digest",
         "name": "Digest",
         "type": "object"
@@ -6084,25 +6052,31 @@
               "name": "Dependencies",
               "type": "object"
             },
-            "EnvVars": {
+            "Digest": {
+              "description": "Object containing digests of the environment.\nEach key in the object MUST be the name of a checksum function if present in this list:\n`MD5`; `SHA1`; `SHA-224` ; `SHA-256` ; `SHA-384` ; `SHA-512` ;\n`SHA3-224`; `SHA3-256`; `SHA3-384`; `SHA3-512`; `BLAKE2B-256`; `BLAKE3-256`;\n`SHAKE128`; `SHAKE256`. Otherwise, key MAY be an arbitrary label.\nThe corresponding value is the checksum as computed by the function identified by the key.\n",
+              "display_name": "Digest",
+              "name": "Digest",
+              "type": "object"
+            },
+            "EnvironmentVariables": {
               "description": "Object containing environment variables as key-value pairs.",
-              "name": "EnvVars",
+              "name": "EnvironmentVariables",
               "type": "object"
             },
             "Id": {
-              "description": "Identifier for the environment (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
+              "description": "Identifier for the environment (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).Corresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).",
               "format": "uri",
               "name": "Id",
               "type": "string"
             },
             "Label": {
-              "description": "Name for the environment.",
+              "description": "Name for the environment.\n\nCorresponds to [RDF Schema `rdfs:label`](https://www.w3.org/TR/rdf-schema/#ch_label).\n",
               "format": "label",
               "name": "Label",
               "type": "string"
             },
             "OperatingSystem": {
-              "description": "Name of the operating system for the environment. Including the version of the kernel and/or distribution is recommended when applicable.",
+              "description": "Name of the operating system for the environment.\nIncluding the version of the kernel and/or distribution is recommended when applicable.\n",
               "name": "OperatingSystem",
               "type": "string"
             }
@@ -6280,54 +6254,38 @@
               "type": "object"
             },
             "GeneratedBy": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "format": "uri",
-                    "type": "string"
-                  },
-                  "minItems": 1,
-                  "type": "array"
-                }
-              ],
-              "description": "Identifier(s) of the activity/activities responsible for the creation of the file.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+              "description": "Identifier(s) of the activity/activities responsible for the creation of the file.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n\nCorresponds to [W3C PROV `prov:wasGeneratedBy`](https://www.w3.org/TR/2013/REC-prov-o-20130430/#wasGeneratedBy).\n",
               "display_name": "Generated By",
-              "name": "GeneratedBy"
+              "items": {
+                "format": "uri",
+                "type": "string"
+              },
+              "minItems": 1,
+              "name": "GeneratedBy",
+              "type": "array"
             },
             "Id": {
-              "description": "Identifier for the file (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
+              "description": "Identifier for the file (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).Corresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).",
               "format": "uri",
               "name": "Id",
               "type": "string"
             },
             "Label": {
-              "description": "Name for the file.",
+              "description": "Name for the file.\n\nCorresponds to [RDF Schema `rdfs:label`](https://www.w3.org/TR/rdf-schema/#ch_label).\n",
               "format": "label",
               "name": "Label",
               "type": "string"
             },
             "Type": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "format": "uri",
-                    "type": "string"
-                  },
-                  "minItems": 1,
-                  "type": "array"
-                }
-              ],
-              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the file.\n",
+              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the file.\n\nCorresponds to [JSON-LD `@type`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
               "display_name": "Type",
-              "name": "Type"
+              "items": {
+                "format": "uri",
+                "type": "string"
+              },
+              "minItems": 1,
+              "name": "Type",
+              "type": "array"
             }
           },
           "recommended": [
@@ -6538,10 +6496,6 @@
       "GeneratedBy__Dataset": {
         "anyOf": [
           {
-            "format": "uri",
-            "type": "string"
-          },
-          {
             "items": {
               "format": "uri",
               "type": "string"
@@ -6627,42 +6581,26 @@
         "name": "GeneratedBy"
       },
       "GeneratedBy__Id__Dataset": {
-        "anyOf": [
-          {
-            "format": "uri",
-            "type": "string"
-          },
-          {
-            "items": {
-              "format": "uri",
-              "type": "string"
-            },
-            "minItems": 1,
-            "type": "array"
-          }
-        ],
-        "description": "Identifier(s) of the activity/activities responsible for the creation of the dataset.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+        "description": "Identifier(s) of the activity/activities responsible for the creation of the dataset.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n\nCorresponds to [W3C PROV `prov:wasGeneratedBy`](https://www.w3.org/TR/2013/REC-prov-o-20130430/#wasGeneratedBy).\n",
         "display_name": "Generated By",
-        "name": "GeneratedBy"
+        "items": {
+          "format": "uri",
+          "type": "string"
+        },
+        "minItems": 1,
+        "name": "GeneratedBy",
+        "type": "array"
       },
       "GeneratedBy__Id__File": {
-        "anyOf": [
-          {
-            "format": "uri",
-            "type": "string"
-          },
-          {
-            "items": {
-              "format": "uri",
-              "type": "string"
-            },
-            "minItems": 1,
-            "type": "array"
-          }
-        ],
-        "description": "Identifier(s) of the activity/activities responsible for the creation of the file.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+        "description": "Identifier(s) of the activity/activities responsible for the creation of the file.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n\nCorresponds to [W3C PROV `prov:wasGeneratedBy`](https://www.w3.org/TR/2013/REC-prov-o-20130430/#wasGeneratedBy).\n",
         "display_name": "Generated By",
-        "name": "GeneratedBy"
+        "items": {
+          "format": "uri",
+          "type": "string"
+        },
+        "minItems": 1,
+        "name": "GeneratedBy",
+        "type": "array"
       },
       "GeneticLevel": {
         "anyOf": [
@@ -8190,53 +8128,37 @@
               "type": "object"
             },
             "GeneratedBy": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "format": "uri",
-                    "type": "string"
-                  },
-                  "minItems": 1,
-                  "type": "array"
-                }
-              ],
-              "description": "Identifier(s) of the activity/activities responsible for the creation of the prov:Entity.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+              "description": "Identifier(s) of the activity/activities responsible for the creation of the prov:Entity.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n\nCorresponds to\n[W3C PROV `prov:wasGeneratedBy`](https://www.w3.org/TR/2013/REC-prov-o-20130430/#wasGeneratedBy).\n",
               "display_name": "Generated By",
-              "name": "GeneratedBy"
+              "items": {
+                "format": "uri",
+                "type": "string"
+              },
+              "minItems": 1,
+              "name": "GeneratedBy",
+              "type": "array"
             },
             "Id": {
-              "description": "Identifier for the prov:Entity (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
+              "description": "Identifier for the prov:Entity (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).Corresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).",
               "format": "uri",
               "name": "Id",
               "type": "string"
             },
             "Label": {
-              "description": "Name for the prov:Entity.",
+              "description": "Name for the prov:Entity.\n\nCorresponds to [RDF Schema `rdfs:label`](https://www.w3.org/TR/rdf-schema/#ch_label).\n",
               "format": "label",
               "name": "Label",
               "type": "string"
             },
             "Type": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "format": "uri",
-                    "type": "string"
-                  },
-                  "minItems": 1,
-                  "type": "array"
-                }
-              ],
-              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the prov:Entity.\n",
-              "name": "Type"
+              "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the prov:Entity.\n\nCorresponds to [JSON-LD `@type`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
+              "items": {
+                "format": "uri",
+                "type": "string"
+              },
+              "minItems": 1,
+              "name": "Type",
+              "type": "array"
             }
           },
           "recommended": [
@@ -8941,23 +8863,15 @@
         "type": "integer"
       },
       "SidecarGeneratedBy": {
-        "anyOf": [
-          {
-            "format": "uri",
-            "type": "string"
-          },
-          {
-            "items": {
-              "format": "uri",
-              "type": "string"
-            },
-            "minItems": 1,
-            "type": "array"
-          }
-        ],
-        "description": "Identifier(s) of the activity/activities responsible for the creation of the sidecar JSON file.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n",
+        "description": "Identifier(s) of the activity/activities responsible for the creation of the sidecar JSON file.\n\nRelated activities MUST be described as specified in the\n[Activities](SPEC_ROOT/modality-agnostic-files/provenance.md#activities) section.\n\nCorresponds to [W3C PROV `prov:wasGeneratedBy`](https://www.w3.org/TR/2013/REC-prov-o-20130430/#wasGeneratedBy).\n",
         "display_name": "Sidecar Generated By",
-        "name": "SidecarGeneratedBy"
+        "items": {
+          "format": "uri",
+          "type": "string"
+        },
+        "minItems": 1,
+        "name": "SidecarGeneratedBy",
+        "type": "array"
       },
       "SinglesRate": {
         "description": "Singles rate for each frame (same units as `Units`, for example, `\"Bq/mL\"`).\n",
@@ -9019,37 +8933,33 @@
         "items": {
           "properties": {
             "ActedOnBehalfOf": {
-              "description": "Identifier of another software package that triggered the use of the software package.\n\nExample: if software A launches software B to perform activity C, then B ActedOnBehalfOf A.\n\nRelated software MUST be described as specified in the\n[Software](SPEC_ROOT/modality-agnostic-files/provenance.md#software) section.\n",
-              "format": "uri",
+              "description": "Identifier(s) of other software package(s) that triggered the use of the software package.\n\nExample: if software A launches software B to perform activity C, then B ActedOnBehalfOf A.\n\nRelated software MUST be described as specified in the\n[Software](SPEC_ROOT/modality-agnostic-files/provenance.md#software) section.\n\nCorresponds to\n[W3C PROV `prov:actedOnBehalfOf`](https://www.w3.org/TR/2013/REC-prov-o-20130430/#actedOnBehalfOf).\n",
+              "items": {
+                "format": "uri",
+                "type": "string"
+              },
+              "minItems": 1,
               "name": "ActedOnBehalfOf",
-              "type": "string"
+              "type": "array"
             },
-            "AltIdentifier": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "format": "uri",
-                    "type": "string"
-                  },
-                  "minItems": 1,
-                  "type": "array"
-                }
-              ],
+            "AlternativeIdentifier": {
               "description": "URI(s) of (an) alternative identifier(s) (such as [RRID](https://rrid.site/))\nfor the software package.\n",
-              "name": "AltIdentifier"
+              "items": {
+                "format": "uri",
+                "type": "string"
+              },
+              "minItems": 1,
+              "name": "AlternativeIdentifier",
+              "type": "array"
             },
             "Id": {
-              "description": "Identifier for the software package (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).",
+              "description": "Identifier for the software package (see the [Consistency and uniqueness of identifiers]\n(SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).\n\nCorresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
               "format": "uri",
               "name": "Id",
               "type": "string"
             },
             "Label": {
-              "description": "Name of the software package.",
+              "description": "Name of the software package.\n\nCorresponds to [RDF Schema `rdfs:label`](https://www.w3.org/TR/rdf-schema/#ch_label).\n",
               "format": "label",
               "name": "Label",
               "type": "string"
@@ -9641,42 +9551,26 @@
         "type": "string"
       },
       "Type__Dataset": {
-        "anyOf": [
-          {
-            "format": "uri",
-            "type": "string"
-          },
-          {
-            "items": {
-              "format": "uri",
-              "type": "string"
-            },
-            "minItems": 1,
-            "type": "array"
-          }
-        ],
-        "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the dataset.\n",
+        "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the dataset.\n\nCorresponds to [JSON-LD `@type`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
         "display_name": "Type",
-        "name": "Type"
+        "items": {
+          "format": "uri",
+          "type": "string"
+        },
+        "minItems": 1,
+        "name": "Type",
+        "type": "array"
       },
       "Type__File": {
-        "anyOf": [
-          {
-            "format": "uri",
-            "type": "string"
-          },
-          {
-            "items": {
-              "format": "uri",
-              "type": "string"
-            },
-            "minItems": 1,
-            "type": "array"
-          }
-        ],
-        "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the file.\n",
+        "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the file.\n\nCorresponds to [JSON-LD `@type`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
         "display_name": "Type",
-        "name": "Type"
+        "items": {
+          "format": "uri",
+          "type": "string"
+        },
+        "minItems": 1,
+        "name": "Type",
+        "type": "array"
       },
       "URL": {
         "description": "A Uniform Resource Locator (URL) is a structured reference to an object that\nincludes a resource transfer scheme and a location.\n(see [URI](SPEC_ROOT/common-principles.md#uniform-resource-indicator))\n",
@@ -12489,6 +12383,20 @@
             "code": "PROVENANCE_ENTITY_MISSING",
             "level": "error",
             "message": "A provenance.tsv file lists a \"prov\" entity that was not found in\nthe dataset.\n"
+          },
+          "selectors": [
+            "suffix == 'provenance'",
+            "extension == '.tsv'"
+          ]
+        },
+        "ProvenanceOutsideProvDir": {
+          "checks": [
+            "datatype == 'prov'"
+          ],
+          "issue": {
+            "code": "PROVENANCE_OUTSIDE_PROV_DIR",
+            "level": "error",
+            "message": "A provenance.tsv file is outside the prov directory.\n"
           },
           "selectors": [
             "suffix == 'provenance'",
