@@ -4545,7 +4545,7 @@
               "type": "string"
             },
             "Id": {
-              "description": "Identifier for the activity (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).Corresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).",
+              "description": "Identifier for the activity (see the [Consistency and uniqueness of identifiers](\nSPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).\n\nCorresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
               "format": "uri",
               "name": "Id",
               "type": "string"
@@ -5353,7 +5353,7 @@
               "type": "array"
             },
             "Id": {
-              "description": "Identifier for the dataset (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).Corresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).",
+              "description": "Identifier for the dataset (see the [Consistency and uniqueness of identifiers](\nSPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).\n\nCorresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
               "format": "uri",
               "name": "Id",
               "type": "string"
@@ -6064,7 +6064,7 @@
               "type": "object"
             },
             "Id": {
-              "description": "Identifier for the environment (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).Corresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).",
+              "description": "Identifier for the environment (see the [Consistency and uniqueness of identifiers](\nSPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).\n\nCorresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
               "format": "uri",
               "name": "Id",
               "type": "string"
@@ -6265,7 +6265,7 @@
               "type": "array"
             },
             "Id": {
-              "description": "Identifier for the file (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).Corresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).",
+              "description": "Identifier for the file (see the [Consistency and uniqueness of identifiers](\nSPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).\n\nCorresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
               "format": "uri",
               "name": "Id",
               "type": "string"
@@ -8139,7 +8139,7 @@
               "type": "array"
             },
             "Id": {
-              "description": "Identifier for the prov:Entity (see the [Consistency and uniqueness of identifiers](SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).Corresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).",
+              "description": "Identifier for the prov:Entity (see the [Consistency and uniqueness of identifiers](\nSPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).\n\nCorresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
               "format": "uri",
               "name": "Id",
               "type": "string"
@@ -8953,7 +8953,7 @@
               "type": "array"
             },
             "Id": {
-              "description": "Identifier for the software package (see the [Consistency and uniqueness of identifiers]\n(SPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).\n\nCorresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
+              "description": "Identifier for the software package (see the [Consistency and uniqueness of identifiers](\nSPEC_ROOT/modality-agnostic-files/provenance.md#consistency-and-uniqueness-of-identifiers) section).\n\nCorresponds to [JSON-LD `@id`](https://www.w3.org/TR/json-ld11/#syntax-tokens-and-keywords).\n",
               "format": "uri",
               "name": "Id",
               "type": "string"
