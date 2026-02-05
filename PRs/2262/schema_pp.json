@@ -1,5 +1,5 @@
 {
-  "bids_version": "1.10.2-dev",
+  "bids_version": "1.11.1-dev",
   "meta": {
     "associations": {
       "aslcontext": {
@@ -1428,6 +1428,7 @@
       }
     },
     "versions": [
+      "1.11.0",
       "1.10.1",
       "1.10.0",
       "1.9.0",
@@ -21014,5 +21015,5 @@
       }
     }
   },
-  "schema_version": "1.2.0-dev"
+  "schema_version": "1.3.0-dev"
 }
