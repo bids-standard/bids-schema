@@ -4565,6 +4565,7 @@
             },
             "Type": {
               "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the activity.\n\nCorresponds to [W3C PROV `prov:type`](https://www.w3.org/TR/prov-dm/#term-attribute-type).\n",
+              "display_name": "Type",
               "items": {
                 "format": "uri",
                 "type": "string"
@@ -8120,6 +8121,7 @@
             },
             "Type": {
               "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the prov:Entity.\n\nCorresponds to [W3C PROV `prov:type`](https://www.w3.org/TR/prov-dm/#term-attribute-type).\n",
+              "display_name": "Type",
               "items": {
                 "format": "uri",
                 "type": "string"
@@ -9518,8 +9520,30 @@
         "name": "Type",
         "type": "string"
       },
+      "Type__Activity": {
+        "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the activity.\n\nCorresponds to [W3C PROV `prov:type`](https://www.w3.org/TR/prov-dm/#term-attribute-type).\n",
+        "display_name": "Type",
+        "items": {
+          "format": "uri",
+          "type": "string"
+        },
+        "minItems": 1,
+        "name": "Type",
+        "type": "array"
+      },
       "Type__File": {
         "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the file.\n\nCorresponds to [W3C PROV `prov:type`](https://www.w3.org/TR/prov-dm/#term-attribute-type).\n",
+        "display_name": "Type",
+        "items": {
+          "format": "uri",
+          "type": "string"
+        },
+        "minItems": 1,
+        "name": "Type",
+        "type": "array"
+      },
+      "Type__ProvEntity": {
+        "description": "Term(s) from (a) controlled vocabulary/vocabularies that more specifically\ndescribes the prov:Entity.\n\nCorresponds to [W3C PROV `prov:type`](https://www.w3.org/TR/prov-dm/#term-attribute-type).\n",
         "display_name": "Type",
         "items": {
           "format": "uri",
