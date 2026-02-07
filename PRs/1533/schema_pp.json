@@ -1,5 +1,5 @@
 {
-  "bids_version": "1.10.2-dev",
+  "bids_version": "1.11.1-dev",
   "meta": {
     "associations": {
       "aslcontext": {
@@ -1428,6 +1428,7 @@
       }
     },
     "versions": [
+      "1.11.0",
       "1.10.1",
       "1.10.0",
       "1.9.0",
@@ -18094,8 +18095,9 @@
             },
             "selectors": [
               "dataset.dataset_description.DatasetType == \"derivative\"",
-              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.tpl])",
-              "type(entities.space) == 'null' || !intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.space])\n"
+              "\"template\" in entities",
+              "type(entities.space) == 'null'",
+              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.template])"
             ]
           }
         },
@@ -18191,8 +18193,7 @@
             "selectors": [
               "dataset.dataset_description.DatasetType == \"derivative\"",
               "\"space\" in entities",
-              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.space])",
-              "type(entities.tpl) == 'null' || !intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.tpl])"
+              "!intersects(schema.objects.enums._StandardTemplateCoordSys.enum, [entities.space])"
             ]
           }
         }
@@ -21028,5 +21029,5 @@
       }
     }
   },
-  "schema_version": "1.2.0-dev"
+  "schema_version": "1.3.0-dev"
 }
