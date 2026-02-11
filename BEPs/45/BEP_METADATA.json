@@ -1,0 +1,9 @@
+{
+  "bep_number": "45",
+  "title": "Peripheral Physiological Recordings",
+  "pr_number": 2267,
+  "pull_request": "https://github.com/bids-standard/bids-specification/pull/2267",
+  "google_doc": "https://docs.google.com/document/d/1oTfjzY5ZnLIYd0kPPWhR81sBmMuy_jC5YYIaqj6OhSA/edit",
+  "status": "review",
+  "authors_count": 3
+}
