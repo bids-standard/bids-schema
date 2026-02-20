@@ -1,0 +1,33 @@
+---
+func:
+  suffixes:
+    - bold
+    - cbv
+    - sbref
+  extensions:
+    - .nii.gz
+    - .nii
+    - .json
+  datatypes:
+    - func
+  entities:
+    $ref:
+      - meta.templates.raw.epi.entities
+      - meta.templates.raw.task.entities
+    echo: optional
+
+norf:
+  $ref: rules.files.raw.func.func
+  suffixes:
+    - noRF
+  entities:
+    $ref: rules.files.raw.func.func.entities
+    modality: optional
+
+phase:
+  $ref: rules.files.raw.func.func
+  suffixes:
+    - phase # deprecated
+  entities:
+    $ref: rules.files.raw.func.func.entities
+    part: null

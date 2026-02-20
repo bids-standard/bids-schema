@@ -1,0 +1,10 @@
+---
+nirs:
+  $ref: meta.templates.raw.task
+  suffixes:
+    - nirs
+  extensions:
+    - .snirf
+    - .json
+  datatypes:
+    - nirs

@@ -1,0 +1,24 @@
+---
+pet:
+  suffixes:
+    - pet
+  extensions:
+    - .nii.gz
+    - .nii
+    - .json
+  datatypes:
+    - pet
+  entities:
+    $ref: meta.templates.raw.pet.entities
+
+blood:
+  suffixes:
+    - blood
+  extensions:
+    - .tsv
+    - .json
+  datatypes:
+    - pet
+  entities:
+    $ref: meta.templates.raw.pet.entities
+    recording: required

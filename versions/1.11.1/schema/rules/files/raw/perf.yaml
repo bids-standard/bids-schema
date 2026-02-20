@@ -1,0 +1,50 @@
+---
+asl:
+  suffixes:
+    - asl
+    - m0scan
+  extensions:
+    - .nii.gz
+    - .nii
+    - .json
+  datatypes:
+    - perf
+  entities:
+    $ref: meta.templates.raw.epi.entities
+    echo: optional
+    ceagent: null
+    chunk: null
+
+aslcontext:
+  suffixes:
+    - aslcontext
+  extensions:
+    - .tsv
+  datatypes:
+    - perf
+  entities:
+    $ref: meta.templates.raw.epi.entities
+    ceagent: null
+    part: null
+    chunk: null
+
+asllabeling:
+  suffixes:
+    - asllabeling
+  extensions:
+    - .jpg
+    - .png
+    - .tif
+  datatypes:
+    - perf
+  entities:
+    $ref: meta.templates.raw.recording.entities
+    reconstruction: optional
+
+norf:
+  $ref: rules.files.raw.perf.asl
+  suffixes:
+    - noRF
+  entities:
+    $ref: rules.files.raw.perf.asl.entities
+    modality: optional
