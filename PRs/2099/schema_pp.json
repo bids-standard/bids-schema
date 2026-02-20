@@ -4535,7 +4535,7 @@
               "name": "Command"
             },
             "Description": {
-              "description": "Plain-text description of the activity.\n\nRECOMMENDED if `Command` is set to `null`.\n",
+              "description": "Plain-text extended description of the activity.\n\nRECOMMENDED if `Command` is set to `null`.\n\nCorresponds to [RDF Schema `rdfs:comment`](https://www.w3.org/TR/rdf-schema/#ch_comment).\n",
               "name": "Description",
               "type": "string"
             },
