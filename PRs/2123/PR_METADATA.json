@@ -1,8 +1,8 @@
 {
   "pr_number": "2123",
-  "git_ref": "08d912cd9f1c056bf6c1269b83c17377c3438fca",
-  "last_commit": "08d912cd9f1c056bf6c1269b83c17377c3438fca",
-  "last_updated": "2026-02-06T02:42:20Z",
+  "git_ref": "767ca682de4bbc42342e56805a34ee2d795523dd",
+  "last_commit": "767ca682de4bbc42342e56805a34ee2d795523dd",
+  "last_updated": "2026-02-22T02:48:31Z",
   "has_schema_changes": true,
   "build_status": "success",
   "authors_count": 5
