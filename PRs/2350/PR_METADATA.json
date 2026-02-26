@@ -1,0 +1,11 @@
+{
+  "pr_number": "2350",
+  "git_ref": "684d097f40624217e10cc1a8d63c4f9057ae4a2c",
+  "last_commit": "684d097f40624217e10cc1a8d63c4f9057ae4a2c",
+  "last_updated": "2026-02-26T02:41:49Z",
+  "has_schema_changes": true,
+  "build_status": "failed",
+  "error_message": "TypeError: string indices must be integers, not 'str'",
+  "error_log": "bst-output.log",
+  "authors_count": 1
+}

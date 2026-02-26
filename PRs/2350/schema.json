@@ -1,0 +1,7 @@
+{
+  "error": "Schema build failed",
+  "message": "TypeError: string indices must be integers, not 'str'",
+  "pr_number": "2350",
+  "timestamp": "2026-02-26T02:41:49Z",
+  "log_file": "bst-output.log"
+}
