@@ -1,5 +1,5 @@
 {
-  "bids_version": "1.11.1-dev",
+  "bids_version": "1.11.2-dev",
   "meta": {
     "associations": {
       "aslcontext": {
@@ -1428,6 +1428,7 @@
       }
     },
     "versions": [
+      "1.11.1",
       "1.11.0",
       "1.10.1",
       "1.10.0",
@@ -17237,6 +17238,7 @@
             "datatypes": [
               "beh",
               "eeg",
+              "emg",
               "ieeg",
               "nirs"
             ],
