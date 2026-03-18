@@ -17809,8 +17809,10 @@
           "timeseries": {
             "datatypes": [
               "beh",
+              "ecephys",
               "eeg",
               "emg",
+              "icephys",
               "ieeg",
               "nirs"
             ],
@@ -19892,9 +19894,9 @@
       "microephys": {
         "microephysInstitutionInformation": {
           "fields": {
-            "InstitutionAddress": "recommended",
+            "InstitutionAddress": "optional",
             "InstitutionName": "recommended",
-            "InstitutionalDepartmentName": "recommended"
+            "InstitutionalDepartmentName": "optional"
           },
           "selectors": [
             "intersects([datatype], [\"ecephys\", \"icephys\"])",
@@ -19903,11 +19905,11 @@
         },
         "microephysPharmaceuticals": {
           "fields": {
-            "PharmaceuticalDoseAmount": "recommended",
-            "PharmaceuticalDoseRegimen": "recommended",
-            "PharmaceuticalDoseTime": "recommended",
-            "PharmaceuticalDoseUnits": "recommended",
-            "PharmaceuticalName": "recommended"
+            "PharmaceuticalDoseAmount": "optional",
+            "PharmaceuticalDoseRegimen": "optional",
+            "PharmaceuticalDoseTime": "optional",
+            "PharmaceuticalDoseUnits": "optional",
+            "PharmaceuticalName": "optional"
           },
           "selectors": [
             "intersects([datatype], [\"ecephys\", \"icephys\"])",
@@ -19930,7 +19932,7 @@
             "BodyPartDetails": "recommended",
             "BodyPartDetailsOntology": "optional",
             "SampleEmbedding": "optional",
-            "SampleEnvironment": "recommended",
+            "SampleEnvironment": "optional",
             "SampleExtractionProtocol": "optional",
             "SliceThickness": "optional"
           },
@@ -19943,7 +19945,7 @@
           "fields": {
             "DeviceSerialNumber": {
               "description_addendum": "The serial number of the components of the setup,\nrecommended to add serial numbers and versions of\nALL components constituting the setup.\n",
-              "level": "recommended"
+              "level": "optional"
             },
             "EpochLength": {
               "level": "optional",
@@ -19953,11 +19955,11 @@
               "description_addendum": "For example, `\"TDT\"`, `\"Blackrock\"`.",
               "level": "recommended"
             },
-            "ManufacturersModelName": "recommended",
-            "ManufacturersModelVersion": "recommended",
+            "ManufacturersModelName": "optional",
+            "ManufacturersModelVersion": "optional",
             "PowerLineFrequency": "required",
             "RecordingDuration": "recommended",
-            "RecordingSetupName": "recommended",
+            "RecordingSetupName": "optional",
             "RecordingType": "recommended",
             "SamplingFrequency": {
               "description_addendum": "Internal (maximum) sampling frequency (in Hz)\nof the recording (for example, \"24000\").\n",
@@ -19965,9 +19967,9 @@
             },
             "SoftwareName": {
               "description_addendum": "The name of the software suite used to\nrecord the data.\n",
-              "level": "recommended"
+              "level": "optional"
             },
-            "SoftwareVersions": "recommended"
+            "SoftwareVersions": "optional"
           },
           "selectors": [
             "intersects([datatype], [\"ecephys\", \"icephys\"])",
@@ -19985,16 +19987,16 @@
         },
         "microephysTaskInformation": {
           "fields": {
-            "CogAtlasID": "recommended",
-            "CogPOID": "recommended",
+            "CogAtlasID": "optional",
+            "CogPOID": "optional",
             "Instructions": {
               "description_addendum": "This is especially important in context of resting state recordings and\ndistinguishing between eyes open and eyes closed paradigms.\n",
-              "level": "recommended"
+              "level": "optional"
             },
-            "TaskDescription": "recommended",
+            "TaskDescription": "optional",
             "TaskName": {
               "description_addendum": "A recommended convention is to name resting state task using labels\nbeginning with `rest`.\n",
-              "level": "recommended"
+              "level": "optional"
             }
           },
           "selectors": [
@@ -21623,9 +21625,9 @@
             "low_cutoff": "optional",
             "name__channels": "required",
             "notch": "optional",
-            "recording_mode": "recommended",
+            "recording_mode": "optional",
             "reference__microephys": "optional",
-            "sampling_frequency": "optional",
+            "sampling_frequency": "required",
             "software_filter_types": "optional",
             "status": "optional",
             "status_description": "optional",
@@ -21657,7 +21659,7 @@
             "electrode_shape": "optional",
             "external_pipette_diameter": "optional",
             "hemisphere": "recommended",
-            "impedance": "recommended",
+            "impedance": "optional",
             "internal_pipette_diameter": "optional",
             "location": "recommended",
             "material": "optional",
@@ -21712,13 +21714,13 @@
             "associated_brain_region_quality_type": "recommended",
             "coordinate_reference_point": "recommended",
             "depth__probes": "optional",
-            "device_serial_number": "recommended",
+            "device_serial_number": "optional",
             "electrode_count": "optional",
             "height__probes": "optional",
             "hemisphere__probes": "recommended",
             "manufacturer__probes": "recommended",
             "material__probes": "optional",
-            "model__probes": "recommended",
+            "model__probes": "optional",
             "probe_name": "required",
             "reference_atlas": "recommended",
             "rotation_angle": "recommended",
