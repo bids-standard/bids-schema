@@ -482,28 +482,24 @@
               },
               "type": "array"
             },
-            "subjects": {
-              "additionalProperties": false,
-              "description": "Collections of subjects in dataset",
-              "properties": {
-                "participant_id": {
-                  "description": "The participant_id column of participants.tsv",
-                  "items": {
-                    "type": "string"
-                  },
-                  "type": "array"
+            "participants_tsv": {
+              "additionalProperties": {
+                "items": {
+                  "type": "string"
                 },
-                "sub_dirs": {
-                  "description": "Subjects as determined by sub-* directories",
-                  "items": {
-                    "type": "string"
-                  },
-                  "type": "array"
-                }
+                "type": "array"
               },
-              "required": [
-                "sub_dirs"
-              ],
+              "description": "Contents of /participants.tsv, accessed by column header",
+              "type": "object"
+            },
+            "sessions_tsv": {
+              "additionalProperties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "description": "Contents of /sessions.tsv, accessed by column header",
               "type": "object"
             },
             "tree": {
@@ -516,8 +512,7 @@
             "tree",
             "ignored",
             "datatypes",
-            "modalities",
-            "subjects"
+            "modalities"
           ],
           "type": "object"
         },
@@ -893,6 +888,10 @@
         "result": false
       },
       {
+        "expression": "glob(null)",
+        "result": null
+      },
+      {
         "expression": "allequal([], null)",
         "result": false
       },
@@ -934,6 +933,22 @@
       },
       {
         "expression": "unique(null)",
+        "result": null
+      },
+      {
+        "expression": "zip([], null)",
+        "result": null
+      },
+      {
+        "expression": "zip(null, [])",
+        "result": null
+      },
+      {
+        "expression": "zip(null, [1])",
+        "result": null
+      },
+      {
+        "expression": "zip([1], null)",
         "result": null
       },
       {
@@ -1196,6 +1211,43 @@
         "expression": "unique([1.0, 1])",
         "result": [
           1.0
+        ]
+      },
+      {
+        "expression": "zip([1, 2, 3], [4, 5, 6])",
+        "result": [
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            3,
+            6
+          ]
+        ]
+      },
+      {
+        "expression": "zip([1, 2, 3], [4, 5, 6], [7, 8, 9])",
+        "result": [
+          [
+            1,
+            4,
+            7
+          ],
+          [
+            2,
+            5,
+            8
+          ],
+          [
+            3,
+            6,
+            9
+          ]
         ]
       }
     ],
@@ -10374,7 +10426,7 @@
       "dataset": {
         "NoSubjectFolders": {
           "checks": [
-            "length(dataset.subjects.sub_dirs) == 0"
+            "length(glob(\"sub-*\")) == 0"
           ],
           "issue": {
             "code": "NOSUBJECT_FOLDERS",
@@ -10388,7 +10440,7 @@
         },
         "ParticipantIDMismatch": {
           "checks": [
-            "length(intersects(unique(columns.participant_id), dataset.subjects.sub_dirs)) ==\nlength(dataset.subjects.sub_dirs)\n"
+            "length(intersects(columns.participant_id, glob(\"sub-*\")))\n== length(glob(\"sub-*\"))\n"
           ],
           "issue": {
             "code": "PARTICIPANT_ID_MISMATCH",
@@ -10457,7 +10509,7 @@
         },
         "SubjectFolders": {
           "checks": [
-            "length(dataset.subjects.sub_dirs) > 0"
+            "length(glob(\"sub-*\")) > 0"
           ],
           "issue": {
             "code": "SUBJECT_FOLDERS",
@@ -11107,6 +11159,53 @@
           "selectors": [
             "match(path, '^/README')"
           ]
+        },
+        "SegregatedSessions": {
+          "checks": [
+            "type(entities.subject) == 'null'"
+          ],
+          "issue": {
+            "code": "SEGREGATED_SESSIONS",
+            "level": "error",
+            "message": "Session files were detected outside the dataset root and\n\"Phenotype\" additional validation has been enabled.\nAggregate session data in a root-level `sessions.tsv` file.\n"
+          },
+          "selectors": [
+            "suffix == 'sessions'",
+            "extension == '.tsv'",
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
+          ]
+        },
+        "SessionRequired": {
+          "checks": [
+            "type(entities.session) != 'null'"
+          ],
+          "issue": {
+            "code": "SESSION_REQUIRED",
+            "level": "error",
+            "message": "Multi-session data is detected in the dataset, and\n\"Phenotype\" additional validation has been enabled.\nEvery data file MUST be found in a session directory.\n"
+          },
+          "selectors": [
+            "type(entities.subject) != 'null'",
+            "!intersects([extension], ['.tsv', '.json'])",
+            "type(dataset.sessions_tsv) != 'null'",
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
+          ]
+        },
+        "SessionsTSVRequired": {
+          "checks": [
+            "type(dataset.sessions_tsv) != 'null'"
+          ],
+          "issue": {
+            "code": "SESSIONS_TSV_REQUIRED",
+            "level": "error",
+            "location": "/sessions.tsv",
+            "message": "Multi-session data is detected in the dataset, and\n\"Phenotype\" additional validation has been enabled.\nA sessions.tsv file MUST exist in the dataset root.\n"
+          },
+          "selectors": [
+            "!intersects([extension], ['.tsv', '.json'])",
+            "type(entities.session) != 'null'",
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
+          ]
         }
       },
       "hints": {
@@ -11738,9 +11837,87 @@
         }
       },
       "phenotype": {
+        "PhenotypeSessionAggregation": {
+          "checks": [
+            "!exists('sessions.tsv', 'dataset')"
+          ],
+          "issue": {
+            "code": "PHENOTYPE_SESSION_AGGREGATION",
+            "level": "error",
+            "message": "Participant-level sessions files (sub-<label>_sessions.tsv) must not exist\nwhen a root sessions.tsv file is present. Session information should be\naggregated in the root sessions.tsv file.\n"
+          },
+          "selectors": [
+            "suffix == 'sessions'",
+            "extension == '.tsv'",
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
+            "type(entities.subject) != 'null'"
+          ]
+        },
+        "PhenotypeSessionFileRequired": {
+          "checks": [
+            "exists('sessions.tsv', 'dataset')"
+          ],
+          "issue": {
+            "code": "PHENOTYPE_SESSION_FILE_REQUIRED",
+            "level": "error",
+            "message": "A phenotype TSV file contains a session_id column but no sessions.tsv file\nwas found at the dataset root. A sessions.tsv file is required to define\nvalid session labels.\n"
+          },
+          "selectors": [
+            "datatype == 'phenotype'",
+            "extension == '.tsv'",
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
+            "type(columns.session_id) != 'null'"
+          ]
+        },
+        "PhenotypeSessionLevels": {
+          "checks": [
+            "type(sidecar.session_id.Levels) != 'null'"
+          ],
+          "issue": {
+            "code": "PHENOTYPE_SESSION_LEVELS",
+            "level": "error",
+            "message": "The sessions.tsv sidecar must include a Levels field for session_id\nto define valid session labels and their descriptions.\n"
+          },
+          "selectors": [
+            "suffix == 'sessions'",
+            "extension == '.tsv'",
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
+          ]
+        },
+        "PhenotypeSessionsMissing": {
+          "checks": [
+            "exists('sessions.tsv', 'dataset')"
+          ],
+          "issue": {
+            "code": "PHENOTYPE_SESSIONS_MISSING",
+            "level": "error",
+            "message": "Session directories were found in this dataset but no sessions.tsv file\nexists at the dataset root. A sessions.tsv file is required when session\ndirectories are present and Phenotype validation is enabled.\n"
+          },
+          "selectors": [
+            "path == '/dataset_description.json'",
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
+            "length(glob(\"sub-*/ses-*\")) > 0"
+          ]
+        },
+        "PhenotypeSessionsRequired": {
+          "checks": [
+            "type(columns.session_id) != 'null'"
+          ],
+          "issue": {
+            "code": "PHENOTYPE_SESSIONS_REQUIRED",
+            "level": "error",
+            "message": "Phenotype TSV files must have a session_id column if a dataset contains multiple sessions.\n"
+          },
+          "selectors": [
+            "datatype == 'phenotype'",
+            "extension == '.tsv'",
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
+            "type(dataset.session_tsv) != 'null'"
+          ]
+        },
         "PhenotypeSubjectsMissing": {
           "checks": [
-            "allequal(\n  sorted(intersects(columns.participant_id, dataset.subjects.participant_id)),\n  sorted(dataset.subjects.participant_id)\n)\n"
+            "length(intersects(columns.participant_id, dataset.participant_tsv.participant_id))\n== length(unique(columns.participant_id))\n"
           ],
           "issue": {
             "code": "PHENOTYPE_SUBJECTS_MISSING",
@@ -11749,8 +11926,8 @@
           },
           "selectors": [
             "datatype == 'phenotype'",
-            "suffix == '.tsv'",
-            "type(dataset.subjects.participant_id) != 'null'"
+            "extension == '.tsv'",
+            "type(dataset.participant_tsv.participant_id) != 'null'"
           ]
         }
       },
