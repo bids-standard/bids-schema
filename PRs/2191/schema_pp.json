@@ -12199,16 +12199,16 @@
           "name": "phenotype",
           "opaque": false
         },
-        "rawdata": {
+        "rawbids": {
           "level": "optional",
-          "name": "rawdata",
+          "name": "rawbids",
           "opaque": true
         },
         "root": {
           "subdirs": [
             "code",
             "docs",
-            "rawdata",
+            "rawbids",
             "derivatives",
             "logs",
             "sourcedata",
