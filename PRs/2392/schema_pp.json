@@ -1280,7 +1280,7 @@
           "extensions": [
             ".nii.gz",
             ".nii",
-            ".ome.zarr",
+            ".ome.zarr/",
             ".json"
           ],
           "selectors": [
@@ -1349,7 +1349,7 @@
           "extensions": [
             ".nii.gz",
             ".nii",
-            ".ome.zarr",
+            ".ome.zarr/",
             ".json"
           ],
           "selectors": [
@@ -12610,7 +12610,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -12643,7 +12643,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -12822,7 +12822,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -12857,7 +12857,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -12889,7 +12889,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -12923,7 +12923,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -12956,7 +12956,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -12991,7 +12991,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13025,7 +13025,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13061,7 +13061,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13093,7 +13093,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13127,7 +13127,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13160,7 +13160,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13195,7 +13195,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13227,7 +13227,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13261,7 +13261,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13293,7 +13293,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13338,7 +13338,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13379,7 +13379,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13426,7 +13426,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13547,7 +13547,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13584,7 +13584,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13683,7 +13683,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13715,7 +13715,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13746,7 +13746,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13779,7 +13779,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13877,7 +13877,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13907,7 +13907,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13936,7 +13936,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13972,7 +13972,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14010,7 +14010,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14048,7 +14048,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14083,7 +14083,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14117,7 +14117,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14150,7 +14150,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14185,7 +14185,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14218,7 +14218,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14253,7 +14253,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14280,7 +14280,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14315,7 +14315,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14350,7 +14350,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14382,7 +14382,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14414,7 +14414,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14447,7 +14447,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14478,7 +14478,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14511,7 +14511,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14619,7 +14619,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14653,7 +14653,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14685,7 +14685,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14792,7 +14792,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14829,7 +14829,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14861,7 +14861,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14894,7 +14894,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14923,7 +14923,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14951,7 +14951,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -15556,7 +15556,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15582,7 +15582,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15609,7 +15609,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15637,7 +15637,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15663,7 +15663,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15690,7 +15690,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15716,7 +15716,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15742,7 +15742,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15777,7 +15777,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15820,7 +15820,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16102,7 +16102,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16131,7 +16131,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json",
               ".bvec",
               ".bval"
@@ -16157,7 +16157,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16365,7 +16365,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16394,7 +16394,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16421,7 +16421,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16448,7 +16448,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16469,7 +16469,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16498,7 +16498,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16524,7 +16524,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json",
               ".bval",
               ".bvec"
@@ -16551,7 +16551,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16580,7 +16580,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16610,7 +16610,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16636,7 +16636,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16919,7 +16919,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16984,7 +16984,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -17029,7 +17029,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
-              ".ome.zarr",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
