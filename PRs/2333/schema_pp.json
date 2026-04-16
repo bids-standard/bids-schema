@@ -6990,7 +6990,7 @@
         "type": "integer"
       },
       "MISCChannelCount": {
-        "description": "Number of miscellaneous channels not covered otherwise.\n",
+        "description": "Number of miscellaneous channels not covered otherwise.\n\nDeprecated alias of `MiscChannelCount`. New datasets SHOULD use\n`MiscChannelCount`.\n",
         "display_name": "Miscellaneous channel count",
         "minimum": 0,
         "name": "MISCChannelCount",
@@ -18269,7 +18269,8 @@
             },
             "HardwareFilters": "recommended",
             "HeadCircumference": "recommended",
-            "MISCChannelCount": "recommended",
+            "MISCChannelCount": "deprecated",
+            "MiscChannelCount": "recommended",
             "RecordingDuration": "recommended",
             "RecordingType": "recommended",
             "SubjectArtefactDescription": "recommended",
@@ -19098,7 +19099,8 @@
             "JNTANGChannelCount": "recommended",
             "LATENCYChannelCount": "recommended",
             "MAGNChannelCount": "recommended",
-            "MISCChannelCount": "recommended",
+            "MISCChannelCount": "deprecated",
+            "MiscChannelCount": "recommended",
             "MissingValues": "recommended",
             "MotionChannelCount": "recommended",
             "ORNTChannelCount": "recommended",
