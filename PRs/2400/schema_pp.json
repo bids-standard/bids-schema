@@ -1481,7 +1481,7 @@
       },
       "age": {
         "definition": {
-          "Description": "Subject postnatal age (by default in years)",
+          "Description": "Subject postnatal age",
           "Format": "number",
           "LongName": "Subject age",
           "Maximum": 89,
@@ -9729,8 +9729,8 @@
         "value": "events"
       },
       "expADC": {
-        "description": "Exponental ADC / Attenuation Coefficient / Attenuation Factor map,\nas the ratio of trace-weighted to non-diffusion-weighted image intensity\n",
-        "display_name": "Exponental ADC",
+        "description": "Exponential ADC / Attenuation Coefficient / Attenuation Factor map,\nas the ratio of trace-weighted to non-diffusion-weighted image intensity\n",
+        "display_name": "Exponential ADC",
         "value": "expADC"
       },
       "fieldmap": {
@@ -10351,18 +10351,16 @@
       "dataset": {
         "AgeUnits": {
           "checks": [
-            "intersects([json.age.Units], [\"year\", \"month\", \"week\", \"day\", \"hour\", \"minute\", \"second\"])"
+            "intersects([sidecar.age.Units], [\"year\", \"month\", \"week\", \"day\", \"hour\", \"minute\", \"second\"])"
           ],
           "issue": {
             "code": "AGE_UNITS",
-            "level": "error",
+            "level": "warning",
             "message": "The \"Units\" value for age in 'participants.json' is not a valid\nISO 8601-based duration unit.\nAllowed values are \"year\", \"month\", \"week\", \"day\", \"hour\", \"minute\",\nor \"second\".\n"
           },
           "selectors": [
-            "path == '/participants.json'",
-            "\"age\" in json",
-            "type(json.age) != 'null'",
-            "\"Units\" in json.age"
+            "path == '/participants.tsv'",
+            "\"Units\" in sidecar.age"
           ]
         },
         "NoSubjectFolders": {
@@ -10442,7 +10440,7 @@
           "issue": {
             "code": "SINGLE_SOURCE_CITATION_FIELDS",
             "level": "warning",
-            "message": "CITATION.cff file found.\nThe \"HowToAckowledge\", \"License\", and \"ReferencesAndLinks\" fields of\n'dataset_description.json' should be removed to avoid inconsistency.\n"
+            "message": "CITATION.cff file found.\nThe \"HowToAcknowledge\", \"License\", and \"ReferencesAndLinks\" fields of\n'dataset_description.json' should be removed to avoid inconsistency.\n"
           },
           "selectors": [
             "path == '/CITATION.cff'"
@@ -17954,7 +17952,7 @@
             },
             "BolusCutOffTechnique": {
               "issue": {
-                "code": "PASL_BOLUS_CUT_OFF_TECHINIQUE",
+                "code": "PASL_BOLUS_CUT_OFF_TECHNIQUE",
                 "message": "It is required to define `BolusCutOffTechnique` for this file,\nwhen `BolusCutOffFlag` is set to `true`. `BolusCutOffTechnique`,\nis the name of the technique used\n(for example, Q2TIPS, QUIPSS or QUIPSSII).\nCorresponds to DICOM Tag 0018,925E `ASL Bolus Cut-off Technique`.\n"
               },
               "level": "required"
