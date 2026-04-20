@@ -12096,13 +12096,25 @@
           "name": "logs",
           "opaque": true
         },
+        "phenotype": {
+          "level": "optional",
+          "name": "phenotype",
+          "opaque": false
+        },
+        "rawbids": {
+          "level": "optional",
+          "name": "rawbids",
+          "opaque": true
+        },
         "root": {
           "subdirs": [
             "code",
             "docs",
+            "rawbids",
             "derivatives",
             "logs",
-            "sourcedata"
+            "sourcedata",
+            "phenotype"
           ]
         },
         "sourcedata": {
