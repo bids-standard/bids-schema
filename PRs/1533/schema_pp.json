@@ -6976,7 +6976,7 @@
         "type": "integer"
       },
       "MISCChannelCount": {
-        "description": "Number of miscellaneous channels not covered otherwise.\n",
+        "description": "Number of miscellaneous channels not covered otherwise.\n\nDeprecated alias of `MiscChannelCount`. New datasets SHOULD use\n`MiscChannelCount`.\n",
         "display_name": "Miscellaneous channel count",
         "minimum": 0,
         "name": "MISCChannelCount",
@@ -9749,8 +9749,8 @@
         "value": "events"
       },
       "expADC": {
-        "description": "Exponental ADC / Attenuation Coefficient / Attenuation Factor map,\nas the ratio of trace-weighted to non-diffusion-weighted image intensity\n",
-        "display_name": "Exponental ADC",
+        "description": "Exponential ADC / Attenuation Coefficient / Attenuation Factor map,\nas the ratio of trace-weighted to non-diffusion-weighted image intensity\n",
+        "display_name": "Exponential ADC",
         "value": "expADC"
       },
       "fieldmap": {
@@ -10446,7 +10446,7 @@
           "issue": {
             "code": "SINGLE_SOURCE_CITATION_FIELDS",
             "level": "warning",
-            "message": "CITATION.cff file found.\nThe \"HowToAckowledge\", \"License\", and \"ReferencesAndLinks\" fields of\n'dataset_description.json' should be removed to avoid inconsistency.\n"
+            "message": "CITATION.cff file found.\nThe \"HowToAcknowledge\", \"License\", and \"ReferencesAndLinks\" fields of\n'dataset_description.json' should be removed to avoid inconsistency.\n"
           },
           "selectors": [
             "path == '/CITATION.cff'"
@@ -12214,13 +12214,25 @@
           "name": "logs",
           "opaque": true
         },
+        "phenotype": {
+          "level": "optional",
+          "name": "phenotype",
+          "opaque": false
+        },
+        "rawbids": {
+          "level": "optional",
+          "name": "rawbids",
+          "opaque": true
+        },
         "root": {
           "subdirs": [
             "code",
             "docs",
+            "rawbids",
             "derivatives",
             "logs",
-            "sourcedata"
+            "sourcedata",
+            "phenotype"
           ]
         },
         "sourcedata": {
@@ -17958,7 +17970,7 @@
             },
             "BolusCutOffTechnique": {
               "issue": {
-                "code": "PASL_BOLUS_CUT_OFF_TECHINIQUE",
+                "code": "PASL_BOLUS_CUT_OFF_TECHNIQUE",
                 "message": "It is required to define `BolusCutOffTechnique` for this file,\nwhen `BolusCutOffFlag` is set to `true`. `BolusCutOffTechnique`,\nis the name of the technique used\n(for example, Q2TIPS, QUIPSS or QUIPSSII).\nCorresponds to DICOM Tag 0018,925E `ASL Bolus Cut-off Technique`.\n"
               },
               "level": "required"
@@ -18273,7 +18285,8 @@
             },
             "HardwareFilters": "recommended",
             "HeadCircumference": "recommended",
-            "MISCChannelCount": "recommended",
+            "MISCChannelCount": "deprecated",
+            "MiscChannelCount": "recommended",
             "RecordingDuration": "recommended",
             "RecordingType": "recommended",
             "SubjectArtefactDescription": "recommended",
@@ -19102,7 +19115,8 @@
             "JNTANGChannelCount": "recommended",
             "LATENCYChannelCount": "recommended",
             "MAGNChannelCount": "recommended",
-            "MISCChannelCount": "recommended",
+            "MISCChannelCount": "deprecated",
+            "MiscChannelCount": "recommended",
             "MissingValues": "recommended",
             "MotionChannelCount": "recommended",
             "ORNTChannelCount": "recommended",
