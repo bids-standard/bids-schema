@@ -1925,7 +1925,7 @@
         "unit": "s"
       },
       "run_id": {
-        "description": "A run identifier that corresponds to an existing `run-<index>` entity used in a filename(s).\n",
+        "description": "A run identifier of the form `run-<index>`,\nused to distinguish separate acquisitions with the otherwise same properties.\n",
         "display_name": "Run ID",
         "name": "run_id",
         "pattern": "^run-[0-9]+$",
