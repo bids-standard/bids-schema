@@ -16976,7 +16976,6 @@
               ".tsv",
               ".json"
             ],
-            "selectors": null,
             "suffixes": [
               "blood"
             ]
@@ -16998,7 +16997,6 @@
               ".nii",
               ".json"
             ],
-            "selectors": null,
             "suffixes": [
               "pet"
             ]
