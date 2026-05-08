@@ -1506,13 +1506,13 @@
       },
       "age": {
         "definition": {
-          "Description": "Subject age in postnatal years",
+          "Description": "Subject postnatal age",
           "Format": "number",
           "LongName": "Subject age",
           "Maximum": 89,
           "Units": "year"
         },
-        "description": "Numeric value in years (float or integer value).\n\nFor privacy purposes, participant ages should be capped at 89.\nUsing \"89+\" for ages above 88 is DEPRECATED.\n",
+        "description": "Numeric value (float or integer value).\nBy default expressed using \"year\" as the unit. Other possible \"Units\" are described in\n[Units](SPEC_ROOT/common-principles.md#units).\n\nFor privacy purposes, participant ages should be capped at 89 years.\nUsing \"89+\" for ages above 88 is DEPRECATED.\n",
         "display_name": "Subject age",
         "name": "age"
       },
@@ -10374,6 +10374,20 @@
         }
       },
       "dataset": {
+        "AgeUnits": {
+          "checks": [
+            "intersects([sidecar.age.Units], [\"year\", \"month\", \"week\", \"day\", \"hour\", \"minute\", \"second\"])"
+          ],
+          "issue": {
+            "code": "AGE_UNITS",
+            "level": "warning",
+            "message": "The \"Units\" value for age in 'participants.json' is not a valid\nISO 8601-based duration unit.\nAllowed values are \"year\", \"month\", \"week\", \"day\", \"hour\", \"minute\",\nor \"second\".\n"
+          },
+          "selectors": [
+            "path == '/participants.tsv'",
+            "\"Units\" in sidecar.age"
+          ]
+        },
         "NoSubjectFolders": {
           "checks": [
             "length(dataset.subjects.sub_dirs) == 0"
@@ -12073,10 +12087,16 @@
           "name": "phenotype",
           "opaque": false
         },
+        "rawbids": {
+          "level": "optional",
+          "name": "rawbids",
+          "opaque": true
+        },
         "root": {
           "subdirs": [
             "code",
             "docs",
+            "rawbids",
             "derivatives",
             "logs",
             "phenotype",
@@ -19952,8 +19972,7 @@
           "selectors": [
             "datatype == \"pet\"",
             "suffix == \"blood\"",
-            "sidecar.MetaboliteAvail == true",
-            "!(\"tpl\" in entities)"
+            "sidecar.MetaboliteAvail == true"
           ]
         },
         "BloodPlasmaFreeFraction": {
@@ -19970,8 +19989,7 @@
           "selectors": [
             "datatype == \"pet\"",
             "suffix == \"blood\"",
-            "sidecar.PlasmaAvail == true",
-            "!(\"tpl\" in entities)"
+            "sidecar.PlasmaAvail == true"
           ]
         },
         "BloodRecording": {
@@ -19989,8 +20007,7 @@
           },
           "selectors": [
             "datatype == \"pet\"",
-            "suffix == \"blood\"",
-            "!(\"tpl\" in entities)"
+            "suffix == \"blood\""
           ]
         },
         "EntitiesBolusMetadata": {
@@ -20004,8 +20021,7 @@
           "selectors": [
             "datatype == \"pet\"",
             "suffix == \"pet\"",
-            "sidecar.ModeOfAdministration == 'bolus-infusion'",
-            "!(\"tpl\" in entities)"
+            "sidecar.ModeOfAdministration == 'bolus-infusion'"
           ]
         },
         "EntitiesReconFilterMetadata": {
@@ -20015,8 +20031,7 @@
           "selectors": [
             "datatype == \"pet\"",
             "suffix == \"pet\"",
-            "!intersects(sidecar.ReconFilterType, [\"none\"])",
-            "!(\"tpl\" in entities)"
+            "!intersects(sidecar.ReconFilterType, [\"none\"])"
           ]
         },
         "EntitiesReconMethodMetadata": {
@@ -20027,8 +20042,7 @@
           "selectors": [
             "datatype == \"pet\"",
             "suffix == \"pet\"",
-            "!intersects(sidecar.ReconMethodParameterLabels, [\"none\"])",
-            "!(\"tpl\" in entities)"
+            "!intersects(sidecar.ReconMethodParameterLabels, [\"none\"])"
           ]
         },
         "PETHardware": {
@@ -20052,8 +20066,7 @@
           },
           "selectors": [
             "datatype == \"pet\"",
-            "suffix == \"pet\"",
-            "!(\"tpl\" in entities)"
+            "suffix == \"pet\""
           ]
         },
         "PETInstitutionInformation": {
@@ -20073,8 +20086,7 @@
           },
           "selectors": [
             "datatype == \"pet\"",
-            "suffix == \"pet\"",
-            "!(\"tpl\" in entities)"
+            "suffix == \"pet\""
           ]
         },
         "PETPharmaceuticals": {
@@ -20097,8 +20109,7 @@
           },
           "selectors": [
             "datatype == \"pet\"",
-            "suffix == \"pet\"",
-            "!(\"tpl\" in entities)"
+            "suffix == \"pet\""
           ]
         },
         "PETRadioChemistry": {
@@ -20152,8 +20163,7 @@
           },
           "selectors": [
             "datatype == \"pet\"",
-            "suffix == \"pet\"",
-            "!(\"tpl\" in entities)"
+            "suffix == \"pet\""
           ]
         },
         "PETReconstruction": {
@@ -20213,8 +20223,7 @@
           },
           "selectors": [
             "datatype == \"pet\"",
-            "suffix == \"pet\"",
-            "!(\"tpl\" in entities)"
+            "suffix == \"pet\""
           ]
         },
         "PETSample": {
@@ -20228,8 +20237,7 @@
           },
           "selectors": [
             "modality == \"pet\"",
-            "suffix == \"pet\"",
-            "!(\"tpl\" in entities)"
+            "suffix == \"pet\""
           ]
         },
         "PETTask": {
@@ -20248,8 +20256,7 @@
           },
           "selectors": [
             "datatype == \"pet\"",
-            "\"task\" in entities",
-            "!(\"tpl\" in entities)"
+            "\"task\" in entities"
           ]
         },
         "PETTime": {
@@ -20273,8 +20280,7 @@
           },
           "selectors": [
             "datatype == \"pet\"",
-            "suffix == \"pet\"",
-            "!(\"tpl\" in entities)"
+            "suffix == \"pet\""
           ]
         }
       },
