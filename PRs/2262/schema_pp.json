@@ -1481,13 +1481,13 @@
       },
       "age": {
         "definition": {
-          "Description": "Subject age in postnatal years",
+          "Description": "Subject postnatal age",
           "Format": "number",
           "LongName": "Subject age",
           "Maximum": 89,
           "Units": "year"
         },
-        "description": "Numeric value in years (float or integer value).\n\nFor privacy purposes, participant ages should be capped at 89.\nUsing \"89+\" for ages above 88 is DEPRECATED.\n",
+        "description": "Numeric value (float or integer value).\nBy default expressed using \"year\" as the unit. Other possible \"Units\" are described in\n[Units](SPEC_ROOT/common-principles.md#units).\n\nFor privacy purposes, participant ages should be capped at 89 years.\nUsing \"89+\" for ages above 88 is DEPRECATED.\n",
         "display_name": "Subject age",
         "name": "age"
       },
@@ -4700,7 +4700,7 @@
         "type": "string"
       },
       "Authors": {
-        "description": "List of individuals who contributed to the creation/curation of the dataset.\n",
+        "description": "List of contributors to the creation and/or curation of the dataset.\n",
         "display_name": "Authors",
         "items": {
           "type": "string"
@@ -10355,6 +10355,20 @@
         }
       },
       "dataset": {
+        "AgeUnits": {
+          "checks": [
+            "intersects([sidecar.age.Units], [\"year\", \"month\", \"week\", \"day\", \"hour\", \"minute\", \"second\"])"
+          ],
+          "issue": {
+            "code": "AGE_UNITS",
+            "level": "warning",
+            "message": "The \"Units\" value for age in 'participants.json' is not a valid\nISO 8601-based duration unit.\nAllowed values are \"year\", \"month\", \"week\", \"day\", \"hour\", \"minute\",\nor \"second\".\n"
+          },
+          "selectors": [
+            "path == '/participants.tsv'",
+            "\"Units\" in sidecar.age"
+          ]
+        },
         "NoSubjectFolders": {
           "checks": [
             "length(dataset.subjects.sub_dirs) == 0"
@@ -12054,10 +12068,16 @@
           "name": "phenotype",
           "opaque": false
         },
+        "rawbids": {
+          "level": "optional",
+          "name": "rawbids",
+          "opaque": true
+        },
         "root": {
           "subdirs": [
             "code",
             "docs",
+            "rawbids",
             "derivatives",
             "logs",
             "phenotype",
