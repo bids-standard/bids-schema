@@ -4700,7 +4700,7 @@
         "type": "string"
       },
       "Authors": {
-        "description": "List of individuals who contributed to the creation/curation of the dataset.\n",
+        "description": "List of contributors to the creation and/or curation of the dataset.\n",
         "display_name": "Authors",
         "items": {
           "type": "string"
