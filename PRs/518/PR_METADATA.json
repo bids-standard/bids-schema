@@ -1,8 +1,8 @@
 {
   "pr_number": "518",
-  "git_ref": "bc79138c8d1a9523802971db7c23602b373eccea",
-  "last_commit": "bc79138c8d1a9523802971db7c23602b373eccea",
-  "last_updated": "2026-05-08T03:39:23Z",
+  "git_ref": "8bcb4d678f0de6a7f34f775fbbc80468ad618f5f",
+  "last_commit": "8bcb4d678f0de6a7f34f775fbbc80468ad618f5f",
+  "last_updated": "2026-05-11T15:27:31Z",
   "has_schema_changes": true,
   "build_status": "success",
   "authors_count": 2
