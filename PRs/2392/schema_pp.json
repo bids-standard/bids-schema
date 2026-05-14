@@ -11431,6 +11431,20 @@
             "type(nifti_header) != \"null\""
           ]
         },
+        "NiftiLargeVolume": {
+          "checks": [
+            "max([nifti_header.shape[0], nifti_header.shape[1], nifti_header.shape[2]]) <= 1024"
+          ],
+          "issue": {
+            "code": "NIFTI_LARGE_VOLUME",
+            "level": "warning",
+            "message": "NIfTI file has a spatial dimension exceeding 1024 voxels.\nConsider using the OME-Zarr file format, which is better suited\nfor large imaging data.\n"
+          },
+          "selectors": [
+            "type(nifti_header) != \"null\"",
+            "length(nifti_header.shape) >= 3"
+          ]
+        },
         "NiftiPEDir": {
           "checks": [
             "entities.direction[2 - length(sidecar.PhaseEncodingDirection)]\n== nifti_header.axis_codes[index([\"i\", \"j\", \"k\"], sidecar.PhaseEncodingDirection[0])]\n"
