@@ -1203,6 +1203,7 @@
       "atlas": {
         "base": {
           "entities": {
+            "atlas": "optional",
             "cohort": "optional",
             "template": "required"
           }
@@ -1333,6 +1334,23 @@
             "space": "optional",
             "subject": "optional"
           },
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ]
+        },
+        "surface_map": {
+          "entities": {
+            "density": "optional",
+            "description": "optional",
+            "hemisphere": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "extensions": [
+            ".func.gii",
+            ".json"
+          ],
           "selectors": [
             "dataset.dataset_description.DatasetType == 'derivative'"
           ]
@@ -4143,6 +4161,11 @@
         "description": "An MEG file format used by Neuromag, Elekta, and MEGIN.\n",
         "display_name": "Functional Imaging File Format",
         "value": ".fif"
+      },
+      "funcgii": {
+        "description": "A GIFTI functional file.\n\nPer the GIFTI standard: \"[A] functional file contains one or more DataArrays\nwith Intent set to NIFTI_INTENT_NONE or one of the statistical intent values.\nEach DataArray has DataType set to NIFTI_TYPE_FLOAT32.\nDimensionality is one with the first dimension set to the number of nodes.\"\n\nIn practice, this extension is used as a catch-all for scalar data sampled\nto a surface, with the exceptions of labels (`.label.gii`) and\nmorphometry (`.shape.gii`).\n\nThis extension may only be used in derivative datasets.\n",
+        "display_name": "GIFTI functional file",
+        "value": ".func.gii"
       },
       "jpg": {
         "description": "A JPEG image file.\n",
@@ -12655,6 +12678,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -12865,6 +12889,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -12930,6 +12955,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -12995,6 +13021,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13062,6 +13089,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13128,6 +13156,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13193,6 +13222,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13258,6 +13288,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13333,6 +13364,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13421,6 +13453,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13573,6 +13606,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13706,6 +13740,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "chunk": "optional",
               "cohort": "optional",
               "description": "optional",
@@ -13767,6 +13802,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "chunk": "optional",
               "cohort": "optional",
               "description": "optional",
@@ -13958,6 +13994,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "chunk": "optional",
               "cohort": "optional",
               "description": "optional",
@@ -14028,6 +14065,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14096,6 +14134,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14161,6 +14200,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14227,6 +14267,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14293,6 +14334,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "chunk": "optional",
               "cohort": "optional",
               "description": "optional",
@@ -14356,6 +14398,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14417,6 +14460,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14479,6 +14523,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14790,6 +14835,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14856,6 +14902,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "cohort": "optional",
               "description": "optional",
               "direction": "optional",
@@ -14880,6 +14927,63 @@
             "suffixes": [
               "asl",
               "m0scan"
+            ]
+          },
+          "pet_pet_surface": {
+            "datatypes": [
+              "pet"
+            ],
+            "entities": {
+              "density": "optional",
+              "description": "optional",
+              "hemisphere": "optional",
+              "reconstruction": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "tracer": "optional"
+            },
+            "extensions": [
+              ".func.gii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "pet"
+            ]
+          },
+          "pet_pet_surface_atlas": {
+            "datatypes": [
+              "pet"
+            ],
+            "entities": {
+              "atlas": "optional",
+              "cohort": "optional",
+              "density": "optional",
+              "description": "optional",
+              "hemisphere": "optional",
+              "reconstruction": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required",
+              "tracer": "optional"
+            },
+            "extensions": [
+              ".func.gii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "pet"
             ]
           },
           "pet_pet_volumetric": {
@@ -14914,6 +15018,8 @@
               "pet"
             ],
             "entities": {
+              "atlas": "optional",
+              "cohort": "optional",
               "description": "optional",
               "reconstruction": "optional",
               "resolution": "optional",
@@ -14922,6 +15028,7 @@
               "space": "optional",
               "subject": "optional",
               "task": "optional",
+              "template": "required",
               "tracer": "optional"
             },
             "extensions": [
@@ -15374,6 +15481,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "chunk": "optional",
               "cohort": "optional",
               "description": "optional",
