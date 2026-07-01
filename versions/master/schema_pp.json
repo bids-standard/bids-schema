@@ -11947,104 +11947,6 @@
       "extension",
       "deprecated"
     ],
-    "dataset_metadata": {
-      "atlas_description": {
-        "fields": {
-          "AtlasName": "required",
-          "AtlasSampleSize": "optional",
-          "Authors": "recommended",
-          "Curators": "optional",
-          "DerivedFrom": "optional",
-          "Description": "recommended",
-          "Funding": "optional",
-          "LevelType": "optional",
-          "License": "required",
-          "RRID": "optional",
-          "ReferencesAndLinks": "optional",
-          "Species": "optional"
-        },
-        "selectors": [
-          "suffix == 'description'",
-          "extension == '.json'",
-          "entities.atlas"
-        ]
-      },
-      "dataset_authors": {
-        "fields": {
-          "Authors": {
-            "issue": {
-              "code": "NO_AUTHORS",
-              "message": "The Authors field of dataset_description.json should contain an array of fields -\nwith one author per field. This was triggered because there are no authors, which\nwill make DOI registration from dataset metadata impossible.\n"
-            },
-            "level": "recommended"
-          }
-        },
-        "selectors": [
-          "path == \"/dataset_description.json\"",
-          "!exists(\"CITATION.cff\", \"dataset\")"
-        ]
-      },
-      "dataset_description": {
-        "fields": {
-          "Acknowledgements": "optional",
-          "Authors": {
-            "level": "optional",
-            "level_addendum": "recommended if `CITATION.cff` is not present"
-          },
-          "BIDSVersion": "required",
-          "DatasetDOI": "optional",
-          "DatasetLinks": {
-            "level": "optional",
-            "level_addendum": "required if [BIDS URIs](SPEC_ROOT/common-principles.md#bids-uri) are used"
-          },
-          "DatasetType": "recommended",
-          "EthicsApprovals": "optional",
-          "Funding": "optional",
-          "GeneratedBy": "recommended",
-          "HEDVersion": "recommended",
-          "HowToAcknowledge": "optional",
-          "Keywords": "optional",
-          "License": "recommended",
-          "Name": "required",
-          "ReferencesAndLinks": "optional",
-          "SourceDatasets": "recommended"
-        },
-        "selectors": [
-          "path == \"/dataset_description.json\""
-        ]
-      },
-      "dataset_description_with_genetics": {
-        "fields": {
-          "Genetics": "required"
-        },
-        "selectors": [
-          "path == \"/dataset_description.json\"",
-          "exists('genetic_info.json', 'dataset')"
-        ]
-      },
-      "derivative_description": {
-        "fields": {
-          "GeneratedBy": "required"
-        },
-        "selectors": [
-          "path == \"/dataset_description.json\"",
-          "json.DatasetType == \"derivative\""
-        ]
-      },
-      "genetic_info": {
-        "fields": {
-          "AnalyticalApproach": "optional",
-          "BrainLocation": "optional",
-          "CellType": "optional",
-          "GeneticLevel": "required",
-          "SampleOrigin": "required",
-          "TissueOrigin": "optional"
-        },
-        "selectors": [
-          "path == \"/genetic_info.json\""
-        ]
-      }
-    },
     "directories": {
       "derivative": {
         "code": {
@@ -17332,6 +17234,84 @@
       }
     },
     "json": {
+      "atlas": {
+        "atlas_description": {
+          "fields": {
+            "AtlasName": "required",
+            "AtlasSampleSize": "optional",
+            "Authors": "recommended",
+            "Curators": "optional",
+            "DerivedFrom": "optional",
+            "Description": "recommended",
+            "Funding": "optional",
+            "LevelType": "optional",
+            "License": "required",
+            "RRID": "optional",
+            "ReferencesAndLinks": "optional",
+            "Species": "optional"
+          },
+          "selectors": [
+            "suffix == 'description'",
+            "extension == '.json'",
+            "entities.atlas"
+          ]
+        }
+      },
+      "dataset": {
+        "dataset_authors": {
+          "fields": {
+            "Authors": {
+              "issue": {
+                "code": "NO_AUTHORS",
+                "message": "The Authors field of dataset_description.json should contain an array of fields -\nwith one author per field. This was triggered because there are no authors, which\nwill make DOI registration from dataset metadata impossible.\n"
+              },
+              "level": "recommended"
+            }
+          },
+          "selectors": [
+            "path == \"/dataset_description.json\"",
+            "!exists(\"CITATION.cff\", \"dataset\")"
+          ]
+        },
+        "dataset_description": {
+          "fields": {
+            "Acknowledgements": "optional",
+            "Authors": {
+              "level": "optional",
+              "level_addendum": "recommended if `CITATION.cff` is not present"
+            },
+            "BIDSVersion": "required",
+            "DatasetDOI": "optional",
+            "DatasetLinks": {
+              "level": "optional",
+              "level_addendum": "required if [BIDS URIs](SPEC_ROOT/common-principles.md#bids-uri) are used"
+            },
+            "DatasetType": "recommended",
+            "EthicsApprovals": "optional",
+            "Funding": "optional",
+            "GeneratedBy": "recommended",
+            "HEDVersion": "recommended",
+            "HowToAcknowledge": "optional",
+            "Keywords": "optional",
+            "License": "recommended",
+            "Name": "required",
+            "ReferencesAndLinks": "optional",
+            "SourceDatasets": "recommended"
+          },
+          "selectors": [
+            "path == \"/dataset_description.json\""
+          ]
+        },
+        "derivative_description": {
+          "fields": {
+            "GeneratedBy": "required"
+          },
+          "selectors": [
+            "path == \"/dataset_description.json\"",
+            "json.DatasetType == \"derivative\""
+          ]
+        }
+      },
       "eeg": {
         "EEGCoordsystemFiducials": {
           "fields": {
@@ -17481,6 +17461,30 @@
           "selectors": [
             "datatype == \"emg\"",
             "suffix == \"coordsystem\""
+          ]
+        }
+      },
+      "genetics": {
+        "dataset_description_with_genetics": {
+          "fields": {
+            "Genetics": "required"
+          },
+          "selectors": [
+            "path == \"/dataset_description.json\"",
+            "exists('genetic_info.json', 'dataset')"
+          ]
+        },
+        "genetic_info": {
+          "fields": {
+            "AnalyticalApproach": "optional",
+            "BrainLocation": "optional",
+            "CellType": "optional",
+            "GeneticLevel": "required",
+            "SampleOrigin": "required",
+            "TissueOrigin": "optional"
+          },
+          "selectors": [
+            "path == \"/genetic_info.json\""
           ]
         }
       },
@@ -21153,5 +21157,5 @@
       }
     }
   },
-  "schema_version": "1.3.0-dev"
+  "schema_version": "2.0.0-dev"
 }
