@@ -1,0 +1,9 @@
+{
+  "bep_number": "17",
+  "title": "Generic BIDS connectivity data schema",
+  "pr_number": 1902,
+  "pull_request": "https://github.com/bids-standard/bids-specification/pull/1902",
+  "google_doc": "https://docs.google.com/document/d/1ugBdUF6dhElXdj3u9vw0iWjE6f_Bibsro3ah7sRV0GA/",
+  "status": "review",
+  "authors_count": 2
+}
