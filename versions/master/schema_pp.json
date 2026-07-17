@@ -20359,6 +20359,17 @@
           ]
         }
       },
+      "phenotype": {
+        "Phenotype": {
+          "fields": {
+            "Derivative": "optional",
+            "MeasurementToolMetadata": "optional"
+          },
+          "selectors": [
+            "datatype == 'phenotype'"
+          ]
+        }
+      },
       "qmri": {
         "InversionRecoveryT1Metadata": {
           "fields": {
