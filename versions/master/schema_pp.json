@@ -4711,7 +4711,7 @@
         "type": "number"
       },
       "AttenuationCorrection": {
-        "description": "Short description of the attenuation correction method used.\n",
+        "description": "Short description of the attenuation correction method used.\nCorresponds to [DICOM Tag 0054, 1101](http://www.dicomlookup.com/dicomtags/(0054,1101))\n`Attenuation Correction Method`.\n",
         "display_name": "Attenuation Correction",
         "name": "AttenuationCorrection",
         "type": "string"
@@ -4838,7 +4838,7 @@
         "unit": "g/mL"
       },
       "BodyPart": {
-        "description": "Body part of the organ / body region scanned.\n",
+        "description": "Body part of the organ / body region scanned.\nCorresponds to [DICOM Tag 0018, 0015](http://www.dicomlookup.com/dicomtags/(0018,0015)) `Body Part Examined`.\n",
         "display_name": "Body Part",
         "name": "BodyPart",
         "type": "string"
@@ -5232,7 +5232,7 @@
         "type": "string"
       },
       "DecayCorrectionFactor": {
-        "description": "Decay correction factor for each frame.\n",
+        "description": "Decay correction factor for each frame.\nCorresponds to [DICOM Tag 0054, 1321](http://www.dicomlookup.com/dicomtags/(0054,1321)) `Decay Factor`.\n",
         "display_name": "Decay Correction Factor",
         "items": {
           "type": "number"
@@ -6590,14 +6590,14 @@
         "unit": "mL"
       },
       "InjectionEnd": {
-        "description": "Time of end of injection with respect to `\"TimeZero\"` in the default unit\nseconds.\n",
+        "description": "Time of end of injection with respect to `\"TimeZero\"`, in seconds.\nCorresponds to [DICOM Tag 0018, 1073](http://www.dicomlookup.com/dicomtags/(0018,1073))\n`Radiopharmaceutical Stop Time` converted to seconds relative to TimeZero.\n",
         "display_name": "Injection End",
         "name": "InjectionEnd",
         "type": "number",
         "unit": "s"
       },
       "InjectionStart": {
-        "description": "Time of start of injection with respect to `\"TimeZero\"` in the default unit\nseconds.\nThis corresponds to [DICOM Tag 0018, 1072](http://www.dicomlookup.com/dicomtags/(0018,1072))\n`Contrast/Bolus Start Time` converted to seconds relative to `\"TimeZero\"`.\n",
+        "description": "Time of start of injection with respect to `\"TimeZero\"`, in seconds.\nThis corresponds to [DICOM Tag 0018, 1072](http://www.dicomlookup.com/dicomtags/(0018,1072))\n`Contrast/Bolus Start Time` converted to seconds relative to `\"TimeZero\"`.\n",
         "display_name": "Injection Start",
         "name": "InjectionStart",
         "type": "number",
@@ -7551,7 +7551,7 @@
             "type": "array"
           }
         ],
-        "description": "Dose amount of administered pharmaceutical.\n",
+        "description": "Dose amount of administered pharmaceutical.\nCorresponds to [DICOM Tag 0018, 0028](http://www.dicomlookup.com/dicomtags/(0018,0028)) `Intervention Drug Dose`.\n",
         "display_name": "Pharmaceutical Dose Amount",
         "name": "PharmaceuticalDoseAmount"
       },
@@ -7575,7 +7575,7 @@
             "type": "array"
           }
         ],
-        "description": "Time of administration of pharmaceutical dose, relative to time zero.\nFor an infusion, this should be a vector with two elements specifying the\nstart and end of the infusion period. For more complex dose regimens,\nthe regimen description should be complete enough to enable unambiguous\ninterpretation of `\"PharmaceuticalDoseTime\"`.\nUnit format of the specified pharmaceutical dose time MUST be seconds.\n",
+        "description": "Time of administration of pharmaceutical dose, relative to time zero.\nFor an infusion, this should be a vector with two elements specifying the\nstart and end of the infusion period. For more complex dose regimens,\nthe regimen description should be complete enough to enable unambiguous\ninterpretation of `\"PharmaceuticalDoseTime\"`.\nUnit format of the specified pharmaceutical dose time MUST be seconds.\nCorresponds to a combination of DICOM Tags\n[0018, 0027](http://www.dicomlookup.com/dicomtags/(0018,0027)) `Intervention Drug Stop Time` and\n[0018, 0035](http://www.dicomlookup.com/dicomtags/(0018,0035)) `Intervention Drug Start Time`.\n",
         "display_name": "Pharmaceutical Dose Time",
         "name": "PharmaceuticalDoseTime"
       },
@@ -7587,7 +7587,7 @@
         "type": "string"
       },
       "PharmaceuticalName": {
-        "description": "Name of pharmaceutical.\n",
+        "description": "Name of administered pharmaceutical.\nNote that this is distinct from any radiotracer or contrast agent used in the scan protocol.\nThis partly matches [DICOM Tag 0018, 0034](http://www.dicomlookup.com/dicomtags/(0018,0034))\n`Intervention Drug Name`.\n",
         "display_name": "Pharmaceutical Name",
         "name": "PharmaceuticalName",
         "type": "string"
@@ -7847,7 +7847,7 @@
             "type": "array"
           }
         ],
-        "description": "Kernel size of post-recon filter (FWHM) in default units `\"mm\"`.\n",
+        "description": "Kernel size of post-recon filter (FWHM) in default units `\"mm\"`.\nThis partly matches the [DICOM Tag 0018, 1210](http://www.dicomlookup.com/dicomtags/(0018,1210))\n`Convolution Kernel`.\n",
         "display_name": "Recon Filter Size",
         "name": "ReconFilterSize"
       },
@@ -7863,7 +7863,7 @@
             "type": "array"
           }
         ],
-        "description": "Type of post-recon smoothing (for example, `[\"Shepp\"]`).\n",
+        "description": "Type of post-recon smoothing (for example, `[\"Shepp\"]`).\nThis partly matches the [DICOM Tag 0018, 1210](http://www.dicomlookup.com/dicomtags/(0018,1210))\n`Convolution Kernel`.\n",
         "display_name": "Recon Filter Type",
         "name": "ReconFilterType"
       },
@@ -7874,13 +7874,13 @@
         "type": "string"
       },
       "ReconMethodName": {
-        "description": "Reconstruction method or algorithm (for example, `\"3d-op-osem\"`).\n",
+        "description": "Reconstruction method or algorithm (for example, `\"3d-op-osem\"`).\nThis partly matches the [DICOM Tag 0054, 1103](http://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
         "display_name": "Recon Method Name",
         "name": "ReconMethodName",
         "type": "string"
       },
       "ReconMethodParameterLabels": {
-        "description": "Names of reconstruction parameters (for example, `[\"subsets\", \"iterations\"]`).\n",
+        "description": "Names of reconstruction parameters (for example, `[\"subsets\", \"iterations\"]`).\nThis partly matches the [DICOM Tag 0054, 1103](http://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
         "display_name": "Recon Method Parameter Labels",
         "items": {
           "type": "string"
@@ -7889,7 +7889,7 @@
         "type": "array"
       },
       "ReconMethodParameterUnits": {
-        "description": "Unit of reconstruction parameters (for example, `[\"none\", \"none\"]`).\n",
+        "description": "Unit of reconstruction parameters (for example, `[\"none\", \"none\"]`).\nThis partly matches the [DICOM Tag 0054, 1103](http://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
         "display_name": "Recon Method Parameter Units",
         "items": {
           "format": "unit",
@@ -7899,7 +7899,7 @@
         "type": "array"
       },
       "ReconMethodParameterValues": {
-        "description": "Values of reconstruction parameters (for example, `[21, 3]`).\n",
+        "description": "Values of reconstruction parameters (for example, `[21, 3]`).\nThis partly matches the [DICOM Tag 0054, 1103](http://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
         "display_name": "Recon Method Parameter Values",
         "items": {
           "type": "number"
@@ -8218,7 +8218,7 @@
         "type": "array"
       },
       "ScanDate": {
-        "description": "Date of scan in the format `\"YYYY-MM-DD[Z]\"`.\nThis field is DEPRECATED, and this metadata SHOULD be recorded in the `acq_time` column of the\ncorresponding [Scans file](SPEC_ROOT/modality-agnostic-files/data-summary-files.md#scans-file).\n",
+        "description": "Date of scan in the format `\"YYYY-MM-DD[Z]\"`.\nCorresponds to [DICOM Tag 0008, 0022](http://www.dicomlookup.com/dicomtags/(0008,0022)) `Acquisition Date`.\nThis field is DEPRECATED, and this metadata SHOULD be recorded in the `acq_time` column of the\ncorresponding [Scans file](SPEC_ROOT/modality-agnostic-files/data-summary-files.md#scans-file).\n",
         "display_name": "Scan Date",
         "format": "date",
         "name": "ScanDate",
@@ -8275,7 +8275,7 @@
         "type": "string"
       },
       "ScatterFraction": {
-        "description": "Scatter fraction for each frame (Units: 0-100%).\n",
+        "description": "Scatter fraction for each frame (Units: 0-100%).\nCorresponds to [DICOM Tag 0054, 1323](http://www.dicomlookup.com/dicomtags/(0054,1323))\n`Scatter Fraction Factor`.\n",
         "display_name": "Scatter Fraction",
         "items": {
           "maximum": 100,
@@ -8962,7 +8962,7 @@
         "type": "string"
       },
       "TracerName": {
-        "description": "Name of the tracer compound used (for example, `\"CIMBI-36\"`)\n",
+        "description": "Name of the tracer compound used (for example, `\"CIMBI-36\"`)\nCorresponds to [DICOM Tag 0054, 0300](http://www.dicomlookup.com/dicomtags/(0054,0300))\n`Radionuclide Code Sequence`,\nextracted from the fields [0008, 0122](http://www.dicomlookup.com/dicomtags/(0008,0122))\n`Mapping Resource Name`\nand/or [0008, 0105](http://www.dicomlookup.com/dicomtags/(0008,0105)) `Mapping Resource`.\n",
         "display_name": "Tracer Name",
         "name": "TracerName",
         "type": "string"
@@ -8974,7 +8974,7 @@
         "type": "string"
       },
       "TracerRadionuclide": {
-        "description": "Radioisotope labeling tracer (for example, `\"C11\"`).\n",
+        "description": "Radioisotope labeling tracer (for example, `\"C11\"`).\nCorresponds to [DICOM Tag 0054, 0300](http://www.dicomlookup.com/dicomtags/(0054,0300))\n`Radionuclide Code Sequence`,\nextracted from the fields [0008, 0100](http://www.dicomlookup.com/dicomtags/(0008,0100)) `Code Value`\nand/or [0008, 0104](http://www.dicomlookup.com/dicomtags/(0008,0104)) `Code Meaning`.\n",
         "display_name": "Tracer Radionuclide",
         "name": "TracerRadionuclide",
         "type": "string"
@@ -20122,10 +20122,6 @@
         },
         "PETHardware": {
           "fields": {
-            "BodyPart": {
-              "description_addendum": "Corresponds to [DICOM Tag 0018, 0015](http://www.dicomlookup.com/dicomtags/(0018,0015))\n`Body Part Examined`.\n",
-              "level": "recommended"
-            },
             "Manufacturer": {
               "description_addendum": "Corresponds to [DICOM Tag 0008, 0070](http://www.dicomlookup.com/dicomtags/(0008,0070))\n`Manufacturer`.\n",
               "level": "required"
@@ -20135,7 +20131,7 @@
               "level": "required"
             },
             "Units": {
-              "description_addendum": "SI unit for radioactivity (Becquerel) should be used (for example, \"Bq/mL\").\nCorresponds to [DICOM Tag 0054, 1001](http://www.dicomlookup.com/dicomtags/(0054,1001))\n`Units`.\n",
+              "description_addendum": "SI unit for radioactivity (Becquerel) should be used (for example, \"Bq/mL\").\nCorresponds to [DICOM Tag 0054, 1001](http://www.dicomlookup.com/dicomtags/(0054,1001)) `Units`.\n",
               "level": "required"
             }
           },
@@ -20167,20 +20163,11 @@
         "PETPharmaceuticals": {
           "fields": {
             "Anaesthesia": "optional",
-            "PharmaceuticalDoseAmount": {
-              "description_addendum": "For pharmaceutical co-administered with tracer.\nCorresponds to [DICOM Tag 0018, 0028](http://www.dicomlookup.com/dicomtags/(0018,0028))\n`Intervention Drug Dose`.\n",
-              "level": "recommended"
-            },
+            "PharmaceuticalDoseAmount": "recommended",
             "PharmaceuticalDoseRegimen": "recommended",
-            "PharmaceuticalDoseTime": {
-              "description_addendum": "Corresponds to a combination of DICOM Tags\n[0018, 0027](http://www.dicomlookup.com/dicomtags/(0018,0027)) `Intervention Drug Stop Time` and\n[0018, 0035](http://www.dicomlookup.com/dicomtags/(0018,0035)) `Intervention Drug Start Time`.\n",
-              "level": "recommended"
-            },
+            "PharmaceuticalDoseTime": "recommended",
             "PharmaceuticalDoseUnits": "recommended",
-            "PharmaceuticalName": {
-              "description_addendum": "For pharmaceutical co-administered with tracer.\nCorresponds to [DICOM Tag 0018, 0034](http://www.dicomlookup.com/dicomtags/(0018,0034))\n`Intervention Drug Name`.\n",
-              "level": "recommended"
-            }
+            "PharmaceuticalName": "recommended"
           },
           "selectors": [
             "datatype == \"pet\"",
@@ -20225,15 +20212,9 @@
             "SpecificRadioactivityUnits": "required",
             "TracerMolecularWeight": "recommended",
             "TracerMolecularWeightUnits": "recommended",
-            "TracerName": {
-              "description_addendum": "Corresponds to DICOM Tags (0008,0105) `Mapping Resource` and\n(0008,0122) `Mapping Resource Name`.\n",
-              "level": "required"
-            },
+            "TracerName": "required",
             "TracerRadLex": "recommended",
-            "TracerRadionuclide": {
-              "description_addendum": "Corresponds to DICOM Tags (0008,0104) `CodeValue` and (0008,0104) `CodeMeaning`.\n",
-              "level": "required"
-            },
+            "TracerRadionuclide": "required",
             "TracerSNOMED": "recommended"
           },
           "selectors": [
@@ -20244,56 +20225,32 @@
         "PETReconstruction": {
           "fields": {
             "AcquisitionMode": "required",
-            "AttenuationCorrection": {
-              "description_addendum": "This corresponds to [DICOM Tag 0054, 1101](http://www.dicomlookup.com/dicomtags/(0054,1101))\n`Attenuation Correction Method`.\n",
-              "level": "required"
-            },
+            "AttenuationCorrection": "required",
             "AttenuationCorrectionMethodReference": "recommended",
-            "DecayCorrectionFactor": {
-              "description_addendum": "Corresponds to [DICOM Tag 0054, 1321](http://www.dicomlookup.com/dicomtags/(0054,1321))\n`Decay Factor`.\n",
-              "level": "recommended"
-            },
-            "DoseCalibrationFactor": {
-              "description_addendum": "Corresponds to [DICOM Tag 0054, 1322](http://www.dicomlookup.com/dicomtags/(0054,1322))\n`Dose Calibration Factor`.\n",
-              "level": "recommended"
-            },
+            "DecayCorrectionFactor": "recommended",
+            "DoseCalibrationFactor": "recommended",
             "ImageDecayCorrected": "required",
             "ImageDecayCorrectionTime": "required",
             "PromptRate": "recommended",
             "RandomRate": "recommended",
             "ReconFilterSize": {
-              "description_addendum": "This partly matches the [DICOM Tag 0018, 1210](http://www.dicomlookup.com/dicomtags/(0018,1210))\n`Convolution Kernel`.\n",
               "level": "recommended",
               "level_addendum": "required if `ReconFilterType` is not `\"none\"`"
             },
-            "ReconFilterType": {
-              "description_addendum": "This partly matches the [DICOM Tag 0018, 1210](http://www.dicomlookup.com/dicomtags/(0018,1210))\n`Convolution Kernel`.\n",
-              "level": "required"
-            },
+            "ReconFilterType": "required",
             "ReconMethodImplementationVersion": "recommended",
-            "ReconMethodName": {
-              "description_addendum": "This partly matches the [DICOM Tag 0054, 1103](http://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
-              "level": "required"
-            },
-            "ReconMethodParameterLabels": {
-              "description_addendum": "This partly matches the [DICOM Tag 0054, 1103](http://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
-              "level": "required"
-            },
+            "ReconMethodName": "required",
+            "ReconMethodParameterLabels": "required",
             "ReconMethodParameterUnits": {
-              "description_addendum": "This partly matches the [DICOM Tag 0054, 1103](http://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
               "level": "recommended",
               "level_addendum": "required if `ReconMethodParameterLabels` does not contain `\"none\"`"
             },
             "ReconMethodParameterValues": {
-              "description_addendum": "This partly matches the [DICOM Tag 0054, 1103](http://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
               "level": "recommended",
               "level_addendum": "required if `ReconMethodParameterLabels` does not contain `\"none\"`"
             },
             "ScaleFactor": "recommended",
-            "ScatterFraction": {
-              "description_addendum": "Corresponds to [DICOM Tag 0054, 1323](http://www.dicomlookup.com/dicomtags/(0054,1323))\n`Scatter Fraction Factor`.\n",
-              "level": "recommended"
-            },
+            "ScatterFraction": "recommended",
             "SinglesRate": "recommended"
           },
           "selectors": [
@@ -20303,10 +20260,7 @@
         },
         "PETSample": {
           "fields": {
-            "BodyPart": {
-              "description_addendum": "Corresponds to [DICOM Tag 0018, 0015](http://www.dicomlookup.com/dicomtags/(0018,0015))\n`Body Part Examined`.\n",
-              "level": "optional"
-            },
+            "BodyPart": "optional",
             "BodyPartDetails": "optional",
             "BodyPartDetailsOntology": "optional"
           },
@@ -20338,18 +20292,9 @@
           "fields": {
             "FrameDuration": "required",
             "FrameTimesStart": "required",
-            "InjectionEnd": {
-              "description_addendum": "Corresponds to [DICOM Tag 0018, 1073](http://www.dicomlookup.com/dicomtags/(0018,1073))\n`Radiopharmaceutical Stop Time` converted to seconds relative to TimeZero.\n",
-              "level": "recommended"
-            },
-            "InjectionStart": {
-              "description_addendum": "Corresponds to [DICOM Tag 0018, 1072](http://www.dicomlookup.com/dicomtags/(0018,1072))\n`Radiopharmaceutical Start Time`.\n",
-              "level": "required"
-            },
-            "ScanDate": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 0022](http://www.dicomlookup.com/dicomtags/(0008,0022))\n`Acquisition Date`.\n",
-              "level": "deprecated"
-            },
+            "InjectionEnd": "recommended",
+            "InjectionStart": "required",
+            "ScanDate": "deprecated",
             "ScanStart": "required",
             "TimeZero": "required"
           },
