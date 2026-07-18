@@ -10712,6 +10712,20 @@
         }
       },
       "events": {
+        "BehavioralOnsetAndDuration": {
+          "checks": [
+            "columns.onset == null || columns.duration == null"
+          ],
+          "issue": {
+            "code": "BEH_ONSET_DURATION",
+            "level": "warning",
+            "message": "This behavioral file contains onset and duration columns.\nConsider renaming to use the `events` suffix.\n"
+          },
+          "selectors": [
+            "suffix == \"beh\"",
+            "extension == \".tsv\""
+          ]
+        },
         "EventsMissing": {
           "checks": [
             "\"events\" in associations"
