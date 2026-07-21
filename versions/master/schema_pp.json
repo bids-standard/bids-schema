@@ -9949,7 +9949,7 @@
         "PDT2Echos": {
           "checks": [
             "type(sidecar.EchoTime) == 'array'",
-            "len(sidecar.EchoTime) == nifti_header.dim[4]"
+            "length(sidecar.EchoTime) == nifti_header.dim[4]"
           ],
           "issue": {
             "code": "PDT2_ECHOS_SHOULD_MATCH_NIFTI_LENGTH",
@@ -11768,7 +11768,7 @@
       "phenotype": {
         "PhenotypeSubjectsMissing": {
           "checks": [
-            "allequal(\n  sorted(intersects(columns.participant_id, dataset.subjects.participant_id)),\n  sorted(dataset.subjects.participant_id)\n)\n"
+            "allequal(\n  sorted(intersects(columns.participant_id, dataset.subjects.participant_id)),\n  sorted(columns.participant_id)\n)\n"
           ],
           "issue": {
             "code": "PHENOTYPE_SUBJECTS_MISSING",
@@ -19646,6 +19646,8 @@
             "MTPulseShape": "recommended"
           },
           "selectors": [
+            "modality == \"mri\"",
+            "match(extension, \"^\\.nii(\\.gz)?$\")",
             "sidecar.MTState == true"
           ]
         },
@@ -19714,6 +19716,8 @@
             "SpoilingGradientMoment": "recommended"
           },
           "selectors": [
+            "modality == \"mri\"",
+            "match(extension, \"^\\.nii(\\.gz)?$\")",
             "intersects([sidecar.SpoilingType], [\"GRADIENT\", \"COMBINED\"])"
           ]
         },
@@ -19722,6 +19726,8 @@
             "SpoilingRFPhaseIncrement": "recommended"
           },
           "selectors": [
+            "modality == \"mri\"",
+            "match(extension, \"^\\.nii(\\.gz)?$\")",
             "intersects([sidecar.SpoilingType], [\"RF\", \"COMBINED\"])"
           ]
         },
@@ -19730,6 +19736,8 @@
             "SpoilingType": "recommended"
           },
           "selectors": [
+            "modality == \"mri\"",
+            "match(extension, \"^\\.nii(\\.gz)?$\")",
             "sidecar.SpoilingState == true"
           ]
         }
