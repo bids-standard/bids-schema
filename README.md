@@ -1,11 +1,12 @@
 # bids-schema
 
-Prospective repository of BIDS schema versions (including historical versions), as would
-be required by validators supporting multiple versions.
+A repository of BIDS schema versions (including historical versions), that
+could potentially be used by schema-driven validators supporting multiple versions.
 
-At the moment this is just a pilot resource, as schema syntax and validator capabilities
-are rapidly evolving. Eventually, this repository should become the authoritative BIDS
-schema resource, including all released versions. It could be used as a git submodule
+Note that schema syntax and validator capabilities keep rapidly evolving. 
+Eventually, this repository might become the authoritative BIDS
+schema resource, including all released versions, but ATM it is AFAIK not used directly.
+Potentially, it could be used as a git submodule
 in the repositories of tools which need to use it, incorporated into their tree
 (fully or partially) via the `git subtree` mechanism, or distributed separately by
 package managers.
@@ -18,7 +19,7 @@ package managers.
   master branch) this repository should use e.g. `git subtree` to extract the current
   schema version and add it to its index.
 
-- Proposed layout (implemented now, but without any copy/release yet):
+- The layout of files:
 
   - `LICENSE`
   - `README.md`
@@ -33,7 +34,7 @@ package managers.
 
 ## Schema Versions
 
-Schema versions automatically updated using
+Schema versions are automatically updated using
 [![Inject](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml/badge.svg)](https://github.com/bids-standard/bids-schema/actions/workflows/inject.yml)
 CI run.
 
@@ -54,6 +55,10 @@ See [PRs/README.md](./PRs/README.md) and [BEPs/README.md](./BEPs/README.md) for 
 
 See http://github.com/dandi/dandi-core and its README.md for an example of similar (not
 yet fully automated) subtree use.
+
+# Contributions
+
+See [AGENTS.md](./AGENTS.md) for more information and guidance for contributions.
 
 # References
 
