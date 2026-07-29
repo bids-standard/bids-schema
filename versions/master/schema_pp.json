@@ -14,6 +14,7 @@
         }
       },
       "atlas_description": {
+        "inherit": true,
         "selectors": [
           "entities.atlas",
           "extension != '.json'"
