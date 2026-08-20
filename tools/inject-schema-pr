@@ -125,6 +125,7 @@ if [ "$BST_EXIT_CODE" -ne 0 ]; then
         # Create error metadata file
         cat > PR_METADATA.json <<EOF
 {
+  "_schema_version": 2,
   "pr_number": "$pr_number",
   "git_ref": "$git_ref",
   "last_commit": "$commit_hash",
@@ -184,9 +185,12 @@ if [ "$generate_metadata" = true ] && [ "$ref_type" = "pr" ]; then
         fi
     fi
 
-    # Generate PR_METADATA.json file
+    # Generate PR_METADATA.json file. The `bids-schema collect prs` step
+    # later merges a `stats` block into this file — schema_version 2 covers
+    # the presence of that block (see doc/designs/2-extended-stats-plan.md).
     cat > PR_METADATA.json <<EOF
 {
+  "_schema_version": 2,
   "pr_number": "$pr_number",
   "git_ref": "$git_ref",
   "last_commit": "$commit_hash",

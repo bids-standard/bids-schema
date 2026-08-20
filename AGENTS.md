@@ -42,40 +42,98 @@ doc/                design docs (e.g. doc/designs/1-BEP-support-design-plan.md)
 
 ## Tooling map
 
-| Script                              | Language | Role                                                                                                         |
-| ----------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
-| `tools/inject-schema-fully-auto`    | bash     | Top-level orchestrator (releases + master + PRs + BEPs + READMEs). Run by CI and locally.                    |
-| `tools/inject-schema`               | bash     | Build schema for a **release** git ref into `versions/<folder>/`.                                            |
-| `tools/inject-schema-pr`            | bash     | Generalised builder: any git ref, any output dir, optional `PR_METADATA.json` generation.                    |
-| `tools/process-pr-schemas`          | bash     | Enumerate `refs/pull/*/merge` in `bids-specification`, detect `src/schema/` diffs, invoke `inject-schema-pr`. |
-| `tools/process-bep-schemas`         | python   | Read `bids-website:data/beps/beps.yml`, copy each BEP's PR schema into `BEPs/<NN>/`, write `BEP_METADATA.json`. |
-| `tools/generate-pr-readme`          | python   | Render `PRs/README.md` status table from `PR_METADATA.json` files.                                           |
-| `tools/generate-bep-readme`         | python   | Render `BEPs/README.md` status table (joins `BEP_METADATA.json` with sibling `PR_METADATA.json`).            |
-| `tools/prettify-schema`             | bash     | Emit `schema_pp.json` (pretty-printed sibling).                                                              |
-| `tools/version_component.sh`        | bash     | Helper: describe HEAD relative to schema-touching commits.                                                   |
+Bash scripts under `tools/` still own the schema-build side (git ref
+extraction, `bst` invocation, `datalad run` orchestration). The Python
+side has been consolidated into the `bids_schema` in-tree package —
+one `click`-based CLI (`bids-schema`) is installed by `pip install -e .`
+from the repo root.
+
+| Command / script                            | Language | Role                                                                                                          |
+| ------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------- |
+| `tools/inject-schema-fully-auto`            | bash     | Top-level orchestrator (releases + master + PRs + BEPs + stats + READMEs). Run by CI and locally.             |
+| `tools/inject-schema`                       | bash     | Build schema for a **release** git ref into `versions/<folder>/`.                                             |
+| `tools/inject-schema-pr`                    | bash     | Generalised builder: any git ref, any output dir, optional `PR_METADATA.json` generation.                     |
+| `tools/process-pr-schemas`                  | bash     | Enumerate `refs/pull/*/merge` in `bids-specification`, detect `src/schema/` diffs, invoke `inject-schema-pr`. |
+| `tools/process-bep-schemas`                 | python   | Read `bids-website:data/beps/beps.yml`, copy each BEP's PR schema into `BEPs/<NN>/`, write `BEP_METADATA.json`. |
+| `tools/prettify-schema`                     | bash     | Emit `schema_pp.json` (pretty-printed sibling).                                                               |
+| `tools/version_component.sh`                | bash     | Helper: describe HEAD relative to schema-touching commits.                                                    |
+| `bids-schema collect prs`                   | python   | Collect PR stats (reviews, comments, unresolved threads) via `gh api graphql`; merge into `PR_METADATA.json`. |
+| `bids-schema collect beps`                  | python   | (planned, PR #2) Compute `bep_registered` / `googledoc_registered` from `bids-website` git history.           |
+| `bids-schema render prs`                    | python   | Render `PRs/README.md` from on-disk metadata. No HTTP calls.                                                  |
+| `bids-schema render beps`                   | python   | Render `BEPs/README.md`; joins sibling `PRs/<N>/PR_METADATA.json` at render time. No HTTP calls.              |
+| `bids-schema cycle`                         | python   | Composite: `collect prs && collect beps && render prs && render beps`.                                        |
+| `bids-schema info`                          | python   | Print tool version / gh CLI location / auth status (CI debugging).                                            |
 
 Every mutating step is wrapped in `datalad run` so history contains a
 reproducible provenance record. Commits are of the form
-`[DATALAD RUNCMD] ...`.
+`[DATALAD RUNCMD] ...`. The orchestrator uses a `datalad_run_retry`
+helper (defined inline in `tools/inject-schema-fully-auto`) that
+catches the "clean dataset required" failure mode by making an
+intermediate commit and retrying once — mirrors the pattern already
+established in `tools/process-bep-schemas`.
+
+### `bids_schema` package layout
+
+```
+bids_schema/
+  __init__.py
+  __main__.py                # `python -m bids_schema`
+  cli.py                     # `click` group: `bids-schema` entry point
+  collect/
+    __init__.py
+    github.py                # GraphQL PR stats collector (PR #1)
+    bep_registration.py      # planned in PR #2
+  render/
+    __init__.py
+    formatters.py            # shared cell formatters + record loaders
+    pr_readme.py             # `bids-schema render prs`
+    bep_readme.py            # `bids-schema render beps`
+  metadata/
+    __init__.py
+    io.py                    # atomic read-modify-write helpers
+    schema.py                # _schema_version constants
+  tests/                     # pytest
+```
+
+Install with `pip install -e '.[test]'` (or `.[ci]` in workflows).
+The CLI is registered via `[project.scripts]` in `pyproject.toml`.
 
 ## Metadata contracts
 
-`PRs/<N>/PR_METADATA.json` — current fields:
+`PRs/<N>/PR_METADATA.json` — fields (schema v2):
 
+- `_schema_version` — currently `2`. Files written by pre-v2 tooling
+  lack this key; the renderer treats missing `_schema_version` as v1
+  and leaves the new stats columns as `—`.
 - `pr_number`, `git_ref`, `last_commit`, `last_updated` (build time, UTC)
 - `has_schema_changes`, `build_status` (`success` | `failed`)
 - `authors_count` (unique commit authors from `merge_base..PR_HEAD`)
 - On failure: `error_message`, `error_log`
+- **`stats`** (v2 nested block, populated by `bids-schema collect prs`):
+  `_source_head_sha`, `_collected_at`, `_complete`, `_error`;
+  `pr_state`, `pr_created_at`, `pr_updated_at`, `review_decision`;
+  `commits.{count, first_at, last_at}`;
+  `reviews.{approved, changes_requested, commented, dismissed, pending, total, by_author{...}}`;
+  `comments.{issue_count, review_thread_count, total, first_at, last_at, by_author{...}}`;
+  `review_threads.{total, unresolved, unresolved_active, unresolved_outdated, unresolved_by_author{...}}`.
+
+Per-author records under `reviews.by_author` also carry `last_state`
+(the reviewer's most recent submission state) and `effective_state`
+(the state of their most recent non-COMMENTED, non-DISMISSED
+submission — matches GitHub's reviewers-sidebar heuristic).
 
 `BEPs/<NN>/BEP_METADATA.json` — current fields:
 
 - `bep_number`, `title`, `pr_number`, `pull_request` (URL),
   `google_doc` (URL, may be empty), `status`, `authors_count`
+- (planned in PR #2) `_schema_version: 2`, `bep_registered`,
+  `googledoc_registered`, `_registration_source`.
 
 The BEP row in `BEPs/README.md` **reuses** the sibling PR's build /
-commit / date info by loading `PRs/<pr_number>/PR_METADATA.json` at
-render time. That reuse pattern is the one to preserve when extending
-statistics: BEP metadata should not re-collect PR-derived facts.
+commit / date / stats info by loading `PRs/<pr_number>/PR_METADATA.json`
+at render time via `bids_schema.render.formatters.load_pr_record`.
+That read-through join is the invariant to preserve when extending
+statistics: BEP metadata never re-collects PR-derived facts.
 
 ## External dependencies
 
@@ -84,6 +142,14 @@ statistics: BEP metadata should not re-collect PR-derived facts.
 - `datalad` for provenance
 - `git` (with `+refs/pull/*:refs/pull/origin/*` fetch spec added on first
   run of `process-pr-schemas`)
+- **`gh` CLI** on `$PATH`, authenticated (`GITHUB_TOKEN` in CI /
+  `gh auth login` locally). Consumed by `bids-schema collect prs`
+  to hit the GitHub GraphQL API; missing / unauthenticated `gh`
+  degrades gracefully — the collector logs a warning and sets
+  `stats._error` on affected records rather than failing the run.
+- **`bids_schema` package**: `pip install -e '.[ci]'` in CI,
+  `pip install -e '.[test]'` locally. Registers the `bids-schema`
+  entry-point script and pulls in `click` + `PyYAML`.
 - Two sibling clones — location overridable:
   - `bids-specification` at `$BIDS_REPO` (defaults to `../bids-specification`)
   - `bids-website` at `$BIDS_WEBSITE_REPO` (defaults to `../bids-website`)
@@ -126,4 +192,6 @@ The active feature branch for the PR/BEP work is `enh-prs-and-beps`
 - `doc/designs/1-BEP-support.md` — original problem statement
 - `doc/designs/1-BEP-support-design-plan.md` — implementation design
   behind the current `PRs/` + `BEPs/` layout
+- `doc/designs/2-extended-stats-plan.md` — the PR & BEP stats plan,
+  including the `bids_schema` package refactor and the rollout PR list
 - `PRs/README.md`, `BEPs/README.md` — generated status pages

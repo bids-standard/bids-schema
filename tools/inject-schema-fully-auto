@@ -98,19 +98,44 @@ else
     python -m pip install -r requirements.txt
 fi
 
+# Helper: `datalad run` with a one-shot intermediate-commit retry when the
+# tree is dirty from a prior phase. Mirrors the pattern in process-bep-schemas.
+datalad_run_retry() {
+    local message="$1"; shift
+    local output="$1"; shift
+    if ! datalad run -m "$message" --output "$output" "$@"; then
+        local rc=$?
+        echo "datalad run failed (rc=$rc); attempting intermediate commit + retry" >&2
+        git add -A
+        git commit -m "Intermediate commit before: $message" || true
+        datalad run -m "$message" --output "$output" "$@"
+    fi
+}
+
 echo "=== Phase 2: Process PR schemas ==="
 
 if [ "$PROCESS_PRS" = "true" ]; then
     echo "Processing PR schemas..."
     "$this_path/process-pr-schemas"
 
-    # Generate PRs README
     if [ -d "PRs" ] && compgen -G "PRs/*/PR_METADATA.json" > /dev/null; then
-        echo "Generating PRs/README.md..."
-        git status  # debugging
-        datalad run -m "Update PRs README with current PR status" \
-            --output PRs/README.md \
-            "$this_path/generate-pr-readme"
+        echo "--- Phase 2a: Collecting PR stats via bids-schema collect prs ---"
+        # A missing gh CLI or auth is not fatal — the collector marks the
+        # affected records with stats._error and exits 0.
+        if command -v bids-schema >/dev/null 2>&1; then
+            datalad_run_retry \
+                "Collect PR stats via bids-schema collect prs" \
+                "PRs/*/PR_METADATA.json" \
+                bids-schema collect prs --all
+        else
+            echo "bids-schema CLI not on PATH; skipping stats collection." >&2
+        fi
+
+        echo "--- Phase 2b: Rendering PRs/README.md via bids-schema render prs ---"
+        datalad_run_retry \
+            "Render PRs/README.md" \
+            "PRs/README.md" \
+            bids-schema render prs
     fi
 else
     echo "Skipping PR processing (PROCESS_PRS=$PROCESS_PRS)"
@@ -119,19 +144,22 @@ fi
 echo "=== Phase 3: Process BEP schemas ==="
 
 if [ "$PROCESS_BEPS" = "true" ]; then
-    # Only process BEPs if we have PRs
     if [ -d "PRs" ] && compgen -G "PRs/*/PR_METADATA.json" > /dev/null; then
         echo "Processing BEP schemas..."
-        datalad run -m "Process BEP schemas" \
-            --output "BEPs" \
+        datalad_run_retry \
+            "Process BEP schemas" \
+            "BEPs" \
             "$this_path/process-bep-schemas"
 
-        # Generate BEPs README
+        # Phase 3a (BEP registration timestamps) will land in PR #2.
+        # bids-schema collect beps currently prints a "deferred" note.
+
         if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
-            echo "Generating BEPs/README.md..."
-            datalad run -m "Update BEPs README with current BEP status" \
-                --output BEPs/README.md \
-                "$this_path/generate-bep-readme"
+            echo "--- Phase 3b: Rendering BEPs/README.md via bids-schema render beps ---"
+            datalad_run_retry \
+                "Render BEPs/README.md" \
+                "BEPs/README.md" \
+                bids-schema render beps
         fi
     else
         echo "No PR schemas available, skipping BEP processing"
