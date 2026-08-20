@@ -171,8 +171,11 @@ def main():
             pr_metadata = load_pr_metadata(str(pr_metadata_file))
             authors_count = pr_metadata.get('authors_count', 0)
 
-            # Generate BEP metadata
+            # Generate BEP metadata. schema_version 2 covers the presence
+            # of the bep_registered / googledoc_registered fields, which
+            # `bids-schema collect beps` merges in as a separate step.
             metadata = {
+                '_schema_version': 2,
                 'bep_number': bep_number,
                 'title': title,
                 'pr_number': int(pr_number),

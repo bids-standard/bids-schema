@@ -151,8 +151,17 @@ if [ "$PROCESS_BEPS" = "true" ]; then
             "BEPs" \
             "$this_path/process-bep-schemas"
 
-        # Phase 3a (BEP registration timestamps) will land in PR #2.
-        # bids-schema collect beps currently prints a "deferred" note.
+        if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
+            echo "--- Phase 3a: Collecting BEP registration timestamps via bids-schema collect beps ---"
+            if command -v bids-schema >/dev/null 2>&1; then
+                datalad_run_retry \
+                    "Collect BEP registration timestamps via bids-schema collect beps" \
+                    "BEPs/*/BEP_METADATA.json" \
+                    bids-schema collect beps --all
+            else
+                echo "bids-schema CLI not on PATH; skipping BEP registration collection." >&2
+            fi
+        fi
 
         if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
             echo "--- Phase 3b: Rendering BEPs/README.md via bids-schema render beps ---"

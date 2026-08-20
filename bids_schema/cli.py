@@ -61,9 +61,11 @@ def collect_prs(collect_all: bool, only: tuple[str, ...], force: bool) -> None:
 @click.option("--skip-fetch", is_flag=True,
               help="Don't run `git fetch` before walking history (for air-gapped debugging).")
 def collect_beps(collect_all: bool, only: tuple[str, ...], force: bool, skip_fetch: bool) -> None:
-    # Deferred to PR #2. Print a friendly message and exit 0 so `bids-schema cycle`
-    # remains callable while PR #2 lands.
-    click.echo("bids-schema collect beps: not implemented yet (deferred to PR #2)")
+    from bids_schema.collect import bep_registration
+
+    only_list = list(only) if only else None
+    exit_code = bep_registration.collect(only=only_list, force=force, skip_fetch=skip_fetch)
+    sys.exit(exit_code)
 
 
 @render.command("prs", help="Write PRs/README.md from on-disk metadata.")
@@ -81,12 +83,16 @@ def render_beps() -> None:
 
 
 @main.command("cycle", help="Composite: collect prs && collect beps && render prs && render beps.")
-@click.pass_context
-def cycle(ctx: click.Context) -> None:
-    ctx.invoke(collect_prs, collect_all=True, only=(), force=False)
-    ctx.invoke(collect_beps, collect_all=True, only=(), force=False, skip_fetch=False)
-    ctx.invoke(render_prs)
-    ctx.invoke(render_beps)
+def cycle() -> None:
+    # Call the underlying implementations directly (not the click commands)
+    # so a non-zero exit from one collector doesn't skip subsequent phases.
+    from bids_schema.collect import bep_registration, github
+    from bids_schema.render import bep_readme, pr_readme
+
+    github.collect()
+    bep_registration.collect()
+    pr_readme.render_to_disk()
+    bep_readme.render_to_disk()
 
 
 @main.command("info", help="Print tool version, auth status, and other debug info.")

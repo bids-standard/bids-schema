@@ -58,7 +58,7 @@ from the repo root.
 | `tools/prettify-schema`                     | bash     | Emit `schema_pp.json` (pretty-printed sibling).                                                               |
 | `tools/version_component.sh`                | bash     | Helper: describe HEAD relative to schema-touching commits.                                                    |
 | `bids-schema collect prs`                   | python   | Collect PR stats (reviews, comments, unresolved threads) via `gh api graphql`; merge into `PR_METADATA.json`. |
-| `bids-schema collect beps`                  | python   | (planned, PR #2) Compute `bep_registered` / `googledoc_registered` from `bids-website` git history.           |
+| `bids-schema collect beps`                  | python   | Compute `bep_registered` / `googledoc_registered` from `bids-website` git history; merge into `BEP_METADATA.json`. |
 | `bids-schema render prs`                    | python   | Render `PRs/README.md` from on-disk metadata. No HTTP calls.                                                  |
 | `bids-schema render beps`                   | python   | Render `BEPs/README.md`; joins sibling `PRs/<N>/PR_METADATA.json` at render time. No HTTP calls.              |
 | `bids-schema cycle`                         | python   | Composite: `collect prs && collect beps && render prs && render beps`.                                        |
@@ -82,7 +82,7 @@ bids_schema/
   collect/
     __init__.py
     github.py                # GraphQL PR stats collector (PR #1)
-    bep_registration.py      # planned in PR #2
+    bep_registration.py      # git-log walker for BEP registration timestamps
   render/
     __init__.py
     formatters.py            # shared cell formatters + record loaders
@@ -124,10 +124,19 @@ submission — matches GitHub's reviewers-sidebar heuristic).
 
 `BEPs/<NN>/BEP_METADATA.json` — current fields:
 
+- `_schema_version` — currently `2`. Files written by pre-v2 tooling
+  lack this key; the renderer treats missing `_schema_version` as v1
+  and leaves `bep_registered` / `googledoc_registered` columns as `—`.
 - `bep_number`, `title`, `pr_number`, `pull_request` (URL),
   `google_doc` (URL, may be empty), `status`, `authors_count`
-- (planned in PR #2) `_schema_version: 2`, `bep_registered`,
-  `googledoc_registered`, `_registration_source`.
+- `bep_registered` — commit date when the BEP entry was first
+  added to `bids-website:data/beps/beps.yml` (ISO-8601 UTC).
+- `googledoc_registered` — commit date when a non-empty `google_doc`
+  URL was first attached to the entry (`null` if never).
+- `_registration_source` — `{repo, path, walked_at, walked_ref}`
+  identifying the `bids-website` HEAD sha the walk was run against.
+  May include `_fetch_error` when the collector's own `git fetch`
+  failed and the walk fell back to stale local history.
 
 The BEP row in `BEPs/README.md` **reuses** the sibling PR's build /
 commit / date / stats info by loading `PRs/<pr_number>/PR_METADATA.json`
