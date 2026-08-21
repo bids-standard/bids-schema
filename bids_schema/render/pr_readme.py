@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from bids_schema.metadata.io import iter_numeric_subdirs
 from bids_schema.render import formatters as fmt
 
 TABLE_HEADER = (
@@ -28,29 +29,11 @@ TABLE_HEADER = (
 
 def _format_pr_row(pr_number: str, metadata: dict) -> str:
     stats = fmt.stats_of(metadata)
+    cells = fmt.format_stats_cells(stats)
 
     pr_link = f"[{pr_number}]({fmt.pr_url(pr_number)})"
     authors_count = str(metadata.get("authors_count", 0))
-    build_status = fmt.build_status_of(metadata)
-    build_indicator = fmt.format_build_indicator(build_status)
-
-    reviews_cell = fmt.format_reviews(stats.get("reviews")) if stats else "—"
-
-    comments_block = stats.get("comments") or {}
-    comments_cell = fmt.format_activity_span(
-        comments_block.get("total"),
-        comments_block.get("first_at"),
-        comments_block.get("last_at"),
-    )
-
-    threads_block = stats.get("review_threads") or {}
-    unresolved_cell = fmt.format_unresolved(threads_block.get("unresolved"))
-
-    commits_block = stats.get("commits") or {}
-    commit_window = fmt.format_date_window(
-        commits_block.get("first_at"),
-        commits_block.get("last_at"),
-    )
+    build_cell = fmt.format_build_cell(metadata)
 
     last_commit_raw = metadata.get("last_commit", "Unknown")
     if last_commit_raw and last_commit_raw != "Unknown":
@@ -58,23 +41,16 @@ def _format_pr_row(pr_number: str, metadata: dict) -> str:
     else:
         last_commit_cell = "—"
 
-    schema_path = f"./{pr_number}/schema.json"
-    actions = (
-        f"[Schema]({schema_path}) \\| "
-        f"[Raw]({fmt.raw_url('PRs', pr_number, 'schema.json')}) \\| "
-        f"[Pretty]({fmt.raw_url('PRs', pr_number, 'schema_pp.json')})"
+    actions = fmt.format_actions_cell(
+        "PRs", pr_number,
+        build_status=fmt.build_status_of(metadata),
+        error_log=metadata.get("error_log"),
     )
-    if build_status == "failed" and metadata.get("error_log"):
-        actions += f" \\| [Error Log](./{pr_number}/bst-output.log)"
-
-    marker = fmt.stale_marker(stats)
-    if marker:
-        build_indicator = f"{build_indicator}{marker}"
 
     return (
-        f"| {pr_link} | {authors_count} | {build_indicator} | "
-        f"{reviews_cell} | {comments_cell} | {unresolved_cell} | "
-        f"{commit_window} | {last_commit_cell} | {actions} |"
+        f"| {pr_link} | {authors_count} | {build_cell} | "
+        f"{cells['reviews']} | {cells['comments']} | {cells['unresolved']} | "
+        f"{cells['commit_window']} | {last_commit_cell} | {actions} |"
     )
 
 
@@ -150,13 +126,10 @@ def render_to_disk(base_dir: Path | None = None) -> Path:
     root = base_dir or Path.cwd()
     pr_root = root / "PRs"
     records: list[tuple[str, dict]] = []
-    if pr_root.is_dir():
-        for pr_dir in sorted(pr_root.iterdir()):
-            if not pr_dir.is_dir() or not pr_dir.name.isdigit():
-                continue
-            metadata = fmt.load_pr_record(pr_dir.name, base_dir=root)
-            if metadata:
-                records.append((pr_dir.name, metadata))
+    for pr_dir in iter_numeric_subdirs(pr_root):
+        metadata = fmt.load_pr_record(pr_dir.name, base_dir=root)
+        if metadata:
+            records.append((pr_dir.name, metadata))
 
     body = render(records)
     out = pr_root / "README.md"

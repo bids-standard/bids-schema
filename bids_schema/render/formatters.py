@@ -8,6 +8,7 @@ the plan).
 
 from __future__ import annotations
 
+import os
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -16,7 +17,12 @@ from bids_schema.metadata.io import load_json
 
 BIDS_SPEC_REPO = "bids-standard/bids-specification"
 BIDS_SCHEMA_REPO = "bids-standard/bids-schema"
-RAW_BRANCH = "enh-prs-and-beps"
+
+# Branch that the "Raw" / "Pretty" table links point at. Defaults to
+# ``main`` so links resolve once this PR is merged; override with
+# ``BIDS_SCHEMA_RAW_BRANCH`` when rendering from a feature branch that
+# hasn't been merged yet.
+RAW_BRANCH = os.environ.get("BIDS_SCHEMA_RAW_BRANCH", "main")
 
 
 def pr_url(pr_number: str | int) -> str:
@@ -127,3 +133,69 @@ def stale_marker(stats: dict) -> str:
     if stats.get("_complete") is False:
         return " …"
     return ""
+
+
+# --- Aggregated helpers used by both renderers ---------------------------
+
+
+def format_stats_cells(stats: dict) -> dict[str, str]:
+    """Return the four stats-derived table cells (reviews / comments /
+    unresolved / commit window) from a PR ``stats`` sub-block.
+
+    Every value defaults to ``—`` if the block is missing or absent —
+    so v1 records or PRs whose stats haven't been collected yet render
+    consistently in both READMEs.
+    """
+    if not stats:
+        return {"reviews": "—", "comments": "—", "unresolved": "—", "commit_window": "—"}
+    comments = stats.get("comments") or {}
+    threads = stats.get("review_threads") or {}
+    commits = stats.get("commits") or {}
+    return {
+        "reviews":       format_reviews(stats.get("reviews")),
+        "comments":      format_activity_span(
+                             comments.get("total"),
+                             comments.get("first_at"),
+                             comments.get("last_at"),
+                         ),
+        "unresolved":    format_unresolved(threads.get("unresolved")),
+        "commit_window": format_date_window(
+                             commits.get("first_at"),
+                             commits.get("last_at"),
+                         ),
+    }
+
+
+def format_build_cell(record: dict) -> str:
+    """Build indicator + optional stale marker for a record's ``stats`` block."""
+    return f"{format_build_indicator(build_status_of(record))}{stale_marker(stats_of(record))}"
+
+
+def format_actions_cell(
+    kind: str,
+    folder: str,
+    *,
+    build_status: str,
+    error_log: str | None = None,
+    error_log_href: str | None = None,
+) -> str:
+    """Build the ``[Schema] \\| [Raw] \\| [Pretty] [\\| Error Log]`` triple.
+
+    - ``kind`` is ``"PRs"`` or ``"BEPs"`` — controls the raw-URL folder.
+    - ``folder`` is the on-disk directory name (``str(pr_number)`` or
+      ``str(bep_number)``).
+    - When ``build_status == "failed"`` and ``error_log`` is truthy,
+      an Error Log link is appended. Its href is ``error_log_href`` if
+      given (BEP renderer passes ``../PRs/<N>/bst-output.log``), otherwise
+      the sibling ``./<folder>/bst-output.log``.
+    """
+    schema_path = f"./{folder}/schema.json"
+    actions = (
+        f"[Schema]({schema_path}) \\| "
+        f"[Raw]({raw_url(kind, folder, 'schema.json')}) \\| "
+        f"[Pretty]({raw_url(kind, folder, 'schema_pp.json')})"
+    )
+    if build_status == "failed" and error_log:
+        href = error_log_href or f"./{folder}/bst-output.log"
+        actions += f" \\| [Error Log]({href})"
+    return actions

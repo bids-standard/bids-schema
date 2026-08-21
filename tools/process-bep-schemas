@@ -15,6 +15,11 @@ import filecmp
 from pathlib import Path
 from functools import lru_cache
 
+# Canonical BEP_METADATA.json emitter — single source of truth for schema
+# layout (design plan §2, §3.2). Bash pipeline never writes this JSON
+# directly; anything metadata-related goes through the Python side.
+from bids_schema.metadata.io import write_bep_metadata
+
 
 @lru_cache(maxsize=128)
 def load_pr_metadata(pr_metadata_path: str) -> dict:
@@ -171,23 +176,19 @@ def main():
             pr_metadata = load_pr_metadata(str(pr_metadata_file))
             authors_count = pr_metadata.get('authors_count', 0)
 
-            # Generate BEP metadata. schema_version 2 covers the presence
-            # of the bep_registered / googledoc_registered fields, which
-            # `bids-schema collect beps` merges in as a separate step.
-            metadata = {
-                '_schema_version': 2,
-                'bep_number': bep_number,
-                'title': title,
-                'pr_number': int(pr_number),
-                'pull_request': pull_request,
-                'google_doc': bep.get('google_doc', ''),
-                'status': 'review',  # Default status, could be enhanced
-                'authors_count': authors_count
-            }
-
-            metadata_file = bep_schema_dir / 'BEP_METADATA.json'
-            with open(metadata_file, 'w') as f:
-                json.dump(metadata, f, indent=2)
+            # Delegate BEP_METADATA.json emission to the canonical Python
+            # writer. `bids-schema collect beps` later merges bep_registered
+            # and googledoc_registered timestamps into this file.
+            write_bep_metadata(
+                bep_schema_dir,
+                bep_number=bep_number,
+                title=title,
+                pr_number=int(pr_number),
+                pull_request=pull_request,
+                google_doc=bep.get('google_doc', ''),
+                status='review',
+                authors_count=authors_count,
+            )
 
             synced_count += 1
 

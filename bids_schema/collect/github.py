@@ -19,8 +19,9 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-from bids_schema.metadata.io import load_json, write_json_atomic
+from bids_schema.metadata.io import iter_numeric_subdirs, load_json, write_json_atomic
 from bids_schema.metadata.schema import CURRENT_PR_SCHEMA_VERSION
+from bids_schema.metadata.time import now_utc_iso
 
 log = logging.getLogger(__name__)
 
@@ -31,22 +32,39 @@ DEFAULT_MAX_AGE_SECONDS = 6 * 60 * 60           # 6h freshness floor
 DEFAULT_MAX_INNER_QUERIES = 10                  # cap for per-thread comment paging
 DEFAULT_RATE_LIMIT_MIN_REMAINING = 500          # sleep when below this
 DEFAULT_RATE_LIMIT_MAX_SLEEP = 20 * 60          # 20 min cap on sleep
+DEFAULT_PREFLIGHT_BATCH = 50                    # PRs per aliased pre-flight query
 
-MAX_AGE_SECONDS = int(os.environ.get("PR_STATS_MAX_AGE_SECONDS", DEFAULT_MAX_AGE_SECONDS))
+# `PR_STATS_MAX_AGE` and `PR_STATS_MAX_AGE_SECONDS` both accepted (integer
+# seconds); the shorter form matches the plan spec (§3.5).
+MAX_AGE_SECONDS = int(
+    os.environ.get("PR_STATS_MAX_AGE")
+    or os.environ.get("PR_STATS_MAX_AGE_SECONDS", DEFAULT_MAX_AGE_SECONDS)
+)
 MAX_INNER_QUERIES = int(os.environ.get("PR_STATS_MAX_INNER_QUERIES", DEFAULT_MAX_INNER_QUERIES))
+PREFLIGHT_BATCH = int(os.environ.get("PR_STATS_PREFLIGHT_BATCH", DEFAULT_PREFLIGHT_BATCH))
 
 # --- GraphQL queries -----------------------------------------------------
 
-PREFLIGHT_QUERY = """
-query($owner:String!,$name:String!,$number:Int!) {
-  repository(owner:$owner,name:$name) {
-    pullRequest(number:$number) {
-      number headRefOid state
-    }
-  }
-  rateLimit { remaining resetAt cost }
-}
-"""
+def _build_preflight_query(pr_numbers: list[int]) -> str:
+    """Build one aliased GraphQL query fetching headRefOid + state for many PRs.
+
+    Aliases are of the form ``pr<N>`` (safe: `pr_numbers` come from
+    directory names filtered by `str.isdigit`, so no injection surface).
+    Cost is ~2 nodes per PR — a 50-PR batch is well under GitHub's
+    500k-node complexity budget.
+    """
+    aliases = "\n".join(
+        f"    pr{pr}: pullRequest(number:{pr}) {{ number headRefOid state }}"
+        for pr in pr_numbers
+    )
+    return (
+        "query($owner:String!,$name:String!) {\n"
+        "  repository(owner:$owner,name:$name) {\n"
+        f"{aliases}\n"
+        "  }\n"
+        "  rateLimit { remaining resetAt cost }\n"
+        "}\n"
+    )
 
 FULL_QUERY = """
 query($owner:String!,$name:String!,$number:Int!,
@@ -135,6 +153,9 @@ def _run_gh_graphql(query: str, variables: dict) -> dict:
 
 
 def _maybe_wait_for_rate_limit(rate_limit: dict | None) -> None:
+    """Sleep until reset if remaining < threshold, or raise ``rate_limit_ceiling``
+    if the reset is farther out than we're willing to wait.
+    """
     if not rate_limit:
         return
     remaining = int(rate_limit.get("remaining", 5000))
@@ -151,42 +172,73 @@ def _maybe_wait_for_rate_limit(rate_limit: dict | None) -> None:
     delta = (reset_dt - now).total_seconds()
     if delta <= 0:
         return
-    delta = min(delta + 5, DEFAULT_RATE_LIMIT_MAX_SLEEP)
-    log.warning("Rate limit low (%s remaining). Sleeping %.0fs until reset.", remaining, delta)
-    time.sleep(delta)
+    if delta > DEFAULT_RATE_LIMIT_MAX_SLEEP:
+        raise GHError(
+            f"rate_limit_ceiling: rate limit exhausted (remaining={remaining}), "
+            f"reset in {delta:.0f}s exceeds max sleep budget of "
+            f"{DEFAULT_RATE_LIMIT_MAX_SLEEP}s"
+        )
+    sleep_for = delta + 5
+    log.warning("Rate limit low (%s remaining). Sleeping %.0fs until reset.",
+                remaining, sleep_for)
+    time.sleep(sleep_for)
 
 
 # --- Pre-flight: batch cheap headRefOid query ----------------------------
 
 
 def preflight_head_shas(pr_numbers: list[int]) -> dict[int, dict]:
-    """One GraphQL query per PR, returning ``{pr_number: {headRefOid, state}}``.
+    """Aliased pre-flight: fetch ``headRefOid`` + ``state`` for many PRs in
+    one GraphQL round trip per ``PREFLIGHT_BATCH`` chunk.
 
-    Pre-flight is per-PR (not aliased) because ``gh api graphql`` variable
-    substitution is per-call; issuing 50 tiny queries is well under one
-    round trip of the full query in cost.
+    Returns ``{pr_number: {headRefOid, state}}``. PRs whose alias is
+    absent from the response (deleted, moved) are simply omitted.
+
+    Falls back to per-PR queries if a batch fails as a whole — that way
+    one bad PR number can't blind the freshness gate for all of them.
     """
     result: dict[int, dict] = {}
-    for pr in pr_numbers:
+    if not pr_numbers:
+        return result
+    for i in range(0, len(pr_numbers), PREFLIGHT_BATCH):
+        chunk = pr_numbers[i:i + PREFLIGHT_BATCH]
+        query = _build_preflight_query(chunk)
         try:
             data = _run_gh_graphql(
-                PREFLIGHT_QUERY,
-                {"owner": BIDS_SPEC_OWNER, "name": BIDS_SPEC_NAME, "number": pr},
+                query,
+                {"owner": BIDS_SPEC_OWNER, "name": BIDS_SPEC_NAME},
             )
             _maybe_wait_for_rate_limit(data.get("rateLimit"))
-            node = (data.get("repository") or {}).get("pullRequest") or {}
-            if node:
-                result[pr] = {"headRefOid": node.get("headRefOid"), "state": node.get("state")}
+            repo_block = data.get("repository") or {}
+            for pr in chunk:
+                node = repo_block.get(f"pr{pr}") or {}
+                if node:
+                    result[pr] = {
+                        "headRefOid": node.get("headRefOid"),
+                        "state": node.get("state"),
+                    }
         except GHError as e:
-            log.warning("Preflight for PR #%s failed: %s", pr, e)
+            log.warning("Aliased preflight batch failed (%d PRs); falling back per-PR: %s",
+                        len(chunk), e)
+            for pr in chunk:
+                try:
+                    data = _run_gh_graphql(
+                        _build_preflight_query([pr]),
+                        {"owner": BIDS_SPEC_OWNER, "name": BIDS_SPEC_NAME},
+                    )
+                    _maybe_wait_for_rate_limit(data.get("rateLimit"))
+                    node = ((data.get("repository") or {}).get(f"pr{pr}")) or {}
+                    if node:
+                        result[pr] = {
+                            "headRefOid": node.get("headRefOid"),
+                            "state": node.get("state"),
+                        }
+                except GHError as inner:
+                    log.warning("Preflight for PR #%s failed: %s", pr, inner)
     return result
 
 
 # --- Freshness gate ------------------------------------------------------
-
-
-def _now_utc_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _is_fresh(existing_stats: dict, head_now: str | None) -> bool:
@@ -508,7 +560,7 @@ def derive_stats(fetched: dict, source_head_sha: str | None) -> dict:
 
     return {
         "_source_head_sha": source_head_sha or fetched["pr_meta"].get("headRefOid"),
-        "_collected_at":    _now_utc_iso(),
+        "_collected_at":    now_utc_iso(),
         "_complete":        bool(fetched["_complete"]),
         "_error":           fetched["_error"],
 
@@ -556,13 +608,7 @@ def derive_stats(fetched: dict, source_head_sha: str | None) -> dict:
 
 
 def _list_pr_numbers(base_dir: Path) -> list[int]:
-    pr_root = base_dir / "PRs"
-    if not pr_root.is_dir():
-        return []
-    return sorted(
-        int(p.name) for p in pr_root.iterdir()
-        if p.is_dir() and p.name.isdigit()
-    )
+    return [int(p.name) for p in iter_numeric_subdirs(base_dir / "PRs")]
 
 
 def _write_error_stats(path: Path, existing_record: dict, error_code: str,
@@ -577,7 +623,7 @@ def _write_error_stats(path: Path, existing_record: dict, error_code: str,
     stats["_complete"] = False
     if head_now:
         stats["_source_head_sha"] = stats.get("_source_head_sha") or head_now
-    stats["_collected_at"] = stats.get("_collected_at") or _now_utc_iso()
+    stats["_collected_at"] = stats.get("_collected_at") or now_utc_iso()
     existing_record["stats"] = stats
     existing_record["_schema_version"] = CURRENT_PR_SCHEMA_VERSION
     write_json_atomic(path, existing_record)
@@ -652,6 +698,8 @@ def collect(only: list[str] | None = None, force: bool = False,
 
 def _classify_error(msg: str) -> str:
     lower = msg.lower()
+    if "rate_limit_ceiling" in lower or "rate limit ceiling" in lower:
+        return "rate_limit_ceiling"
     if "rate limit" in lower or "abuse detection" in lower:
         return "rate_limit"
     if "not found" in lower or "404" in lower:

@@ -25,8 +25,9 @@ from typing import Iterator
 
 import yaml
 
-from bids_schema.metadata.io import load_json, write_json_atomic
+from bids_schema.metadata.io import iter_numeric_subdirs, load_json, write_json_atomic
 from bids_schema.metadata.schema import CURRENT_BEP_SCHEMA_VERSION
+from bids_schema.metadata.time import now_utc_iso
 
 log = logging.getLogger(__name__)
 
@@ -165,27 +166,20 @@ def _all_records_up_to_date(bep_root: Path, walked_ref: str) -> bool:
     """True if every ``BEP_METADATA.json`` under ``bep_root`` already carries
     ``_registration_source.walked_ref == walked_ref``.
     """
-    if not bep_root.is_dir():
+    bep_dirs = iter_numeric_subdirs(bep_root)
+    if not bep_dirs:
         return False
-    seen_any = False
-    for bep_dir in bep_root.iterdir():
-        if not bep_dir.is_dir() or not bep_dir.name.isdigit():
-            continue
+    for bep_dir in bep_dirs:
         meta = load_json(bep_dir / "BEP_METADATA.json")
         if not meta:
             return False
         source = meta.get("_registration_source") or {}
         if source.get("walked_ref") != walked_ref:
             return False
-        seen_any = True
-    return seen_any
+    return True
 
 
 # --- top-level orchestration ----------------------------------------------
-
-
-def _now_utc_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def collect(only: list[str] | None = None,
@@ -239,9 +233,7 @@ def collect(only: list[str] | None = None,
     num_updated = 0
     num_skipped = 0
 
-    for bep_dir in sorted(bep_root.iterdir()):
-        if not bep_dir.is_dir() or not bep_dir.name.isdigit():
-            continue
+    for bep_dir in iter_numeric_subdirs(bep_root):
         bep_number_norm = bep_dir.name.lstrip("0") or "0"
         if only_set and bep_number_norm not in only_set:
             num_skipped += 1
@@ -262,7 +254,7 @@ def collect(only: list[str] | None = None,
         source_block: dict = {
             "repo":      "bids-standard/bids-website",
             "path":      BIDS_WEBSITE_PATH,
-            "walked_at": _now_utc_iso(),
+            "walked_at": now_utc_iso(),
             "walked_ref": head,
         }
         if fetch_error:

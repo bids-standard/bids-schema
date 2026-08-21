@@ -61,6 +61,8 @@ from the repo root.
 | `bids-schema collect beps`                  | python   | Compute `bep_registered` / `googledoc_registered` from `bids-website` git history; merge into `BEP_METADATA.json`. |
 | `bids-schema render prs`                    | python   | Render `PRs/README.md` from on-disk metadata. No HTTP calls.                                                  |
 | `bids-schema render beps`                   | python   | Render `BEPs/README.md`; joins sibling `PRs/<N>/PR_METADATA.json` at render time. No HTTP calls.              |
+| `bids-schema metadata write-pr`             | python   | Canonical `PR_METADATA.json` emitter (called from `tools/inject-schema-pr`).                                  |
+| `bids-schema metadata write-bep`            | python   | Canonical `BEP_METADATA.json` emitter (importable from `tools/process-bep-schemas` as `write_bep_metadata`).  |
 | `bids-schema cycle`                         | python   | Composite: `collect prs && collect beps && render prs && render beps`.                                        |
 | `bids-schema info`                          | python   | Print tool version / gh CLI location / auth status (CI debugging).                                            |
 
@@ -90,8 +92,9 @@ bids_schema/
     bep_readme.py            # `bids-schema render beps`
   metadata/
     __init__.py
-    io.py                    # atomic read-modify-write helpers
+    io.py                    # atomic read-modify-write + write_pr_metadata / write_bep_metadata
     schema.py                # _schema_version constants
+    time.py                  # now_utc_iso helper
   tests/                     # pytest
 ```
 
@@ -182,7 +185,11 @@ The active feature branch for the PR/BEP work is `enh-prs-and-beps`
    scripts that write into `PRs/`, `BEPs/`, or their `README.md`.
 3. **Auto-generated files** (`PRs/README.md`, `BEPs/README.md`,
    `versions/*/schema.json`, all `*_METADATA.json`) must not be
-   hand-edited — change the generator instead.
+   hand-edited — change the generator instead. Notably, `PR_METADATA.json`
+   and `BEP_METADATA.json` are always written through
+   `bids_schema.metadata.io.write_pr_metadata` /
+   `write_bep_metadata` — never via bash heredocs — so the schema
+   layout has one source of truth.
 4. **The `schema.json` under `PRs/<N>/`** on build failure contains an
    `error` object rather than a real schema. Downstream tools should
    check `PR_METADATA.json:build_status` before consuming it.
@@ -194,6 +201,17 @@ The active feature branch for the PR/BEP work is `enh-prs-and-beps`
    pointed at fresh clones with PR refs fetched. Set
    `BIDS_SCHEMA_KEEPTMP=1` to preserve tempdirs when debugging
    `inject-schema-fully-auto`.
+7. **Environment variables** consumed by the CLI:
+   - `BIDS_SCHEMA_RAW_BRANCH` — branch name embedded in README raw-file
+     URLs. Defaults to `main`. Override when rendering from an
+     unmerged feature branch to keep `Raw` / `Pretty` links resolving.
+   - `PR_STATS_MAX_AGE` — freshness floor in seconds for the PR stats
+     collector (defaults to 21600 = 6h). `PR_STATS_MAX_AGE_SECONDS`
+     accepted as a fallback name.
+   - `PR_STATS_PREFLIGHT_BATCH` — PRs per aliased preflight GraphQL
+     query (defaults to 50).
+   - `PR_STATS_MAX_INNER_QUERIES` — cap on per-thread comment
+     pagination round trips (defaults to 10).
 
 ## Related docs
 

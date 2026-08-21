@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from bids_schema.metadata.io import iter_numeric_subdirs
 from bids_schema.render import formatters as fmt
 
 TABLE_HEADER = (
@@ -37,6 +38,7 @@ def _format_bep_row(bep_number: str, metadata: dict, base_dir: Path | None) -> s
         pr_metadata = fmt.load_pr_record(pr_number, base_dir=base_dir)
 
     stats = fmt.stats_of(pr_metadata)
+    cells = fmt.format_stats_cells(stats)
 
     bep_display_number = str(bep_number).zfill(3)
     bep_url = f"https://bids.neuroimaging.io/bep{bep_display_number}"
@@ -46,38 +48,21 @@ def _format_bep_row(bep_number: str, metadata: dict, base_dir: Path | None) -> s
     pr_link = f"[{pr_number}]({fmt.pr_url(pr_number)})" if pr_number else "—"
 
     authors_count = str(pr_metadata.get("authors_count", 0)) if pr_metadata else "—"
-    build_status = fmt.build_status_of(pr_metadata) if pr_metadata else "unknown"
-    build_indicator = fmt.format_build_indicator(build_status)
-    if pr_metadata:
-        marker = fmt.stale_marker(stats)
-        if marker:
-            build_indicator = f"{build_indicator}{marker}"
-
-    reviews_cell = fmt.format_reviews(stats.get("reviews")) if stats else "—"
-    comments_block = stats.get("comments") or {} if stats else {}
-    comments_cell = fmt.format_activity_span(
-        comments_block.get("total"),
-        comments_block.get("first_at"),
-        comments_block.get("last_at"),
-    )
-    threads_block = stats.get("review_threads") or {} if stats else {}
-    unresolved_cell = fmt.format_unresolved(threads_block.get("unresolved"))
+    build_cell = fmt.format_build_cell(pr_metadata) if pr_metadata else fmt.format_build_indicator("unknown")
 
     bep_registered_cell = fmt.format_date(metadata.get("bep_registered"))
     doc_registered_cell = fmt.format_date(metadata.get("googledoc_registered"))
 
-    schema_path = f"./{bep_number}/schema.json"
-    actions = (
-        f"[Schema]({schema_path}) \\| "
-        f"[Raw]({fmt.raw_url('BEPs', bep_number, 'schema.json')}) \\| "
-        f"[Pretty]({fmt.raw_url('BEPs', bep_number, 'schema_pp.json')})"
+    actions = fmt.format_actions_cell(
+        "BEPs", str(bep_number),
+        build_status=fmt.build_status_of(pr_metadata),
+        error_log=pr_metadata.get("error_log"),
+        error_log_href=f"../PRs/{pr_number}/bst-output.log" if pr_number else None,
     )
-    if build_status == "failed" and pr_metadata.get("error_log"):
-        actions += f" \\| [Error Log](../PRs/{pr_number}/bst-output.log)"
 
     return (
         f"| {bep_display} | {title} | {doc_link} | {pr_link} | {authors_count} | "
-        f"{build_indicator} | {reviews_cell} | {comments_cell} | {unresolved_cell} | "
+        f"{build_cell} | {cells['reviews']} | {cells['comments']} | {cells['unresolved']} | "
         f"{bep_registered_cell} | {doc_registered_cell} | {actions} |"
     )
 
@@ -173,13 +158,10 @@ def render_to_disk(base_dir: Path | None = None) -> Path:
     root = base_dir or Path.cwd()
     bep_root = root / "BEPs"
     records: list[tuple[str, dict]] = []
-    if bep_root.is_dir():
-        for bep_dir in sorted(bep_root.iterdir()):
-            if not bep_dir.is_dir() or not bep_dir.name.isdigit():
-                continue
-            metadata = fmt.load_bep_record(bep_dir.name, base_dir=root)
-            if metadata:
-                records.append((bep_dir.name, metadata))
+    for bep_dir in iter_numeric_subdirs(bep_root):
+        metadata = fmt.load_bep_record(bep_dir.name, base_dir=root)
+        if metadata:
+            records.append((bep_dir.name, metadata))
 
     body = render(records, base_dir=root)
     out = bep_root / "README.md"
