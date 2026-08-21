@@ -11098,6 +11098,19 @@
         }
       },
       "general": {
+        "BrainvisionLinksBroken": {
+          "checks": [
+            "exists([\n  substr(path, 1, length(path) - length(extension)) + \".eeg\",\n  substr(path, 1, length(path) - length(extension)) + \".vhdr\",\n  substr(path, 1, length(path) - length(extension)) + \".vmrk\"\n], \"dataset\") == 3\n"
+          ],
+          "issue": {
+            "code": "BRAINVISION_LINKS_BROKEN",
+            "level": "error",
+            "message": "A BrainVision recording must include matching '.eeg', '.vhdr', and '.vmrk' files.\n"
+          },
+          "selectors": [
+            "extension == \".vhdr\" ||\n(extension == \".vmrk\" &&\n exists(substr(path, 1, length(path) - length(extension)) + \".vhdr\", \"dataset\") == 0) ||\n(extension == \".eeg\" &&\n exists(substr(path, 1, length(path) - length(extension)) + \".vhdr\", \"dataset\") == 0 &&\n exists(substr(path, 1, length(path) - length(extension)) + \".vmrk\", \"dataset\") == 0)\n"
+          ]
+        },
         "DuplicateFiles": {
           "checks": [
             "exists(substr(path, 0, length(path) - 3), \"dataset\") == 0"
@@ -12226,14 +12239,6 @@
         "message": ".bval and .bvec files must be single space delimited\nand contain only numerical values.\n",
         "selectors": [
           "intersects([extension], [\".bval\", \".bvec\"])"
-        ]
-      },
-      "BrainvisionLinksBroken": {
-        "code": "BRAINVISION_LINKS_BROKEN",
-        "level": "error",
-        "message": "Internal file pointers in BrainVision file triplet (*.eeg, *.vhdr,\nand *.vmrk) are broken or some files do not exist.\n",
-        "selectors": [
-          "intersects([extension], [\".eeg\", \".vhdr\", \".vmrk\"])"
         ]
       },
       "BvecRowLength": {
