@@ -15,10 +15,31 @@ import filecmp
 from pathlib import Path
 from functools import lru_cache
 
-# Canonical BEP_METADATA.json emitter — single source of truth for schema
-# layout (design plan §2, §3.2). Bash pipeline never writes this JSON
-# directly; anything metadata-related goes through the Python side.
-from bids_schema.metadata.io import write_bep_metadata
+
+def write_bep_metadata_via_cli(output_dir, *, bep_number, title, pr_number,
+                                pull_request, google_doc='', status='review',
+                                authors_count=0):
+    """Emit BEP_METADATA.json by shelling out to `bids-schema metadata write-bep`.
+
+    Delegating to the CLI (rather than `from bids_schema.metadata.io import
+    write_bep_metadata`) keeps the schema layout in one place while working
+    reliably under `datalad run`, where `#!/usr/bin/env python3` may not
+    resolve to the same interpreter that `pip install -e .` populated with
+    the `bids_schema` package. The `bids-schema` entry-point script has a
+    pip-generated hardcoded interpreter path, so it always finds the
+    package regardless of shell / PATH context.
+    """
+    subprocess.run([
+        'bids-schema', 'metadata', 'write-bep',
+        '--output-dir', str(output_dir),
+        '--bep-number', str(bep_number),
+        '--title', title,
+        '--pr-number', str(pr_number),
+        '--pull-request', pull_request,
+        '--google-doc', google_doc or '',
+        '--status', status,
+        '--authors-count', str(authors_count),
+    ], check=True)
 
 
 @lru_cache(maxsize=128)
@@ -176,10 +197,11 @@ def main():
             pr_metadata = load_pr_metadata(str(pr_metadata_file))
             authors_count = pr_metadata.get('authors_count', 0)
 
-            # Delegate BEP_METADATA.json emission to the canonical Python
-            # writer. `bids-schema collect beps` later merges bep_registered
-            # and googledoc_registered timestamps into this file.
-            write_bep_metadata(
+            # Delegate BEP_METADATA.json emission to the CLI (single
+            # source of truth for schema layout). `bids-schema collect
+            # beps` later merges bep_registered and googledoc_registered
+            # timestamps into this file.
+            write_bep_metadata_via_cli(
                 bep_schema_dir,
                 bep_number=bep_number,
                 title=title,
