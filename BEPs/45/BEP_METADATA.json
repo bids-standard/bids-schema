@@ -5,5 +5,14 @@
   "pull_request": "https://github.com/bids-standard/bids-specification/pull/2267",
   "google_doc": "https://docs.google.com/document/d/1oTfjzY5ZnLIYd0kPPWhR81sBmMuy_jC5YYIaqj6OhSA/edit",
   "status": "review",
-  "authors_count": 4
+  "authors_count": 4,
+  "_schema_version": 2,
+  "bep_registered": "2025-03-19T18:46:00Z",
+  "googledoc_registered": "2025-03-19T18:46:00Z",
+  "_registration_source": {
+    "repo": "bids-standard/bids-website",
+    "path": "data/beps/beps.yml",
+    "walked_at": "2026-08-22T16:30:43Z",
+    "walked_ref": "40b47a9b0154c0cb7381db273e9d0882ddd191be"
+  }
 }
