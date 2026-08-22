@@ -7,5 +7,11 @@
   "build_status": "failed",
   "error_message": "AttributeError: 'Namespace' object has no attribute 'objects'",
   "error_log": "bst-output.log",
-  "authors_count": 2
+  "authors_count": 2,
+  "stats": {
+    "_error": "graphql_error",
+    "_complete": false,
+    "_collected_at": "2026-08-22T16:30:25Z"
+  },
+  "_schema_version": 2
 }

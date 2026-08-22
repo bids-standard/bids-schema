@@ -5,5 +5,11 @@
   "last_updated": "2026-05-12T03:51:19Z",
   "has_schema_changes": true,
   "build_status": "success",
-  "authors_count": 1
+  "authors_count": 1,
+  "stats": {
+    "_error": "graphql_error",
+    "_complete": false,
+    "_collected_at": "2026-08-22T16:30:27Z"
+  },
+  "_schema_version": 2
 }
