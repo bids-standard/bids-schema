@@ -815,8 +815,12 @@ This is existing precedent, not new invention. Document it in
 Only one credential is required — `${{ secrets.GITHUB_TOKEN }}` — and
 it is already present in the existing `inject.yml` workflow.
 
-- In CI, `gh` picks up `${{ secrets.GITHUB_TOKEN }}` automatically
-  (write on this repo, read on `bids-specification`).
+- In CI, the workflow step running `bids-schema collect prs` must set
+  `env: GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}` explicitly — `gh` does
+  not auto-pick up the actions/checkout token. The job also needs
+  `permissions: pull-requests: read` (and `issues: read` for
+  issue-comment counts) — those default to `none` on any workflow
+  that specifies `contents: write`. See `.github/workflows/inject.yml`.
 - Locally, the developer's `gh auth status` handles it. No new secrets.
 - Budget: ~50 PRs × ~5 GraphQL points each = 250 points, well under
   the 5000/hr limit. Author-level breakdowns cost the same — the

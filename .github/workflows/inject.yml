@@ -12,6 +12,10 @@ on:
 
 permissions:
   contents: write
+  # `bids-schema collect prs` uses `gh api graphql` to read PR activity
+  # (reviews, comments, review threads) from bids-standard/bids-specification.
+  pull-requests: read
+  issues: read
 
 jobs:
   inject:
@@ -21,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Configure git
         run: |
           git config --global user.name bids-maintenance
@@ -37,6 +41,11 @@ jobs:
           python3 -m pip install -e '.[ci]'
 
       - name: Run cron job
+        env:
+          # `gh` CLI reads GH_TOKEN (or GITHUB_TOKEN) from env when
+          # running inside a GitHub Actions workflow — it doesn't
+          # auto-pick up the actions/checkout token.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           tools/inject-schema-fully-auto
 
