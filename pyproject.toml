@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bids_schema"
+version = "0.1.0"
+description = "Tooling for the bids-schema archive: schema staging, PR/BEP stats collection, README rendering."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+    { name = "BIDS maintainers" },
+]
+dependencies = [
+    "click>=8.1",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+gh    = []
+gdocs = ["google-api-python-client>=2.100", "google-auth>=2.20"]
+test  = [
+    "bids_schema[gh,gdocs]",
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "responses>=0.25",
+]
+devel = [
+    "bids_schema[test]",
+    "ruff>=0.4",
+    "mypy>=1.10",
+    "tox>=4.0",
+    "tox-uv>=1.0",
+]
+ci = [
+    "bids_schema[devel]",
+    "tox-gh-actions>=3.0",
+]
+
+[project.scripts]
+bids-schema = "bids_schema.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["bids_schema*"]
+exclude = ["bids_schema.tests*"]
+
+[tool.pytest.ini_options]
+testpaths = ["bids_schema/tests"]
+markers = [
+    "ai_generated: test authored (in whole or in part) by an AI assistant",
+]

@@ -32,6 +32,10 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install datalad git-annex
 
+      - name: Install bids-schema (CLI + dependencies)
+        run: |
+          python3 -m pip install -e '.[ci]'
+
       - name: Run cron job
         run: |
           tools/inject-schema-fully-auto

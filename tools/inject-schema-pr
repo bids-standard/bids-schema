@@ -114,29 +114,26 @@ if [ "$BST_EXIT_CODE" -ne 0 ]; then
         # Count unique authors for the PR
         authors_count=0
         if [ -n "$repo" ] && [ "$repo" != "unknown" ]; then
-            # Get the merge base with master to find all commits in the PR
             merge_base=$(git -C "$repo" merge-base "$git_ref" origin/master 2>/dev/null || echo "")
             if [ -n "$merge_base" ]; then
-                # Count unique authors for commits in the PR
                 authors_count=$(git -C "$repo" shortlog -sn "$merge_base..$git_ref" 2>/dev/null | wc -l)
             fi
         fi
 
-        # Create error metadata file
-        cat > PR_METADATA.json <<EOF
-{
-  "pr_number": "$pr_number",
-  "git_ref": "$git_ref",
-  "last_commit": "$commit_hash",
-  "last_updated": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
-  "has_schema_changes": true,
-  "build_status": "failed",
-  "error_message": "$error_msg",
-  "error_log": "bst-output.log",
-  "authors_count": $authors_count
-}
-EOF
-        # Create a placeholder schema.json with error info
+        # Delegate PR_METADATA.json emission to the Python side — single
+        # source of truth for schema layout (see design plan §2).
+        bids-schema metadata write-pr \
+            --output-dir "." \
+            --pr-number "$pr_number" \
+            --git-ref "$git_ref" \
+            --last-commit "$commit_hash" \
+            --authors-count "$authors_count" \
+            --status failed \
+            --error-message "$error_msg" \
+            --error-log "bst-output.log"
+
+        # Placeholder schema.json with error info (this is the actual
+        # output artifact, not metadata; kept in bash for simplicity)
         cat > schema.json <<EOF
 {
   "error": "Schema build failed",
@@ -170,32 +167,27 @@ fi
 if [ "$generate_metadata" = true ] && [ "$ref_type" = "pr" ]; then
     pr_number=$(echo "$output_dir" | sed 's/.*PRs\///')
 
-    # Get commit hash for the ref
     commit_hash=$(git -C "$repo" rev-parse "$git_ref" 2>/dev/null || echo "unknown")
 
-    # Count unique authors for the PR
     authors_count=0
     if [ -n "$repo" ] && [ "$repo" != "unknown" ]; then
-        # Get the merge base with master to find all commits in the PR
         merge_base=$(git -C "$repo" merge-base "$git_ref" origin/master 2>/dev/null || echo "")
         if [ -n "$merge_base" ]; then
-            # Count unique authors for commits in the PR
             authors_count=$(git -C "$repo" shortlog -sn "$merge_base..$git_ref" 2>/dev/null | wc -l)
         fi
     fi
 
-    # Generate PR_METADATA.json file
-    cat > PR_METADATA.json <<EOF
-{
-  "pr_number": "$pr_number",
-  "git_ref": "$git_ref",
-  "last_commit": "$commit_hash",
-  "last_updated": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
-  "has_schema_changes": true,
-  "build_status": "success",
-  "authors_count": $authors_count
-}
-EOF
+    # Delegate PR_METADATA.json emission to the Python side — single
+    # source of truth for schema layout (see design plan §2). The
+    # `bids-schema collect prs` step later merges a `stats` block
+    # into this file.
+    bids-schema metadata write-pr \
+        --output-dir "." \
+        --pr-number "$pr_number" \
+        --git-ref "$git_ref" \
+        --last-commit "$commit_hash" \
+        --authors-count "$authors_count" \
+        --status success
 fi
 
 # Store version info (but remove schema directory to save space)
