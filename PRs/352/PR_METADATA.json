@@ -11,7 +11,8 @@
   "stats": {
     "_error": "graphql_error",
     "_complete": false,
-    "_collected_at": "2026-08-22T16:30:25Z"
+    "_collected_at": "2026-08-22T16:30:25Z",
+    "_source_head_sha": "dea99be8a42623402bf930f736f23df9b472a545"
   },
   "_schema_version": 2
 }

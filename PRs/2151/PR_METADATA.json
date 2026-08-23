@@ -9,7 +9,8 @@
   "stats": {
     "_error": "graphql_error",
     "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z"
+    "_collected_at": "2026-08-22T16:30:26Z",
+    "_source_head_sha": "f5ac38eff96ee31d86905eb03bf294d3b8388677"
   },
   "_schema_version": 2
 }
