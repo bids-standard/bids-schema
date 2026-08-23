@@ -370,8 +370,8 @@ def test_collect_only_filters_scope(tmp_path, monkeypatch) -> None:
                         "comments":      {"totalCount": 0, "pageInfo": {"hasNextPage": False, "endCursor": None}, "nodes": []},
                         "reviewThreads": {"totalCount": 0, "pageInfo": {"hasNextPage": False, "endCursor": None}, "nodes": []},
                     },
-                    "rateLimit": {"remaining": 5000},
                 },
+                "rateLimit": {"remaining": 5000},
             }
         return {"repository": {}, "rateLimit": {"remaining": 5000}}
 
@@ -413,8 +413,8 @@ def test_paginate_pr_follows_commit_cursors(monkeypatch) -> None:
                         "comments":      {"totalCount": 0, "pageInfo": {"hasNextPage": False, "endCursor": None}, "nodes": []},
                         "reviewThreads": {"totalCount": 0, "pageInfo": {"hasNextPage": False, "endCursor": None}, "nodes": []},
                     },
-                    "rateLimit": {"remaining": 5000},
                 },
+                "rateLimit": {"remaining": 5000},
             }
         # Second page: one more commit; connection exhausted.
         return {

@@ -95,8 +95,8 @@ query($owner:String!,$name:String!,$number:Int!,
         }
       }
     }
-    rateLimit{remaining resetAt cost}
   }
+  rateLimit{remaining resetAt cost}
 }
 """
 
@@ -300,7 +300,7 @@ def _paginate_pr(pr_number: int) -> dict:
             "owner": BIDS_SPEC_OWNER, "name": BIDS_SPEC_NAME, "number": pr_number,
             "cCur": c_cur, "rCur": r_cur, "icCur": ic_cur, "tCur": t_cur,
         })
-        _maybe_wait_for_rate_limit(data.get("repository", {}).get("rateLimit"))
+        _maybe_wait_for_rate_limit(data.get("rateLimit"))
         pr = (data.get("repository") or {}).get("pullRequest") or {}
         if not pr:
             raise GHError(f"PR #{pr_number} not found in response")
