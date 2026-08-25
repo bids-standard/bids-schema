@@ -8,12 +8,12 @@
   "authors_count": 3,
   "stats": {
     "_source_head_sha": "681b8920ce5b1c0cf21a998000d7c2d7de0df2f7",
-    "_collected_at": "2026-08-25T01:40:03Z",
+    "_collected_at": "2026-08-25T12:58:54Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-10-25T16:42:26Z",
-    "pr_updated_at": "2026-08-21T18:11:47Z",
+    "pr_updated_at": "2026-08-25T11:57:25Z",
     "review_decision": "APPROVED",
     "commits": {
       "count": 73,
@@ -23,10 +23,10 @@
     "reviews": {
       "approved": 2,
       "changes_requested": 0,
-      "commented": 54,
+      "commented": 55,
       "dismissed": 0,
       "pending": 0,
-      "total": 56,
+      "total": 57,
       "by_author": {
         "bendichter": {
           "approved": 0,
@@ -99,15 +99,27 @@
           "last_state": "COMMENTED",
           "effective_state": null,
           "total": 2
+        },
+        "roaldarbol": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-08-25T11:48:13Z",
+          "last_at": "2026-08-25T11:48:13Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
         }
       }
     },
     "comments": {
-      "issue_count": 32,
-      "review_thread_count": 56,
-      "total": 88,
+      "issue_count": 33,
+      "review_thread_count": 57,
+      "total": 90,
       "first_at": "2025-10-25T17:55:19Z",
-      "last_at": "2026-08-17T21:30:54Z",
+      "last_at": "2026-08-25T11:57:24Z",
       "by_author": {
         "codecov": {
           "count": 1,
@@ -150,9 +162,9 @@
           "last_at": "2026-07-16T15:45:11Z"
         },
         "roaldarbol": {
-          "count": 1,
+          "count": 2,
           "first_at": "2026-07-19T12:25:38Z",
-          "last_at": "2026-07-19T12:25:38Z"
+          "last_at": "2026-08-25T11:57:24Z"
         },
         "effigies": {
           "count": 4,
