@@ -9,10 +9,210 @@
   "error_log": "bst-output.log",
   "authors_count": 2,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:25Z",
-    "_source_head_sha": "dea99be8a42623402bf930f736f23df9b472a545"
+    "_source_head_sha": "dea99be8a42623402bf930f736f23df9b472a545",
+    "_collected_at": "2026-08-25T01:39:32Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2019-10-20T14:53:28Z",
+    "pr_updated_at": "2025-08-27T16:03:49Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 15,
+      "first_at": "2019-10-20T14:51:14Z",
+      "last_at": "2021-04-29T15:13:31Z"
+    },
+    "reviews": {
+      "approved": 1,
+      "changes_requested": 0,
+      "commented": 27,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 28,
+      "by_author": {
+        "chrisgorgo": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2019-10-20T15:15:41Z",
+          "last_at": "2019-10-20T15:15:41Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "oesteban": {
+          "approved": 1,
+          "commented": 11,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2019-10-22T16:21:28Z",
+          "last_at": "2021-04-29T15:34:34Z",
+          "last_state": "COMMENTED",
+          "effective_state": "APPROVED",
+          "total": 12
+        },
+        "mattcieslak": {
+          "approved": 0,
+          "commented": 7,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2019-10-22T21:33:54Z",
+          "last_at": "2021-04-29T15:12:43Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 7
+        },
+        "satra": {
+          "approved": 0,
+          "commented": 5,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2021-04-23T11:38:32Z",
+          "last_at": "2021-04-29T15:25:03Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 5
+        },
+        "francopestilli": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2021-04-28T15:58:23Z",
+          "last_at": "2021-04-28T15:58:23Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "JAgho": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2021-04-28T16:10:30Z",
+          "last_at": "2021-04-28T16:10:30Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "Lestropie": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2024-01-08T23:51:23Z",
+          "last_at": "2024-01-08T23:51:23Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 33,
+      "review_thread_count": 32,
+      "total": 65,
+      "first_at": "2019-10-20T15:15:41Z",
+      "last_at": "2024-01-08T23:51:23Z",
+      "by_author": {
+        "mattcieslak": {
+          "count": 5,
+          "first_at": "2019-10-21T01:20:58Z",
+          "last_at": "2021-04-30T17:22:42Z"
+        },
+        "oesteban": {
+          "count": 18,
+          "first_at": "2019-10-22T15:59:18Z",
+          "last_at": "2021-09-08T20:58:15Z"
+        },
+        "jhlegarreta": {
+          "count": 1,
+          "first_at": "2019-10-23T00:28:44Z",
+          "last_at": "2019-10-23T00:28:44Z"
+        },
+        "chrisgorgo": {
+          "count": 2,
+          "first_at": "2019-10-20T15:15:41Z",
+          "last_at": "2019-10-26T17:15:36Z"
+        },
+        "jchoude": {
+          "count": 1,
+          "first_at": "2019-11-11T19:16:31Z",
+          "last_at": "2019-11-11T19:16:31Z"
+        },
+        "francopestilli": {
+          "count": 5,
+          "first_at": "2021-04-05T14:40:54Z",
+          "last_at": "2021-04-30T21:08:23Z"
+        },
+        "arokem": {
+          "count": 1,
+          "first_at": "2021-04-06T02:49:54Z",
+          "last_at": "2021-04-06T02:49:54Z"
+        },
+        "JAgho": {
+          "count": 1,
+          "first_at": "2021-04-06T14:32:36Z",
+          "last_at": "2021-04-06T14:32:36Z"
+        },
+        "effigies": {
+          "count": 2,
+          "first_at": "2021-04-29T15:56:57Z",
+          "last_at": "2021-04-29T15:58:57Z"
+        },
+        "SyamGadde": {
+          "count": 3,
+          "first_at": "2021-07-13T16:40:38Z",
+          "last_at": "2021-09-08T20:21:21Z"
+        },
+        "Lestropie": {
+          "count": 2,
+          "first_at": "2021-11-18T02:55:21Z",
+          "last_at": "2024-01-08T23:51:23Z"
+        },
+        "jdtournier": {
+          "count": 1,
+          "first_at": "2021-11-18T11:53:51Z",
+          "last_at": "2021-11-18T11:53:51Z"
+        },
+        "satra": {
+          "count": 1,
+          "first_at": "2021-04-23T11:38:31Z",
+          "last_at": "2021-04-23T11:38:31Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 10,
+      "unresolved": 3,
+      "unresolved_active": 2,
+      "unresolved_outdated": 1,
+      "unresolved_by_author": {
+        "satra": {
+          "count": 1,
+          "first_at": "2021-04-23T11:38:31Z",
+          "last_at": "2021-04-23T11:38:31Z"
+        },
+        "mattcieslak": {
+          "count": 1,
+          "first_at": "2021-04-29T14:50:18Z",
+          "last_at": "2021-04-29T14:50:18Z"
+        },
+        "Lestropie": {
+          "count": 1,
+          "first_at": "2024-01-08T23:51:23Z",
+          "last_at": "2024-01-08T23:51:23Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }

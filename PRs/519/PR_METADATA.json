@@ -7,10 +7,195 @@
   "build_status": "success",
   "authors_count": 3,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:25Z",
-    "_source_head_sha": "29c8a8596940faa150d1e7b827a29be0733c4872"
+    "_source_head_sha": "29c8a8596940faa150d1e7b827a29be0733c4872",
+    "_collected_at": "2026-08-25T01:39:33Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2020-06-30T22:04:28Z",
+    "pr_updated_at": "2025-08-27T16:03:49Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 14,
+      "first_at": "2020-06-23T19:54:34Z",
+      "last_at": "2024-08-01T17:53:33Z"
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 30,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 30,
+      "by_author": {
+        "tsalo": {
+          "approved": 0,
+          "commented": 4,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2020-07-07T15:10:43Z",
+          "last_at": "2020-10-26T16:33:00Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 4
+        },
+        "effigies": {
+          "approved": 0,
+          "commented": 11,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2020-07-13T21:07:26Z",
+          "last_at": "2023-08-21T18:52:47Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 11
+        },
+        "guiomar": {
+          "approved": 0,
+          "commented": 5,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2020-10-26T16:10:13Z",
+          "last_at": "2020-10-26T16:41:14Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 5
+        },
+        "Remi-Gau": {
+          "approved": 0,
+          "commented": 4,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2022-01-30T11:44:56Z",
+          "last_at": "2024-08-01T17:56:07Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 4
+        },
+        "rwblair": {
+          "approved": 0,
+          "commented": 2,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2022-08-15T19:32:37Z",
+          "last_at": "2022-08-16T14:53:11Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 2
+        },
+        "sappelhoff": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2023-06-28T08:57:48Z",
+          "last_at": "2023-06-28T08:57:48Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "htwangtw": {
+          "approved": 0,
+          "commented": 3,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2023-08-21T17:01:06Z",
+          "last_at": "2023-08-21T19:01:59Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 3
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 6,
+      "review_thread_count": 30,
+      "total": 36,
+      "first_at": "2020-07-07T15:10:42Z",
+      "last_at": "2024-08-01T17:56:07Z",
+      "by_author": {
+        "tsalo": {
+          "count": 4,
+          "first_at": "2020-07-07T15:10:42Z",
+          "last_at": "2020-08-18T17:47:09Z"
+        },
+        "Remi-Gau": {
+          "count": 4,
+          "first_at": "2022-01-30T11:44:56Z",
+          "last_at": "2024-08-01T17:56:07Z"
+        },
+        "codecov": {
+          "count": 1,
+          "first_at": "2023-06-28T16:52:14Z",
+          "last_at": "2023-06-28T16:52:14Z"
+        },
+        "shnizzedy": {
+          "count": 1,
+          "first_at": "2023-10-13T23:07:18Z",
+          "last_at": "2023-10-13T23:07:18Z"
+        },
+        "effigies": {
+          "count": 4,
+          "first_at": "2023-06-28T00:14:58Z",
+          "last_at": "2023-10-14T01:20:18Z"
+        },
+        "guiomar": {
+          "count": 4,
+          "first_at": "2020-10-26T16:10:12Z",
+          "last_at": "2020-10-26T16:19:26Z"
+        },
+        "rwblair": {
+          "count": 2,
+          "first_at": "2022-08-15T19:32:37Z",
+          "last_at": "2022-08-16T14:53:11Z"
+        },
+        "htwangtw": {
+          "count": 1,
+          "first_at": "2023-08-21T17:01:06Z",
+          "last_at": "2023-08-21T17:01:06Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 15,
+      "unresolved": 6,
+      "unresolved_active": 2,
+      "unresolved_outdated": 4,
+      "unresolved_by_author": {
+        "tsalo": {
+          "count": 1,
+          "first_at": "2020-07-07T15:10:42Z",
+          "last_at": "2020-07-07T15:10:42Z"
+        },
+        "guiomar": {
+          "count": 2,
+          "first_at": "2020-10-26T16:10:12Z",
+          "last_at": "2020-10-26T16:19:26Z"
+        },
+        "rwblair": {
+          "count": 1,
+          "first_at": "2022-08-15T19:32:37Z",
+          "last_at": "2022-08-15T19:32:37Z"
+        },
+        "htwangtw": {
+          "count": 1,
+          "first_at": "2023-08-21T17:01:06Z",
+          "last_at": "2023-08-21T17:01:06Z"
+        },
+        "Remi-Gau": {
+          "count": 1,
+          "first_at": "2024-08-01T17:56:07Z",
+          "last_at": "2024-08-01T17:56:07Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }

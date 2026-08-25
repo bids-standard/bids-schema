@@ -7,10 +7,207 @@
   "build_status": "success",
   "authors_count": 6,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "61dd4c4c1b91303aad03130d91acbcaa187c9b0c"
+    "_source_head_sha": "61dd4c4c1b91303aad03130d91acbcaa187c9b0c",
+    "_collected_at": "2026-08-25T01:39:55Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2025-04-10T15:04:58Z",
+    "pr_updated_at": "2026-07-29T08:33:41Z",
+    "review_decision": "CHANGES_REQUESTED",
+    "commits": {
+      "count": 300,
+      "first_at": "2025-06-19T13:05:03Z",
+      "last_at": "2026-07-29T08:33:05Z"
+    },
+    "reviews": {
+      "approved": 1,
+      "changes_requested": 3,
+      "commented": 195,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 199,
+      "by_author": {
+        "yarikoptic": {
+          "approved": 0,
+          "commented": 19,
+          "changes_requested": 3,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-09-02T17:00:22Z",
+          "last_at": "2026-02-17T18:10:15Z",
+          "last_state": "COMMENTED",
+          "effective_state": "CHANGES_REQUESTED",
+          "total": 22
+        },
+        "satra": {
+          "approved": 1,
+          "commented": 16,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-09-03T00:53:16Z",
+          "last_at": "2026-01-30T14:59:16Z",
+          "last_state": "COMMENTED",
+          "effective_state": "APPROVED",
+          "total": 17
+        },
+        "bclenet": {
+          "approved": 0,
+          "commented": 90,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-09-03T10:06:01Z",
+          "last_at": "2026-02-19T15:24:40Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 90
+        },
+        "cmaumet": {
+          "approved": 0,
+          "commented": 30,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-09-09T13:51:41Z",
+          "last_at": "2026-02-17T09:54:06Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 30
+        },
+        "effigies": {
+          "approved": 0,
+          "commented": 23,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-10-03T15:24:27Z",
+          "last_at": "2026-02-17T20:23:07Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 23
+        },
+        "rwblair": {
+          "approved": 0,
+          "commented": 8,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-10-17T21:35:29Z",
+          "last_at": "2026-02-17T20:50:08Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 8
+        },
+        "markmikkelsen": {
+          "approved": 0,
+          "commented": 6,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-04-22T20:53:16Z",
+          "last_at": "2026-04-22T21:01:22Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 6
+        },
+        "julia-pfarr": {
+          "approved": 0,
+          "commented": 3,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-04-23T14:23:18Z",
+          "last_at": "2026-04-23T14:23:18Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 3
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 80,
+      "review_thread_count": 313,
+      "total": 393,
+      "first_at": "2025-05-23T11:51:13Z",
+      "last_at": "2026-04-22T20:53:16Z",
+      "by_author": {
+        "bclenet": {
+          "count": 28,
+          "first_at": "2025-05-23T11:51:13Z",
+          "last_at": "2026-02-03T12:52:12Z"
+        },
+        "cmaumet": {
+          "count": 114,
+          "first_at": "2025-09-16T14:14:14Z",
+          "last_at": "2025-11-24T13:16:48Z"
+        },
+        "effigies": {
+          "count": 59,
+          "first_at": "2025-10-03T15:24:27Z",
+          "last_at": "2026-04-22T15:38:52Z"
+        },
+        "yarikoptic": {
+          "count": 39,
+          "first_at": "2025-09-02T17:00:22Z",
+          "last_at": "2026-02-17T18:10:15Z"
+        },
+        "rwblair": {
+          "count": 21,
+          "first_at": "2025-10-16T18:36:12Z",
+          "last_at": "2026-02-05T19:52:34Z"
+        },
+        "codecov": {
+          "count": 4,
+          "first_at": "2026-01-06T09:23:19Z",
+          "last_at": "2026-01-06T09:23:19Z"
+        },
+        "satra": {
+          "count": 11,
+          "first_at": "2025-09-03T00:10:32Z",
+          "last_at": "2026-01-16T15:21:07Z"
+        },
+        "markmikkelsen": {
+          "count": 1,
+          "first_at": "2026-04-22T20:53:16Z",
+          "last_at": "2026-04-22T20:53:16Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 197,
+      "unresolved": 21,
+      "unresolved_active": 4,
+      "unresolved_outdated": 17,
+      "unresolved_by_author": {
+        "satra": {
+          "count": 1,
+          "first_at": "2025-09-03T00:37:28Z",
+          "last_at": "2025-09-03T00:37:28Z"
+        },
+        "cmaumet": {
+          "count": 11,
+          "first_at": "2025-09-22T12:26:55Z",
+          "last_at": "2025-11-24T13:09:46Z"
+        },
+        "effigies": {
+          "count": 6,
+          "first_at": "2026-01-21T21:27:43Z",
+          "last_at": "2026-01-31T14:53:59Z"
+        },
+        "rwblair": {
+          "count": 1,
+          "first_at": "2026-01-29T20:41:36Z",
+          "last_at": "2026-01-29T20:41:36Z"
+        },
+        "yarikoptic": {
+          "count": 2,
+          "first_at": "2026-02-17T18:03:27Z",
+          "last_at": "2026-02-17T18:10:15Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }

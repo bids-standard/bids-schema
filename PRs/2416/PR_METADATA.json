@@ -7,10 +7,118 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:27Z",
-    "_source_head_sha": "1a73eafcecebe884ae27ada43957ac8e8ad91764"
+    "_source_head_sha": "1a73eafcecebe884ae27ada43957ac8e8ad91764",
+    "_collected_at": "2026-08-25T01:40:22Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "MERGED",
+    "pr_created_at": "2026-04-23T19:10:51Z",
+    "pr_updated_at": "2026-06-26T16:05:26Z",
+    "review_decision": "APPROVED",
+    "commits": {
+      "count": 18,
+      "first_at": "2026-04-10T21:28:54Z",
+      "last_at": "2026-06-24T19:56:25Z"
+    },
+    "reviews": {
+      "approved": 3,
+      "changes_requested": 2,
+      "commented": 6,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 11,
+      "by_author": {
+        "rwblair": {
+          "approved": 1,
+          "commented": 0,
+          "changes_requested": 1,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-04-30T19:11:55Z",
+          "last_at": "2026-06-25T19:07:05Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 2
+        },
+        "bendhouseart": {
+          "approved": 0,
+          "commented": 4,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-04-30T19:25:39Z",
+          "last_at": "2026-06-24T19:56:04Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 4
+        },
+        "effigies": {
+          "approved": 1,
+          "commented": 2,
+          "changes_requested": 1,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-05-08T18:15:04Z",
+          "last_at": "2026-06-26T15:59:59Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 4
+        },
+        "melanieganz": {
+          "approved": 1,
+          "commented": 0,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-06-23T08:30:42Z",
+          "last_at": "2026-06-23T08:30:42Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 17,
+      "review_thread_count": 10,
+      "total": 27,
+      "first_at": "2026-04-24T20:59:33Z",
+      "last_at": "2026-06-26T15:53:56Z",
+      "by_author": {
+        "bendhouseart": {
+          "count": 10,
+          "first_at": "2026-04-24T20:59:33Z",
+          "last_at": "2026-06-26T15:53:56Z"
+        },
+        "codecov": {
+          "count": 1,
+          "first_at": "2026-04-27T14:20:52Z",
+          "last_at": "2026-04-27T14:20:52Z"
+        },
+        "melanieganz": {
+          "count": 5,
+          "first_at": "2026-05-09T17:13:22Z",
+          "last_at": "2026-06-23T08:36:51Z"
+        },
+        "effigies": {
+          "count": 5,
+          "first_at": "2026-06-23T14:58:14Z",
+          "last_at": "2026-06-25T21:30:09Z"
+        },
+        "rwblair": {
+          "count": 3,
+          "first_at": "2026-04-30T19:03:09Z",
+          "last_at": "2026-04-30T19:10:56Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 7,
+      "unresolved": 0,
+      "unresolved_active": 0,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {}
+    }
   },
   "_schema_version": 2
 }

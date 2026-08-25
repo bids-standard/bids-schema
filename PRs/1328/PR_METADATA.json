@@ -7,10 +7,124 @@
   "build_status": "success",
   "authors_count": 1,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "b16560961a756165d64ead210f087eaf1d4f2c74"
+    "_source_head_sha": "b16560961a756165d64ead210f087eaf1d4f2c74",
+    "_collected_at": "2026-08-25T01:39:37Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2022-10-17T14:43:59Z",
+    "pr_updated_at": "2026-01-16T21:11:12Z",
+    "review_decision": "APPROVED",
+    "commits": {
+      "count": 10,
+      "first_at": "2022-10-17T14:29:03Z",
+      "last_at": "2024-04-19T07:10:09Z"
+    },
+    "reviews": {
+      "approved": 2,
+      "changes_requested": 0,
+      "commented": 9,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 11,
+      "by_author": {
+        "Remi-Gau": {
+          "approved": 0,
+          "commented": 2,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2022-10-17T14:46:59Z",
+          "last_at": "2024-04-19T07:09:31Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 2
+        },
+        "tsalo": {
+          "approved": 1,
+          "commented": 3,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2022-10-18T16:23:02Z",
+          "last_at": "2024-04-19T13:35:18Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 4
+        },
+        "sappelhoff": {
+          "approved": 1,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2022-10-23T09:27:35Z",
+          "last_at": "2024-04-18T20:51:11Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 2
+        },
+        "yarikoptic": {
+          "approved": 0,
+          "commented": 3,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-01-23T15:30:59Z",
+          "last_at": "2025-01-23T15:39:57Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 3
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 8,
+      "review_thread_count": 8,
+      "total": 16,
+      "first_at": "2022-10-17T14:46:59Z",
+      "last_at": "2025-01-23T15:45:04Z",
+      "by_author": {
+        "Remi-Gau": {
+          "count": 6,
+          "first_at": "2022-10-17T14:46:59Z",
+          "last_at": "2024-04-19T15:39:25Z"
+        },
+        "codecov": {
+          "count": 1,
+          "first_at": "2022-10-18T18:30:32Z",
+          "last_at": "2022-10-18T18:30:32Z"
+        },
+        "effigies": {
+          "count": 2,
+          "first_at": "2024-04-19T15:30:46Z",
+          "last_at": "2024-08-16T13:57:37Z"
+        },
+        "yarikoptic": {
+          "count": 3,
+          "first_at": "2025-01-23T15:30:59Z",
+          "last_at": "2025-01-23T15:45:04Z"
+        },
+        "tsalo": {
+          "count": 2,
+          "first_at": "2022-10-18T16:23:02Z",
+          "last_at": "2022-10-18T16:23:34Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 6,
+      "unresolved": 2,
+      "unresolved_active": 2,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {
+        "yarikoptic": {
+          "count": 2,
+          "first_at": "2025-01-23T15:30:59Z",
+          "last_at": "2025-01-23T15:37:01Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }

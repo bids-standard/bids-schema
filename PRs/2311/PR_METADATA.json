@@ -7,10 +7,59 @@
   "build_status": "success",
   "authors_count": 1,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "df4c9b11c1e13e76890d7628b3f7f6964a001bca"
+    "_source_head_sha": "df4c9b11c1e13e76890d7628b3f7f6964a001bca",
+    "_collected_at": "2026-08-25T01:40:11Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2026-01-16T18:23:14Z",
+    "pr_updated_at": "2026-02-04T21:14:03Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 2,
+      "first_at": "2026-01-16T18:07:56Z",
+      "last_at": "2026-01-16T18:08:14Z"
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 0,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 0,
+      "by_author": {}
+    },
+    "comments": {
+      "issue_count": 4,
+      "review_thread_count": 0,
+      "total": 4,
+      "first_at": "2026-01-16T18:27:54Z",
+      "last_at": "2026-01-28T17:00:47Z",
+      "by_author": {
+        "codecov": {
+          "count": 1,
+          "first_at": "2026-01-16T18:27:54Z",
+          "last_at": "2026-01-16T18:27:54Z"
+        },
+        "effigies": {
+          "count": 2,
+          "first_at": "2026-01-20T20:02:03Z",
+          "last_at": "2026-01-28T17:00:47Z"
+        },
+        "kabilar": {
+          "count": 1,
+          "first_at": "2026-01-27T22:03:04Z",
+          "last_at": "2026-01-27T22:03:04Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 0,
+      "unresolved": 0,
+      "unresolved_active": 0,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {}
+    }
   },
   "_schema_version": 2
 }

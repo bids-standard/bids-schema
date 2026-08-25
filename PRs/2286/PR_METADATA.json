@@ -7,10 +7,90 @@
   "build_status": "success",
   "authors_count": 10,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "688a0bef980414c313aceda56b18d05b64037461"
+    "_source_head_sha": "688a0bef980414c313aceda56b18d05b64037461",
+    "_collected_at": "2026-08-25T01:40:06Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2025-12-18T23:11:16Z",
+    "pr_updated_at": "2026-07-08T09:37:38Z",
+    "review_decision": null,
+    "commits": {
+      "count": 2,
+      "first_at": "2025-12-18T23:21:32Z",
+      "last_at": "2025-12-18T23:27:25Z"
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 6,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 6,
+      "by_author": {
+        "yarikoptic": {
+          "approved": 0,
+          "commented": 5,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-12-18T23:46:35Z",
+          "last_at": "2025-12-20T02:31:32Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 5
+        },
+        "oesteban": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-12-19T07:42:42Z",
+          "last_at": "2025-12-19T07:42:42Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 3,
+      "review_thread_count": 8,
+      "total": 11,
+      "first_at": "2025-12-18T23:46:34Z",
+      "last_at": "2025-12-20T02:37:47Z",
+      "by_author": {
+        "yarikoptic": {
+          "count": 3,
+          "first_at": "2025-12-18T23:46:34Z",
+          "last_at": "2025-12-20T02:26:32Z"
+        },
+        "codecov": {
+          "count": 1,
+          "first_at": "2025-12-20T02:37:47Z",
+          "last_at": "2025-12-20T02:37:47Z"
+        },
+        "oesteban": {
+          "count": 3,
+          "first_at": "2025-12-19T07:33:27Z",
+          "last_at": "2025-12-19T07:36:10Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 4,
+      "unresolved": 2,
+      "unresolved_active": 1,
+      "unresolved_outdated": 1,
+      "unresolved_by_author": {
+        "oesteban": {
+          "count": 2,
+          "first_at": "2025-12-19T07:33:27Z",
+          "last_at": "2025-12-19T07:36:10Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }

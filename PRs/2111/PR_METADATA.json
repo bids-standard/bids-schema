@@ -7,10 +7,97 @@
   "build_status": "success",
   "authors_count": 3,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "ea5a7689fabcae8604b724c42bb6948ebadd76f5"
+    "_source_head_sha": "ea5a7689fabcae8604b724c42bb6948ebadd76f5",
+    "_collected_at": "2026-08-25T01:39:56Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2025-05-06T21:53:47Z",
+    "pr_updated_at": "2026-06-14T09:27:33Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 3,
+      "first_at": "2025-05-06T21:52:13Z",
+      "last_at": "2025-08-04T19:30:52Z"
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 1,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 1,
+      "by_author": {
+        "effigies": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-05-06T22:14:23Z",
+          "last_at": "2025-05-06T22:14:23Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 17,
+      "review_thread_count": 0,
+      "total": 17,
+      "first_at": "2025-05-07T15:30:38Z",
+      "last_at": "2026-06-12T13:58:18Z",
+      "by_author": {
+        "robertoostenveld": {
+          "count": 3,
+          "first_at": "2025-05-07T15:30:38Z",
+          "last_at": "2025-05-08T12:37:27Z"
+        },
+        "dorahermes": {
+          "count": 1,
+          "first_at": "2025-05-07T18:10:05Z",
+          "last_at": "2025-05-07T18:10:05Z"
+        },
+        "yarikoptic": {
+          "count": 5,
+          "first_at": "2025-05-07T20:20:10Z",
+          "last_at": "2026-06-12T13:58:18Z"
+        },
+        "hoechenberger": {
+          "count": 2,
+          "first_at": "2025-05-08T10:35:36Z",
+          "last_at": "2025-05-08T11:37:10Z"
+        },
+        "cbrnr": {
+          "count": 1,
+          "first_at": "2025-05-08T10:45:28Z",
+          "last_at": "2025-05-08T10:45:28Z"
+        },
+        "effigies": {
+          "count": 2,
+          "first_at": "2025-05-08T11:33:23Z",
+          "last_at": "2026-02-17T15:54:37Z"
+        },
+        "neuromechanist": {
+          "count": 1,
+          "first_at": "2025-08-07T18:20:10Z",
+          "last_at": "2025-08-07T18:20:10Z"
+        },
+        "alexrockhill": {
+          "count": 2,
+          "first_at": "2026-02-17T16:36:03Z",
+          "last_at": "2026-02-17T19:09:00Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 0,
+      "unresolved": 0,
+      "unresolved_active": 0,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {}
+    }
   },
   "_schema_version": 2
 }

@@ -7,10 +7,146 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "8b49ca80dba541ac9f677710155a5445516d2cbd"
+    "_source_head_sha": "8b49ca80dba541ac9f677710155a5445516d2cbd",
+    "_collected_at": "2026-08-25T01:40:13Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2026-01-31T21:05:19Z",
+    "pr_updated_at": "2026-07-10T18:57:40Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 17,
+      "first_at": "2026-01-31T21:01:19Z",
+      "last_at": "2026-07-05T19:33:04Z"
+    },
+    "reviews": {
+      "approved": 2,
+      "changes_requested": 0,
+      "commented": 28,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 30,
+      "by_author": {
+        "kabilar": {
+          "approved": 0,
+          "commented": 6,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-04-01T17:46:30Z",
+          "last_at": "2026-04-01T18:48:09Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 6
+        },
+        "arokem": {
+          "approved": 0,
+          "commented": 11,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-04-24T16:25:13Z",
+          "last_at": "2026-06-26T15:34:20Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 11
+        },
+        "francopestilli": {
+          "approved": 2,
+          "commented": 2,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-06-04T10:57:20Z",
+          "last_at": "2026-07-10T18:56:52Z",
+          "last_state": "COMMENTED",
+          "effective_state": "APPROVED",
+          "total": 4
+        },
+        "jhlegarreta": {
+          "approved": 0,
+          "commented": 6,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-06-26T13:27:18Z",
+          "last_at": "2026-07-06T07:19:00Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 6
+        },
+        "Lestropie": {
+          "approved": 0,
+          "commented": 3,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-06-30T05:17:35Z",
+          "last_at": "2026-06-30T05:31:01Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 3
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 17,
+      "review_thread_count": 28,
+      "total": 45,
+      "first_at": "2026-01-31T21:10:00Z",
+      "last_at": "2026-07-03T17:15:12Z",
+      "by_author": {
+        "codecov": {
+          "count": 1,
+          "first_at": "2026-01-31T21:10:00Z",
+          "last_at": "2026-01-31T21:10:00Z"
+        },
+        "kabilar": {
+          "count": 7,
+          "first_at": "2026-02-03T18:51:08Z",
+          "last_at": "2026-04-01T18:48:09Z"
+        },
+        "arokem": {
+          "count": 12,
+          "first_at": "2026-02-04T00:57:19Z",
+          "last_at": "2026-07-03T17:15:12Z"
+        },
+        "ayendiki": {
+          "count": 4,
+          "first_at": "2026-02-04T13:27:57Z",
+          "last_at": "2026-02-04T21:51:43Z"
+        },
+        "mattcieslak": {
+          "count": 2,
+          "first_at": "2026-02-04T21:34:09Z",
+          "last_at": "2026-03-12T20:17:47Z"
+        },
+        "francopestilli": {
+          "count": 3,
+          "first_at": "2026-02-06T21:05:30Z",
+          "last_at": "2026-06-04T10:59:59Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 12,
+      "unresolved": 7,
+      "unresolved_active": 4,
+      "unresolved_outdated": 3,
+      "unresolved_by_author": {
+        "kabilar": {
+          "count": 2,
+          "first_at": "2026-04-01T17:57:52Z",
+          "last_at": "2026-04-01T18:48:09Z"
+        },
+        "arokem": {
+          "count": 5,
+          "first_at": "2026-06-24T03:59:23Z",
+          "last_at": "2026-06-26T14:36:53Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }

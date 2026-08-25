@@ -7,10 +7,43 @@
   "build_status": "success",
   "authors_count": 3,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:27Z",
-    "_source_head_sha": "7120863de8ff69232758c13f839e79597a6c1c4d"
+    "_source_head_sha": "7120863de8ff69232758c13f839e79597a6c1c4d",
+    "_collected_at": "2026-08-25T01:40:16Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2026-02-25T14:45:26Z",
+    "pr_updated_at": "2026-02-27T02:07:29Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 16,
+      "first_at": "2025-09-16T14:41:52Z",
+      "last_at": "2026-02-27T02:07:27Z"
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 0,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 0,
+      "by_author": {}
+    },
+    "comments": {
+      "issue_count": 0,
+      "review_thread_count": 0,
+      "total": 0,
+      "first_at": null,
+      "last_at": null,
+      "by_author": {}
+    },
+    "review_threads": {
+      "total": 0,
+      "unresolved": 0,
+      "unresolved_active": 0,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {}
+    }
   },
   "_schema_version": 2
 }

@@ -7,10 +7,118 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "b84eec061acf77b5dfdfb4e2046a931ab2cea8fd"
+    "_source_head_sha": "b84eec061acf77b5dfdfb4e2046a931ab2cea8fd",
+    "_collected_at": "2026-08-25T01:40:07Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "MERGED",
+    "pr_created_at": "2026-01-09T15:12:07Z",
+    "pr_updated_at": "2026-07-17T13:22:21Z",
+    "review_decision": "APPROVED",
+    "commits": {
+      "count": 8,
+      "first_at": "2026-01-09T14:50:17Z",
+      "last_at": "2026-04-23T19:39:08Z"
+    },
+    "reviews": {
+      "approved": 2,
+      "changes_requested": 1,
+      "commented": 10,
+      "dismissed": 1,
+      "pending": 0,
+      "total": 14,
+      "by_author": {
+        "mnoergaard": {
+          "approved": 1,
+          "commented": 6,
+          "changes_requested": 1,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-01-12T08:38:32Z",
+          "last_at": "2026-01-12T19:50:04Z",
+          "last_state": "COMMENTED",
+          "effective_state": "APPROVED",
+          "total": 8
+        },
+        "CPernet": {
+          "approved": 0,
+          "commented": 0,
+          "changes_requested": 0,
+          "dismissed": 1,
+          "pending": 0,
+          "first_at": "2026-01-12T09:19:09Z",
+          "last_at": "2026-01-12T09:19:09Z",
+          "last_state": "DISMISSED",
+          "effective_state": null,
+          "total": 1
+        },
+        "effigies": {
+          "approved": 0,
+          "commented": 4,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-01-12T14:57:41Z",
+          "last_at": "2026-01-12T18:55:34Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 4
+        },
+        "bendhouseart": {
+          "approved": 1,
+          "commented": 0,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-04-23T19:33:30Z",
+          "last_at": "2026-04-23T19:33:30Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 2,
+      "review_thread_count": 10,
+      "total": 12,
+      "first_at": "2026-01-09T15:16:40Z",
+      "last_at": "2026-01-12T17:47:56Z",
+      "by_author": {
+        "codecov": {
+          "count": 1,
+          "first_at": "2026-01-09T15:16:40Z",
+          "last_at": "2026-01-09T15:16:40Z"
+        },
+        "bendhouseart": {
+          "count": 1,
+          "first_at": "2026-01-12T17:47:56Z",
+          "last_at": "2026-01-12T17:47:56Z"
+        },
+        "mnoergaard": {
+          "count": 3,
+          "first_at": "2026-01-12T08:38:32Z",
+          "last_at": "2026-01-12T08:40:09Z"
+        },
+        "CPernet": {
+          "count": 1,
+          "first_at": "2026-01-12T09:12:08Z",
+          "last_at": "2026-01-12T09:12:08Z"
+        },
+        "effigies": {
+          "count": 1,
+          "first_at": "2026-01-12T17:11:58Z",
+          "last_at": "2026-01-12T17:11:58Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 5,
+      "unresolved": 0,
+      "unresolved_active": 0,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {}
+    }
   },
   "_schema_version": 2
 }

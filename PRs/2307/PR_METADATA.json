@@ -7,10 +7,156 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "3f1ee56b1b7f8fb45a0d822c393afd1dad942480"
+    "_source_head_sha": "3f1ee56b1b7f8fb45a0d822c393afd1dad942480",
+    "_collected_at": "2026-08-25T01:40:09Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2026-01-15T19:25:10Z",
+    "pr_updated_at": "2026-08-17T18:38:53Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 22,
+      "first_at": "2026-01-15T19:07:37Z",
+      "last_at": "2026-08-17T18:38:50Z"
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 16,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 16,
+      "by_author": {
+        "effigies": {
+          "approved": 0,
+          "commented": 2,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-07-07T21:16:22Z",
+          "last_at": "2026-07-24T21:22:49Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 2
+        },
+        "bendichter": {
+          "approved": 0,
+          "commented": 3,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-07-07T23:25:15Z",
+          "last_at": "2026-07-09T17:02:54Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 3
+        },
+        "yarikoptic": {
+          "approved": 0,
+          "commented": 3,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-07-09T14:25:19Z",
+          "last_at": "2026-07-28T19:33:30Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 3
+        },
+        "lzehl": {
+          "approved": 0,
+          "commented": 5,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-07-29T09:29:51Z",
+          "last_at": "2026-07-29T14:01:36Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 5
+        },
+        "SylvainTakerkart": {
+          "approved": 0,
+          "commented": 3,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-07-30T07:30:02Z",
+          "last_at": "2026-07-30T07:39:51Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 3
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 27,
+      "review_thread_count": 36,
+      "total": 63,
+      "first_at": "2026-01-15T19:27:10Z",
+      "last_at": "2026-07-29T00:44:06Z",
+      "by_author": {
+        "codecov": {
+          "count": 1,
+          "first_at": "2026-01-15T19:27:10Z",
+          "last_at": "2026-01-15T19:27:10Z"
+        },
+        "bendichter": {
+          "count": 4,
+          "first_at": "2026-01-21T15:15:04Z",
+          "last_at": "2026-07-29T00:44:06Z"
+        },
+        "effigies": {
+          "count": 30,
+          "first_at": "2026-01-21T15:26:02Z",
+          "last_at": "2026-07-24T21:22:05Z"
+        },
+        "ree-gupta": {
+          "count": 6,
+          "first_at": "2026-02-03T13:20:54Z",
+          "last_at": "2026-04-15T13:00:49Z"
+        },
+        "robertoostenveld": {
+          "count": 1,
+          "first_at": "2026-02-04T15:14:00Z",
+          "last_at": "2026-02-04T15:14:00Z"
+        },
+        "lzehl": {
+          "count": 1,
+          "first_at": "2026-02-18T15:30:23Z",
+          "last_at": "2026-02-18T15:30:23Z"
+        },
+        "julia-pfarr": {
+          "count": 1,
+          "first_at": "2026-02-18T21:25:42Z",
+          "last_at": "2026-02-18T21:25:42Z"
+        },
+        "yarikoptic": {
+          "count": 1,
+          "first_at": "2026-03-03T14:46:21Z",
+          "last_at": "2026-03-03T14:46:21Z"
+        },
+        "CodyCBakerPhD": {
+          "count": 4,
+          "first_at": "2026-03-06T18:30:13Z",
+          "last_at": "2026-03-20T16:10:39Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 22,
+      "unresolved": 10,
+      "unresolved_active": 7,
+      "unresolved_outdated": 3,
+      "unresolved_by_author": {
+        "effigies": {
+          "count": 10,
+          "first_at": "2026-07-07T20:59:42Z",
+          "last_at": "2026-07-24T21:16:30Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }

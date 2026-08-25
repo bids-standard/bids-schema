@@ -7,10 +7,129 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "2119a13410ec92a22839a4b6407f2a85cbd64df1"
+    "_source_head_sha": "2119a13410ec92a22839a4b6407f2a85cbd64df1",
+    "_collected_at": "2026-08-25T01:40:07Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2025-12-18T23:48:37Z",
+    "pr_updated_at": "2026-02-04T21:14:00Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 2,
+      "first_at": "2025-12-18T23:21:32Z",
+      "last_at": "2026-01-09T20:32:34Z"
+    },
+    "reviews": {
+      "approved": 1,
+      "changes_requested": 0,
+      "commented": 5,
+      "dismissed": 1,
+      "pending": 0,
+      "total": 7,
+      "by_author": {
+        "effigies": {
+          "approved": 0,
+          "commented": 2,
+          "changes_requested": 0,
+          "dismissed": 1,
+          "pending": 0,
+          "first_at": "2026-01-08T13:38:29Z",
+          "last_at": "2026-01-09T20:51:17Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 3
+        },
+        "yarikoptic": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-01-08T14:24:38Z",
+          "last_at": "2026-01-08T14:24:38Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "oesteban": {
+          "approved": 1,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-01-08T19:10:23Z",
+          "last_at": "2026-01-08T19:11:02Z",
+          "last_state": "COMMENTED",
+          "effective_state": "APPROVED",
+          "total": 2
+        },
+        "CPernet": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-01-09T07:17:45Z",
+          "last_at": "2026-01-09T07:17:45Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 10,
+      "review_thread_count": 14,
+      "total": 24,
+      "first_at": "2025-12-19T07:25:47Z",
+      "last_at": "2026-01-09T20:49:19Z",
+      "by_author": {
+        "CPernet": {
+          "count": 1,
+          "first_at": "2025-12-19T07:25:47Z",
+          "last_at": "2025-12-19T07:25:47Z"
+        },
+        "oesteban": {
+          "count": 7,
+          "first_at": "2025-12-19T07:46:24Z",
+          "last_at": "2026-01-08T19:09:14Z"
+        },
+        "yarikoptic": {
+          "count": 4,
+          "first_at": "2025-12-20T02:11:35Z",
+          "last_at": "2026-01-08T14:22:48Z"
+        },
+        "codecov": {
+          "count": 1,
+          "first_at": "2025-12-20T02:32:52Z",
+          "last_at": "2025-12-20T02:32:52Z"
+        },
+        "effigies": {
+          "count": 6,
+          "first_at": "2026-01-08T13:38:29Z",
+          "last_at": "2026-01-09T20:49:19Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 9,
+      "unresolved": 7,
+      "unresolved_active": 7,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {
+        "oesteban": {
+          "count": 2,
+          "first_at": "2026-01-08T19:06:31Z",
+          "last_at": "2026-01-08T19:07:57Z"
+        },
+        "effigies": {
+          "count": 5,
+          "first_at": "2026-01-09T20:35:04Z",
+          "last_at": "2026-01-09T20:49:19Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }

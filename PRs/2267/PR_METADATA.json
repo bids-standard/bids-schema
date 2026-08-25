@@ -7,10 +7,117 @@
   "build_status": "success",
   "authors_count": 4,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "fc186dd76b2b2de1408e15124b3dad7b57bb4688"
+    "_source_head_sha": "fc186dd76b2b2de1408e15124b3dad7b57bb4688",
+    "_collected_at": "2026-08-25T01:40:05Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2025-11-22T19:30:28Z",
+    "pr_updated_at": "2026-07-01T14:34:33Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 20,
+      "first_at": "2025-07-17T13:19:44Z",
+      "last_at": "2026-03-26T07:40:43Z"
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 3,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 3,
+      "by_author": {
+        "effigies": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-12-01T15:59:35Z",
+          "last_at": "2025-12-01T15:59:35Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "scott-huberty": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-02-19T17:38:59Z",
+          "last_at": "2026-02-19T17:38:59Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "bendichter": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-07-01T14:34:32Z",
+          "last_at": "2026-07-01T14:34:32Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 7,
+      "review_thread_count": 6,
+      "total": 13,
+      "first_at": "2025-12-01T15:58:02Z",
+      "last_at": "2026-07-01T14:34:32Z",
+      "by_author": {
+        "scott-huberty": {
+          "count": 4,
+          "first_at": "2026-02-19T17:38:59Z",
+          "last_at": "2026-02-21T20:40:02Z"
+        },
+        "oesteban": {
+          "count": 4,
+          "first_at": "2026-02-20T13:07:52Z",
+          "last_at": "2026-02-23T17:14:43Z"
+        },
+        "effigies": {
+          "count": 4,
+          "first_at": "2025-12-01T15:58:02Z",
+          "last_at": "2025-12-01T15:58:55Z"
+        },
+        "bendichter": {
+          "count": 1,
+          "first_at": "2026-07-01T14:34:32Z",
+          "last_at": "2026-07-01T14:34:32Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 6,
+      "unresolved": 6,
+      "unresolved_active": 5,
+      "unresolved_outdated": 1,
+      "unresolved_by_author": {
+        "effigies": {
+          "count": 4,
+          "first_at": "2025-12-01T15:58:02Z",
+          "last_at": "2025-12-01T15:58:55Z"
+        },
+        "scott-huberty": {
+          "count": 1,
+          "first_at": "2026-02-19T17:38:59Z",
+          "last_at": "2026-02-19T17:38:59Z"
+        },
+        "bendichter": {
+          "count": 1,
+          "first_at": "2026-07-01T14:34:32Z",
+          "last_at": "2026-07-01T14:34:32Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }

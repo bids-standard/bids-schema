@@ -7,10 +7,175 @@
   "build_status": "success",
   "authors_count": 1,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:27Z",
-    "_source_head_sha": "c68c3bbbeb93b2a20b51fee4027ddd690bf59841"
+    "_source_head_sha": "c68c3bbbeb93b2a20b51fee4027ddd690bf59841",
+    "_collected_at": "2026-08-25T01:40:19Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "CLOSED",
+    "pr_created_at": "2026-03-19T00:13:23Z",
+    "pr_updated_at": "2026-07-10T14:57:45Z",
+    "review_decision": "APPROVED",
+    "commits": {
+      "count": 22,
+      "first_at": "2026-03-18T20:50:46Z",
+      "last_at": "2026-07-01T14:04:30Z"
+    },
+    "reviews": {
+      "approved": 3,
+      "changes_requested": 0,
+      "commented": 68,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 71,
+      "by_author": {
+        "effigies": {
+          "approved": 0,
+          "commented": 2,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-03-19T16:36:57Z",
+          "last_at": "2026-03-23T15:59:35Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 2
+        },
+        "neuromechanist": {
+          "approved": 1,
+          "commented": 0,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-03-23T01:12:06Z",
+          "last_at": "2026-03-23T01:12:06Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 1
+        },
+        "yarikoptic": {
+          "approved": 0,
+          "commented": 17,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-03-23T15:46:02Z",
+          "last_at": "2026-06-03T16:36:50Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 17
+        },
+        "h-mayorquin": {
+          "approved": 0,
+          "commented": 10,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-03-25T17:57:34Z",
+          "last_at": "2026-05-13T00:49:29Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 10
+        },
+        "CodyCBakerPhD": {
+          "approved": 1,
+          "commented": 20,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-04-30T15:46:06Z",
+          "last_at": "2026-06-04T01:21:19Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 21
+        },
+        "bendichter": {
+          "approved": 1,
+          "commented": 6,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-06-03T11:58:24Z",
+          "last_at": "2026-06-04T15:49:15Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 7
+        },
+        "yarikoptic-gitmate": {
+          "approved": 0,
+          "commented": 13,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-06-03T16:07:36Z",
+          "last_at": "2026-06-03T16:18:56Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 13
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 20,
+      "review_thread_count": 74,
+      "total": 94,
+      "first_at": "2026-03-19T19:56:42Z",
+      "last_at": "2026-07-10T14:57:45Z",
+      "by_author": {
+        "yarikoptic": {
+          "count": 12,
+          "first_at": "2026-03-19T19:56:42Z",
+          "last_at": "2026-07-10T14:18:32Z"
+        },
+        "effigies": {
+          "count": 2,
+          "first_at": "2026-03-19T21:10:48Z",
+          "last_at": "2026-03-22T19:15:17Z"
+        },
+        "codecov": {
+          "count": 1,
+          "first_at": "2026-06-03T16:42:51Z",
+          "last_at": "2026-06-03T16:42:51Z"
+        },
+        "CodyCBakerPhD": {
+          "count": 3,
+          "first_at": "2026-06-03T23:12:59Z",
+          "last_at": "2026-06-04T03:34:26Z"
+        },
+        "talmo": {
+          "count": 1,
+          "first_at": "2026-06-04T01:34:50Z",
+          "last_at": "2026-06-04T01:34:50Z"
+        },
+        "bendichter": {
+          "count": 6,
+          "first_at": "2026-06-03T12:41:23Z",
+          "last_at": "2026-07-10T14:57:45Z"
+        },
+        "neuromechanist": {
+          "count": 3,
+          "first_at": "2026-03-23T01:08:02Z",
+          "last_at": "2026-07-06T20:34:29Z"
+        },
+        "h-mayorquin": {
+          "count": 6,
+          "first_at": "2026-03-25T17:03:45Z",
+          "last_at": "2026-03-25T17:57:13Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 14,
+      "unresolved": 1,
+      "unresolved_active": 0,
+      "unresolved_outdated": 1,
+      "unresolved_by_author": {
+        "h-mayorquin": {
+          "count": 1,
+          "first_at": "2026-03-25T17:03:45Z",
+          "last_at": "2026-03-25T17:03:45Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }

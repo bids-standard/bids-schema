@@ -7,10 +7,79 @@
   "build_status": "success",
   "authors_count": 1,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:27Z",
-    "_source_head_sha": "187d8727193af37b0c10299f18cdf6b1e348e973"
+    "_source_head_sha": "187d8727193af37b0c10299f18cdf6b1e348e973",
+    "_collected_at": "2026-08-25T01:40:15Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "MERGED",
+    "pr_created_at": "2026-02-19T15:16:29Z",
+    "pr_updated_at": "2026-06-30T14:49:02Z",
+    "review_decision": "APPROVED",
+    "commits": {
+      "count": 6,
+      "first_at": "2026-02-18T15:37:52Z",
+      "last_at": "2026-04-10T19:03:57Z"
+    },
+    "reviews": {
+      "approved": 2,
+      "changes_requested": 0,
+      "commented": 0,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 2,
+      "by_author": {
+        "bendhouseart": {
+          "approved": 1,
+          "commented": 0,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-02-27T19:30:47Z",
+          "last_at": "2026-02-27T19:30:47Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 1
+        },
+        "rwblair": {
+          "approved": 1,
+          "commented": 0,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-05-18T15:54:46Z",
+          "last_at": "2026-05-18T15:54:46Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 3,
+      "review_thread_count": 0,
+      "total": 3,
+      "first_at": "2026-02-27T19:58:16Z",
+      "last_at": "2026-04-10T16:46:58Z",
+      "by_author": {
+        "effigies": {
+          "count": 2,
+          "first_at": "2026-02-27T19:58:16Z",
+          "last_at": "2026-04-10T16:46:58Z"
+        },
+        "yarikoptic": {
+          "count": 1,
+          "first_at": "2026-04-10T16:16:07Z",
+          "last_at": "2026-04-10T16:16:07Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 0,
+      "unresolved": 0,
+      "unresolved_active": 0,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {}
+    }
   },
   "_schema_version": 2
 }

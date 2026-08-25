@@ -7,10 +7,169 @@
   "build_status": "success",
   "authors_count": 1,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:25Z",
-    "_source_head_sha": "467a9b4b91864bb6d504501041585f68f18322fb"
+    "_source_head_sha": "467a9b4b91864bb6d504501041585f68f18322fb",
+    "_collected_at": "2026-08-25T01:39:31Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2018-12-12T18:42:32Z",
+    "pr_updated_at": "2026-06-12T22:14:16Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 5,
+      "first_at": "2022-04-22T18:53:57Z",
+      "last_at": "2023-03-13T20:07:24Z"
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 5,
+      "dismissed": 1,
+      "pending": 0,
+      "total": 6,
+      "by_author": {
+        "yarikoptic": {
+          "approved": 0,
+          "commented": 3,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2018-12-12T18:52:00Z",
+          "last_at": "2022-12-20T13:28:09Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 3
+        },
+        "chrisgorgo": {
+          "approved": 0,
+          "commented": 0,
+          "changes_requested": 0,
+          "dismissed": 1,
+          "pending": 0,
+          "first_at": "2018-12-12T20:49:18Z",
+          "last_at": "2018-12-12T20:49:18Z",
+          "last_state": "DISMISSED",
+          "effective_state": null,
+          "total": 1
+        },
+        "effigies": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2022-12-17T15:30:28Z",
+          "last_at": "2022-12-17T15:30:28Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "robertoostenveld": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2022-12-20T12:06:37Z",
+          "last_at": "2022-12-20T12:06:37Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 44,
+      "review_thread_count": 5,
+      "total": 49,
+      "first_at": "2018-12-12T18:52:00Z",
+      "last_at": "2024-06-26T12:08:03Z",
+      "by_author": {
+        "chrisgorgo": {
+          "count": 3,
+          "first_at": "2018-12-12T20:54:20Z",
+          "last_at": "2018-12-13T23:32:50Z"
+        },
+        "yarikoptic": {
+          "count": 18,
+          "first_at": "2018-12-12T18:52:00Z",
+          "last_at": "2023-08-16T15:27:54Z"
+        },
+        "mateuszpawlik": {
+          "count": 1,
+          "first_at": "2021-09-15T11:57:58Z",
+          "last_at": "2021-09-15T11:57:58Z"
+        },
+        "octomike": {
+          "count": 3,
+          "first_at": "2022-04-22T11:15:52Z",
+          "last_at": "2024-06-26T12:08:03Z"
+        },
+        "CPernet": {
+          "count": 4,
+          "first_at": "2022-04-22T13:27:28Z",
+          "last_at": "2022-04-22T14:42:52Z"
+        },
+        "oesteban": {
+          "count": 7,
+          "first_at": "2022-04-22T13:39:31Z",
+          "last_at": "2022-12-21T15:21:01Z"
+        },
+        "poldrack": {
+          "count": 1,
+          "first_at": "2022-04-22T13:44:30Z",
+          "last_at": "2022-04-22T13:44:30Z"
+        },
+        "effigies": {
+          "count": 2,
+          "first_at": "2022-04-22T14:00:34Z",
+          "last_at": "2022-12-17T15:30:27Z"
+        },
+        "neurolabusc": {
+          "count": 1,
+          "first_at": "2022-04-22T14:40:48Z",
+          "last_at": "2022-04-22T14:40:48Z"
+        },
+        "dorahermes": {
+          "count": 1,
+          "first_at": "2022-04-22T15:04:37Z",
+          "last_at": "2022-04-22T15:04:37Z"
+        },
+        "Remi-Gau": {
+          "count": 1,
+          "first_at": "2022-04-22T16:28:16Z",
+          "last_at": "2022-04-22T16:28:16Z"
+        },
+        "codecov": {
+          "count": 1,
+          "first_at": "2022-04-22T19:04:16Z",
+          "last_at": "2022-04-22T19:04:16Z"
+        },
+        "nicholst": {
+          "count": 2,
+          "first_at": "2022-12-17T11:15:12Z",
+          "last_at": "2022-12-20T09:07:10Z"
+        },
+        "robertoostenveld": {
+          "count": 1,
+          "first_at": "2022-12-20T12:09:41Z",
+          "last_at": "2022-12-20T12:09:41Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 2,
+      "unresolved": 1,
+      "unresolved_active": 0,
+      "unresolved_outdated": 1,
+      "unresolved_by_author": {
+        "yarikoptic": {
+          "count": 1,
+          "first_at": "2018-12-12T18:52:00Z",
+          "last_at": "2018-12-12T18:52:00Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }

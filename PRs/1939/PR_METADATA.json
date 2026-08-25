@@ -7,10 +7,73 @@
   "build_status": "success",
   "authors_count": 1,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "faf62ecb69cc18f1850e1553b2bac728f4cfc50d"
+    "_source_head_sha": "faf62ecb69cc18f1850e1553b2bac728f4cfc50d",
+    "_collected_at": "2026-08-25T01:39:44Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2024-10-03T18:12:48Z",
+    "pr_updated_at": "2026-01-23T16:15:13Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 1,
+      "first_at": "2024-10-03T17:55:23Z",
+      "last_at": "2024-10-03T17:55:23Z"
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 1,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 1,
+      "by_author": {
+        "yarikoptic": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-01-23T15:21:15Z",
+          "last_at": "2025-01-23T15:21:15Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 4,
+      "review_thread_count": 1,
+      "total": 5,
+      "first_at": "2025-01-23T15:21:15Z",
+      "last_at": "2025-10-03T16:47:51Z",
+      "by_author": {
+        "yarikoptic": {
+          "count": 3,
+          "first_at": "2025-01-23T15:21:15Z",
+          "last_at": "2025-10-02T19:30:09Z"
+        },
+        "effigies": {
+          "count": 2,
+          "first_at": "2025-10-01T16:04:55Z",
+          "last_at": "2025-10-03T16:47:51Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 1,
+      "unresolved": 1,
+      "unresolved_active": 1,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {
+        "yarikoptic": {
+          "count": 1,
+          "first_at": "2025-01-23T15:21:15Z",
+          "last_at": "2025-01-23T15:21:15Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }

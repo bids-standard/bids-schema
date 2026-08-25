@@ -9,10 +9,54 @@
   "error_log": "bst-output.log",
   "authors_count": 1,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:25Z",
-    "_source_head_sha": "2bb01b7bbbf2e1be8c76cb5d879681f704d7eb39"
+    "_source_head_sha": "2bb01b7bbbf2e1be8c76cb5d879681f704d7eb39",
+    "_collected_at": "2026-08-25T01:39:34Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2021-03-09T19:47:55Z",
+    "pr_updated_at": "2025-08-27T16:03:49Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 1,
+      "first_at": "2021-03-09T19:36:58Z",
+      "last_at": "2021-03-09T19:36:58Z"
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 0,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 0,
+      "by_author": {}
+    },
+    "comments": {
+      "issue_count": 2,
+      "review_thread_count": 0,
+      "total": 2,
+      "first_at": "2021-03-11T09:17:53Z",
+      "last_at": "2022-01-09T23:21:20Z",
+      "by_author": {
+        "sappelhoff": {
+          "count": 1,
+          "first_at": "2021-03-11T09:17:53Z",
+          "last_at": "2021-03-11T09:17:53Z"
+        },
+        "yarikoptic": {
+          "count": 1,
+          "first_at": "2022-01-09T23:21:20Z",
+          "last_at": "2022-01-09T23:21:20Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 0,
+      "unresolved": 0,
+      "unresolved_active": 0,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {}
+    }
   },
   "_schema_version": 2
 }

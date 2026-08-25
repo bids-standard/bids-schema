@@ -7,10 +7,77 @@
   "build_status": "success",
   "authors_count": 1,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "ae392b953c884dff3d373bc29289545975c79dc1"
+    "_source_head_sha": "ae392b953c884dff3d373bc29289545975c79dc1",
+    "_collected_at": "2026-08-25T01:39:40Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2023-06-28T20:48:09Z",
+    "pr_updated_at": "2025-08-27T16:03:48Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 2,
+      "first_at": "2023-06-28T20:36:45Z",
+      "last_at": "2023-06-28T20:40:13Z"
+    },
+    "reviews": {
+      "approved": 1,
+      "changes_requested": 0,
+      "commented": 0,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 1,
+      "by_author": {
+        "tsalo": {
+          "approved": 1,
+          "commented": 0,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2023-07-05T14:13:44Z",
+          "last_at": "2023-07-05T14:13:44Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 6,
+      "review_thread_count": 0,
+      "total": 6,
+      "first_at": "2023-06-28T20:51:53Z",
+      "last_at": "2023-08-30T07:23:59Z",
+      "by_author": {
+        "codecov": {
+          "count": 1,
+          "first_at": "2023-06-28T20:51:53Z",
+          "last_at": "2023-06-28T20:51:53Z"
+        },
+        "Lestropie": {
+          "count": 2,
+          "first_at": "2023-06-29T00:41:07Z",
+          "last_at": "2023-08-30T07:23:59Z"
+        },
+        "effigies": {
+          "count": 2,
+          "first_at": "2023-06-29T11:53:50Z",
+          "last_at": "2023-07-06T16:02:03Z"
+        },
+        "jhlegarreta": {
+          "count": 1,
+          "first_at": "2023-07-06T13:57:59Z",
+          "last_at": "2023-07-06T13:57:59Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 0,
+      "unresolved": 0,
+      "unresolved_active": 0,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {}
+    }
   },
   "_schema_version": 2
 }

@@ -7,10 +7,90 @@
   "build_status": "success",
   "authors_count": 3,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "f5ac38eff96ee31d86905eb03bf294d3b8388677"
+    "_source_head_sha": "f5ac38eff96ee31d86905eb03bf294d3b8388677",
+    "_collected_at": "2026-08-25T01:40:00Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2025-06-25T07:44:37Z",
+    "pr_updated_at": "2026-02-04T21:13:53Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 5,
+      "first_at": "2025-06-25T07:38:12Z",
+      "last_at": "2025-09-05T16:03:20Z"
+    },
+    "reviews": {
+      "approved": 1,
+      "changes_requested": 0,
+      "commented": 2,
+      "dismissed": 1,
+      "pending": 0,
+      "total": 4,
+      "by_author": {
+        "yarikoptic": {
+          "approved": 0,
+          "commented": 0,
+          "changes_requested": 0,
+          "dismissed": 1,
+          "pending": 0,
+          "first_at": "2025-07-03T21:25:58Z",
+          "last_at": "2025-07-03T21:25:58Z",
+          "last_state": "DISMISSED",
+          "effective_state": null,
+          "total": 1
+        },
+        "effigies": {
+          "approved": 1,
+          "commented": 2,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-08-01T14:34:12Z",
+          "last_at": "2025-09-05T16:07:12Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 3
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 2,
+      "review_thread_count": 3,
+      "total": 5,
+      "first_at": "2025-07-03T21:25:34Z",
+      "last_at": "2025-09-05T16:07:03Z",
+      "by_author": {
+        "effigies": {
+          "count": 3,
+          "first_at": "2025-08-01T14:34:11Z",
+          "last_at": "2025-09-05T16:06:49Z"
+        },
+        "codecov": {
+          "count": 1,
+          "first_at": "2025-09-05T16:07:03Z",
+          "last_at": "2025-09-05T16:07:03Z"
+        },
+        "yarikoptic": {
+          "count": 1,
+          "first_at": "2025-07-03T21:25:34Z",
+          "last_at": "2025-07-03T21:25:34Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 3,
+      "unresolved": 1,
+      "unresolved_active": 0,
+      "unresolved_outdated": 1,
+      "unresolved_by_author": {
+        "yarikoptic": {
+          "count": 1,
+          "first_at": "2025-07-03T21:25:34Z",
+          "last_at": "2025-07-03T21:25:34Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }

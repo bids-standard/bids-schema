@@ -7,10 +7,93 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_error": "graphql_error",
-    "_complete": false,
-    "_collected_at": "2026-08-22T16:30:26Z",
-    "_source_head_sha": "80e00341a4e1f6b2e3cd778c58a49836c4b71244"
+    "_source_head_sha": "80e00341a4e1f6b2e3cd778c58a49836c4b71244",
+    "_collected_at": "2026-08-25T01:40:04Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2025-11-13T18:38:15Z",
+    "pr_updated_at": "2026-07-06T18:35:23Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 4,
+      "first_at": "2025-11-13T17:27:57Z",
+      "last_at": "2025-11-14T14:16:06Z"
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 1,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 1,
+      "by_author": {
+        "tsalo": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-11-14T14:31:11Z",
+          "last_at": "2025-11-14T14:31:11Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 7,
+      "review_thread_count": 1,
+      "total": 8,
+      "first_at": "2025-11-13T18:40:08Z",
+      "last_at": "2026-07-06T18:35:23Z",
+      "by_author": {
+        "codecov": {
+          "count": 1,
+          "first_at": "2025-11-13T18:40:08Z",
+          "last_at": "2025-11-13T18:40:08Z"
+        },
+        "arokem": {
+          "count": 3,
+          "first_at": "2025-11-13T18:40:23Z",
+          "last_at": "2026-01-31T20:52:31Z"
+        },
+        "PeerHerholz": {
+          "count": 1,
+          "first_at": "2025-11-14T10:18:32Z",
+          "last_at": "2025-11-14T10:18:32Z"
+        },
+        "arnaudbore": {
+          "count": 1,
+          "first_at": "2026-04-14T20:48:43Z",
+          "last_at": "2026-04-14T20:48:43Z"
+        },
+        "yarikoptic": {
+          "count": 1,
+          "first_at": "2026-07-06T18:35:23Z",
+          "last_at": "2026-07-06T18:35:23Z"
+        },
+        "tsalo": {
+          "count": 1,
+          "first_at": "2025-11-14T14:31:11Z",
+          "last_at": "2025-11-14T14:31:11Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 1,
+      "unresolved": 1,
+      "unresolved_active": 1,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {
+        "tsalo": {
+          "count": 1,
+          "first_at": "2025-11-14T14:31:11Z",
+          "last_at": "2025-11-14T14:31:11Z"
+        }
+      }
+    }
   },
   "_schema_version": 2
 }
