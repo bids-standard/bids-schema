@@ -36,6 +36,17 @@ Related: `doc/designs/1-BEP-support-design-plan.md`, `AGENTS.md`
   accepted; BEP-registration collector does its own `git fetch` on
   `$BIDS_WEBSITE_REPO`. §3.6 updated with the fetch policy. No
   blocking questions remain — PR #1 is ready to start.
+- **v4** — revisits the "Google Docs API access is out of scope"
+  decision from v3.2, on narrower grounds than what was rejected
+  there: a plain Drive API key (no OAuth, no service account, no
+  per-doc share invitations) reading only `modifiedTime`/`version` of
+  publicly link-shared docs — the norm for BEP drafts. Ported from a
+  prototype built against `markmikkelsen/bids-website` (its `bep-dashboard`
+  branch) as `bids_schema.collect.bep_doc_activity`, merging a `doc_activity`
+  block into the existing `BEP_METADATA.json` (schema v3) rather than
+  a separate status file. Replaces the plain "Google Doc" link column
+  in `BEPs/README.md` with a traffic-light activity badge linking to
+  the doc. See `AGENTS.md` § Metadata contracts for the field list.
 
 ## 1. Goal
 
@@ -61,12 +72,18 @@ For every BEP entry in `bids-website:data/beps/beps.yml`, additionally:
   first attached to that BEP entry (may equal `bep_registered`, may
   be later, may be `null` if no `google_doc` URL was ever set).
 
-**Google Docs API access is out of scope** for this design. Direct
-interrogation (edit dates, open comment counts, unresolved suggestion
-counts) requires a GCP project, service-account credentials, per-doc
-share invitations, and ongoing operational overhead — a
-disproportionate investment for the value at this stage. If this
-becomes desirable later, a separate design doc can pick it up.
+**Google Docs API access is out of scope** for this design (v3.2).
+Direct interrogation (edit dates, open comment counts, unresolved
+suggestion counts) requires a GCP project, service-account
+credentials, per-doc share invitations, and ongoing operational
+overhead — a disproportionate investment for the value at this stage.
+
+**Revisited in v4**: edit-date tracking (only) via a plain Drive API
+key against publicly link-shared docs — no OAuth, no service account,
+no per-doc invitations — turned out cheap enough to be worth it. See
+the v4 revision-history entry above and `AGENTS.md` § Metadata
+contracts (`doc_activity`). Open comment / suggestion counts remain
+out of scope — those still need OAuth-level access.
 
 **Non-negotiable invariant 1 — collect once.** PR-derived facts are
 collected **exactly once**, in the PR pipeline. The BEP pipeline never

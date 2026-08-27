@@ -59,11 +59,12 @@ from the repo root.
 | `tools/version_component.sh`                | bash     | Helper: describe HEAD relative to schema-touching commits.                                                    |
 | `bids-schema collect prs`                   | python   | Collect PR stats (reviews, comments, unresolved threads) via `gh api graphql`; merge into `PR_METADATA.json`. |
 | `bids-schema collect beps`                  | python   | Compute `bep_registered` / `googledoc_registered` from `bids-website` git history; merge into `BEP_METADATA.json`. |
+| `bids-schema collect bep-docs`              | python   | Fetch each BEP's Google Doc `modifiedTime`/`version` via the Drive API (API key, publicly-viewable docs only); merge into `BEP_METADATA.json`. |
 | `bids-schema render prs`                    | python   | Render `PRs/README.md` from on-disk metadata. No HTTP calls.                                                  |
 | `bids-schema render beps`                   | python   | Render `BEPs/README.md`; joins sibling `PRs/<N>/PR_METADATA.json` at render time. No HTTP calls.              |
 | `bids-schema metadata write-pr`             | python   | Canonical `PR_METADATA.json` emitter (called from `tools/inject-schema-pr`).                                  |
 | `bids-schema metadata write-bep`            | python   | Canonical `BEP_METADATA.json` emitter (importable from `tools/process-bep-schemas` as `write_bep_metadata`).  |
-| `bids-schema cycle`                         | python   | Composite: `collect prs && collect beps && render prs && render beps`.                                        |
+| `bids-schema cycle`                         | python   | Composite: `collect prs && collect beps && collect bep-docs && render prs && render beps`.                    |
 | `bids-schema info`                          | python   | Print tool version / gh CLI location / auth status (CI debugging).                                            |
 
 Every mutating step is wrapped in `datalad run` so history contains a
@@ -85,6 +86,7 @@ bids_schema/
     __init__.py
     github.py                # GraphQL PR stats collector (PR #1)
     bep_registration.py      # git-log walker for BEP registration timestamps
+    bep_doc_activity.py      # Google Drive API key fetcher for BEP doc activity
   render/
     __init__.py
     formatters.py            # shared cell formatters + record loaders
@@ -127,9 +129,11 @@ submission — matches GitHub's reviewers-sidebar heuristic).
 
 `BEPs/<NN>/BEP_METADATA.json` — current fields:
 
-- `_schema_version` — currently `2`. Files written by pre-v2 tooling
-  lack this key; the renderer treats missing `_schema_version` as v1
-  and leaves `bep_registered` / `googledoc_registered` columns as `—`.
+- `_schema_version` — currently `3`. Files written by pre-v3 tooling
+  lack the fields introduced at their version: pre-v2 files lack
+  `bep_registered`/`googledoc_registered` (renderer shows `—`); pre-v3
+  files additionally lack `doc_activity` (renderer shows "not checked
+  yet").
 - `bep_number`, `title`, `pr_number`, `pull_request` (URL),
   `google_doc` (URL, may be empty), `status`, `authors_count`
 - `bep_registered` — commit date when the BEP entry was first
@@ -140,6 +144,17 @@ submission — matches GitHub's reviewers-sidebar heuristic).
   identifying the `bids-website` HEAD sha the walk was run against.
   May include `_fetch_error` when the collector's own `git fetch`
   failed and the walk fell back to stale local history.
+- `doc_activity` (v3 block, populated by `bids-schema collect
+  bep-docs` from the Google Drive API, API-key auth, publicly-viewable
+  docs only): `last_modified` (Drive `modifiedTime`), `version` (Drive's
+  opaque revision counter, used to derive `edits_since_last_check` against
+  the previous run), `checked_at`, `_error` (`true` if the last fetch
+  failed — the block otherwise keeps the last known good values rather
+  than being cleared). The renderer (`bep_readme._format_bep_row`)
+  turns this into a traffic-light badge via
+  `bids_schema.render.formatters.bep_activity_badge` (🟢 ≤30 days, 🟡
+  ≤180 days, 🔴 older, ⚪ unknown/not yet checked), linked to the
+  `google_doc` URL.
 
 The BEP row in `BEPs/README.md` **reuses** the sibling PR's build /
 commit / date / stats info by loading `PRs/<pr_number>/PR_METADATA.json`
@@ -159,6 +174,11 @@ statistics: BEP metadata never re-collects PR-derived facts.
   to hit the GitHub GraphQL API; missing / unauthenticated `gh`
   degrades gracefully — the collector logs a warning and sets
   `stats._error` on affected records rather than failing the run.
+- `GOOGLE_API_KEY` — a Google Drive API key (no OAuth/service
+  account; only reads metadata of publicly link-shared docs).
+  Consumed by `bids-schema collect bep-docs`; missing key degrades
+  gracefully — the collector logs a warning and exits 0, leaving
+  `doc_activity` as "not checked yet".
 - **`bids_schema` package**: `pip install -e '.[ci]'` in CI,
   `pip install -e '.[test]'` locally. Registers the `bids-schema`
   entry-point script and pulls in `click` + `PyYAML`.
@@ -212,6 +232,9 @@ The active feature branch for the PR/BEP work is `enh-prs-and-beps`
      query (defaults to 50).
    - `PR_STATS_MAX_INNER_QUERIES` — cap on per-thread comment
      pagination round trips (defaults to 10).
+   - `BEP_DOC_ACTIVITY_MAX_AGE` — freshness floor in seconds for the
+     BEP Google Doc activity collector (defaults to 72000 = 20h, so a
+     twice-daily `inject` run fetches each BEP roughly once a day).
 
 ## Related docs
 

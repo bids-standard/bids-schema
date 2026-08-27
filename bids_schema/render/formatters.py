@@ -9,7 +9,7 @@ the plan).
 from __future__ import annotations
 
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -17,6 +17,13 @@ from bids_schema.metadata.io import load_json
 
 BIDS_SPEC_REPO = "bids-standard/bids-specification"
 BIDS_SCHEMA_REPO = "bids-standard/bids-schema"
+
+# Thresholds (days since a BEP's Google Doc was last edited) used by
+# `bep_activity_badge` to turn `doc_activity.last_modified` into a
+# traffic-light badge on the BEPs README. Ported from bids-website's
+# `macros.bep_activity_badge` (bep-dashboard branch).
+FRESH_AFTER_DAYS = 30
+ACTIVE_AFTER_DAYS = 180
 
 # Branch that the "Raw" / "Pretty" table links point at. Defaults to
 # ``main`` so links resolve once this PR is merged; override with
@@ -122,6 +129,48 @@ def load_bep_record(bep_number: str | int, base_dir: Path | None = None) -> dict
     """Load ``BEPs/<NN>/BEP_METADATA.json``. Missing → ``{}``."""
     root = base_dir or Path.cwd()
     return load_json(root / "BEPs" / str(bep_number) / "BEP_METADATA.json")
+
+
+def bep_activity_badge(
+    last_modified: str | None, edits_since_last_check: int | None = None
+) -> dict[str, str]:
+    """Turn a BEP Google Doc's ``modifiedTime`` into a display badge.
+
+    ``edits_since_last_check`` (a diff of the Drive API's ``version``
+    field between two collector runs) is appended to the label when
+    available, giving a rough sense of *how much* changed, not just
+    *whether* it did.
+
+    Returns a dict with ``icon``, ``label`` and ``category`` so callers
+    only need to display values, not compute them. ``last_modified``
+    missing/falsy → an "Unknown" badge (never collected, or the doc
+    isn't publicly viewable).
+    """
+    if not last_modified:
+        return {
+            "icon": "\N{MEDIUM WHITE CIRCLE}",
+            "label": "Unknown",
+            "category": "unknown",
+        }
+
+    modified = datetime.fromisoformat(last_modified.replace("Z", "+00:00"))
+    days = (datetime.now(timezone.utc) - modified).days
+
+    if days <= FRESH_AFTER_DAYS:
+        icon, category = "\N{LARGE GREEN CIRCLE}", "fresh"
+    elif days <= ACTIVE_AFTER_DAYS:
+        icon, category = "\N{LARGE YELLOW CIRCLE}", "active"
+    else:
+        icon, category = "\N{LARGE RED CIRCLE}", "stale"
+
+    label = f"Edited {days} day{'s' if days != 1 else ''} ago"
+    if edits_since_last_check:
+        label += (
+            f" (+{edits_since_last_check} edit"
+            f"{'s' if edits_since_last_check != 1 else ''})"
+        )
+
+    return {"icon": icon, "label": label, "category": category}
 
 
 def stale_marker(stats: dict) -> str:

@@ -3,7 +3,7 @@
 Enforces invariant #1 from the design plan: BEP-side PR facts come from
 ``fmt.load_pr_record`` at render time — never re-collected into
 ``BEP_METADATA.json``. The BEP metadata only owns BEP-layer fields
-(title, google_doc URL, registration timestamps, PR linkage).
+(title, google_doc URL, registration timestamps, doc activity, PR linkage).
 """
 
 from __future__ import annotations
@@ -14,9 +14,9 @@ from bids_schema.metadata.io import iter_numeric_subdirs
 from bids_schema.render import formatters as fmt
 
 TABLE_HEADER = (
-    "| BEP # | Title | Google Doc | PR # | Authors | Build | "
+    "| BEP # | Title | Doc Activity | PR # | Authors | Build | "
     "Reviews | Comments | Unresolved | BEP registered | Doc registered | Actions |\n"
-    "| ----- | ----- | ---------- | ---- | ------- | ----- | "
+    "| ----- | ----- | ------------ | ---- | ------- | ----- | "
     "------- | -------- | ---------- | -------------- | -------------- | ------- |"
 )
 
@@ -44,7 +44,18 @@ def _format_bep_row(bep_number: str, metadata: dict, base_dir: Path | None) -> s
     bep_url = f"https://bids.neuroimaging.io/bep{bep_display_number}"
     bep_display = f"[{bep_display_number}]({bep_url})"
 
-    doc_link = f"[Doc]({google_doc})" if google_doc else "—"
+    doc_activity = metadata.get("doc_activity")
+    if not google_doc:
+        doc_cell = "—"
+    elif not doc_activity:
+        doc_cell = "⚪ Not checked yet"
+    else:
+        badge = fmt.bep_activity_badge(
+            doc_activity.get("last_modified"),
+            doc_activity.get("edits_since_last_check"),
+        )
+        doc_cell = f"[{badge['icon']} {badge['label']}]({google_doc})"
+
     pr_link = f"[{pr_number}]({fmt.pr_url(pr_number)})" if pr_number else "—"
 
     authors_count = str(pr_metadata.get("authors_count", 0)) if pr_metadata else "—"
@@ -61,7 +72,7 @@ def _format_bep_row(bep_number: str, metadata: dict, base_dir: Path | None) -> s
     )
 
     return (
-        f"| {bep_display} | {title} | {doc_link} | {pr_link} | {authors_count} | "
+        f"| {bep_display} | {title} | {doc_cell} | {pr_link} | {authors_count} | "
         f"{build_cell} | {cells['reviews']} | {cells['comments']} | {cells['unresolved']} | "
         f"{bep_registered_cell} | {doc_registered_cell} | {actions} |"
     )
@@ -86,8 +97,10 @@ def render(bep_records: list[tuple[str, dict]], base_dir: Path | None = None) ->
         "",
         "Each subdirectory corresponds to a BEP number and contains:",
         "- `schema.json` — the compiled BIDS schema (pretty-printed alongside as `schema_pp.json`)",
-        "- `BEP_METADATA.json` — BEP-layer metadata: title, `google_doc` URL, PR linkage, and",
-        "  (schema v2+) registration timestamps (`bep_registered`, `googledoc_registered`).",
+        "- `BEP_METADATA.json` — BEP-layer metadata: title, `google_doc` URL, PR linkage,",
+        "  registration timestamps (`bep_registered`, `googledoc_registered`), and",
+        "  (schema v3+) `doc_activity` — how recently the Google Doc itself was edited,",
+        "  fetched via the Google Drive API (see `bids_schema.collect.bep_doc_activity`).",
         "  PR-derived facts (author count, build status, review counts, …) are joined at",
         "  render time from the sibling `PRs/<N>/PR_METADATA.json` — never re-collected.",
         "",
@@ -110,7 +123,10 @@ def render(bep_records: list[tuple[str, dict]], base_dir: Path | None = None) ->
 
     body_lines.extend([
         "",
-        "Column legend: **Reviews** = `approved✅ / changes_requested❌ / commented💬`; "
+        "Column legend: **Doc Activity** = 🟢 edited in the last 30 days / 🟡 edited in "
+        "the last 6 months / 🔴 not edited in over 6 months / ⚪ unknown (not checked yet, "
+        "or the doc isn't publicly viewable), linking to the Google Doc itself; "
+        "**Reviews** = `approved✅ / changes_requested❌ / commented💬`; "
         "**Unresolved** = count of unresolved inline review threads (bolded if > 0); "
         "**BEP registered** = date the BEP entry was first added to `bids-website:data/beps/beps.yml`; "
         "**Doc registered** = date a `google_doc` URL was first attached to that entry.",

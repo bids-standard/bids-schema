@@ -8,7 +8,7 @@ predate this key entirely (missing key → treat as 1).
 from __future__ import annotations
 
 CURRENT_PR_SCHEMA_VERSION = 2
-CURRENT_BEP_SCHEMA_VERSION = 2
+CURRENT_BEP_SCHEMA_VERSION = 3
 
 
 def detect_version(record: dict) -> int:

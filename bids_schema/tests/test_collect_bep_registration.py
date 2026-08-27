@@ -129,7 +129,7 @@ def test_collect_writes_records(website_repo: Path, base_dir: Path, make_bep) ->
     assert rc == 0
 
     rec_11 = json.loads((base_dir / "BEPs" / "11" / "BEP_METADATA.json").read_text())
-    assert rec_11["_schema_version"] == 2
+    assert rec_11["_schema_version"] == 3
     assert rec_11["bep_registered"] == "2018-05-12T14:03:11Z"
     assert rec_11["googledoc_registered"] == "2019-11-02T08:30:00Z"
     assert rec_11["_registration_source"]["path"] == "data/beps/beps.yml"
