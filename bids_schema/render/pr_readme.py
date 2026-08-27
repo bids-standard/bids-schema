@@ -20,10 +20,12 @@ from bids_schema.metadata.io import iter_numeric_subdirs
 from bids_schema.render import formatters as fmt
 
 TABLE_HEADER = (
-    "| PR # | Authors | Build | Reviews | Comments | Unresolved | "
-    "Commit window | Last commit | Actions |\n"
-    "| ---- | ------- | ----- | ------- | -------- | ---------- | "
-    "------------- | ----------- | ------- |"
+    "| PR # | Authors | Build | Created | Reviews | Unresolved | "
+    "Commits | First commit | Last commit | "
+    "Comments | First comment | Last comment | Head | Actions |\n"
+    "| ---- | ------- | ----- | ------- | ------- | ---------- | "
+    "------- | ------------ | ----------- | "
+    "-------- | ------------- | ------------ | ---- | ------- |"
 )
 
 
@@ -35,11 +37,11 @@ def _format_pr_row(pr_number: str, metadata: dict) -> str:
     authors_count = str(metadata.get("authors_count", 0))
     build_cell = fmt.format_build_cell(metadata)
 
-    last_commit_raw = metadata.get("last_commit", "Unknown")
-    if last_commit_raw and last_commit_raw != "Unknown":
-        last_commit_cell = f"[{last_commit_raw[:10]}]({fmt.commit_url(last_commit_raw)})"
+    head_raw = metadata.get("last_commit", "Unknown")
+    if head_raw and head_raw != "Unknown":
+        head_cell = f"[{head_raw[:10]}]({fmt.commit_url(head_raw)})"
     else:
-        last_commit_cell = "—"
+        head_cell = "—"
 
     actions = fmt.format_actions_cell(
         "PRs", pr_number,
@@ -48,9 +50,11 @@ def _format_pr_row(pr_number: str, metadata: dict) -> str:
     )
 
     return (
-        f"| {pr_link} | {authors_count} | {build_cell} | "
-        f"{cells['reviews']} | {cells['comments']} | {cells['unresolved']} | "
-        f"{cells['commit_window']} | {last_commit_cell} | {actions} |"
+        f"| {pr_link} | {authors_count} | {build_cell} | {cells['pr_created']} | "
+        f"{cells['reviews']} | {cells['unresolved']} | "
+        f"{cells['commits_count']} | {cells['commits_first']} | {cells['commits_last']} | "
+        f"{cells['comments_count']} | {cells['comments_first']} | {cells['comments_last']} | "
+        f"{head_cell} | {actions} |"
     )
 
 
@@ -88,10 +92,21 @@ def render(pr_records: list[tuple[str, dict]]) -> str:
 
     body_lines.extend([
         "",
-        "Column legend: **Reviews** = `approved✅ / changes_requested❌ / commented💬`; "
+        "Column legend: **Created** = when the PR was opened; "
+        "**Reviews** = submitted reviews as `approved✅ / changes_requested❌ / commented💬`, "
+        "zero-valued components omitted (so `1✅/27💬`, not `1✅/0❌/27💬`); "
         "**Unresolved** = count of unresolved inline review threads (bolded if > 0); "
-        "**Commit window** = first → last commit dates on the PR branch. "
-        "An empty cell (`—`) means the stats block hasn't been collected yet.",
+        "**Commits** / **First commit** / **Last commit** = number of commits currently on the "
+        "PR branch and their author-date range; **Comments** / **First comment** / **Last comment** = "
+        "issue comments plus review threads and their date range; **Head** = the commit the schema "
+        "here was built from. Counts and dates are separate columns so each can be sorted "
+        "independently. An empty cell (`—`) means the stats block hasn't been collected yet.",
+        "",
+        "> **Why can `First comment` predate `First commit`?** The commit columns describe the "
+        "commits *currently* on the PR branch. A force-push (rebase, squash, branch recreation) "
+        "replaces them, and GitHub only reports what survived — so on a long-lived PR the "
+        "earliest surviving commit can post-date the PR itself by years. `Created` is the PR's "
+        "real start date; comments are never older than that.",
         "",
         "## How to Use PR Schemas",
         "",

@@ -48,9 +48,17 @@ def test_render_to_disk_joins_pr_stats(base_dir: Path, make_pr, make_bep) -> Non
     # Google Doc has a URL but no doc_activity collected yet
     assert "⚪ Not checked yet" in body
     # PR stats joined from sibling PR_METADATA.json
-    assert "3✅/0❌/1💬" in body
-    assert "**2**" in body
-    assert "12 (2020-01-16 → 2026-05-08)" in body
+    row = next(line for line in body.splitlines() if "[011]" in line)
+    # Zero-valued changes_requested component dropped from the row (the legend
+    # still mentions `0❌` as a counter-example, so assert on the row only).
+    assert "3✅/1💬" in row
+    assert "0❌" not in row
+    assert "**2**" in row
+    cells = [c.strip() for c in row.split("|")[1:-1]]
+    # ... | Comments | First comment | Last comment | ...
+    assert cells[8] == "12"
+    assert cells[9] == "2020-01-16"
+    assert cells[10] == "2026-05-08"
 
 
 @pytest.mark.ai_generated

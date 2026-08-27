@@ -26,13 +26,6 @@ def test_format_date_iso() -> None:
 
 
 @pytest.mark.ai_generated
-def test_format_date_window() -> None:
-    assert fmt.format_date_window(None, None) == "—"
-    assert fmt.format_date_window("2020-01-15T09:00:00Z", "2026-05-11T15:27:31Z") == \
-        "2020-01-15 → 2026-05-11"
-
-
-@pytest.mark.ai_generated
 def test_format_reviews_empty() -> None:
     assert fmt.format_reviews(None) == "—"
     assert fmt.format_reviews({}) == "—"
@@ -45,19 +38,30 @@ def test_format_reviews_populated() -> None:
 
 
 @pytest.mark.ai_generated
+def test_format_reviews_omits_zero_components() -> None:
+    """Zero-valued components are dropped rather than rendered as `0✅`."""
+    assert fmt.format_reviews({"approved": 1, "changes_requested": 0, "commented": 27}) == "1✅/27💬"
+    assert fmt.format_reviews({"approved": 0, "changes_requested": 0, "commented": 5}) == "5💬"
+    assert fmt.format_reviews({"approved": 2, "changes_requested": 0, "commented": 0}) == "2✅"
+    assert fmt.format_reviews({"approved": 0, "changes_requested": 1, "commented": 8}) == "1❌/8💬"
+    # Order stays approved → changes_requested → commented regardless of which drop out
+    assert fmt.format_reviews({"approved": 1, "changes_requested": 2, "commented": 3}) == "1✅/2❌/3💬"
+    # Missing keys behave like zeros
+    assert fmt.format_reviews({"commented": 4}) == "4💬"
+
+
+@pytest.mark.ai_generated
+def test_format_count() -> None:
+    assert fmt.format_count(None) == "—"
+    assert fmt.format_count(0) == "0"
+    assert fmt.format_count(47) == "47"
+
+
+@pytest.mark.ai_generated
 def test_format_unresolved() -> None:
     assert fmt.format_unresolved(None) == "—"
     assert fmt.format_unresolved(0) == "0"
     assert fmt.format_unresolved(6) == "**6**"
-
-
-@pytest.mark.ai_generated
-def test_format_activity_span() -> None:
-    assert fmt.format_activity_span(None, None, None) == "—"
-    assert fmt.format_activity_span(0, None, None) == "—"
-    assert fmt.format_activity_span(
-        47, "2020-01-16T10:00:00Z", "2026-05-08T18:12:33Z"
-    ) == "47 (2020-01-16 → 2026-05-08)"
 
 
 @pytest.mark.ai_generated
@@ -78,22 +82,42 @@ def test_stale_marker() -> None:
 @pytest.mark.ai_generated
 def test_format_stats_cells_empty_returns_all_dashes() -> None:
     cells = fmt.format_stats_cells({})
-    assert cells == {"reviews": "—", "comments": "—", "unresolved": "—", "commit_window": "—"}
+    assert set(cells) == set(fmt.STATS_CELL_KEYS)
+    assert set(cells.values()) == {"—"}
 
 
 @pytest.mark.ai_generated
 def test_format_stats_cells_populated() -> None:
     cells = fmt.format_stats_cells({
+        "pr_created_at": "2018-12-12T18:42:32Z",
         "reviews": {"approved": 3, "changes_requested": 2, "commented": 7},
         "comments": {"total": 47, "first_at": "2020-01-16T00:00:00Z",
                      "last_at": "2026-05-08T00:00:00Z"},
         "review_threads": {"unresolved": 6},
-        "commits": {"first_at": "2020-01-15T00:00:00Z", "last_at": "2026-05-11T00:00:00Z"},
+        "commits": {"count": 14, "first_at": "2020-01-15T00:00:00Z",
+                    "last_at": "2026-05-11T00:00:00Z"},
     })
+    assert set(cells) == set(fmt.STATS_CELL_KEYS)
     assert cells["reviews"] == "3✅/2❌/7💬"
-    assert cells["comments"] == "47 (2020-01-16 → 2026-05-08)"
     assert cells["unresolved"] == "**6**"
-    assert cells["commit_window"] == "2020-01-15 → 2026-05-11"
+    assert cells["pr_created"] == "2018-12-12"
+    assert cells["commits_count"] == "14"
+    assert cells["commits_first"] == "2020-01-15"
+    assert cells["commits_last"] == "2026-05-11"
+    assert cells["comments_count"] == "47"
+    assert cells["comments_first"] == "2020-01-16"
+    assert cells["comments_last"] == "2026-05-08"
+
+
+@pytest.mark.ai_generated
+def test_format_stats_cells_partial_block_dashes_missing_pieces() -> None:
+    """A stats block that lacks sub-blocks still yields every key."""
+    cells = fmt.format_stats_cells({"reviews": {"approved": 1}})
+    assert set(cells) == set(fmt.STATS_CELL_KEYS)
+    assert cells["reviews"] == "1✅"
+    assert cells["pr_created"] == "—"
+    assert cells["commits_count"] == "—"
+    assert cells["comments_last"] == "—"
 
 
 @pytest.mark.ai_generated

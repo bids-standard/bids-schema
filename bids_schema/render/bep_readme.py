@@ -15,9 +15,11 @@ from bids_schema.render import formatters as fmt
 
 TABLE_HEADER = (
     "| BEP # | Title | Doc Activity | PR # | Authors | Build | "
-    "Reviews | Comments | Unresolved | BEP registered | Doc registered | Actions |\n"
+    "Reviews | Unresolved | Comments | First comment | Last comment | "
+    "BEP registered | Doc registered | Actions |\n"
     "| ----- | ----- | ------------ | ---- | ------- | ----- | "
-    "------- | -------- | ---------- | -------------- | -------------- | ------- |"
+    "------- | ---------- | -------- | ------------- | ------------ | "
+    "-------------- | -------------- | ------- |"
 )
 
 FOOTER_DEPRECATION_NOTE = (
@@ -73,7 +75,8 @@ def _format_bep_row(bep_number: str, metadata: dict, base_dir: Path | None) -> s
 
     return (
         f"| {bep_display} | {title} | {doc_cell} | {pr_link} | {authors_count} | "
-        f"{build_cell} | {cells['reviews']} | {cells['comments']} | {cells['unresolved']} | "
+        f"{build_cell} | {cells['reviews']} | {cells['unresolved']} | "
+        f"{cells['comments_count']} | {cells['comments_first']} | {cells['comments_last']} | "
         f"{bep_registered_cell} | {doc_registered_cell} | {actions} |"
     )
 
@@ -126,10 +129,15 @@ def render(bep_records: list[tuple[str, dict]], base_dir: Path | None = None) ->
         "Column legend: **Doc Activity** = 🟢 edited in the last 30 days / 🟡 edited in "
         "the last 6 months / 🔴 not edited in over 6 months / ⚪ unknown (not checked yet, "
         "or the doc isn't publicly viewable), linking to the Google Doc itself; "
-        "**Reviews** = `approved✅ / changes_requested❌ / commented💬`; "
+        "**Reviews** = submitted reviews as "
+        "`approved✅ / changes_requested❌ / commented💬`, zero-valued components omitted "
+        "(so `1✅/27💬`, not `1✅/0❌/27💬`); "
         "**Unresolved** = count of unresolved inline review threads (bolded if > 0); "
+        "**Comments** / **First comment** / **Last comment** = issue comments plus review threads "
+        "on the linked PR, count and dates split so each can be sorted independently; "
         "**BEP registered** = date the BEP entry was first added to `bids-website:data/beps/beps.yml`; "
-        "**Doc registered** = date a `google_doc` URL was first attached to that entry.",
+        "**Doc registered** = date a `google_doc` URL was first attached to that entry. "
+        "See [`PRs/README.md`](../PRs/) for the full per-PR commit statistics.",
         "",
         FOOTER_DEPRECATION_NOTE,
         "",
