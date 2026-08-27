@@ -8,12 +8,12 @@
   "authors_count": 5,
   "stats": {
     "_source_head_sha": "7135add33350264fdf24b86ad0b4baa4a0c0f2f8",
-    "_collected_at": "2026-08-27T08:46:40Z",
+    "_collected_at": "2026-08-27T22:08:33Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-05-30T14:09:19Z",
-    "pr_updated_at": "2026-08-26T09:33:57Z",
+    "pr_updated_at": "2026-08-27T19:27:05Z",
     "review_decision": "CHANGES_REQUESTED",
     "commits": {
       "count": 130,
@@ -163,11 +163,11 @@
       }
     },
     "comments": {
-      "issue_count": 75,
+      "issue_count": 78,
       "review_thread_count": 164,
-      "total": 239,
+      "total": 242,
       "first_at": "2025-05-30T14:12:14Z",
-      "last_at": "2026-08-26T09:33:03Z",
+      "last_at": "2026-08-27T19:27:04Z",
       "by_author": {
         "codecov": {
           "count": 3,
@@ -223,6 +223,11 @@
           "count": 6,
           "first_at": "2026-08-26T09:05:29Z",
           "last_at": "2026-08-26T09:33:03Z"
+        },
+        "dmoracze": {
+          "count": 3,
+          "first_at": "2026-08-27T19:27:04Z",
+          "last_at": "2026-08-27T19:27:04Z"
         },
         "Arshitha": {
           "count": 9,
