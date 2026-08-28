@@ -18,7 +18,7 @@ def test_empty_pr_list_still_renders() -> None:
 
 #: Column order of the rendered PR table, for index-based cell assertions.
 COLUMNS = [
-    "PR #", "Authors", "Build", "Created", "Reviews", "Unresolved",
+    "PR #", "# Authors", "# Commenters", "Build", "Created", "Reviews", "Unresolved",
     "Commits", "First commit", "Last commit",
     "Comments", "First comment", "Last comment", "Head", "Actions",
 ]
@@ -46,11 +46,13 @@ def test_v1_record_renders_dashes_in_new_columns() -> None:
     row = next(line for line in body.splitlines() if line.startswith("| [518]"))
     cells = dict(zip(COLUMNS, _cells(row)))
     assert cells["PR #"].startswith("[518]")
-    assert cells["Authors"] == "2"
+    # v1 record has no stats, so the build-time authors_count is the fallback
+    assert cells["# Authors"] == "2"
     assert cells["Build"] == "✅"
     # Every stats-derived column is "—" for a v1 record
-    for col in ("Created", "Reviews", "Unresolved", "Commits", "First commit",
-                "Last commit", "Comments", "First comment", "Last comment"):
+    for col in ("# Commenters", "Created", "Reviews", "Unresolved", "Commits",
+                "First commit", "Last commit", "Comments", "First comment",
+                "Last comment"):
         assert cells[col] == "—", col
     assert cells["Head"].startswith("[8bcb4d678f]")
 
@@ -69,14 +71,19 @@ def test_v2_record_renders_stats() -> None:
             "pr_created_at": "2020-06-30T19:44:32Z",
             "reviews": {"approved": 3, "changes_requested": 2, "commented": 7},
             "comments": {"total": 47, "first_at": "2020-01-16T00:00:00Z",
-                         "last_at": "2026-05-08T00:00:00Z"},
+                         "last_at": "2026-05-08T00:00:00Z",
+                         "by_author": {"a": {}, "b": {}, "c": {}, "d": {}}},
             "review_threads": {"unresolved": 6},
             "commits": {"count": 14, "first_at": "2020-01-15T09:00:00Z",
                         "last_at": "2026-05-11T15:00:00Z"},
+            "contributors": {"count": 5, "authors": 4, "committers": 2},
         },
     })])
     row = next(line for line in body.splitlines() if line.startswith("| [518]"))
     cells = dict(zip(COLUMNS, _cells(row)))
+    # Collected contributor count supersedes the build-time authors_count of 2
+    assert cells["# Authors"] == "5"
+    assert cells["# Commenters"] == "4"
     assert cells["Created"] == "2020-06-30"
     assert cells["Reviews"] == "3✅/2❌/7💬"
     assert cells["Unresolved"] == "**6**"

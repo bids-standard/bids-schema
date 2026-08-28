@@ -202,6 +202,7 @@ STATS_CELL_KEYS = (
     "pr_created",
     "commits_count", "commits_first", "commits_last",
     "comments_count", "comments_first", "comments_last",
+    "commenters",
 )
 
 
@@ -233,7 +234,31 @@ def format_stats_cells(stats: dict) -> dict[str, str]:
         "comments_count": format_count(comments.get("total")),
         "comments_first": format_date(comments.get("first_at")),
         "comments_last":  format_date(comments.get("last_at")),
+        "commenters":     format_count(len(comments["by_author"])
+                                       if "by_author" in comments else None),
     }
+
+
+def format_contributors(record: dict) -> str:
+    """The ``# Authors`` cell: how many distinct people are behind the commits.
+
+    Prefers ``stats.contributors.count``, which the collector recomputes on
+    every cycle from both the author and committer of every commit, keyed on
+    GitHub login / email.
+
+    Falls back to the record's top-level ``authors_count``, which is a
+    ``git shortlog -sn | wc -l`` taken once when the schema was *built*. That
+    value goes stale the moment new commits land without a schema rebuild —
+    PR #2307 sat at ``2`` from May while the branch grew to five
+    contributors — and it counts only authors, grouped by name. So it is a
+    seed value, never preferred over collected stats.
+    """
+    contributors = (stats_of(record).get("contributors") or {})
+    count = contributors.get("count")
+    if count is not None:
+        return format_count(count)
+    fallback = record.get("authors_count")
+    return format_count(fallback) if fallback else "—"
 
 
 def format_build_cell(record: dict) -> str:

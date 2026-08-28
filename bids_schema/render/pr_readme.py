@@ -20,10 +20,10 @@ from bids_schema.metadata.io import iter_numeric_subdirs
 from bids_schema.render import formatters as fmt
 
 TABLE_HEADER = (
-    "| PR # | Authors | Build | Created | Reviews | Unresolved | "
+    "| PR # | # Authors | # Commenters | Build | Created | Reviews | Unresolved | "
     "Commits | First commit | Last commit | "
     "Comments | First comment | Last comment | Head | Actions |\n"
-    "| ---- | ------- | ----- | ------- | ------- | ---------- | "
+    "| ---- | --------- | ------------ | ----- | ------- | ------- | ---------- | "
     "------- | ------------ | ----------- | "
     "-------- | ------------- | ------------ | ---- | ------- |"
 )
@@ -34,7 +34,7 @@ def _format_pr_row(pr_number: str, metadata: dict) -> str:
     cells = fmt.format_stats_cells(stats)
 
     pr_link = f"[{pr_number}]({fmt.pr_url(pr_number)})"
-    authors_count = str(metadata.get("authors_count", 0))
+    authors_cell = fmt.format_contributors(metadata)
     build_cell = fmt.format_build_cell(metadata)
 
     head_raw = metadata.get("last_commit", "Unknown")
@@ -50,8 +50,8 @@ def _format_pr_row(pr_number: str, metadata: dict) -> str:
     )
 
     return (
-        f"| {pr_link} | {authors_count} | {build_cell} | {cells['pr_created']} | "
-        f"{cells['reviews']} | {cells['unresolved']} | "
+        f"| {pr_link} | {authors_cell} | {cells['commenters']} | {build_cell} | "
+        f"{cells['pr_created']} | {cells['reviews']} | {cells['unresolved']} | "
         f"{cells['commits_count']} | {cells['commits_first']} | {cells['commits_last']} | "
         f"{cells['comments_count']} | {cells['comments_first']} | {cells['comments_last']} | "
         f"{head_cell} | {actions} |"
@@ -92,7 +92,14 @@ def render(pr_records: list[tuple[str, dict]]) -> str:
 
     body_lines.extend([
         "",
-        "Column legend: **Created** = when the PR was opened; "
+        "Column legend: **# Authors** = distinct people behind the commits on the PR "
+        "branch, counting both the author and the committer of each commit and keyed on "
+        "GitHub account (so one person who has committed under two name spellings, or who "
+        "landed someone else\u2019s patch, is counted once \u2014 unlike `git shortlog`, which "
+        "reads only the author field and groups by name); GitHub\u2019s own web-flow identity "
+        "and `[bot]` accounts are excluded. "
+        "**# Commenters** = distinct accounts that left an issue comment or opened a review "
+        "thread. **Created** = when the PR was opened; "
         "**Reviews** = submitted reviews as `approved✅ / changes_requested❌ / commented💬`, "
         "zero-valued components omitted (so `1✅/27💬`, not `1✅/0❌/27💬`); "
         "**Unresolved** = count of unresolved inline review threads (bolded if > 0); "

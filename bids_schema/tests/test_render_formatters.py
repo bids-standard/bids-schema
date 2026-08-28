@@ -107,6 +107,7 @@ def test_format_stats_cells_populated() -> None:
     assert cells["comments_count"] == "47"
     assert cells["comments_first"] == "2020-01-16"
     assert cells["comments_last"] == "2026-05-08"
+    assert cells["commenters"] == "—"   # no by_author block in this fixture
 
 
 @pytest.mark.ai_generated
@@ -118,6 +119,40 @@ def test_format_stats_cells_partial_block_dashes_missing_pieces() -> None:
     assert cells["pr_created"] == "—"
     assert cells["commits_count"] == "—"
     assert cells["comments_last"] == "—"
+
+
+@pytest.mark.ai_generated
+def test_format_stats_cells_commenters() -> None:
+    cells = fmt.format_stats_cells({
+        "comments": {"total": 9, "by_author": {"a": {}, "b": {}, "c": {}}},
+    })
+    assert cells["commenters"] == "3"
+    # `by_author` absent (v1 / uncollected) is "not known", not "zero"
+    assert fmt.format_stats_cells({"comments": {"total": 9}})["commenters"] == "—"
+    assert fmt.format_stats_cells({"comments": {"by_author": {}}})["commenters"] == "0"
+
+
+@pytest.mark.ai_generated
+def test_format_contributors_prefers_collected_stats() -> None:
+    """stats.contributors.count wins over the stale build-time authors_count."""
+    record = {
+        "authors_count": 2,
+        "stats": {"contributors": {"count": 5}},
+    }
+    assert fmt.format_contributors(record) == "5"
+
+
+@pytest.mark.ai_generated
+def test_format_contributors_falls_back_to_authors_count() -> None:
+    assert fmt.format_contributors({"authors_count": 2}) == "2"
+    assert fmt.format_contributors({"authors_count": 0}) == "—"
+    assert fmt.format_contributors({}) == "—"
+
+
+@pytest.mark.ai_generated
+def test_format_contributors_zero_from_stats_is_not_dash() -> None:
+    """A collected count of 0 is a real answer and must not read as uncollected."""
+    assert fmt.format_contributors({"stats": {"contributors": {"count": 0}}}) == "0"
 
 
 @pytest.mark.ai_generated
