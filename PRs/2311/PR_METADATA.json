@@ -8,12 +8,12 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "df4c9b11c1e13e76890d7628b3f7f6964a001bca",
-    "_collected_at": "2026-08-27T22:08:44Z",
+    "_collected_at": "2026-08-28T11:00:10Z",
     "_complete": true,
     "_error": null,
-    "pr_state": "OPEN",
+    "pr_state": "CLOSED",
     "pr_created_at": "2026-01-16T18:23:14Z",
-    "pr_updated_at": "2026-02-04T21:14:03Z",
+    "pr_updated_at": "2026-08-28T04:16:58Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
       "count": 2,
@@ -30,11 +30,11 @@
       "by_author": {}
     },
     "comments": {
-      "issue_count": 4,
+      "issue_count": 5,
       "review_thread_count": 0,
-      "total": 4,
+      "total": 5,
       "first_at": "2026-01-16T18:27:54Z",
-      "last_at": "2026-01-28T17:00:47Z",
+      "last_at": "2026-08-28T04:16:57Z",
       "by_author": {
         "codecov": {
           "count": 1,
@@ -47,9 +47,9 @@
           "last_at": "2026-01-28T17:00:47Z"
         },
         "kabilar": {
-          "count": 1,
+          "count": 2,
           "first_at": "2026-01-27T22:03:04Z",
-          "last_at": "2026-01-27T22:03:04Z"
+          "last_at": "2026-08-28T04:16:57Z"
         }
       }
     },
