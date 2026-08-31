@@ -145,7 +145,10 @@ def collect_bep_docs(collect_all: bool, only: tuple[str, ...], force: bool) -> N
     from bids_schema.collect import bep_doc_activity
 
     only_list = list(only) if only else None
-    exit_code = bep_doc_activity.collect(only=only_list, force=force)
+    try:
+        exit_code = bep_doc_activity.collect(only=only_list, force=force)
+    except bep_doc_activity.GoogleApiKeyError as exc:
+        raise click.ClickException(str(exc)) from exc
     sys.exit(exit_code)
 
 
@@ -172,7 +175,10 @@ def cycle() -> None:
 
     github.collect()
     bep_registration.collect()
-    bep_doc_activity.collect()
+    try:
+        bep_doc_activity.collect()
+    except bep_doc_activity.GoogleApiKeyError as exc:
+        raise click.ClickException(str(exc)) from exc
     pr_readme.render_to_disk()
     bep_readme.render_to_disk()
 

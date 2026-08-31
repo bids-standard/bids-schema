@@ -176,9 +176,11 @@ statistics: BEP metadata never re-collects PR-derived facts.
   `stats._error` on affected records rather than failing the run.
 - `GOOGLE_API_KEY` — a Google Drive API key (no OAuth/service
   account; only reads metadata of publicly link-shared docs).
-  Consumed by `bids-schema collect bep-docs`; missing key degrades
-  gracefully — the collector logs a warning and exits 0, leaving
-  `doc_activity` as "not checked yet".
+  Consumed by `bids-schema collect bep-docs`; a missing key — or one
+  the Drive API rejects as invalid/expired/blocked — is a hard error:
+  the collector raises `GoogleApiKeyError` and the run fails. (A
+  per-doc 403/404 because one BEP doc isn't link-shared is still
+  tolerated — that doc keeps its last recorded `doc_activity`.)
 - **`bids_schema` package**: `pip install -e '.[ci]'` in CI,
   `pip install -e '.[test]'` locally. Registers the `bids-schema`
   entry-point script and pulls in `click` + `PyYAML`.

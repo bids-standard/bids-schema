@@ -165,8 +165,13 @@ if [ "$PROCESS_BEPS" = "true" ]; then
 
         if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
             echo "--- Phase 3a2: Collecting BEP Google Doc activity via bids-schema collect bep-docs ---"
-            # A missing GOOGLE_API_KEY is not fatal — the collector logs a
-            # warning and exits 0, leaving doc_activity as "not checked yet".
+            # A missing or invalid GOOGLE_API_KEY is fatal — the collector
+            # errors out rather than leaving doc_activity stale. Fail fast
+            # here with a clear message instead of via a datalad-run retry.
+            if [ -z "${GOOGLE_API_KEY:-}" ]; then
+                echo "ERROR: GOOGLE_API_KEY is not set; cannot collect BEP Google Doc activity." >&2
+                exit 1
+            fi
             if command -v bids-schema >/dev/null 2>&1; then
                 datalad_run_retry \
                     "Collect BEP Google Doc activity via bids-schema collect bep-docs" \

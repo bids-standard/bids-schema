@@ -48,8 +48,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # `bids-schema collect bep-docs` uses a Google Drive API key to
           # read BEP Google Docs' modifiedTime/version (publicly-viewable
-          # docs only). Missing/unset degrades gracefully — the collector
-          # logs a warning and leaves doc_activity as "not checked yet".
+          # docs only). A missing or invalid key is fatal — the collector
+          # errors out and the inject run fails.
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: |
           tools/inject-schema-fully-auto
