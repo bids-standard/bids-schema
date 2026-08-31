@@ -7,26 +7,26 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_source_head_sha": "0104732131d1ea1d95d4df451d1a44557b8c3be9",
-    "_collected_at": "2026-08-31T14:57:08Z",
+    "_source_head_sha": "8049778dea5838b8cba573f3f3a306bc5cdb77c9",
+    "_collected_at": "2026-08-31T19:02:43Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2026-01-16T05:35:52Z",
-    "pr_updated_at": "2026-03-24T19:06:19Z",
+    "pr_updated_at": "2026-08-31T17:14:13Z",
     "review_decision": "APPROVED",
     "commits": {
-      "count": 27,
+      "count": 29,
       "first_at": "2026-01-16T05:25:07Z",
-      "last_at": "2026-01-30T16:20:59Z"
+      "last_at": "2026-08-31T17:01:28Z"
     },
     "reviews": {
       "approved": 2,
       "changes_requested": 0,
-      "commented": 33,
+      "commented": 37,
       "dismissed": 1,
       "pending": 0,
-      "total": 36,
+      "total": 40,
       "by_author": {
         "effigies": {
           "approved": 1,
@@ -42,15 +42,15 @@
         },
         "kabilar": {
           "approved": 0,
-          "commented": 14,
+          "commented": 17,
           "changes_requested": 0,
           "dismissed": 0,
           "pending": 0,
           "first_at": "2026-01-23T15:04:03Z",
-          "last_at": "2026-01-30T16:21:41Z",
+          "last_at": "2026-08-31T17:14:12Z",
           "last_state": "COMMENTED",
           "effective_state": null,
-          "total": 14
+          "total": 17
         },
         "arokem": {
           "approved": 1,
@@ -66,15 +66,15 @@
         },
         "mharms": {
           "approved": 0,
-          "commented": 11,
+          "commented": 12,
           "changes_requested": 0,
           "dismissed": 0,
           "pending": 0,
           "first_at": "2026-01-23T18:30:06Z",
-          "last_at": "2026-01-29T17:27:08Z",
+          "last_at": "2026-08-31T17:04:55Z",
           "last_state": "COMMENTED",
           "effective_state": null,
-          "total": 11
+          "total": 12
         },
         "tsalo": {
           "approved": 0,
@@ -103,11 +103,11 @@
       }
     },
     "comments": {
-      "issue_count": 31,
-      "review_thread_count": 35,
-      "total": 66,
+      "issue_count": 34,
+      "review_thread_count": 39,
+      "total": 73,
       "first_at": "2026-01-16T05:40:17Z",
-      "last_at": "2026-02-10T04:56:05Z",
+      "last_at": "2026-08-31T17:10:11Z",
       "by_author": {
         "codecov": {
           "count": 1,
@@ -135,9 +135,9 @@
           "last_at": "2026-01-30T14:21:15Z"
         },
         "kabilar": {
-          "count": 14,
+          "count": 18,
           "first_at": "2026-01-23T18:29:03Z",
-          "last_at": "2026-02-10T04:56:05Z"
+          "last_at": "2026-08-31T17:10:11Z"
         },
         "markmikkelsen": {
           "count": 3,
@@ -157,7 +157,7 @@
       }
     },
     "review_threads": {
-      "total": 13,
+      "total": 14,
       "unresolved": 1,
       "unresolved_active": 0,
       "unresolved_outdated": 1,
