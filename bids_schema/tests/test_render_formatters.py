@@ -2,9 +2,16 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timedelta, timezone
+
 import pytest
 
 from bids_schema.render import formatters as fmt
+
+
+def _days_ago(n: int) -> str:
+    dt = datetime.now(timezone.utc) - timedelta(days=n)
+    return dt.strftime("%Y-%m-%dT%H:%M:%S.000Z")
 
 
 @pytest.mark.ai_generated
@@ -125,6 +132,47 @@ def test_format_actions_cell_failed_bep_error_log_href() -> None:
                                 error_log="bst-output.log",
                                 error_log_href="../PRs/518/bst-output.log")
     assert "[Error Log](../PRs/518/bst-output.log)" in s
+
+
+@pytest.mark.ai_generated
+def test_bep_activity_badge_unknown_when_never_modified() -> None:
+    badge = fmt.bep_activity_badge(None)
+    assert badge == {"icon": "\N{MEDIUM WHITE CIRCLE}", "label": "Unknown", "category": "unknown"}
+
+
+@pytest.mark.ai_generated
+def test_bep_activity_badge_fresh() -> None:
+    badge = fmt.bep_activity_badge(_days_ago(5))
+    assert badge["icon"] == "\N{LARGE GREEN CIRCLE}"
+    assert badge["category"] == "fresh"
+    assert "5 days ago" in badge["label"]
+
+
+@pytest.mark.ai_generated
+def test_bep_activity_badge_active() -> None:
+    badge = fmt.bep_activity_badge(_days_ago(90))
+    assert badge["icon"] == "\N{LARGE YELLOW CIRCLE}"
+    assert badge["category"] == "active"
+
+
+@pytest.mark.ai_generated
+def test_bep_activity_badge_stale() -> None:
+    badge = fmt.bep_activity_badge(_days_ago(400))
+    assert badge["icon"] == "\N{LARGE RED CIRCLE}"
+    assert badge["category"] == "stale"
+
+
+@pytest.mark.ai_generated
+def test_bep_activity_badge_appends_edit_count() -> None:
+    badge = fmt.bep_activity_badge(_days_ago(1), edits_since_last_check=3)
+    assert "1 day ago" in badge["label"]
+    assert "(+3 edits)" in badge["label"]
+
+
+@pytest.mark.ai_generated
+def test_bep_activity_badge_omits_edit_count_when_zero_or_none() -> None:
+    assert "(+" not in fmt.bep_activity_badge(_days_ago(1), edits_since_last_check=0)["label"]
+    assert "(+" not in fmt.bep_activity_badge(_days_ago(1), edits_since_last_check=None)["label"]
 
 
 @pytest.mark.ai_generated

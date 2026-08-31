@@ -87,7 +87,7 @@ def test_write_bep_metadata(tmp_path: Path) -> None:
         authors_count=2,
     )
     data = json.loads((tmp_path / "BEP_METADATA.json").read_text())
-    assert data["_schema_version"] == 2
+    assert data["_schema_version"] == 3
     assert data["bep_number"] == "11"
     assert data["pr_number"] == 518  # int per contract
     assert data["title"] == "Structural preprocessing"

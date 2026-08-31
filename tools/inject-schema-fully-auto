@@ -164,6 +164,20 @@ if [ "$PROCESS_BEPS" = "true" ]; then
         fi
 
         if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
+            echo "--- Phase 3a2: Collecting BEP Google Doc activity via bids-schema collect bep-docs ---"
+            # A missing GOOGLE_API_KEY is not fatal — the collector logs a
+            # warning and exits 0, leaving doc_activity as "not checked yet".
+            if command -v bids-schema >/dev/null 2>&1; then
+                datalad_run_retry \
+                    "Collect BEP Google Doc activity via bids-schema collect bep-docs" \
+                    "BEPs/*/BEP_METADATA.json" \
+                    bids-schema collect bep-docs --all
+            else
+                echo "bids-schema CLI not on PATH; skipping BEP doc activity collection." >&2
+            fi
+        fi
+
+        if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
             echo "--- Phase 3b: Rendering BEPs/README.md via bids-schema render beps ---"
             datalad_run_retry \
                 "Render BEPs/README.md" \

@@ -45,12 +45,41 @@ def test_render_to_disk_joins_pr_stats(base_dir: Path, make_pr, make_bep) -> Non
     assert "[011]" in body
     # PR link rendered
     assert "pull/518" in body
-    # Google Doc link rendered
-    assert "[Doc]" in body
+    # Google Doc has a URL but no doc_activity collected yet
+    assert "⚪ Not checked yet" in body
     # PR stats joined from sibling PR_METADATA.json
     assert "3✅/0❌/1💬" in body
     assert "**2**" in body
     assert "12 (2020-01-16 → 2026-05-08)" in body
+
+
+@pytest.mark.ai_generated
+def test_render_bep_with_no_google_doc_shows_dash(base_dir: Path, make_bep) -> None:
+    make_bep(21, title="No doc BEP", google_doc="")
+    body = bep_readme.render_to_disk(base_dir=base_dir).read_text()
+    row = next(line for line in body.splitlines() if "[021]" in line)
+    cells = [c.strip() for c in row.split("|")]
+    # Columns: '', BEP #, Title, Doc Activity, PR #, ...
+    assert cells[3] == "—"
+
+
+@pytest.mark.ai_generated
+def test_render_bep_renders_doc_activity_badge(base_dir: Path, make_bep) -> None:
+    make_bep(
+        22, title="Active doc BEP",
+        google_doc="https://docs.google.com/document/d/XYZ/",
+        doc_activity={
+            "last_modified": "2026-08-20T00:00:00.000Z",
+            "version": "5",
+            "edits_since_last_check": 2,
+            "checked_at": "2026-08-20T00:00:00Z",
+            "_error": None,
+        },
+    )
+    body = bep_readme.render_to_disk(base_dir=base_dir).read_text()
+    row = next(line for line in body.splitlines() if "[022]" in line)
+    assert "docs.google.com/document/d/XYZ" in row
+    assert "Edited" in row and "day" in row
 
 
 @pytest.mark.ai_generated

@@ -19,7 +19,7 @@ dependencies = [
 
 [project.optional-dependencies]
 gh    = []
-gdocs = ["google-api-python-client>=2.100", "google-auth>=2.20"]
+gdocs = ["requests>=2.31"]
 test  = [
     "bids_schema[gh,gdocs]",
     "pytest>=7.0",

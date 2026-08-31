@@ -2,12 +2,14 @@
 
 Top-level ``click`` group with subcommands:
 
-- ``bids-schema collect prs``  — fetch PR stats via GitHub GraphQL.
-- ``bids-schema collect beps`` — walk ``bids-website:data/beps/beps.yml`` history.
-- ``bids-schema render prs``   — write ``PRs/README.md`` from on-disk metadata.
-- ``bids-schema render beps``  — write ``BEPs/README.md`` from on-disk metadata.
-- ``bids-schema cycle``        — collect prs && collect beps && render prs && render beps.
-- ``bids-schema info``         — dump versions and auth status (debugging).
+- ``bids-schema collect prs``      — fetch PR stats via GitHub GraphQL.
+- ``bids-schema collect beps``     — walk ``bids-website:data/beps/beps.yml`` history.
+- ``bids-schema collect bep-docs`` — fetch BEP Google Doc activity via the Drive API.
+- ``bids-schema render prs``       — write ``PRs/README.md`` from on-disk metadata.
+- ``bids-schema render beps``      — write ``BEPs/README.md`` from on-disk metadata.
+- ``bids-schema cycle``            — collect prs && collect beps && collect bep-docs &&
+  render prs && render beps.
+- ``bids-schema info``             — dump versions and auth status (debugging).
 
 Collection and rendering are always cleanly separable: rendering reads only
 on-disk JSON, and collection never writes rendered output.
@@ -133,6 +135,20 @@ def collect_beps(collect_all: bool, only: tuple[str, ...], force: bool, skip_fet
     sys.exit(exit_code)
 
 
+@collect.command("bep-docs", help="Collect BEP Google Doc activity via the Google Drive API.")
+@click.option("--all", "collect_all", is_flag=True, default=True,
+              help="Collect all BEPs currently on disk (default).")
+@click.option("--only", "only", multiple=True, type=str,
+              help="Restrict to specific BEP numbers (repeatable).")
+@click.option("--force", is_flag=True, help="Ignore freshness gate.")
+def collect_bep_docs(collect_all: bool, only: tuple[str, ...], force: bool) -> None:
+    from bids_schema.collect import bep_doc_activity
+
+    only_list = list(only) if only else None
+    exit_code = bep_doc_activity.collect(only=only_list, force=force)
+    sys.exit(exit_code)
+
+
 @render.command("prs", help="Write PRs/README.md from on-disk metadata.")
 def render_prs() -> None:
     from bids_schema.render import pr_readme
@@ -151,11 +167,12 @@ def render_beps() -> None:
 def cycle() -> None:
     # Call the underlying implementations directly (not the click commands)
     # so a non-zero exit from one collector doesn't skip subsequent phases.
-    from bids_schema.collect import bep_registration, github
+    from bids_schema.collect import bep_doc_activity, bep_registration, github
     from bids_schema.render import bep_readme, pr_readme
 
     github.collect()
     bep_registration.collect()
+    bep_doc_activity.collect()
     pr_readme.render_to_disk()
     bep_readme.render_to_disk()
 
