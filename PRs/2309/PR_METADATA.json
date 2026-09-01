@@ -8,12 +8,12 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "8049778dea5838b8cba573f3f3a306bc5cdb77c9",
-    "_collected_at": "2026-08-31T19:02:43Z",
+    "_collected_at": "2026-09-01T04:41:18Z",
     "_complete": true,
     "_error": null,
-    "pr_state": "OPEN",
+    "pr_state": "MERGED",
     "pr_created_at": "2026-01-16T05:35:52Z",
-    "pr_updated_at": "2026-08-31T17:14:13Z",
+    "pr_updated_at": "2026-08-31T20:15:55Z",
     "review_decision": "APPROVED",
     "commits": {
       "count": 29,
