@@ -8,13 +8,13 @@
   "authors_count": 4,
   "stats": {
     "_source_head_sha": "55697ad81b3140d12d51a965cd56d16717334d28",
-    "_collected_at": "2026-09-02T04:03:02Z",
+    "_collected_at": "2026-09-02T16:24:21Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2024-12-22T02:29:37Z",
-    "pr_updated_at": "2026-09-01T09:51:50Z",
-    "review_decision": "APPROVED",
+    "pr_updated_at": "2026-09-02T14:28:41Z",
+    "review_decision": "CHANGES_REQUESTED",
     "commits": {
       "count": 119,
       "first_at": "2024-12-14T22:15:20Z",
@@ -22,11 +22,11 @@
     },
     "reviews": {
       "approved": 4,
-      "changes_requested": 0,
-      "commented": 36,
+      "changes_requested": 2,
+      "commented": 38,
       "dismissed": 2,
       "pending": 0,
-      "total": 42,
+      "total": 46,
       "by_author": {
         "VisLab": {
           "approved": 2,
@@ -54,15 +54,15 @@
         },
         "yarikoptic": {
           "approved": 0,
-          "commented": 8,
-          "changes_requested": 0,
+          "commented": 10,
+          "changes_requested": 2,
           "dismissed": 2,
           "pending": 0,
           "first_at": "2025-01-09T22:24:14Z",
-          "last_at": "2026-07-06T17:49:57Z",
-          "last_state": "COMMENTED",
-          "effective_state": null,
-          "total": 10
+          "last_at": "2026-09-02T13:57:38Z",
+          "last_state": "CHANGES_REQUESTED",
+          "effective_state": "CHANGES_REQUESTED",
+          "total": 14
         },
         "Remi-Gau": {
           "approved": 0,
@@ -103,11 +103,11 @@
       }
     },
     "comments": {
-      "issue_count": 28,
-      "review_thread_count": 58,
-      "total": 86,
+      "issue_count": 30,
+      "review_thread_count": 72,
+      "total": 102,
       "first_at": "2024-12-31T17:40:19Z",
-      "last_at": "2026-09-01T09:51:49Z",
+      "last_at": "2026-09-02T14:28:05Z",
       "by_author": {
         "Remi-Gau": {
           "count": 10,
@@ -120,9 +120,9 @@
           "last_at": "2025-02-04T23:51:27Z"
         },
         "neuromechanist": {
-          "count": 12,
+          "count": 14,
           "first_at": "2025-03-18T14:09:58Z",
-          "last_at": "2026-09-01T09:51:49Z"
+          "last_at": "2026-09-02T14:28:05Z"
         },
         "VisLab": {
           "count": 12,
@@ -130,9 +130,9 @@
           "last_at": "2025-03-31T18:37:18Z"
         },
         "yarikoptic": {
-          "count": 26,
+          "count": 38,
           "first_at": "2025-01-09T21:43:18Z",
-          "last_at": "2026-07-10T14:19:19Z"
+          "last_at": "2026-09-02T13:54:06Z"
         },
         "dorahermes": {
           "count": 2,
@@ -142,15 +142,15 @@
       }
     },
     "review_threads": {
-      "total": 36,
-      "unresolved": 4,
-      "unresolved_active": 4,
+      "total": 48,
+      "unresolved": 16,
+      "unresolved_active": 16,
       "unresolved_outdated": 0,
       "unresolved_by_author": {
         "yarikoptic": {
-          "count": 4,
+          "count": 16,
           "first_at": "2025-10-07T20:01:02Z",
-          "last_at": "2025-12-16T16:32:09Z"
+          "last_at": "2026-09-02T13:54:06Z"
         }
       }
     }
