@@ -8,12 +8,12 @@
   "authors_count": 5,
   "stats": {
     "_source_head_sha": "500fbac876e60e28bbbc51a334794df801e2d994",
-    "_collected_at": "2026-09-03T04:02:05Z",
+    "_collected_at": "2026-09-03T16:14:51Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-05-30T14:09:19Z",
-    "pr_updated_at": "2026-09-02T21:20:46Z",
+    "pr_updated_at": "2026-09-03T12:11:53Z",
     "review_decision": "CHANGES_REQUESTED",
     "commits": {
       "count": 134,
@@ -163,11 +163,11 @@
       }
     },
     "comments": {
-      "issue_count": 78,
+      "issue_count": 81,
       "review_thread_count": 164,
-      "total": 242,
+      "total": 245,
       "first_at": "2025-05-30T14:12:14Z",
-      "last_at": "2026-08-27T19:27:04Z",
+      "last_at": "2026-09-03T12:07:14Z",
       "by_author": {
         "codecov": {
           "count": 3,
@@ -180,9 +180,9 @@
           "last_at": "2026-07-08T19:20:45Z"
         },
         "ericearl": {
-          "count": 51,
+          "count": 54,
           "first_at": "2025-05-30T15:01:22Z",
-          "last_at": "2026-07-21T17:40:15Z"
+          "last_at": "2026-09-03T12:07:14Z"
         },
         "effigies": {
           "count": 14,
