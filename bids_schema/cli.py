@@ -178,7 +178,10 @@ def cycle() -> None:
     try:
         bep_doc_activity.collect()
     except bep_doc_activity.GoogleApiKeyError as exc:
-        raise click.ClickException(str(exc)) from exc
+        # Missing/rejected key degrades this one phase — it must not skip
+        # the renders below, which is exactly what the comment above
+        # promises. The ⚪/stale badge in BEPs/README.md carries the signal.
+        click.echo(f"Warning: {exc}", err=True)
     pr_readme.render_to_disk()
     bep_readme.render_to_disk()
 
