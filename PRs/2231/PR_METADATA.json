@@ -7,18 +7,18 @@
   "build_status": "success",
   "authors_count": 3,
   "stats": {
-    "_source_head_sha": "681b8920ce5b1c0cf21a998000d7c2d7de0df2f7",
-    "_collected_at": "2026-09-03T16:14:56Z",
+    "_source_head_sha": "1636e7c36d0f110571652bc375b7d23bc96f0e79",
+    "_collected_at": "2026-09-04T04:04:35Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-10-25T16:42:26Z",
-    "pr_updated_at": "2026-08-28T23:25:35Z",
+    "pr_updated_at": "2026-09-03T19:52:21Z",
     "review_decision": "APPROVED",
     "commits": {
-      "count": 73,
+      "count": 74,
       "first_at": "2025-10-25T15:41:03Z",
-      "last_at": "2026-08-21T18:11:44Z"
+      "last_at": "2026-09-03T18:08:46Z"
     },
     "reviews": {
       "approved": 2,
@@ -115,11 +115,11 @@
       }
     },
     "comments": {
-      "issue_count": 35,
+      "issue_count": 37,
       "review_thread_count": 57,
-      "total": 92,
+      "total": 94,
       "first_at": "2025-10-25T17:55:19Z",
-      "last_at": "2026-08-28T23:25:21Z",
+      "last_at": "2026-09-03T19:52:21Z",
       "by_author": {
         "codecov": {
           "count": 1,
@@ -137,9 +137,9 @@
           "last_at": "2026-08-17T21:30:54Z"
         },
         "yarikoptic": {
-          "count": 11,
+          "count": 12,
           "first_at": "2025-10-25T21:42:58Z",
-          "last_at": "2026-07-07T18:39:59Z"
+          "last_at": "2026-09-03T19:52:21Z"
         },
         "neuromechanist": {
           "count": 2,
@@ -167,9 +167,9 @@
           "last_at": "2026-08-28T23:25:21Z"
         },
         "CodyCBakerPhD": {
-          "count": 1,
+          "count": 2,
           "first_at": "2026-08-25T15:06:54Z",
-          "last_at": "2026-08-25T15:06:54Z"
+          "last_at": "2026-09-03T18:11:46Z"
         },
         "effigies": {
           "count": 4,
