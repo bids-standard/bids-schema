@@ -53,10 +53,37 @@ def test_fetch_doc_metadata_returns_none_on_error() -> None:
     responses.add(
         responses.GET,
         bep_doc_activity.DRIVE_API_URL.format(file_id=doc_id),
-        body="The caller does not have permission",
+        json={
+            "error": {
+                "code": 403,
+                "status": "PERMISSION_DENIED",
+                "message": "The caller does not have permission",
+                "errors": [{"reason": "insufficientFilePermissions"}],
+            }
+        },
         status=403,
     )
     assert bep_doc_activity.fetch_doc_metadata(doc_id, api_key="fake-key") is None
+
+
+@pytest.mark.ai_generated
+@responses.activate
+def test_fetch_doc_metadata_raises_on_invalid_api_key() -> None:
+    doc_id = "any-doc"
+    responses.add(
+        responses.GET,
+        bep_doc_activity.DRIVE_API_URL.format(file_id=doc_id),
+        json={
+            "error": {
+                "code": 400,
+                "status": "INVALID_ARGUMENT",
+                "message": "API key not valid. Please pass a valid API key.",
+            }
+        },
+        status=400,
+    )
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
+        bep_doc_activity.fetch_doc_metadata(doc_id, api_key="bad-key")
 
 
 @pytest.mark.ai_generated
@@ -80,14 +107,29 @@ def test_compute_edits_since_last_check_none_when_version_decreases() -> None:
 
 
 @pytest.mark.ai_generated
-def test_collect_skips_entirely_without_api_key(monkeypatch, base_dir: Path, make_bep) -> None:
+def test_collect_raises_without_api_key(monkeypatch, base_dir: Path, make_bep) -> None:
     monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
     make_bep(11, google_doc="https://docs.google.com/document/d/AAA/")
 
-    rc = bep_doc_activity.collect(base_dir=base_dir)
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
+        bep_doc_activity.collect(base_dir=base_dir)
 
-    assert rc == 0
     assert "doc_activity" not in _read(base_dir, 11)
+
+
+@pytest.mark.ai_generated
+@responses.activate
+def test_collect_raises_on_invalid_api_key(base_dir: Path, make_bep) -> None:
+    make_bep(11, google_doc="https://docs.google.com/document/d/AAA/")
+    responses.add(
+        responses.GET,
+        bep_doc_activity.DRIVE_API_URL.format(file_id="AAA"),
+        json={"error": {"status": "INVALID_ARGUMENT", "message": "API key not valid."}},
+        status=400,
+    )
+
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
+        bep_doc_activity.collect(base_dir=base_dir)
 
 
 @pytest.mark.ai_generated
