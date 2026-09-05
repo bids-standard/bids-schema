@@ -58,34 +58,39 @@ def format_date(iso: str | None) -> str:
     return dt.strftime("%Y-%m-%d")
 
 
-def format_date_window(first: str | None, last: str | None) -> str:
-    """Render two ISO timestamps as ``YYYY-MM-DD → YYYY-MM-DD``. ``—`` if both missing."""
-    if not first and not last:
-        return "—"
-    return f"{format_date(first)} → {format_date(last)}"
+#: ``stats.reviews`` keys rendered by :func:`format_reviews`, in display order.
+REVIEW_COMPONENTS = (
+    ("approved",          "✅"),
+    ("changes_requested", "❌"),
+    ("commented",         "💬"),
+)
 
 
 def format_reviews(reviews: dict | None) -> str:
     """Render the aggregate review histogram as ``3✅/2❌/7💬``.
 
-    Emoji legend intentionally minimal so the column stays narrow. ``—``
-    if the record has no stats block at all.
+    Zero-valued components are omitted so the cell stays scannable —
+    ``{approved: 1, changes_requested: 0, commented: 27}`` renders as
+    ``1✅/27💬`` rather than ``1✅/0❌/27💬``. ``—`` if the record has no
+    stats block at all, ``0`` if every component is zero.
     """
     if not reviews:
         return "—"
-    approved = reviews.get("approved", 0)
-    changes = reviews.get("changes_requested", 0)
-    commented = reviews.get("commented", 0)
-    if approved == changes == commented == 0:
+    parts = [
+        f"{reviews.get(key, 0)}{emoji}"
+        for key, emoji in REVIEW_COMPONENTS
+        if reviews.get(key, 0)
+    ]
+    if not parts:
         return "0"
-    return f"{approved}✅/{changes}❌/{commented}💬"
+    return "/".join(parts)
 
 
-def format_activity_span(count: int | None, first: str | None, last: str | None) -> str:
-    """Render ``<count> (<first> → <last>)``. ``—`` if count is falsy/absent."""
-    if not count:
+def format_count(count: int | None) -> str:
+    """Render a bare count for its own sortable column. ``None`` → ``—``, ``0`` → ``0``."""
+    if count is None:
         return "—"
-    return f"{count} ({format_date(first)} → {format_date(last)})"
+    return str(count)
 
 
 def format_unresolved(n: int | None) -> str:
@@ -187,32 +192,73 @@ def stale_marker(stats: dict) -> str:
 # --- Aggregated helpers used by both renderers ---------------------------
 
 
-def format_stats_cells(stats: dict) -> dict[str, str]:
-    """Return the four stats-derived table cells (reviews / comments /
-    unresolved / commit window) from a PR ``stats`` sub-block.
+#: Keys returned by :func:`format_stats_cells`. Counts and dates are kept in
+#: separate cells so each gets its own sortable column in the rendered table
+#: (a combined ``47 (2020-01-16 → 2026-05-08)`` cell sorts as a string, which
+#: is useless for every ordering one actually wants).
+STATS_CELL_KEYS = (
+    "reviews",
+    "unresolved",
+    "pr_created",
+    "commits_count", "commits_first", "commits_last",
+    "comments_count", "comments_first", "comments_last",
+    "commenters",
+)
 
-    Every value defaults to ``—`` if the block is missing or absent —
-    so v1 records or PRs whose stats haven't been collected yet render
-    consistently in both READMEs.
+
+def format_stats_cells(stats: dict) -> dict[str, str]:
+    """Return the stats-derived table cells from a PR ``stats`` sub-block.
+
+    Keys are :data:`STATS_CELL_KEYS`. Every value defaults to ``—`` if the
+    block is missing or absent — so v1 records or PRs whose stats haven't
+    been collected yet render consistently in both READMEs.
+
+    ``pr_created`` is the PR's own creation date, which is **not** the same
+    as ``commits_first``: a force-push (rebase, squash, branch recreation)
+    replaces the branch's commits, so on an old PR the earliest surviving
+    commit can post-date the PR — and its comments — by years. Showing both
+    makes that discrepancy legible instead of looking like a bug.
     """
     if not stats:
-        return {"reviews": "—", "comments": "—", "unresolved": "—", "commit_window": "—"}
+        return dict.fromkeys(STATS_CELL_KEYS, "—")
     comments = stats.get("comments") or {}
     threads = stats.get("review_threads") or {}
     commits = stats.get("commits") or {}
     return {
-        "reviews":       format_reviews(stats.get("reviews")),
-        "comments":      format_activity_span(
-                             comments.get("total"),
-                             comments.get("first_at"),
-                             comments.get("last_at"),
-                         ),
-        "unresolved":    format_unresolved(threads.get("unresolved")),
-        "commit_window": format_date_window(
-                             commits.get("first_at"),
-                             commits.get("last_at"),
-                         ),
+        "reviews":        format_reviews(stats.get("reviews")),
+        "unresolved":     format_unresolved(threads.get("unresolved")),
+        "pr_created":     format_date(stats.get("pr_created_at")),
+        "commits_count":  format_count(commits.get("count")),
+        "commits_first":  format_date(commits.get("first_at")),
+        "commits_last":   format_date(commits.get("last_at")),
+        "comments_count": format_count(comments.get("total")),
+        "comments_first": format_date(comments.get("first_at")),
+        "comments_last":  format_date(comments.get("last_at")),
+        "commenters":     format_count(len(comments["by_author"])
+                                       if "by_author" in comments else None),
     }
+
+
+def format_contributors(record: dict) -> str:
+    """The ``# Authors`` cell: how many distinct people are behind the commits.
+
+    Prefers ``stats.contributors.count``, which the collector recomputes on
+    every cycle from both the author and committer of every commit, keyed on
+    GitHub login / email.
+
+    Falls back to the record's top-level ``authors_count``, which is a
+    ``git shortlog -sn | wc -l`` taken once when the schema was *built*. That
+    value goes stale the moment new commits land without a schema rebuild —
+    PR #2307 sat at ``2`` from May while the branch grew to five
+    contributors — and it counts only authors, grouped by name. So it is a
+    seed value, never preferred over collected stats.
+    """
+    contributors = (stats_of(record).get("contributors") or {})
+    count = contributors.get("count")
+    if count is not None:
+        return format_count(count)
+    fallback = record.get("authors_count")
+    return format_count(fallback) if fallback else "—"
 
 
 def format_build_cell(record: dict) -> str:

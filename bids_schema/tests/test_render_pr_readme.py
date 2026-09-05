@@ -16,6 +16,25 @@ def test_empty_pr_list_still_renders() -> None:
     assert "# BIDS Specification PR Schemas" in body
 
 
+#: Column order of the rendered PR table, for index-based cell assertions.
+COLUMNS = [
+    "PR #", "# Authors", "# Commenters", "Build", "Created", "Reviews", "Unresolved",
+    "Commits", "First commit", "Last commit",
+    "Comments", "First comment", "Last comment", "Head", "Actions",
+]
+
+
+def _cells(row: str) -> list[str]:
+    """Split a Markdown row into cells (dropping the leading/trailing `|`)."""
+    return [c.strip() for c in row.split("|")[1:-1]]
+
+
+@pytest.mark.ai_generated
+def test_table_header_matches_expected_columns() -> None:
+    header_row = pr_readme.TABLE_HEADER.splitlines()[0]
+    assert _cells(header_row) == COLUMNS
+
+
 @pytest.mark.ai_generated
 def test_v1_record_renders_dashes_in_new_columns() -> None:
     body = pr_readme.render([("518", {
@@ -25,18 +44,17 @@ def test_v1_record_renders_dashes_in_new_columns() -> None:
         "authors_count": 2,
     })])
     row = next(line for line in body.splitlines() if line.startswith("| [518]"))
-    # Split into cells (drop empty first/last from leading/trailing `|`)
-    cells = [c.strip() for c in row.split("|")[1:-1]]
-    # Layout: PR # | Authors | Build | Reviews | Comments | Unresolved | Commit window | Last commit | Actions
-    assert cells[0].startswith("[518]")
-    assert cells[1] == "2"
-    assert cells[2] == "✅"
-    # New v2 columns: reviews, comments, unresolved, commit window — all "—" for v1 record
-    assert cells[3] == "—"
-    assert cells[4] == "—"
-    assert cells[5] == "—"
-    assert cells[6] == "—"
-    assert cells[7].startswith("[8bcb4d678f]")
+    cells = dict(zip(COLUMNS, _cells(row)))
+    assert cells["PR #"].startswith("[518]")
+    # v1 record has no stats, so the build-time authors_count is the fallback
+    assert cells["# Authors"] == "2"
+    assert cells["Build"] == "✅"
+    # Every stats-derived column is "—" for a v1 record
+    for col in ("# Commenters", "Created", "Reviews", "Unresolved", "Commits",
+                "First commit", "Last commit", "Comments", "First comment",
+                "Last comment"):
+        assert cells[col] == "—", col
+    assert cells["Head"].startswith("[8bcb4d678f]")
 
 
 @pytest.mark.ai_generated
@@ -50,19 +68,84 @@ def test_v2_record_renders_stats() -> None:
         "stats": {
             "_complete": True,
             "_error": None,
+            "pr_created_at": "2020-06-30T19:44:32Z",
             "reviews": {"approved": 3, "changes_requested": 2, "commented": 7},
             "comments": {"total": 47, "first_at": "2020-01-16T00:00:00Z",
-                         "last_at": "2026-05-08T00:00:00Z"},
+                         "last_at": "2026-05-08T00:00:00Z",
+                         "by_author": {"a": {}, "b": {}, "c": {}, "d": {}}},
             "review_threads": {"unresolved": 6},
             "commits": {"count": 14, "first_at": "2020-01-15T09:00:00Z",
                         "last_at": "2026-05-11T15:00:00Z"},
+            "contributors": {"count": 5, "authors": 4, "committers": 2},
         },
     })])
     row = next(line for line in body.splitlines() if line.startswith("| [518]"))
-    assert "3✅/2❌/7💬" in row
-    assert "**6**" in row
-    assert "47 (2020-01-16 → 2026-05-08)" in row
-    assert "2020-01-15 → 2026-05-11" in row
+    cells = dict(zip(COLUMNS, _cells(row)))
+    # Collected contributor count supersedes the build-time authors_count of 2
+    assert cells["# Authors"] == "5"
+    assert cells["# Commenters"] == "4"
+    assert cells["Created"] == "2020-06-30"
+    assert cells["Reviews"] == "3✅/2❌/7💬"
+    assert cells["Unresolved"] == "**6**"
+    assert cells["Commits"] == "14"
+    assert cells["First commit"] == "2020-01-15"
+    assert cells["Last commit"] == "2026-05-11"
+    assert cells["Comments"] == "47"
+    assert cells["First comment"] == "2020-01-16"
+    assert cells["Last comment"] == "2026-05-08"
+
+
+@pytest.mark.ai_generated
+def test_reviews_cell_drops_zero_components() -> None:
+    body = pr_readme.render([("352", {
+        "_schema_version": 2,
+        "pr_number": "352",
+        "last_commit": "376e7696b0bbfeb7b2347989beabec5f9833e59e",
+        "build_status": "success",
+        "authors_count": 2,
+        "stats": {
+            "_complete": True,
+            "_error": None,
+            "reviews": {"approved": 1, "changes_requested": 0, "commented": 27},
+        },
+    })])
+    row = next(line for line in body.splitlines() if line.startswith("| [352]"))
+    assert "1✅/27💬" in row
+    assert "0❌" not in row
+
+
+@pytest.mark.ai_generated
+def test_force_pushed_pr_shows_created_before_first_commit() -> None:
+    """Regression guard for PR #105: comments predate every surviving commit.
+
+    A force-push replaced the branch's original commits, so ``First commit``
+    is years after the PR was opened. ``Created`` must still show the PR's
+    real start date, which is not later than the first comment.
+    """
+    body = pr_readme.render([("105", {
+        "_schema_version": 2,
+        "pr_number": "105",
+        "last_commit": "fc5f90ce1010d915b4f2d241efc5df1904756276",
+        "build_status": "success",
+        "authors_count": 1,
+        "stats": {
+            "_complete": True,
+            "_error": None,
+            "pr_created_at": "2018-12-12T18:42:32Z",
+            "comments": {"total": 49, "first_at": "2018-12-12T18:52:00Z",
+                         "last_at": "2024-06-26T12:08:03Z"},
+            "commits": {"count": 5, "first_at": "2022-04-22T18:53:57Z",
+                        "last_at": "2023-03-13T20:07:24Z"},
+        },
+    })])
+    row = next(line for line in body.splitlines() if line.startswith("| [105]"))
+    cells = dict(zip(COLUMNS, _cells(row)))
+    assert cells["Created"] == "2018-12-12"
+    assert cells["First comment"] == "2018-12-12"
+    assert cells["First commit"] == "2022-04-22"
+    assert cells["Created"] <= cells["First comment"] < cells["First commit"]
+    # The README explains the discrepancy rather than leaving it looking like a bug
+    assert "force-push" in body
 
 
 @pytest.mark.ai_generated
