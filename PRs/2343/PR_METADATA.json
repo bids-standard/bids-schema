@@ -8,12 +8,12 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "4a66e78d7af98ebbbe84a56c207dd0f070d53ad1",
-    "_collected_at": "2026-09-05T14:58:58Z",
+    "_collected_at": "2026-09-06T04:08:25Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2026-02-12T02:04:36Z",
-    "pr_updated_at": "2026-04-10T15:22:54Z",
+    "pr_updated_at": "2026-09-05T22:44:38Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
       "count": 1,
@@ -23,10 +23,10 @@
     "reviews": {
       "approved": 0,
       "changes_requested": 0,
-      "commented": 4,
+      "commented": 5,
       "dismissed": 0,
       "pending": 0,
-      "total": 4,
+      "total": 5,
       "by_author": {
         "effigies": {
           "approved": 0,
@@ -51,6 +51,18 @@
           "last_state": "COMMENTED",
           "effective_state": null,
           "total": 2
+        },
+        "fabriciocravo": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-09-05T22:44:38Z",
+          "last_at": "2026-09-05T22:44:38Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
         }
       }
     },
