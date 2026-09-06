@@ -165,13 +165,22 @@ if [ "$PROCESS_BEPS" = "true" ]; then
 
         if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
             echo "--- Phase 3a2: Collecting BEP Google Doc activity via bids-schema collect bep-docs ---"
-            # A missing GOOGLE_API_KEY is not fatal — the collector logs a
-            # warning and exits 0, leaving doc_activity as "not checked yet".
-            if command -v bids-schema >/dev/null 2>&1; then
-                datalad_run_retry \
+            # A missing or Drive-rejected GOOGLE_API_KEY is a real problem,
+            # but not one that should take down the rest of the run —
+            # everything else here (release/master builds, PR schemas,
+            # BEP schemas, both READMEs) is more important than one
+            # dashboard column. The ⚪/stale badge in BEPs/README.md
+            # already carries the "couldn't check" signal per BEP, so we
+            # warn and move on rather than failing the job.
+            if [ -z "${GOOGLE_API_KEY:-}" ]; then
+                echo "WARNING: GOOGLE_API_KEY is not set; skipping BEP Google Doc activity collection." >&2
+            elif command -v bids-schema >/dev/null 2>&1; then
+                if ! datalad_run_retry \
                     "Collect BEP Google Doc activity via bids-schema collect bep-docs" \
                     "BEPs/*/BEP_METADATA.json" \
-                    bids-schema collect bep-docs --all
+                    bids-schema collect bep-docs --all; then
+                    echo "WARNING: BEP Google Doc activity collection failed; continuing without it." >&2
+                fi
             else
                 echo "bids-schema CLI not on PATH; skipping BEP doc activity collection." >&2
             fi
