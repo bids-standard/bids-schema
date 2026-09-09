@@ -44,6 +44,36 @@ repo=$(readlink -f "$repo")
 base_dir="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$base_dir"
 
+# Seed count of distinct people behind a PR's commits, written into
+# PR_METADATA.json:authors_count at build time. `bids-schema collect prs`
+# later supersedes it with stats.contributors.count, which is refreshed on
+# every cron cycle; this value only stands until the first collection.
+#
+# Both roles count and identity is keyed on the mailmap-canonical *email*,
+# not the name: `git shortlog -sn | wc -l` (the previous implementation)
+# reads only the author field and groups by name, so it misses anyone who
+# merely landed a patch and double-counts anyone who has committed under two
+# name spellings. GitHub's own web-flow identity is dropped; per-user
+# noreply addresses (`…@users.noreply.github.com`) are real people and kept.
+count_contributors() {
+    local repo="$1" git_ref="$2" merge_base
+    if [ -z "$repo" ] || [ "$repo" = "unknown" ]; then
+        echo 0
+        return
+    fi
+    merge_base=$(git -C "$repo" merge-base "$git_ref" origin/master 2>/dev/null || echo "")
+    if [ -z "$merge_base" ]; then
+        echo 0
+        return
+    fi
+    git -C "$repo" log --format='%aE%n%cE' "$merge_base..$git_ref" 2>/dev/null \
+        | tr '[:upper:]' '[:lower:]' \
+        | sed '/^$/d' \
+        | sort -u \
+        | grep -c -v '^noreply@github\.com$' \
+        || echo 0
+}
+
 # Handle different types of refs
 case "$ref_type" in
     master)
@@ -111,14 +141,8 @@ if [ "$BST_EXIT_CODE" -ne 0 ]; then
         pr_number=$(echo "$output_dir" | sed 's/.*PRs\///')
         commit_hash=$(git -C "$repo" rev-parse "$git_ref" 2>/dev/null || echo "unknown")
 
-        # Count unique authors for the PR
-        authors_count=0
-        if [ -n "$repo" ] && [ "$repo" != "unknown" ]; then
-            merge_base=$(git -C "$repo" merge-base "$git_ref" origin/master 2>/dev/null || echo "")
-            if [ -n "$merge_base" ]; then
-                authors_count=$(git -C "$repo" shortlog -sn "$merge_base..$git_ref" 2>/dev/null | wc -l)
-            fi
-        fi
+        # Seed count of distinct contributors (see count_contributors).
+        authors_count=$(count_contributors "$repo" "$git_ref")
 
         # Delegate PR_METADATA.json emission to the Python side — single
         # source of truth for schema layout (see design plan §2).
@@ -169,13 +193,7 @@ if [ "$generate_metadata" = true ] && [ "$ref_type" = "pr" ]; then
 
     commit_hash=$(git -C "$repo" rev-parse "$git_ref" 2>/dev/null || echo "unknown")
 
-    authors_count=0
-    if [ -n "$repo" ] && [ "$repo" != "unknown" ]; then
-        merge_base=$(git -C "$repo" merge-base "$git_ref" origin/master 2>/dev/null || echo "")
-        if [ -n "$merge_base" ]; then
-            authors_count=$(git -C "$repo" shortlog -sn "$merge_base..$git_ref" 2>/dev/null | wc -l)
-        fi
-    fi
+    authors_count=$(count_contributors "$repo" "$git_ref")
 
     # Delegate PR_METADATA.json emission to the Python side — single
     # source of truth for schema layout (see design plan §2). The

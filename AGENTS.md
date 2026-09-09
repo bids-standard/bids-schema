@@ -112,15 +112,34 @@ The CLI is registered via `[project.scripts]` in `pyproject.toml`.
   and leaves the new stats columns as `—`.
 - `pr_number`, `git_ref`, `last_commit`, `last_updated` (build time, UTC)
 - `has_schema_changes`, `build_status` (`success` | `failed`)
-- `authors_count` (unique commit authors from `merge_base..PR_HEAD`)
+- `authors_count` — **seed value only.** Unique contributor *emails*
+  (mailmap-canonical, authors ∪ committers, minus GitHub's web-flow
+  identity) over `merge_base..PR_HEAD`, computed by
+  `count_contributors` in `tools/inject-schema-pr` at **schema-build**
+  time. It goes stale as soon as commits land without a schema rebuild,
+  so renderers prefer `stats.contributors.count` and fall back here only
+  when stats are absent. Do not read it directly.
 - On failure: `error_message`, `error_log`
 - **`stats`** (v2 nested block, populated by `bids-schema collect prs`):
   `_source_head_sha`, `_collected_at`, `_complete`, `_error`;
   `pr_state`, `pr_created_at`, `pr_updated_at`, `review_decision`;
   `commits.{count, first_at, last_at}`;
+  `contributors.{count, authors, committers, by_identity{...}}`;
   `reviews.{approved, changes_requested, commented, dismissed, pending, total, by_author{...}}`;
   `comments.{issue_count, review_thread_count, total, first_at, last_at, by_author{...}}`;
   `review_threads.{total, unresolved, unresolved_active, unresolved_outdated, unresolved_by_author{...}}`.
+
+`contributors` is the authoritative contributor count, refreshed every
+collection cycle. It counts distinct *people* across both the author and
+the committer of every commit, keyed on GitHub login where GitHub
+resolved the commit email to an account and on the lowercased email
+otherwise; a second pass folds bare-email identities into a login when
+another commit tied that address to an account. GitHub's own web-flow
+identity (`noreply@github.com`) and `[bot]` logins are excluded, while
+per-user `…@users.noreply.github.com` addresses are kept. Keying on the
+*name* — what `git shortlog` groups by — miscounts anyone who has
+committed under two spellings, and ignoring the committer misses anyone
+who merely landed a patch.
 
 Per-author records under `reviews.by_author` also carry `last_state`
 (the reviewer's most recent submission state) and `effective_state`
