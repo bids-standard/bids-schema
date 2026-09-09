@@ -8,7 +8,7 @@
   "authors_count": 3,
   "stats": {
     "_source_head_sha": "ea5a7689fabcae8604b724c42bb6948ebadd76f5",
-    "_collected_at": "2026-09-08T16:27:26Z",
+    "_collected_at": "2026-09-09T04:15:44Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,34 @@
       "count": 3,
       "first_at": "2025-05-06T21:52:13Z",
       "last_at": "2025-08-04T19:30:52Z"
+    },
+    "contributors": {
+      "count": 3,
+      "authors": 3,
+      "committers": 1,
+      "by_identity": {
+        "yarikoptic": {
+          "name": "Yaroslav O. Halchenko",
+          "login": "yarikoptic",
+          "email": "debian@onerussian.com",
+          "authored": 1,
+          "committed": 1
+        },
+        "codycbakerphd": {
+          "name": "Cody Baker",
+          "login": "CodyCBakerPhD",
+          "email": "51133164+codycbakerphd@users.noreply.github.com",
+          "authored": 1,
+          "committed": 0
+        },
+        "effigies": {
+          "name": "Chris Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 1,
+          "committed": 0
+        }
+      }
     },
     "reviews": {
       "approved": 0,

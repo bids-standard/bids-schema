@@ -8,7 +8,7 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "80e00341a4e1f6b2e3cd778c58a49836c4b71244",
-    "_collected_at": "2026-09-08T16:27:35Z",
+    "_collected_at": "2026-09-09T04:15:53Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,27 @@
       "count": 4,
       "first_at": "2025-11-13T17:27:57Z",
       "last_at": "2025-11-14T14:16:06Z"
+    },
+    "contributors": {
+      "count": 2,
+      "authors": 2,
+      "committers": 1,
+      "by_identity": {
+        "arokem": {
+          "name": "Ariel Rokem",
+          "login": "arokem",
+          "email": "arokem@gmail.com",
+          "authored": 1,
+          "committed": 0
+        },
+        "tsalo": {
+          "name": "Taylor Salo",
+          "login": "tsalo",
+          "email": "salot@pennmedicine.upenn.edu",
+          "authored": 3,
+          "committed": 3
+        }
+      }
     },
     "reviews": {
       "approved": 0,

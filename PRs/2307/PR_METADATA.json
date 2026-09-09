@@ -8,7 +8,7 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "a3c5602239500961cd3d59e3079ee09c64bc8cd9",
-    "_collected_at": "2026-09-08T16:27:41Z",
+    "_collected_at": "2026-09-09T04:15:58Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,48 @@
       "count": 24,
       "first_at": "2026-01-15T19:07:37Z",
       "last_at": "2026-08-26T14:36:47Z"
+    },
+    "contributors": {
+      "count": 5,
+      "authors": 5,
+      "committers": 2,
+      "by_identity": {
+        "codycbakerphd": {
+          "name": "Cody Baker",
+          "login": "CodyCBakerPhD",
+          "email": "51133164+codycbakerphd@users.noreply.github.com",
+          "authored": 8,
+          "committed": 0
+        },
+        "ree-gupta": {
+          "name": "Reema Gupta",
+          "login": "ree-gupta",
+          "email": "59512969+ree-gupta@users.noreply.github.com",
+          "authored": 2,
+          "committed": 0
+        },
+        "bendichter": {
+          "name": "Ben Dichter",
+          "login": "bendichter",
+          "email": "ben.dichter@gmail.com",
+          "authored": 10,
+          "committed": 1
+        },
+        "effigies": {
+          "name": "Christopher J. Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 3,
+          "committed": 2
+        },
+        "yarikoptic": {
+          "name": "Yaroslav Halchenko",
+          "login": "yarikoptic",
+          "email": "debian@onerussian.com",
+          "authored": 1,
+          "committed": 0
+        }
+      }
     },
     "reviews": {
       "approved": 0,

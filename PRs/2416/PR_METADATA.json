@@ -8,7 +8,7 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "1a73eafcecebe884ae27ada43957ac8e8ad91764",
-    "_collected_at": "2026-09-08T16:27:56Z",
+    "_collected_at": "2026-09-09T04:16:13Z",
     "_complete": true,
     "_error": null,
     "pr_state": "MERGED",
@@ -19,6 +19,34 @@
       "count": 18,
       "first_at": "2026-04-10T21:28:54Z",
       "last_at": "2026-06-24T19:56:25Z"
+    },
+    "contributors": {
+      "count": 3,
+      "authors": 3,
+      "committers": 2,
+      "by_identity": {
+        "bendhouseart": {
+          "name": "Anthony Galassi",
+          "login": "bendhouseart",
+          "email": "28850131+bendhouseart@users.noreply.github.com",
+          "authored": 14,
+          "committed": 13
+        },
+        "mnoergaard": {
+          "name": "Martin Norgaard",
+          "login": "mnoergaard",
+          "email": "martin.noergaard@nru.dk",
+          "authored": 1,
+          "committed": 0
+        },
+        "effigies": {
+          "name": "Christopher J. Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 3,
+          "committed": 3
+        }
+      }
     },
     "reviews": {
       "approved": 3,

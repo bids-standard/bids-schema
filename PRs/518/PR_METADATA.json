@@ -8,7 +8,7 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "c7290cd58139716324686c0d3a827a760aec4fd0",
-    "_collected_at": "2026-09-08T16:27:04Z",
+    "_collected_at": "2026-09-09T04:15:20Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,27 @@
       "count": 12,
       "first_at": "2020-06-23T17:58:00Z",
       "last_at": "2026-03-19T19:54:26Z"
+    },
+    "contributors": {
+      "count": 2,
+      "authors": 2,
+      "committers": 2,
+      "by_identity": {
+        "effigies": {
+          "name": "Chris Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 4,
+          "committed": 3
+        },
+        "tsalo": {
+          "name": "Taylor Salo",
+          "login": "tsalo",
+          "email": "tsalo006@fiu.edu",
+          "authored": 8,
+          "committed": 7
+        }
+      }
     },
     "reviews": {
       "approved": 0,

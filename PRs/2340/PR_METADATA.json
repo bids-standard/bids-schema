@@ -8,7 +8,7 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "d7d060dfb3973b48213d32d42b6d823844ddc3ee",
-    "_collected_at": "2026-09-08T16:27:47Z",
+    "_collected_at": "2026-09-09T04:16:04Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,20 @@
       "count": 1,
       "first_at": "2026-02-05T06:27:02Z",
       "last_at": "2026-02-05T06:27:02Z"
+    },
+    "contributors": {
+      "count": 1,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "ree-gupta": {
+          "name": "Reema Gupta",
+          "login": "ree-gupta",
+          "email": "reema.gupta@lmu.de",
+          "authored": 1,
+          "committed": 1
+        }
+      }
     },
     "reviews": {
       "approved": 0,

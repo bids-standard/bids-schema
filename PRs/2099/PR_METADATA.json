@@ -8,7 +8,7 @@
   "authors_count": 6,
   "stats": {
     "_source_head_sha": "61dd4c4c1b91303aad03130d91acbcaa187c9b0c",
-    "_collected_at": "2026-09-08T16:27:25Z",
+    "_collected_at": "2026-09-09T04:15:43Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,41 @@
       "count": 300,
       "first_at": "2025-06-19T13:05:03Z",
       "last_at": "2026-07-29T08:33:05Z"
+    },
+    "contributors": {
+      "count": 4,
+      "authors": 4,
+      "committers": 4,
+      "by_identity": {
+        "bclenet": {
+          "name": "Boris Cl\u00e9net",
+          "login": "bclenet",
+          "email": "boris.clenet@inria.fr",
+          "authored": 252,
+          "committed": 238
+        },
+        "effigies": {
+          "name": "Christopher J. Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 9,
+          "committed": 4
+        },
+        "cmaumet": {
+          "name": "Camille Maumet",
+          "login": "cmaumet",
+          "email": "cmaumet@users.noreply.github.com",
+          "authored": 23,
+          "committed": 18
+        },
+        "rwblair": {
+          "name": "Ross Blair",
+          "login": "rwblair",
+          "email": "rosswilsonblair@gmail.com",
+          "authored": 2,
+          "committed": 2
+        }
+      }
     },
     "reviews": {
       "approved": 1,

@@ -8,7 +8,7 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "f5906f74e1601140ecb893a3d2b6664bf1bc98fe",
-    "_collected_at": "2026-09-08T16:27:31Z",
+    "_collected_at": "2026-09-09T04:15:49Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,20 @@
       "count": 1,
       "first_at": "2025-08-18T17:53:37Z",
       "last_at": "2025-08-18T17:53:37Z"
+    },
+    "contributors": {
+      "count": 1,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "yarikoptic": {
+          "name": "Yaroslav Halchenko",
+          "login": "yarikoptic",
+          "email": "debian@onerussian.com",
+          "authored": 1,
+          "committed": 1
+        }
+      }
     },
     "reviews": {
       "approved": 0,

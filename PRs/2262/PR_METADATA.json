@@ -8,7 +8,7 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "2d7e9b57ded522feddf318c699a731f8ab120773",
-    "_collected_at": "2026-09-08T16:27:36Z",
+    "_collected_at": "2026-09-09T04:15:54Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,27 @@
       "count": 3,
       "first_at": "2025-11-17T15:05:18Z",
       "last_at": "2025-11-17T20:11:56Z"
+    },
+    "contributors": {
+      "count": 2,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "melanieganz": {
+          "name": "melanieganz",
+          "login": "melanieganz",
+          "email": "melanieganz@users.noreply.github.com",
+          "authored": 2,
+          "committed": 0
+        },
+        "effigies": {
+          "name": "Chris Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 0,
+          "committed": 3
+        }
+      }
     },
     "reviews": {
       "approved": 0,

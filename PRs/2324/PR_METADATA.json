@@ -8,7 +8,7 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "c78121560ebc240be8cc707a94a46b5d8da027bd",
-    "_collected_at": "2026-09-08T16:27:44Z",
+    "_collected_at": "2026-09-09T04:16:01Z",
     "_complete": true,
     "_error": null,
     "pr_state": "MERGED",
@@ -19,6 +19,20 @@
       "count": 3,
       "first_at": "2026-01-23T17:04:05Z",
       "last_at": "2026-07-16T19:53:29Z"
+    },
+    "contributors": {
+      "count": 1,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "effigies": {
+          "name": "Christopher J. Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 3,
+          "committed": 2
+        }
+      }
     },
     "reviews": {
       "approved": 1,

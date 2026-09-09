@@ -8,7 +8,7 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "b84eec061acf77b5dfdfb4e2046a931ab2cea8fd",
-    "_collected_at": "2026-09-08T16:27:39Z",
+    "_collected_at": "2026-09-09T04:15:57Z",
     "_complete": true,
     "_error": null,
     "pr_state": "MERGED",
@@ -19,6 +19,27 @@
       "count": 8,
       "first_at": "2026-01-09T14:50:17Z",
       "last_at": "2026-04-23T19:39:08Z"
+    },
+    "contributors": {
+      "count": 2,
+      "authors": 2,
+      "committers": 1,
+      "by_identity": {
+        "effigies": {
+          "name": "Christopher J. Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 7,
+          "committed": 6
+        },
+        "mnoergaard": {
+          "name": "Martin Norgaard",
+          "login": "mnoergaard",
+          "email": "martin.noergaard@nru.dk",
+          "authored": 1,
+          "committed": 0
+        }
+      }
     },
     "reviews": {
       "approved": 2,

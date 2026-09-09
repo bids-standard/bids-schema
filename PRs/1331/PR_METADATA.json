@@ -8,7 +8,7 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "efe4d8c8a8c3c89aacaed02acd9d836215dd7920",
-    "_collected_at": "2026-09-08T16:27:10Z",
+    "_collected_at": "2026-09-09T04:15:26Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,20 @@
       "count": 9,
       "first_at": "2022-10-20T19:32:54Z",
       "last_at": "2022-11-04T15:28:49Z"
+    },
+    "contributors": {
+      "count": 1,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "rwblair": {
+          "name": "Ross Blair",
+          "login": "rwblair",
+          "email": "rosswilsonblair@gmail.com",
+          "authored": 9,
+          "committed": 5
+        }
+      }
     },
     "reviews": {
       "approved": 0,

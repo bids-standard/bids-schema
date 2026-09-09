@@ -8,7 +8,7 @@
   "authors_count": 4,
   "stats": {
     "_source_head_sha": "55697ad81b3140d12d51a965cd56d16717334d28",
-    "_collected_at": "2026-09-08T16:27:19Z",
+    "_collected_at": "2026-09-09T04:15:36Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,41 @@
       "count": 119,
       "first_at": "2024-12-14T22:15:20Z",
       "last_at": "2026-09-01T08:43:29Z"
+    },
+    "contributors": {
+      "count": 4,
+      "authors": 4,
+      "committers": 4,
+      "by_identity": {
+        "neuromechanist": {
+          "name": "Seyed (Yahya) Shirazi",
+          "login": "neuromechanist",
+          "email": "shirazi@ieee.org",
+          "authored": 85,
+          "committed": 74
+        },
+        "remi-gau": {
+          "name": "Remi Gau",
+          "login": "Remi-Gau",
+          "email": "remi_gau@hotmail.com",
+          "authored": 5,
+          "committed": 5
+        },
+        "yarikoptic": {
+          "name": "Yaroslav Halchenko",
+          "login": "yarikoptic",
+          "email": "debian@onerussian.com",
+          "authored": 21,
+          "committed": 17
+        },
+        "bendichter": {
+          "name": "Ben Dichter",
+          "login": "bendichter",
+          "email": "ben.dichter@gmail.com",
+          "authored": 4,
+          "committed": 3
+        }
+      }
     },
     "reviews": {
       "approved": 4,

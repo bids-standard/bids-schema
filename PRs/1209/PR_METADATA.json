@@ -8,7 +8,7 @@
   "authors_count": 3,
   "stats": {
     "_source_head_sha": "e4ffa0b5408d9f91a23db0189bf9e06283f2ed36",
-    "_collected_at": "2026-09-08T16:27:08Z",
+    "_collected_at": "2026-09-09T04:15:24Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,34 @@
       "count": 29,
       "first_at": "2022-04-19T16:26:06Z",
       "last_at": "2022-08-23T17:20:10Z"
+    },
+    "contributors": {
+      "count": 3,
+      "authors": 3,
+      "committers": 3,
+      "by_identity": {
+        "rwblair": {
+          "name": "Ross Blair",
+          "login": "rwblair",
+          "email": "rosswilsonblair@gmail.com",
+          "authored": 24,
+          "committed": 8
+        },
+        "effigies": {
+          "name": "Christopher J. Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 1,
+          "committed": 1
+        },
+        "tsalo": {
+          "name": "Taylor Salo",
+          "login": "tsalo",
+          "email": "tsalo006@fiu.edu",
+          "authored": 4,
+          "committed": 4
+        }
+      }
     },
     "reviews": {
       "approved": 0,

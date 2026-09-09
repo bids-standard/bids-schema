@@ -8,7 +8,7 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "ae392b953c884dff3d373bc29289545975c79dc1",
-    "_collected_at": "2026-09-08T16:27:13Z",
+    "_collected_at": "2026-09-09T04:15:29Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,20 @@
       "count": 2,
       "first_at": "2023-06-28T20:36:45Z",
       "last_at": "2023-06-28T20:40:13Z"
+    },
+    "contributors": {
+      "count": 1,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "effigies": {
+          "name": "Chris Markiewicz",
+          "login": "effigies",
+          "email": "effigies@gmail.com",
+          "authored": 2,
+          "committed": 2
+        }
+      }
     },
     "reviews": {
       "approved": 1,

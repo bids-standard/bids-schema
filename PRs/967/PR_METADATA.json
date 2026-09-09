@@ -8,7 +8,7 @@
   "authors_count": 3,
   "stats": {
     "_source_head_sha": "c29bb114e8d728e8dc514830fba472346fad7bd7",
-    "_collected_at": "2026-09-08T16:27:06Z",
+    "_collected_at": "2026-09-09T04:15:22Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,34 @@
       "count": 17,
       "first_at": "2022-01-07T08:02:02Z",
       "last_at": "2023-02-13T11:33:07Z"
+    },
+    "contributors": {
+      "count": 3,
+      "authors": 3,
+      "committers": 2,
+      "by_identity": {
+        "michaelschirner": {
+          "name": "Michael Schirner",
+          "login": "MichaelSchirner",
+          "email": "m.schirner@fu-berlin.de",
+          "authored": 11,
+          "committed": 0
+        },
+        "effigies": {
+          "name": "Christopher J. Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 1,
+          "committed": 1
+        },
+        "remi-gau": {
+          "name": "Remi Gau",
+          "login": "Remi-Gau",
+          "email": "remi_gau@hotmail.com",
+          "authored": 5,
+          "committed": 4
+        }
+      }
     },
     "reviews": {
       "approved": 0,

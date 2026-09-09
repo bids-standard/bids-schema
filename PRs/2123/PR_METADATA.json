@@ -8,7 +8,7 @@
   "authors_count": 5,
   "stats": {
     "_source_head_sha": "500fbac876e60e28bbbc51a334794df801e2d994",
-    "_collected_at": "2026-09-08T16:27:30Z",
+    "_collected_at": "2026-09-09T04:15:47Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,41 @@
       "count": 134,
       "first_at": "2025-05-20T15:24:26Z",
       "last_at": "2026-09-02T21:20:39Z"
+    },
+    "contributors": {
+      "count": 4,
+      "authors": 4,
+      "committers": 4,
+      "by_identity": {
+        "ericearl": {
+          "name": "Eric Earl",
+          "login": "ericearl",
+          "email": "eric.earl@nih.gov",
+          "authored": 68,
+          "committed": 9
+        },
+        "surchs": {
+          "name": "Sebastian Urchs",
+          "login": "surchs",
+          "email": "surchs@users.noreply.github.com",
+          "authored": 4,
+          "committed": 2
+        },
+        "rwblair": {
+          "name": "Ross Blair",
+          "login": "rwblair",
+          "email": "rosswilsonblair@gmail.com",
+          "authored": 29,
+          "committed": 24
+        },
+        "effigies": {
+          "name": "Chris Markiewicz",
+          "login": "effigies",
+          "email": "effigies@gmail.com",
+          "authored": 28,
+          "committed": 22
+        }
+      }
     },
     "reviews": {
       "approved": 0,

@@ -8,7 +8,7 @@
   "authors_count": 4,
   "stats": {
     "_source_head_sha": "dd638bcd5ee054547f686f46275cd29e1b248435",
-    "_collected_at": "2026-09-08T16:27:46Z",
+    "_collected_at": "2026-09-09T04:16:03Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,27 @@
       "count": 61,
       "first_at": "2025-06-20T11:05:19Z",
       "last_at": "2026-02-26T17:46:48Z"
+    },
+    "contributors": {
+      "count": 2,
+      "authors": 2,
+      "committers": 2,
+      "by_identity": {
+        "mnoergaard": {
+          "name": "Martin Norgaard",
+          "login": "mnoergaard",
+          "email": "martin.noergaard@nru.dk",
+          "authored": 15,
+          "committed": 12
+        },
+        "bendhouseart": {
+          "name": "Anthony Galassi",
+          "login": "bendhouseart",
+          "email": "28850131+bendhouseart@users.noreply.github.com",
+          "authored": 45,
+          "committed": 39
+        }
+      }
     },
     "reviews": {
       "approved": 0,

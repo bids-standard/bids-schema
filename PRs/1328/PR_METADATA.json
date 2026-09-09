@@ -8,7 +8,7 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "b16560961a756165d64ead210f087eaf1d4f2c74",
-    "_collected_at": "2026-09-08T16:27:09Z",
+    "_collected_at": "2026-09-09T04:15:25Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,20 @@
       "count": 10,
       "first_at": "2022-10-17T14:29:03Z",
       "last_at": "2024-04-19T07:10:09Z"
+    },
+    "contributors": {
+      "count": 1,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "remi-gau": {
+          "name": "Remi Gau",
+          "login": "Remi-Gau",
+          "email": "remi_gau@hotmail.com",
+          "authored": 10,
+          "committed": 5
+        }
+      }
     },
     "reviews": {
       "approved": 2,

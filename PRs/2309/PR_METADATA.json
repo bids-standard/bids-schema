@@ -8,7 +8,7 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "8049778dea5838b8cba573f3f3a306bc5cdb77c9",
-    "_collected_at": "2026-09-08T16:27:43Z",
+    "_collected_at": "2026-09-09T04:16:00Z",
     "_complete": true,
     "_error": null,
     "pr_state": "MERGED",
@@ -19,6 +19,27 @@
       "count": 29,
       "first_at": "2026-01-16T05:25:07Z",
       "last_at": "2026-08-31T17:01:28Z"
+    },
+    "contributors": {
+      "count": 2,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "kabilar": {
+          "name": "Kabilar Gunalan",
+          "login": "kabilar",
+          "email": "kabi@mit.edu",
+          "authored": 27,
+          "committed": 0
+        },
+        "effigies": {
+          "name": "Christopher J. Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 0,
+          "committed": 27
+        }
+      }
     },
     "reviews": {
       "approved": 2,

@@ -8,7 +8,7 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "df4c9b11c1e13e76890d7628b3f7f6964a001bca",
-    "_collected_at": "2026-09-08T16:27:43Z",
+    "_collected_at": "2026-09-09T04:16:01Z",
     "_complete": true,
     "_error": null,
     "pr_state": "CLOSED",
@@ -19,6 +19,20 @@
       "count": 2,
       "first_at": "2026-01-16T18:07:56Z",
       "last_at": "2026-01-16T18:08:14Z"
+    },
+    "contributors": {
+      "count": 1,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "kabilar": {
+          "name": "Kabilar Gunalan",
+          "login": "kabilar",
+          "email": "kabi@mit.edu",
+          "authored": 2,
+          "committed": 2
+        }
+      }
     },
     "reviews": {
       "approved": 0,

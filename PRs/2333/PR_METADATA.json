@@ -8,7 +8,7 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "8b49ca80dba541ac9f677710155a5445516d2cbd",
-    "_collected_at": "2026-09-08T16:27:45Z",
+    "_collected_at": "2026-09-09T04:16:03Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,27 @@
       "count": 17,
       "first_at": "2026-01-31T21:01:19Z",
       "last_at": "2026-07-05T19:33:04Z"
+    },
+    "contributors": {
+      "count": 2,
+      "authors": 2,
+      "committers": 2,
+      "by_identity": {
+        "arokem": {
+          "name": "Ariel Rokem",
+          "login": "arokem",
+          "email": "arokem@gmail.com",
+          "authored": 11,
+          "committed": 15
+        },
+        "jhlegarreta": {
+          "name": "Jon Haitz Legarreta Gorro\u00f1o",
+          "login": "jhlegarreta",
+          "email": "jon.haitz.legarreta@gmail.com",
+          "authored": 6,
+          "committed": 2
+        }
+      }
     },
     "reviews": {
       "approved": 2,

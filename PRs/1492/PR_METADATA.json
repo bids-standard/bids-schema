@@ -8,7 +8,7 @@
   "authors_count": 3,
   "stats": {
     "_source_head_sha": "3958ac0efdfd7af771e5097d2e33ce07eb87ef3e",
-    "_collected_at": "2026-09-08T16:27:12Z",
+    "_collected_at": "2026-09-09T04:15:28Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,27 @@
       "count": 27,
       "first_at": "2023-05-18T20:29:53Z",
       "last_at": "2024-08-08T01:03:38Z"
+    },
+    "contributors": {
+      "count": 2,
+      "authors": 2,
+      "committers": 2,
+      "by_identity": {
+        "remi-gau": {
+          "name": "Remi Gau",
+          "login": "Remi-Gau",
+          "email": "remi_gau@hotmail.com",
+          "authored": 15,
+          "committed": 14
+        },
+        "effigies": {
+          "name": "Chris Markiewicz",
+          "login": "effigies",
+          "email": "effigies@gmail.com",
+          "authored": 11,
+          "committed": 8
+        }
+      }
     },
     "reviews": {
       "approved": 0,

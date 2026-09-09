@@ -8,7 +8,7 @@
   "authors_count": 3,
   "stats": {
     "_source_head_sha": "29c8a8596940faa150d1e7b827a29be0733c4872",
-    "_collected_at": "2026-09-08T16:27:05Z",
+    "_collected_at": "2026-09-09T04:15:20Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,34 @@
       "count": 14,
       "first_at": "2020-06-23T19:54:34Z",
       "last_at": "2024-08-01T17:53:33Z"
+    },
+    "contributors": {
+      "count": 3,
+      "authors": 3,
+      "committers": 1,
+      "by_identity": {
+        "effigies": {
+          "name": "Chris Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 12,
+          "committed": 12
+        },
+        "rwblair": {
+          "name": "Ross Blair",
+          "login": "rwblair",
+          "email": "rosswilsonblair@gmail.com",
+          "authored": 1,
+          "committed": 0
+        },
+        "remi-gau": {
+          "name": "Remi Gau",
+          "login": "Remi-Gau",
+          "email": "remi_gau@hotmail.com",
+          "authored": 1,
+          "committed": 0
+        }
+      }
     },
     "reviews": {
       "approved": 0,

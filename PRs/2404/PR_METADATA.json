@@ -8,7 +8,7 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "9c1a560bc5afd9060c22d8e20819188bf701f21d",
-    "_collected_at": "2026-09-08T16:27:55Z",
+    "_collected_at": "2026-09-09T04:16:12Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,20 @@
       "count": 3,
       "first_at": "2026-04-20T18:53:51Z",
       "last_at": "2026-04-21T05:31:06Z"
+    },
+    "contributors": {
+      "count": 1,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "karl-koschutnig": {
+          "name": "Karl-Koschutnig",
+          "login": "karl-koschutnig",
+          "email": "karl.koschutnig@uni-graz.at",
+          "authored": 3,
+          "committed": 3
+        }
+      }
     },
     "reviews": {
       "approved": 0,

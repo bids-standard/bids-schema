@@ -8,7 +8,7 @@
   "authors_count": 3,
   "stats": {
     "_source_head_sha": "7120863de8ff69232758c13f839e79597a6c1c4d",
-    "_collected_at": "2026-09-08T16:27:49Z",
+    "_collected_at": "2026-09-09T04:16:06Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,27 @@
       "count": 16,
       "first_at": "2025-09-16T14:41:52Z",
       "last_at": "2026-02-27T02:07:27Z"
+    },
+    "contributors": {
+      "count": 2,
+      "authors": 2,
+      "committers": 1,
+      "by_identity": {
+        "yarikoptic": {
+          "name": "Yaroslav Halchenko",
+          "login": "yarikoptic",
+          "email": "debian@onerussian.com",
+          "authored": 14,
+          "committed": 15
+        },
+        "bclenet": {
+          "name": "Boris Cl\u00e9net",
+          "login": "bclenet",
+          "email": "boris.clenet@inria.fr",
+          "authored": 1,
+          "committed": 0
+        }
+      }
     },
     "reviews": {
       "approved": 0,

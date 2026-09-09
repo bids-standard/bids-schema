@@ -8,7 +8,7 @@
   "authors_count": 3,
   "stats": {
     "_source_head_sha": "f5ac38eff96ee31d86905eb03bf294d3b8388677",
-    "_collected_at": "2026-09-08T16:27:31Z",
+    "_collected_at": "2026-09-09T04:15:48Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -19,6 +19,27 @@
       "count": 5,
       "first_at": "2025-06-25T07:38:12Z",
       "last_at": "2025-09-05T16:03:20Z"
+    },
+    "contributors": {
+      "count": 2,
+      "authors": 2,
+      "committers": 1,
+      "by_identity": {
+        "dickscheid": {
+          "name": "Timo Dickscheid",
+          "login": "dickscheid",
+          "email": "t.dickscheid@fz-juelich.de",
+          "authored": 1,
+          "committed": 1
+        },
+        "effigies": {
+          "name": "Chris Markiewicz",
+          "login": "effigies",
+          "email": "effigies@gmail.com",
+          "authored": 3,
+          "committed": 0
+        }
+      }
     },
     "reviews": {
       "approved": 1,
