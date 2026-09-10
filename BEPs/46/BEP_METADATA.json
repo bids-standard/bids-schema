@@ -6,13 +6,13 @@
   "google_doc": "https://docs.google.com/document/d/1ubDQ2RhgjnfGqoeukzEkPV9YEHhfYMERrj7-3b0c2HI/edit",
   "status": "review",
   "authors_count": 2,
-  "_schema_version": 2,
+  "_schema_version": 3,
   "bep_registered": "2025-06-03T09:32:19Z",
   "googledoc_registered": "2025-06-03T09:32:19Z",
   "_registration_source": {
     "repo": "bids-standard/bids-website",
     "path": "data/beps/beps.yml",
-    "walked_at": "2026-08-27T08:47:13Z",
-    "walked_ref": "850cdc8606be54c399d8fb3c6b7fdb59aea5f0bf"
+    "walked_at": "2026-09-10T16:14:25Z",
+    "walked_ref": "25b7ef84624d8cfd6289f28a8435ebbea7b9dd8e"
   }
 }

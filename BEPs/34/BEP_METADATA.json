@@ -5,13 +5,13 @@
   "pull_request": "https://github.com/bids-standard/bids-specification/pull/967",
   "google_doc": "",
   "status": "review",
-  "_schema_version": 2,
+  "_schema_version": 3,
   "bep_registered": "2024-06-15T08:59:02Z",
   "googledoc_registered": null,
   "_registration_source": {
     "repo": "bids-standard/bids-website",
     "path": "data/beps/beps.yml",
-    "walked_at": "2026-08-27T08:47:13Z",
-    "walked_ref": "850cdc8606be54c399d8fb3c6b7fdb59aea5f0bf"
+    "walked_at": "2026-09-10T16:14:25Z",
+    "walked_ref": "25b7ef84624d8cfd6289f28a8435ebbea7b9dd8e"
   }
 }
