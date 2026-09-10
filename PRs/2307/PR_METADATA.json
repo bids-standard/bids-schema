@@ -7,18 +7,18 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_source_head_sha": "a3c5602239500961cd3d59e3079ee09c64bc8cd9",
-    "_collected_at": "2026-09-10T16:13:56Z",
+    "_source_head_sha": "f94d13fbb121f6067cefb4ea7427aa3010fa031e",
+    "_collected_at": "2026-09-10T22:17:01Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2026-01-15T19:25:10Z",
-    "pr_updated_at": "2026-08-26T14:36:50Z",
+    "pr_updated_at": "2026-09-10T21:56:18Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
-      "count": 24,
+      "count": 27,
       "first_at": "2026-01-15T19:07:37Z",
-      "last_at": "2026-08-26T14:36:47Z"
+      "last_at": "2026-09-10T21:51:44Z"
     },
     "contributors": {
       "count": 5,
@@ -43,7 +43,7 @@
           "name": "Ben Dichter",
           "login": "bendichter",
           "email": "ben.dichter@gmail.com",
-          "authored": 10,
+          "authored": 13,
           "committed": 1
         },
         "effigies": {
@@ -65,10 +65,10 @@
     "reviews": {
       "approved": 0,
       "changes_requested": 0,
-      "commented": 16,
+      "commented": 26,
       "dismissed": 0,
       "pending": 0,
-      "total": 16,
+      "total": 26,
       "by_author": {
         "effigies": {
           "approved": 0,
@@ -84,15 +84,15 @@
         },
         "bendichter": {
           "approved": 0,
-          "commented": 3,
+          "commented": 13,
           "changes_requested": 0,
           "dismissed": 0,
           "pending": 0,
           "first_at": "2026-07-07T23:25:15Z",
-          "last_at": "2026-07-09T17:02:54Z",
+          "last_at": "2026-09-10T21:55:36Z",
           "last_state": "COMMENTED",
           "effective_state": null,
-          "total": 3
+          "total": 13
         },
         "yarikoptic": {
           "approved": 0,
@@ -134,8 +134,8 @@
     },
     "comments": {
       "issue_count": 27,
-      "review_thread_count": 36,
-      "total": 63,
+      "review_thread_count": 46,
+      "total": 73,
       "first_at": "2026-01-15T19:27:10Z",
       "last_at": "2026-07-29T00:44:06Z",
       "by_author": {
@@ -188,14 +188,14 @@
     },
     "review_threads": {
       "total": 22,
-      "unresolved": 10,
-      "unresolved_active": 5,
-      "unresolved_outdated": 5,
+      "unresolved": 2,
+      "unresolved_active": 2,
+      "unresolved_outdated": 0,
       "unresolved_by_author": {
         "effigies": {
-          "count": 10,
+          "count": 2,
           "first_at": "2026-07-07T20:59:42Z",
-          "last_at": "2026-07-24T21:16:30Z"
+          "last_at": "2026-07-07T21:03:29Z"
         }
       }
     }
