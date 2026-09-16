@@ -8,7 +8,7 @@
   "authors_count": 3,
   "stats": {
     "_source_head_sha": "1636e7c36d0f110571652bc375b7d23bc96f0e79",
-    "_collected_at": "2026-09-15T16:45:06Z",
+    "_collected_at": "2026-09-16T04:26:16Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -220,19 +220,14 @@
     },
     "review_threads": {
       "total": 21,
-      "unresolved": 2,
-      "unresolved_active": 1,
+      "unresolved": 1,
+      "unresolved_active": 0,
       "unresolved_outdated": 1,
       "unresolved_by_author": {
         "yarikoptic": {
           "count": 1,
           "first_at": "2026-01-06T19:26:41Z",
           "last_at": "2026-01-06T19:26:41Z"
-        },
-        "bendichter": {
-          "count": 1,
-          "first_at": "2026-05-21T15:42:55Z",
-          "last_at": "2026-05-21T15:42:55Z"
         }
       }
     }
