@@ -12,8 +12,8 @@
   "_registration_source": {
     "repo": "bids-standard/bids-website",
     "path": "data/beps/beps.yml",
-    "walked_at": "2026-09-10T16:14:25Z",
-    "walked_ref": "25b7ef84624d8cfd6289f28a8435ebbea7b9dd8e"
+    "walked_at": "2026-09-17T16:45:09Z",
+    "walked_ref": "5cc8a3d57439dc2619d3d02cb64f7f843955cbe7"
   },
   "doc_activity": {
     "last_modified": "2026-06-04T14:10:15.086Z",
