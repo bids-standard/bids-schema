@@ -7,23 +7,23 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_source_head_sha": "7489caa077d88b5b1a53286ed875a6acb157037b",
-    "_collected_at": "2026-09-23T04:23:06Z",
+    "_source_head_sha": "d7e1a5d064066978953fb438e754f88d29374a2e",
+    "_collected_at": "2026-09-23T16:39:23Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2026-03-17T17:07:37Z",
-    "pr_updated_at": "2026-07-07T19:27:14Z",
+    "pr_updated_at": "2026-09-23T14:21:59Z",
     "review_decision": null,
     "commits": {
-      "count": 1,
+      "count": 4,
       "first_at": "2026-03-17T16:59:56Z",
-      "last_at": "2026-03-17T16:59:56Z"
+      "last_at": "2026-09-23T14:21:57Z"
     },
     "contributors": {
-      "count": 1,
-      "authors": 1,
-      "committers": 1,
+      "count": 2,
+      "authors": 2,
+      "committers": 2,
       "by_identity": {
         "ree-gupta": {
           "name": "Reema Gupta",
@@ -31,6 +31,13 @@
           "email": "reema.gupta@lmu.de",
           "authored": 1,
           "committed": 1
+        },
+        "bendichter": {
+          "name": "Ben Dichter",
+          "login": "bendichter",
+          "email": "ben.dichter@gmail.com",
+          "authored": 3,
+          "committed": 2
         }
       }
     },
@@ -44,12 +51,18 @@
       "by_author": {}
     },
     "comments": {
-      "issue_count": 0,
+      "issue_count": 1,
       "review_thread_count": 0,
-      "total": 0,
-      "first_at": null,
-      "last_at": null,
-      "by_author": {}
+      "total": 1,
+      "first_at": "2026-09-23T14:20:05Z",
+      "last_at": "2026-09-23T14:20:05Z",
+      "by_author": {
+        "bendichter": {
+          "count": 1,
+          "first_at": "2026-09-23T14:20:05Z",
+          "last_at": "2026-09-23T14:20:05Z"
+        }
+      }
     },
     "review_threads": {
       "total": 0,
