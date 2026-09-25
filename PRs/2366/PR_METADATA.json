@@ -7,18 +7,18 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_source_head_sha": "d7e1a5d064066978953fb438e754f88d29374a2e",
-    "_collected_at": "2026-09-25T04:31:22Z",
+    "_source_head_sha": "ce9bb69294776e78a4fff2d1f58b26287c1e2beb",
+    "_collected_at": "2026-09-25T17:00:01Z",
     "_complete": true,
     "_error": null,
-    "pr_state": "OPEN",
+    "pr_state": "MERGED",
     "pr_created_at": "2026-03-17T17:07:37Z",
-    "pr_updated_at": "2026-09-24T06:05:40Z",
+    "pr_updated_at": "2026-09-25T16:49:50Z",
     "review_decision": null,
     "commits": {
-      "count": 4,
+      "count": 5,
       "first_at": "2026-03-17T16:59:56Z",
-      "last_at": "2026-09-23T14:21:57Z"
+      "last_at": "2026-09-25T16:40:09Z"
     },
     "contributors": {
       "count": 2,
@@ -36,7 +36,7 @@
           "name": "Ben Dichter",
           "login": "bendichter",
           "email": "ben.dichter@gmail.com",
-          "authored": 3,
+          "authored": 4,
           "committed": 2
         }
       }
@@ -51,11 +51,11 @@
       "by_author": {}
     },
     "comments": {
-      "issue_count": 2,
+      "issue_count": 3,
       "review_thread_count": 0,
-      "total": 2,
+      "total": 3,
       "first_at": "2026-09-23T14:20:05Z",
-      "last_at": "2026-09-24T06:00:02Z",
+      "last_at": "2026-09-25T16:44:59Z",
       "by_author": {
         "bendichter": {
           "count": 1,
@@ -66,6 +66,11 @@
           "count": 1,
           "first_at": "2026-09-24T06:00:02Z",
           "last_at": "2026-09-24T06:00:02Z"
+        },
+        "codecov": {
+          "count": 1,
+          "first_at": "2026-09-25T16:44:59Z",
+          "last_at": "2026-09-25T16:44:59Z"
         }
       }
     },
