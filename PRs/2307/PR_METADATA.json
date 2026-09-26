@@ -7,18 +7,18 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_source_head_sha": "d79cf2622deb630d8586eea11638bb88f24a51a4",
-    "_collected_at": "2026-09-25T16:59:54Z",
+    "_source_head_sha": "a7dedfe2ff937d255c0bee2aaf2304bfee742447",
+    "_collected_at": "2026-09-26T04:35:29Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2026-01-15T19:25:10Z",
-    "pr_updated_at": "2026-09-25T16:54:08Z",
+    "pr_updated_at": "2026-09-26T00:14:28Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
-      "count": 34,
+      "count": 40,
       "first_at": "2026-01-15T19:07:37Z",
-      "last_at": "2026-09-25T16:49:43Z"
+      "last_at": "2026-09-26T00:09:54Z"
     },
     "contributors": {
       "count": 5,
@@ -43,7 +43,7 @@
           "name": "Ben Dichter",
           "login": "bendichter",
           "email": "ben.dichter@gmail.com",
-          "authored": 18,
+          "authored": 23,
           "committed": 1
         },
         "effigies": {
@@ -65,22 +65,22 @@
     "reviews": {
       "approved": 0,
       "changes_requested": 0,
-      "commented": 26,
+      "commented": 27,
       "dismissed": 0,
       "pending": 0,
-      "total": 26,
+      "total": 27,
       "by_author": {
         "effigies": {
           "approved": 0,
-          "commented": 2,
+          "commented": 3,
           "changes_requested": 0,
           "dismissed": 0,
           "pending": 0,
           "first_at": "2026-07-07T21:16:22Z",
-          "last_at": "2026-07-24T21:22:49Z",
+          "last_at": "2026-09-25T21:15:45Z",
           "last_state": "COMMENTED",
           "effective_state": null,
-          "total": 2
+          "total": 3
         },
         "bendichter": {
           "approved": 0,
@@ -134,10 +134,10 @@
     },
     "comments": {
       "issue_count": 33,
-      "review_thread_count": 46,
-      "total": 79,
+      "review_thread_count": 66,
+      "total": 99,
       "first_at": "2026-01-15T19:27:10Z",
-      "last_at": "2026-09-23T16:50:31Z",
+      "last_at": "2026-09-25T21:07:33Z",
       "by_author": {
         "codecov": {
           "count": 1,
@@ -150,9 +150,9 @@
           "last_at": "2026-09-23T14:06:08Z"
         },
         "effigies": {
-          "count": 31,
+          "count": 51,
           "first_at": "2026-01-21T15:26:02Z",
-          "last_at": "2026-09-23T16:50:31Z"
+          "last_at": "2026-09-25T21:07:33Z"
         },
         "ree-gupta": {
           "count": 6,
@@ -192,11 +192,17 @@
       }
     },
     "review_threads": {
-      "total": 22,
-      "unresolved": 0,
-      "unresolved_active": 0,
+      "total": 42,
+      "unresolved": 13,
+      "unresolved_active": 13,
       "unresolved_outdated": 0,
-      "unresolved_by_author": {}
+      "unresolved_by_author": {
+        "effigies": {
+          "count": 13,
+          "first_at": "2026-09-23T16:54:49Z",
+          "last_at": "2026-09-25T21:07:33Z"
+        }
+      }
     }
   },
   "_schema_version": 2
