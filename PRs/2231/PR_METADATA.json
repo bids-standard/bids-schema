@@ -8,12 +8,12 @@
   "authors_count": 3,
   "stats": {
     "_source_head_sha": "8d2a7ba9e4c7713bd7bc246563a1ac62785ac505",
-    "_collected_at": "2026-09-29T05:21:43Z",
+    "_collected_at": "2026-09-29T17:59:36Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-10-25T16:42:26Z",
-    "pr_updated_at": "2026-09-24T23:15:14Z",
+    "pr_updated_at": "2026-09-29T17:26:27Z",
     "review_decision": "APPROVED",
     "commits": {
       "count": 76,
@@ -157,11 +157,11 @@
       }
     },
     "comments": {
-      "issue_count": 37,
+      "issue_count": 41,
       "review_thread_count": 58,
-      "total": 95,
+      "total": 99,
       "first_at": "2025-10-25T17:55:19Z",
-      "last_at": "2026-09-03T19:52:21Z",
+      "last_at": "2026-09-29T17:26:27Z",
       "by_author": {
         "codecov": {
           "count": 1,
@@ -174,9 +174,9 @@
           "last_at": "2026-01-08T16:12:13Z"
         },
         "bendichter": {
-          "count": 23,
+          "count": 25,
           "first_at": "2025-10-25T17:55:19Z",
-          "last_at": "2026-08-17T21:30:54Z"
+          "last_at": "2026-09-29T17:26:27Z"
         },
         "yarikoptic": {
           "count": 12,
@@ -212,6 +212,11 @@
           "count": 2,
           "first_at": "2026-08-25T15:06:54Z",
           "last_at": "2026-09-03T18:11:46Z"
+        },
+        "timdressler": {
+          "count": 2,
+          "first_at": "2026-09-29T15:52:23Z",
+          "last_at": "2026-09-29T16:37:53Z"
         },
         "effigies": {
           "count": 4,
