@@ -1,0 +1,17 @@
+---
+ieeg:
+  $ref: meta.templates.raw.task
+  suffixes:
+    - ieeg
+  extensions:
+    - .mefd/
+    - .json
+    - .edf
+    - .vhdr
+    - .eeg
+    - .vmrk
+    - .set
+    - .fdt
+    - .nwb
+  datatypes:
+    - ieeg

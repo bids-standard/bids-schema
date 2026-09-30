@@ -1,0 +1,16 @@
+---
+eeg:
+  $ref: meta.templates.raw.task
+  suffixes:
+    - eeg
+  extensions:
+    - .json
+    - .edf
+    - .vhdr
+    - .vmrk
+    - .eeg
+    - .set
+    - .fdt
+    - .bdf
+  datatypes:
+    - eeg
