@@ -8,12 +8,12 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "febb3504cf3018ff0ba143ba67bcd3e1494de6d6",
-    "_collected_at": "2026-09-29T17:59:57Z",
+    "_collected_at": "2026-09-30T05:09:34Z",
     "_complete": true,
     "_error": null,
     "pr_state": "MERGED",
     "pr_created_at": "2026-04-13T04:43:43Z",
-    "pr_updated_at": "2026-08-27T18:30:13Z",
+    "pr_updated_at": "2026-09-29T19:11:06Z",
     "review_decision": "APPROVED",
     "commits": {
       "count": 18,
@@ -100,11 +100,11 @@
       }
     },
     "comments": {
-      "issue_count": 9,
+      "issue_count": 10,
       "review_thread_count": 18,
-      "total": 27,
+      "total": 28,
       "first_at": "2026-04-14T03:07:40Z",
-      "last_at": "2026-08-27T18:29:52Z",
+      "last_at": "2026-09-29T19:11:06Z",
       "by_author": {
         "kabilar": {
           "count": 7,
@@ -125,6 +125,11 @@
           "count": 2,
           "first_at": "2026-08-12T10:20:13Z",
           "last_at": "2026-08-27T18:29:52Z"
+        },
+        "github-actions": {
+          "count": 1,
+          "first_at": "2026-09-29T19:11:06Z",
+          "last_at": "2026-09-29T19:11:06Z"
         },
         "joshmoore": {
           "count": 1,

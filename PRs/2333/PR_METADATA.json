@@ -8,12 +8,12 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "8b49ca80dba541ac9f677710155a5445516d2cbd",
-    "_collected_at": "2026-09-29T17:59:48Z",
+    "_collected_at": "2026-09-30T05:09:26Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2026-01-31T21:05:19Z",
-    "pr_updated_at": "2026-07-10T18:57:40Z",
+    "pr_updated_at": "2026-09-30T00:54:44Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
       "count": 17,
@@ -44,10 +44,10 @@
     "reviews": {
       "approved": 2,
       "changes_requested": 0,
-      "commented": 28,
+      "commented": 29,
       "dismissed": 0,
       "pending": 0,
-      "total": 30,
+      "total": 31,
       "by_author": {
         "kabilar": {
           "approved": 0,
@@ -63,15 +63,15 @@
         },
         "arokem": {
           "approved": 0,
-          "commented": 11,
+          "commented": 12,
           "changes_requested": 0,
           "dismissed": 0,
           "pending": 0,
           "first_at": "2026-04-24T16:25:13Z",
-          "last_at": "2026-06-26T15:34:20Z",
+          "last_at": "2026-09-30T00:54:44Z",
           "last_state": "COMMENTED",
           "effective_state": null,
-          "total": 11
+          "total": 12
         },
         "francopestilli": {
           "approved": 2,
@@ -113,10 +113,10 @@
     },
     "comments": {
       "issue_count": 17,
-      "review_thread_count": 28,
-      "total": 45,
+      "review_thread_count": 29,
+      "total": 46,
       "first_at": "2026-01-31T21:10:00Z",
-      "last_at": "2026-07-03T17:15:12Z",
+      "last_at": "2026-09-30T00:54:44Z",
       "by_author": {
         "codecov": {
           "count": 1,
@@ -129,9 +129,9 @@
           "last_at": "2026-04-01T18:48:09Z"
         },
         "arokem": {
-          "count": 12,
+          "count": 13,
           "first_at": "2026-02-04T00:57:19Z",
-          "last_at": "2026-07-03T17:15:12Z"
+          "last_at": "2026-09-30T00:54:44Z"
         },
         "ayendiki": {
           "count": 4,
@@ -151,9 +151,9 @@
       }
     },
     "review_threads": {
-      "total": 12,
-      "unresolved": 7,
-      "unresolved_active": 4,
+      "total": 13,
+      "unresolved": 8,
+      "unresolved_active": 5,
       "unresolved_outdated": 3,
       "unresolved_by_author": {
         "kabilar": {
@@ -162,9 +162,9 @@
           "last_at": "2026-04-01T18:48:09Z"
         },
         "arokem": {
-          "count": 5,
+          "count": 6,
           "first_at": "2026-06-24T03:59:23Z",
-          "last_at": "2026-06-26T14:36:53Z"
+          "last_at": "2026-09-30T00:54:44Z"
         }
       }
     }

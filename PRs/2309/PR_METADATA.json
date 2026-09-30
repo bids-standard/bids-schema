@@ -8,12 +8,12 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "8049778dea5838b8cba573f3f3a306bc5cdb77c9",
-    "_collected_at": "2026-09-29T17:59:45Z",
+    "_collected_at": "2026-09-30T05:09:24Z",
     "_complete": true,
     "_error": null,
     "pr_state": "MERGED",
     "pr_created_at": "2026-01-16T05:35:52Z",
-    "pr_updated_at": "2026-08-31T20:15:55Z",
+    "pr_updated_at": "2026-09-29T19:11:04Z",
     "review_decision": "APPROVED",
     "commits": {
       "count": 29,
@@ -124,11 +124,11 @@
       }
     },
     "comments": {
-      "issue_count": 34,
+      "issue_count": 35,
       "review_thread_count": 39,
-      "total": 73,
+      "total": 74,
       "first_at": "2026-01-16T05:40:17Z",
-      "last_at": "2026-08-31T17:10:11Z",
+      "last_at": "2026-09-29T19:11:04Z",
       "by_author": {
         "codecov": {
           "count": 1,
@@ -174,6 +174,11 @@
           "count": 1,
           "first_at": "2026-01-29T01:55:55Z",
           "last_at": "2026-01-29T01:55:55Z"
+        },
+        "github-actions": {
+          "count": 1,
+          "first_at": "2026-09-29T19:11:04Z",
+          "last_at": "2026-09-29T19:11:04Z"
         }
       }
     },

@@ -7,29 +7,29 @@
   "build_status": "success",
   "authors_count": 3,
   "stats": {
-    "_source_head_sha": "8d2a7ba9e4c7713bd7bc246563a1ac62785ac505",
-    "_collected_at": "2026-09-29T17:59:36Z",
+    "_source_head_sha": "d02449331a81d188ab317e0f5c37c166d34e1851",
+    "_collected_at": "2026-09-30T05:09:14Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-10-25T16:42:26Z",
-    "pr_updated_at": "2026-09-29T17:26:27Z",
+    "pr_updated_at": "2026-09-30T04:24:24Z",
     "review_decision": "APPROVED",
     "commits": {
-      "count": 76,
+      "count": 85,
       "first_at": "2025-10-25T15:41:03Z",
-      "last_at": "2026-09-24T23:10:44Z"
+      "last_at": "2026-09-30T03:56:37Z"
     },
     "contributors": {
-      "count": 5,
-      "authors": 5,
-      "committers": 2,
+      "count": 6,
+      "authors": 6,
+      "committers": 3,
       "by_identity": {
         "bendichter": {
           "name": "Ben Dichter",
           "login": "bendichter",
           "email": "ben.dichter@gmail.com",
-          "authored": 52,
+          "authored": 53,
           "committed": 25
         },
         "effigies": {
@@ -59,6 +59,13 @@
           "email": "rosswilsonblair@gmail.com",
           "authored": 1,
           "committed": 0
+        },
+        "bdichter@benjamins-mac-mini.local": {
+          "name": "Benjamin Dichter",
+          "login": null,
+          "email": "bdichter@benjamins-mac-mini.local",
+          "authored": 8,
+          "committed": 8
         }
       }
     },
@@ -157,11 +164,11 @@
       }
     },
     "comments": {
-      "issue_count": 41,
+      "issue_count": 43,
       "review_thread_count": 58,
-      "total": 99,
+      "total": 101,
       "first_at": "2025-10-25T17:55:19Z",
-      "last_at": "2026-09-29T17:26:27Z",
+      "last_at": "2026-09-30T04:24:24Z",
       "by_author": {
         "codecov": {
           "count": 1,
@@ -174,9 +181,9 @@
           "last_at": "2026-01-08T16:12:13Z"
         },
         "bendichter": {
-          "count": 25,
+          "count": 27,
           "first_at": "2025-10-25T17:55:19Z",
-          "last_at": "2026-09-29T17:26:27Z"
+          "last_at": "2026-09-30T04:24:24Z"
         },
         "yarikoptic": {
           "count": 12,
