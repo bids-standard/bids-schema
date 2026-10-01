@@ -8,12 +8,12 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "508cfc7b7c8df1b3211be25b4fd1dbe7874d5473",
-    "_collected_at": "2026-10-01T05:24:20Z",
+    "_collected_at": "2026-10-01T18:20:20Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2026-01-15T19:25:10Z",
-    "pr_updated_at": "2026-10-01T01:28:20Z",
+    "pr_updated_at": "2026-10-01T16:38:57Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
       "count": 43,
@@ -133,11 +133,11 @@
       }
     },
     "comments": {
-      "issue_count": 33,
+      "issue_count": 34,
       "review_thread_count": 79,
-      "total": 112,
+      "total": 113,
       "first_at": "2026-01-15T19:27:10Z",
-      "last_at": "2026-09-25T21:07:33Z",
+      "last_at": "2026-10-01T16:38:57Z",
       "by_author": {
         "codecov": {
           "count": 1,
@@ -180,9 +180,9 @@
           "last_at": "2026-03-03T14:46:21Z"
         },
         "CodyCBakerPhD": {
-          "count": 4,
+          "count": 5,
           "first_at": "2026-03-06T18:30:13Z",
-          "last_at": "2026-03-20T16:10:39Z"
+          "last_at": "2026-10-01T16:38:57Z"
         },
         "xgui3783": {
           "count": 1,
