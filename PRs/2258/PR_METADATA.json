@@ -7,23 +7,23 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_source_head_sha": "56421da8601e539a903d1f31c53df1f5db2e2860",
-    "_collected_at": "2026-10-01T18:20:13Z",
+    "_source_head_sha": "e0d144814e63ad9a97e765ac1b138790bc78beb5",
+    "_collected_at": "2026-10-02T05:12:08Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-11-13T18:38:15Z",
-    "pr_updated_at": "2026-09-30T01:11:25Z",
+    "pr_updated_at": "2026-10-01T20:24:03Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
-      "count": 4,
+      "count": 5,
       "first_at": "2025-11-13T17:27:57Z",
-      "last_at": "2025-11-14T14:16:06Z"
+      "last_at": "2026-10-01T20:21:10Z"
     },
     "contributors": {
-      "count": 2,
-      "authors": 2,
-      "committers": 1,
+      "count": 3,
+      "authors": 3,
+      "committers": 2,
       "by_identity": {
         "arokem": {
           "name": "Ariel Rokem",
@@ -38,16 +38,23 @@
           "email": "salot@pennmedicine.upenn.edu",
           "authored": 3,
           "committed": 0
+        },
+        "bendhouseart": {
+          "name": "anthony galassi",
+          "login": "bendhouseart",
+          "email": "28850131+bendhouseart@users.noreply.github.com",
+          "authored": 1,
+          "committed": 1
         }
       }
     },
     "reviews": {
       "approved": 0,
       "changes_requested": 0,
-      "commented": 2,
+      "commented": 3,
       "dismissed": 0,
       "pending": 0,
-      "total": 2,
+      "total": 3,
       "by_author": {
         "tsalo": {
           "approved": 0,
@@ -72,13 +79,25 @@
           "last_state": "COMMENTED",
           "effective_state": null,
           "total": 1
+        },
+        "bendhouseart": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-10-01T20:24:03Z",
+          "last_at": "2026-10-01T20:24:03Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
         }
       }
     },
     "comments": {
       "issue_count": 8,
-      "review_thread_count": 2,
-      "total": 10,
+      "review_thread_count": 3,
+      "total": 11,
       "first_at": "2025-11-13T18:40:08Z",
       "last_at": "2026-09-30T01:11:25Z",
       "by_author": {
@@ -117,8 +136,8 @@
     "review_threads": {
       "total": 2,
       "unresolved": 2,
-      "unresolved_active": 2,
-      "unresolved_outdated": 0,
+      "unresolved_active": 1,
+      "unresolved_outdated": 1,
       "unresolved_by_author": {
         "tsalo": {
           "count": 1,

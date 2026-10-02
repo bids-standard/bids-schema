@@ -8,12 +8,12 @@
   "authors_count": 4,
   "stats": {
     "_source_head_sha": "55697ad81b3140d12d51a965cd56d16717334d28",
-    "_collected_at": "2026-10-01T18:19:54Z",
+    "_collected_at": "2026-10-02T05:11:54Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2024-12-22T02:29:37Z",
-    "pr_updated_at": "2026-09-02T17:00:04Z",
+    "pr_updated_at": "2026-10-01T21:32:31Z",
     "review_decision": "CHANGES_REQUESTED",
     "commits": {
       "count": 119,
@@ -58,10 +58,10 @@
     "reviews": {
       "approved": 4,
       "changes_requested": 2,
-      "commented": 38,
+      "commented": 40,
       "dismissed": 2,
       "pending": 0,
-      "total": 46,
+      "total": 48,
       "by_author": {
         "VisLab": {
           "approved": 2,
@@ -134,15 +134,27 @@
           "last_state": "APPROVED",
           "effective_state": "APPROVED",
           "total": 4
+        },
+        "rwblair": {
+          "approved": 0,
+          "commented": 2,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-10-01T21:32:30Z",
+          "last_at": "2026-10-01T21:32:30Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 2
         }
       }
     },
     "comments": {
       "issue_count": 32,
-      "review_thread_count": 72,
-      "total": 104,
+      "review_thread_count": 78,
+      "total": 110,
       "first_at": "2024-12-31T17:40:19Z",
-      "last_at": "2026-09-02T17:00:04Z",
+      "last_at": "2026-10-01T20:23:52Z",
       "by_author": {
         "Remi-Gau": {
           "count": 10,
@@ -173,19 +185,29 @@
           "count": 2,
           "first_at": "2025-02-05T21:22:40Z",
           "last_at": "2025-02-05T21:22:40Z"
+        },
+        "rwblair": {
+          "count": 4,
+          "first_at": "2026-10-01T20:18:14Z",
+          "last_at": "2026-10-01T20:23:52Z"
         }
       }
     },
     "review_threads": {
-      "total": 48,
-      "unresolved": 16,
-      "unresolved_active": 16,
+      "total": 52,
+      "unresolved": 20,
+      "unresolved_active": 20,
       "unresolved_outdated": 0,
       "unresolved_by_author": {
         "yarikoptic": {
           "count": 16,
           "first_at": "2025-10-07T20:01:02Z",
           "last_at": "2026-09-02T13:54:06Z"
+        },
+        "rwblair": {
+          "count": 4,
+          "first_at": "2026-10-01T20:18:14Z",
+          "last_at": "2026-10-01T20:23:52Z"
         }
       }
     }
