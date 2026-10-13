@@ -112,6 +112,18 @@ datalad_run_retry() {
     fi
 }
 
+echo "=== Phase 1b: Map schema-* tags to BIDS versions ==="
+
+if command -v bids-schema >/dev/null 2>&1; then
+    # Output is deterministic, so nothing gets committed unless a tag was added.
+    datalad_run_retry \
+        "Map schema-* tags to BIDS versions via bids-schema collect schema-to-bids" \
+        "versions/schema_to_bids.json" \
+        bids-schema collect schema-to-bids
+else
+    echo "bids-schema CLI not on PATH; skipping schema->BIDS version mapping." >&2
+fi
+
 echo "=== Phase 2: Process PR schemas ==="
 
 if [ "$PROCESS_PRS" = "true" ]; then

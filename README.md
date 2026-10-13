@@ -28,6 +28,9 @@ package managers.
     - `latest/` - a copy (symlinks aren't supported on some operating systems) of the most recent release
     - `master/` - the state of schema in the BIDS specification master branch
       repository
+    - `schema_to_bids.json` - mapping of every released schema version
+      (`schema-*` tag in the BIDS specification repository) to the BIDS version
+      it corresponds to, for validators which report only the schema version
   - `PRs/` - schemas from Pull Requests with schema changes
   - `BEPs/` - schemas for BIDS Extension Proposals
   - `tools/`

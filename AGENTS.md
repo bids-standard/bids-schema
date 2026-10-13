@@ -12,6 +12,8 @@ orientation; the canonical user-facing README is `README.md`.
 - `versions/x.y.z/` — compiled schemas for every released BIDS version
 - `versions/master/` — schema built from `bids-specification` master
 - `versions/latest/` — copy of the most recent release
+- `versions/schema_to_bids.json` — maps every `schema-*` tag of
+  `bids-specification` (schema version) to the BIDS version it belongs to
 - `PRs/<N>/` — schema built from open PR #`<N>` against `bids-specification`
   (only PRs that touch `src/schema/`)
 - `BEPs/<NN>/` — schema for BIDS Extension Proposal `NN`, tracked via the
@@ -27,6 +29,7 @@ plus metadata.
 ```
 versions/           released schemas + master
   x.y.z/, master/, latest/
+  schema_to_bids.json   schema version -> BIDS version map
 PRs/                one dir per open PR with schema changes
   <N>/schema.json, schema_pp.json, BIDS_VERSION, SCHEMA_VERSION,
       PR_METADATA.json, [bst-output.log on build failure]
@@ -60,6 +63,7 @@ from the repo root.
 | `bids-schema collect prs`                   | python   | Collect PR stats (reviews, comments, unresolved threads) via `gh api graphql`; merge into `PR_METADATA.json`. |
 | `bids-schema collect beps`                  | python   | Compute `bep_registered` / `googledoc_registered` from `bids-website` git history; merge into `BEP_METADATA.json`. |
 | `bids-schema collect bep-docs`              | python   | Fetch each BEP's Google Doc `modifiedTime`/`version` via the Drive API (API key, publicly-viewable docs only); merge into `BEP_METADATA.json`. |
+| `bids-schema collect schema-to-bids`        | python   | Map `schema-*` tags of `bids-specification` to BIDS versions (`git describe` against `v*` tags); write `versions/schema_to_bids.json`. |
 | `bids-schema render prs`                    | python   | Render `PRs/README.md` from on-disk metadata. No HTTP calls.                                                  |
 | `bids-schema render beps`                   | python   | Render `BEPs/README.md`; joins sibling `PRs/<N>/PR_METADATA.json` at render time. No HTTP calls.              |
 | `bids-schema metadata write-pr`             | python   | Canonical `PR_METADATA.json` emitter (called from `tools/inject-schema-pr`).                                  |
@@ -87,6 +91,7 @@ bids_schema/
     github.py                # GraphQL PR stats collector (PR #1)
     bep_registration.py      # git-log walker for BEP registration timestamps
     bep_doc_activity.py      # Google Drive API key fetcher for BEP doc activity
+    schema_to_bids.py        # schema-* tag -> BIDS version mapper
   render/
     __init__.py
     formatters.py            # shared cell formatters + record loaders
@@ -181,6 +186,25 @@ at render time via `bids_schema.render.formatters.load_pr_record`.
 That read-through join is the invariant to preserve when extending
 statistics: BEP metadata never re-collects PR-derived facts.
 
+`versions/schema_to_bids.json` — written by `bids-schema collect
+schema-to-bids` from the tags of `bids-specification`; `_schema_version`
+is currently `1`. Under `schemas`, one record per `schema-<V>` tag, keyed
+by `<V>` and in version order:
+
+- `bids_version` — `X.Y.Z` when the tagged commit is BIDS release
+  `vX.Y.Z`, otherwise `X.Y.Z+N-g<sha9>` (`git describe` against the `v*`
+  release tags, with `+` as in `tools/version_component.sh`); `null` if
+  no release precedes the tag.
+- `schema_bids_version` — `src/schema/BIDS_VERSION` at the tag, i.e. what
+  the schema itself declares (`<next>-dev` between releases until 1.10.0).
+- `tag`, `commit` (full sha), `date` (committer date, UTC).
+
+The file holds no generation timestamp, so it only changes (and gets a
+`datalad run` commit) when a new `schema-*` tag appears. Consumers, such
+as dandi-cli, use it to report the BIDS version a validator validated
+against, as bids-validator reports only the schema version
+(bids-standard/bids-validator#10).
+
 ## External dependencies
 
 - `bst` from `bidsschematools` (installed via `requirements.txt`,
@@ -223,8 +247,9 @@ The active feature branch for the PR/BEP work is `enh-prs-and-beps`
    commit message documents the command. Preserve this when adding
    scripts that write into `PRs/`, `BEPs/`, or their `README.md`.
 3. **Auto-generated files** (`PRs/README.md`, `BEPs/README.md`,
-   `versions/*/schema.json`, all `*_METADATA.json`) must not be
-   hand-edited — change the generator instead. Notably, `PR_METADATA.json`
+   `versions/*/schema.json`, `versions/schema_to_bids.json`, all
+   `*_METADATA.json`) must not be hand-edited — change the generator
+   instead. Notably, `PR_METADATA.json`
    and `BEP_METADATA.json` are always written through
    `bids_schema.metadata.io.write_pr_metadata` /
    `write_bep_metadata` — never via bash heredocs — so the schema
