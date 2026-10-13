@@ -20,7 +20,9 @@ Each ``schema-*`` tag yields one record, keyed by the version in the tag name:
 - ``tag``, ``commit`` (full sha), ``date`` (committer date, UTC).
 
 The output carries no timestamps of its own, so it only changes when the set
-of tags does.
+of tags does. Records are never dropped: a clone lacking tags already in the
+output (stale, shallow, or a wrong ``$BIDS_REPO``) is an error, as is any git
+failure, so that bad data does not get committed.
 """
 
 from __future__ import annotations
@@ -32,7 +34,8 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-from bids_schema.metadata.io import write_json_atomic
+from bids_schema.metadata.io import load_json, write_json_atomic
+from bids_schema.metadata.schema import CURRENT_SCHEMA_TO_BIDS_SCHEMA_VERSION
 
 log = logging.getLogger(__name__)
 
@@ -41,7 +44,6 @@ SCHEMA_TAG_PREFIX = "schema-"
 BIDS_RELEASE_TAG_GLOB = "v[0-9]*.[0-9]*.[0-9]*"
 BIDS_VERSION_PATH = "src/schema/BIDS_VERSION"
 OUTPUT_PATH = Path("versions") / "schema_to_bids.json"
-SCHEMA_VERSION = 1
 # Fixed, rather than git's repository-size-dependent default, so the output
 # does not depend on the clone it was generated from.
 ABBREV = 9
@@ -75,23 +77,22 @@ def _utc(iso: str) -> str:
 
 def describe_bids_version(repo: Path, commit: str) -> str | None:
     """Return the BIDS version of ``commit`` relative to the preceding ``v*`` release."""
-    try:
-        release = _run_git(
-            repo, "describe", "--tags", "--abbrev=0", f"--match={BIDS_RELEASE_TAG_GLOB}", commit,
-        ).strip()
-        distance = int(_run_git(repo, "rev-list", "--count", f"{release}..{commit}"))
-    except GitError as e:
-        log.warning("Cannot describe %s relative to a BIDS release: %s", commit[:10], e)
+    # Checked upfront, as `git describe` fails the same way for any other reason
+    if not _run_git(repo, "tag", "--list", BIDS_RELEASE_TAG_GLOB, "--merged", commit).strip():
         return None
+    release = _run_git(
+        repo, "describe", "--tags", "--abbrev=0", f"--match={BIDS_RELEASE_TAG_GLOB}", commit,
+    ).strip()
+    distance = int(_run_git(repo, "rev-list", "--count", f"{release}..{commit}"))
     version = release.removeprefix("v")
     return version if distance == 0 else f"{version}+{distance}-g{commit[:ABBREV]}"
 
 
 def _schema_bids_version(repo: Path, commit: str) -> str | None:
-    try:
-        return _run_git(repo, "show", f"{commit}:{BIDS_VERSION_PATH}").strip() or None
-    except GitError:
+    # Checked via the tree, as reading the blob may fail otherwise (blob-less clone)
+    if not _run_git(repo, "ls-tree", commit, "--", BIDS_VERSION_PATH).strip():
         return None
+    return _run_git(repo, "show", f"{commit}:{BIDS_VERSION_PATH}").strip() or None
 
 
 def build_mapping(repo: Path) -> dict:
@@ -115,7 +116,7 @@ def build_mapping(repo: Path) -> dict:
             "date": _utc(date),
         }
     return {
-        "_schema_version": SCHEMA_VERSION,
+        "_schema_version": CURRENT_SCHEMA_TO_BIDS_SCHEMA_VERSION,
         "_source": {
             "repo": BIDS_SPECIFICATION_URL,
             "schema_tags": f"{SCHEMA_TAG_PREFIX}*",
@@ -135,7 +136,8 @@ def collect(skip_fetch: bool = False,
     logging.basicConfig(level=os.environ.get("BIDS_SCHEMA_LOGLEVEL", "INFO"),
                         format="%(asctime)s %(levelname)s %(message)s")
     root = base_dir or Path.cwd()
-    repo = bids_repo or Path(os.environ.get("BIDS_REPO", str(root.parent / "bids-specification")))
+    repo = bids_repo or Path(os.environ.get("BIDS_REPO")
+                             or root.parent / "bids-specification")
     if not (repo / ".git").exists():
         log.error("No bids-specification clone at %s (set BIDS_REPO)", repo)
         return 2
@@ -144,16 +146,27 @@ def collect(skip_fetch: bool = False,
         try:
             _run_git(repo, "fetch", "--tags", "origin")
         except GitError as e:
-            # Tags only ever get added; a stale clone just yields fewer entries.
+            # Not fatal: tags missing from a stale clone are caught below
             log.warning("git fetch --tags failed for %s: %s", repo, e)
 
     try:
+        if _run_git(repo, "rev-parse", "--is-shallow-repository").strip() == "true":
+            log.error("%s is a shallow clone; commit counts would be wrong", repo)
+            return 2
         mapping = build_mapping(repo)
     except GitError as e:
         log.error("Failed to map schema tags: %s", e)
         return 2
 
     output = root / OUTPUT_PATH
+    if not mapping["schemas"]:
+        log.error("No %s* tags in %s; is it a bids-specification clone?",
+                  SCHEMA_TAG_PREFIX, repo)
+        return 2
+    if missing := set(load_json(output).get("schemas", {})) - set(mapping["schemas"]):
+        log.error("Tags for schema versions %s, already in %s, are missing from %s",
+                  ", ".join(sorted(missing, key=_version_key)), output, repo)
+        return 2
     write_json_atomic(output, mapping)
     log.info("Wrote %d schema versions to %s", len(mapping["schemas"]), output)
     return 0

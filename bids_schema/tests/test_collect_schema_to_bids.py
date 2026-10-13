@@ -111,11 +111,78 @@ def test_collect_writes_file_idempotently(
 
 
 @pytest.mark.ai_generated
-def test_collect_missing_repo(tmp_path: Path) -> None:
+def test_collect_missing_repo(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     assert schema_to_bids.collect(
         skip_fetch=True, base_dir=tmp_path, bids_repo=tmp_path / "nope"
     ) == 2
+    # empty BIDS_REPO falls back to the sibling clone, not the current directory
+    monkeypatch.setenv("BIDS_REPO", "")
+    base = tmp_path / "bids-schema"
+    base.mkdir()
+    _git(base, "init")
+    monkeypatch.chdir(base)
+    assert schema_to_bids.collect(skip_fetch=True, base_dir=base) == 2
     assert not (tmp_path / "versions").exists()
+    assert not (base / "versions").exists()
+
+
+@pytest.mark.ai_generated
+def test_collect_refuses_repo_without_schema_tags(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "--initial-branch=master")
+    _commit(repo, "1.0.0", "0.1.0", "2023-01-01T00:00:00+0000")
+    _git(repo, "tag", "-a", "-m", "BIDS 1.0.0", "v1.0.0")
+    base = tmp_path / "bids-schema"
+    assert schema_to_bids.collect(skip_fetch=True, base_dir=base, bids_repo=repo) == 2
+    assert not (base / "versions" / "schema_to_bids.json").exists()
+
+
+@pytest.mark.ai_generated
+def test_collect_refuses_to_drop_records(
+    spec_repo: tuple[Path, dict[str, str]], tmp_path: Path
+) -> None:
+    repo, _ = spec_repo
+    base = tmp_path / "bids-schema"
+    assert schema_to_bids.collect(skip_fetch=True, base_dir=base, bids_repo=repo) == 0
+    output = base / "versions" / "schema_to_bids.json"
+    before = output.read_text()
+    # e.g. a stale clone, which lacks the newest tags
+    _git(repo, "tag", "-d", "schema-0.10.0")
+    assert schema_to_bids.collect(skip_fetch=True, base_dir=base, bids_repo=repo) == 2
+    assert output.read_text() == before
+
+
+@pytest.mark.ai_generated
+def test_collect_refuses_shallow_clone(
+    spec_repo: tuple[Path, dict[str, str]], tmp_path: Path
+) -> None:
+    repo, _ = spec_repo
+    shallow = tmp_path / "shallow"
+    _git(tmp_path, "clone", "--depth=1", "--no-single-branch", repo.as_uri(), str(shallow))
+    base = tmp_path / "bids-schema"
+    assert schema_to_bids.collect(skip_fetch=True, base_dir=base, bids_repo=shallow) == 2
+    assert not (base / "versions").exists()
+
+
+@pytest.mark.ai_generated
+def test_collect_git_failure_is_not_null(
+    spec_repo: tuple[Path, dict[str, str]], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A git failure, e.g. fetching a blob in a blob-less clone, must not
+    turn into a null value."""
+    repo, _ = spec_repo
+    run_git = schema_to_bids._run_git
+
+    def failing_show(repo: Path, *args: str) -> str:
+        if args[0] == "show":
+            raise schema_to_bids.GitError("could not fetch blob")
+        return run_git(repo, *args)
+
+    monkeypatch.setattr(schema_to_bids, "_run_git", failing_show)
+    base = tmp_path / "bids-schema"
+    assert schema_to_bids.collect(skip_fetch=True, base_dir=base, bids_repo=repo) == 2
+    assert not (base / "versions").exists()
 
 
 @pytest.mark.ai_generated

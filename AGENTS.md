@@ -200,7 +200,10 @@ by `<V>` and in version order:
 - `tag`, `commit` (full sha), `date` (committer date, UTC).
 
 The file holds no generation timestamp, so it only changes (and gets a
-`datalad run` commit) when a new `schema-*` tag appears. Consumers, such
+`datalad run` commit) when a new `schema-*` tag appears. The collector
+exits 2 without writing on any git failure, or when the clone is shallow,
+has no `schema-*` tags, or lacks tags already recorded (stale clone);
+Phase 1b of the orchestrator then just warns. Consumers, such
 as dandi-cli, use it to report the BIDS version a validator validated
 against, as bids-validator reports only the schema version
 (bids-standard/bids-validator#10).
