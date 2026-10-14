@@ -1,9 +1,4 @@
-"""Tests for the ``schema-*`` tag → BIDS version mapper.
-
-Builds a small fixture bids-specification clone with BIDS release tags
-(``v*``) and schema release tags (``schema-*``), annotated and lightweight,
-and verifies the records written to ``versions/schema_to_bids.json``.
-"""
+"""Tests for the ``schema-*`` tag → BIDS version mapper."""
 
 from __future__ import annotations
 
@@ -17,188 +12,84 @@ import pytest
 from bids_schema.collect import schema_to_bids
 
 
-def _git(cwd: Path, *args: str, date: str = "2024-01-01T00:00:00+0000") -> str:
+def _git(cwd: Path, *args: str) -> str:
     env = os.environ.copy()
     env.update(
         GIT_AUTHOR_NAME="Test", GIT_AUTHOR_EMAIL="test@example.org",
         GIT_COMMITTER_NAME="Test", GIT_COMMITTER_EMAIL="test@example.org",
-        GIT_AUTHOR_DATE=date, GIT_COMMITTER_DATE=date,
     )
     return subprocess.run(
         ["git", *args], cwd=str(cwd), capture_output=True, text=True, check=True, env=env,
     ).stdout
 
 
-def _commit(repo: Path, bids_version: str, schema_version: str, date: str) -> str:
-    schema_dir = repo / "src" / "schema"
-    schema_dir.mkdir(parents=True, exist_ok=True)
-    (schema_dir / "BIDS_VERSION").write_text(bids_version + "\n")
-    (schema_dir / "SCHEMA_VERSION").write_text(schema_version + "\n")
-    _git(repo, "add", "src/schema")
-    _git(repo, "commit", "-m", f"BIDS {bids_version}, schema {schema_version}", date=date)
+def _commit(repo: Path) -> str:
+    _git(repo, "commit", "--allow-empty", "-m", "change")
     return _git(repo, "rev-parse", "HEAD").strip()
 
 
 @pytest.fixture
-def spec_repo(tmp_path: Path) -> tuple[Path, dict[str, str]]:
-    """History: v1.0.0 = schema-0.9.0 (annotated); one commit later
-    schema-0.9.1 (lightweight); v1.1.0 = schema-0.10.0 (annotated)."""
+def spec_repo(tmp_path: Path) -> Path:
+    """v1.0.0 = schema-0.9.0; schema-0.9.1 one commit later (lightweight tag);
+    v1.1.0 = schema-0.10.0."""
     repo = tmp_path / "bids-specification"
     repo.mkdir()
     _git(repo, "init", "--initial-branch=master")
-    commits = {}
-    _commit(repo, "1.0.0-dev", "0.9.0-dev", "2023-01-01T00:00:00+0000")
-    commits["0.9.0"] = _commit(repo, "1.0.0", "0.9.0", "2023-02-01T10:00:00+0200")
+    _commit(repo)
     _git(repo, "tag", "-a", "-m", "BIDS 1.0.0", "v1.0.0")
     _git(repo, "tag", "-a", "-m", "schema 0.9.0", "schema-0.9.0")
-    commits["0.9.1"] = _commit(repo, "1.1.0-dev", "0.9.1", "2023-03-01T00:00:00+0000")
+    _commit(repo)
     _git(repo, "tag", "schema-0.9.1")
-    commits["0.10.0"] = _commit(repo, "1.1.0", "0.10.0", "2023-04-01T00:00:00+0000")
+    _commit(repo)
     _git(repo, "tag", "-a", "-m", "BIDS 1.1.0", "v1.1.0")
     _git(repo, "tag", "-a", "-m", "schema 0.10.0", "schema-0.10.0")
-    # Neither BIDS nor schema release, must not show up
-    _git(repo, "tag", "-a", "-m", "other", "other-tag")
-    return repo, commits
+    return repo
 
 
 @pytest.mark.ai_generated
-def test_build_mapping(spec_repo: tuple[Path, dict[str, str]]) -> None:
-    repo, commits = spec_repo
-    mapping = schema_to_bids.build_mapping(repo)
-
-    assert mapping["_schema_version"] == 1
-    # natural version order, not lexicographic (0.10.0 after 0.9.1)
-    assert list(mapping["schemas"]) == ["0.9.0", "0.9.1", "0.10.0"]
-    assert mapping["schemas"]["0.9.0"] == {
-        "bids_version": "1.0.0",
-        "schema_bids_version": "1.0.0",
-        "tag": "schema-0.9.0",
-        "commit": commits["0.9.0"],
-        "date": "2023-02-01T08:00:00Z",
+def test_collect(spec_repo: Path, tmp_path: Path) -> None:
+    base = tmp_path / "bids-schema"
+    mapping = schema_to_bids.collect(base_dir=base, bids_repo=spec_repo)
+    sha = _git(spec_repo, "rev-parse", "schema-0.9.1").strip()
+    assert mapping == {
+        "0.10.0": {"bids_version_released": "1.1.0", "bids_version_exact": "1.1.0"},
+        "0.9.0": {"bids_version_released": "1.0.0", "bids_version_exact": "1.0.0"},
+        "0.9.1": {
+            "bids_version_released": "1.0.0",
+            "bids_version_exact": f"1.0.0+1-g{sha[:9]}",
+        },
     }
-    # lightweight tag between releases: describe-style version, declared -dev
-    rec = mapping["schemas"]["0.9.1"]
-    assert rec["bids_version"] == f"1.0.0+1-g{commits['0.9.1'][:9]}"
-    assert rec["schema_bids_version"] == "1.1.0-dev"
-    assert rec["commit"] == commits["0.9.1"]
-    assert mapping["schemas"]["0.10.0"]["bids_version"] == "1.1.0"
+    assert json.loads((base / "versions" / "schema_to_bids.json").read_text()) == mapping
 
 
 @pytest.mark.ai_generated
-def test_describe_without_preceding_release(tmp_path: Path) -> None:
-    repo = tmp_path / "repo"
-    repo.mkdir()
-    _git(repo, "init", "--initial-branch=master")
-    commit = _commit(repo, "1.0.0-dev", "0.1.0", "2023-01-01T00:00:00+0000")
-    _git(repo, "tag", "schema-0.1.0")
-    assert schema_to_bids.describe_bids_version(repo, commit) is None
-    assert schema_to_bids.build_mapping(repo)["schemas"]["0.1.0"]["bids_version"] is None
-
-
-@pytest.mark.ai_generated
-def test_collect_writes_file_idempotently(
-    spec_repo: tuple[Path, dict[str, str]], tmp_path: Path
-) -> None:
-    repo, _ = spec_repo
+def test_collect_adds_only_new_tags(spec_repo: Path, tmp_path: Path) -> None:
     base = tmp_path / "bids-schema"
-    assert schema_to_bids.collect(skip_fetch=True, base_dir=base, bids_repo=repo) == 0
     output = base / "versions" / "schema_to_bids.json"
-    first = output.read_text()
-    assert json.loads(first)["schemas"]["0.10.0"]["bids_version"] == "1.1.0"
+    output.parent.mkdir(parents=True)
+    known = {"bids_version_released": "kept", "bids_version_exact": "kept"}
+    output.write_text(json.dumps({"0.9.0": known, "0.1.0": known}))
 
-    assert schema_to_bids.collect(skip_fetch=True, base_dir=base, bids_repo=repo) == 0
-    assert output.read_text() == first
-
-
-@pytest.mark.ai_generated
-def test_collect_missing_repo(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    assert schema_to_bids.collect(
-        skip_fetch=True, base_dir=tmp_path, bids_repo=tmp_path / "nope"
-    ) == 2
-    # empty BIDS_REPO falls back to the sibling clone, not the current directory
-    monkeypatch.setenv("BIDS_REPO", "")
-    base = tmp_path / "bids-schema"
-    base.mkdir()
-    _git(base, "init")
-    monkeypatch.chdir(base)
-    assert schema_to_bids.collect(skip_fetch=True, base_dir=base) == 2
-    assert not (tmp_path / "versions").exists()
-    assert not (base / "versions").exists()
-
-
-@pytest.mark.ai_generated
-def test_collect_refuses_repo_without_schema_tags(tmp_path: Path) -> None:
-    repo = tmp_path / "repo"
-    repo.mkdir()
-    _git(repo, "init", "--initial-branch=master")
-    _commit(repo, "1.0.0", "0.1.0", "2023-01-01T00:00:00+0000")
-    _git(repo, "tag", "-a", "-m", "BIDS 1.0.0", "v1.0.0")
-    base = tmp_path / "bids-schema"
-    assert schema_to_bids.collect(skip_fetch=True, base_dir=base, bids_repo=repo) == 2
-    assert not (base / "versions" / "schema_to_bids.json").exists()
-
-
-@pytest.mark.ai_generated
-def test_collect_refuses_to_drop_records(
-    spec_repo: tuple[Path, dict[str, str]], tmp_path: Path
-) -> None:
-    repo, _ = spec_repo
-    base = tmp_path / "bids-schema"
-    assert schema_to_bids.collect(skip_fetch=True, base_dir=base, bids_repo=repo) == 0
-    output = base / "versions" / "schema_to_bids.json"
-    before = output.read_text()
-    # e.g. a stale clone, which lacks the newest tags
-    _git(repo, "tag", "-d", "schema-0.10.0")
-    assert schema_to_bids.collect(skip_fetch=True, base_dir=base, bids_repo=repo) == 2
-    assert output.read_text() == before
-
-
-@pytest.mark.ai_generated
-def test_collect_refuses_shallow_clone(
-    spec_repo: tuple[Path, dict[str, str]], tmp_path: Path
-) -> None:
-    repo, _ = spec_repo
-    shallow = tmp_path / "shallow"
-    _git(tmp_path, "clone", "--depth=1", "--no-single-branch", repo.as_uri(), str(shallow))
-    base = tmp_path / "bids-schema"
-    assert schema_to_bids.collect(skip_fetch=True, base_dir=base, bids_repo=shallow) == 2
-    assert not (base / "versions").exists()
-
-
-@pytest.mark.ai_generated
-def test_collect_git_failure_is_not_null(
-    spec_repo: tuple[Path, dict[str, str]], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """A git failure, e.g. fetching a blob in a blob-less clone, must not
-    turn into a null value."""
-    repo, _ = spec_repo
-    run_git = schema_to_bids._run_git
-
-    def failing_show(repo: Path, *args: str) -> str:
-        if args[0] == "show":
-            raise schema_to_bids.GitError("could not fetch blob")
-        return run_git(repo, *args)
-
-    monkeypatch.setattr(schema_to_bids, "_run_git", failing_show)
-    base = tmp_path / "bids-schema"
-    assert schema_to_bids.collect(skip_fetch=True, base_dir=base, bids_repo=repo) == 2
-    assert not (base / "versions").exists()
+    mapping = schema_to_bids.collect(base_dir=base, bids_repo=spec_repo)
+    assert mapping["0.9.0"] == known  # not described again
+    assert mapping["0.1.0"] == known  # kept although not tagged in this clone
+    assert mapping["0.10.0"]["bids_version_released"] == "1.1.0"
+    assert list(json.loads(output.read_text())) == ["0.1.0", "0.10.0", "0.9.0", "0.9.1"]
 
 
 @pytest.mark.ai_generated
 def test_cli_uses_bids_repo_env(
-    spec_repo: tuple[Path, dict[str, str]], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    spec_repo: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     from click.testing import CliRunner
 
     from bids_schema.cli import main
 
-    repo, _ = spec_repo
     base = tmp_path / "bids-schema"
     base.mkdir()
     monkeypatch.chdir(base)
-    monkeypatch.setenv("BIDS_REPO", str(repo))
-    result = CliRunner().invoke(main, ["collect", "schema-to-bids", "--skip-fetch"])
+    monkeypatch.setenv("BIDS_REPO", str(spec_repo))
+    result = CliRunner().invoke(main, ["collect", "schema-to-bids"])
     assert result.exit_code == 0, result.output
     data = json.loads((base / "versions" / "schema_to_bids.json").read_text())
-    assert list(data["schemas"]) == ["0.9.0", "0.9.1", "0.10.0"]
+    assert set(data) == {"0.9.0", "0.9.1", "0.10.0"}

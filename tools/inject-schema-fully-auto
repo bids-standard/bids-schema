@@ -115,9 +115,8 @@ datalad_run_retry() {
 echo "=== Phase 1b: Map schema-* tags to BIDS versions ==="
 
 if command -v bids-schema >/dev/null 2>&1; then
-    # Output is deterministic, so nothing gets committed unless a tag was added.
-    # Not fatal: the collector refuses to write anything dubious, and the
-    # previous mapping stays valid.
+    # Only adds new tags, so nothing gets committed unless a tag was added.
+    # Not fatal: the previous mapping stays valid.
     datalad_run_retry \
         "Map schema-* tags to BIDS versions via bids-schema collect schema-to-bids" \
         "versions/schema_to_bids.json" \

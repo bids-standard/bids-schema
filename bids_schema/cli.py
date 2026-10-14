@@ -5,8 +5,8 @@ Top-level ``click`` group with subcommands:
 - ``bids-schema collect prs``      — fetch PR stats via GitHub GraphQL.
 - ``bids-schema collect beps``     — walk ``bids-website:data/beps/beps.yml`` history.
 - ``bids-schema collect bep-docs`` — fetch BEP Google Doc activity via the Drive API.
-- ``bids-schema collect schema-to-bids`` — map ``schema-*`` tags of bids-specification
-  to BIDS versions in ``versions/schema_to_bids.json``.
+- ``bids-schema collect schema-to-bids`` — add new ``schema-*`` tags of bids-specification
+  to ``versions/schema_to_bids.json``.
 - ``bids-schema render prs``       — write ``PRs/README.md`` from on-disk metadata.
 - ``bids-schema render beps``      — write ``BEPs/README.md`` from on-disk metadata.
 - ``bids-schema cycle``            — collect prs && collect beps && collect bep-docs &&
@@ -152,14 +152,12 @@ def collect_bep_docs(collect_all: bool, only: tuple[str, ...], force: bool) -> N
 
 
 @collect.command("schema-to-bids",
-                 help="Map schema-* tags of bids-specification ($BIDS_REPO) to BIDS versions "
-                      "in versions/schema_to_bids.json.")
-@click.option("--skip-fetch", is_flag=True,
-              help="Don't run `git fetch --tags` before reading tags (for air-gapped debugging).")
-def collect_schema_to_bids(skip_fetch: bool) -> None:
+                 help="Add new schema-* tags of bids-specification ($BIDS_REPO), with the "
+                      "BIDS versions they belong to, to versions/schema_to_bids.json.")
+def collect_schema_to_bids() -> None:
     from bids_schema.collect import schema_to_bids
 
-    sys.exit(schema_to_bids.collect(skip_fetch=skip_fetch))
+    schema_to_bids.collect()
 
 
 @render.command("prs", help="Write PRs/README.md from on-disk metadata.")

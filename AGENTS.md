@@ -187,26 +187,16 @@ That read-through join is the invariant to preserve when extending
 statistics: BEP metadata never re-collects PR-derived facts.
 
 `versions/schema_to_bids.json` — written by `bids-schema collect
-schema-to-bids` from the tags of `bids-specification`; `_schema_version`
-is currently `1`. Under `schemas`, one record per `schema-<V>` tag, keyed
-by `<V>` and in version order:
-
-- `bids_version` — `X.Y.Z` when the tagged commit is BIDS release
-  `vX.Y.Z`, otherwise `X.Y.Z+N-g<sha9>` (`git describe` against the `v*`
-  release tags, with `+` as in `tools/version_component.sh`); `null` if
-  no release precedes the tag.
-- `schema_bids_version` — `src/schema/BIDS_VERSION` at the tag, i.e. what
-  the schema itself declares (`<next>-dev` between releases until 1.10.0).
-- `tag`, `commit` (full sha), `date` (committer date, UTC).
-
-The file holds no generation timestamp, so it only changes (and gets a
-`datalad run` commit) when a new `schema-*` tag appears. The collector
-exits 2 without writing on any git failure, or when the clone is shallow,
-has no `schema-*` tags, or lacks tags already recorded (stale clone);
-Phase 1b of the orchestrator then just warns. Consumers, such
-as dandi-cli, use it to report the BIDS version a validator validated
-against, as bids-validator reports only the schema version
-(bids-standard/bids-validator#10).
+schema-to-bids`: for every `schema-<V>` tag of `bids-specification`, keyed
+by `<V>`, `git describe --match "v*"` of the tag as
+`bids_version_released` (the preceding BIDS release, e.g. `1.11.1`) and
+`bids_version_exact` (the full description with `+` for its first `-`,
+e.g. `1.11.1+22-ge37e21053`; equal to the former when the tag is on a
+release). Only tags not yet in the file get described, so it only changes
+(and gets a `datalad run` commit) when a new `schema-*` tag appears.
+Consumers, such as dandi-cli, use it to report the BIDS version a
+validator validated against, as bids-validator reports only the schema
+version (bids-standard/bids-validator#10).
 
 ## External dependencies
 
