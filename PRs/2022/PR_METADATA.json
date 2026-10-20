@@ -8,12 +8,12 @@
   "authors_count": 4,
   "stats": {
     "_source_head_sha": "43ab3991df379d3aef8a2d7e9d5b25395ba2bbdb",
-    "_collected_at": "2026-10-20T04:26:24Z",
+    "_collected_at": "2026-10-20T16:42:43Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2024-12-22T02:29:37Z",
-    "pr_updated_at": "2026-10-15T22:11:58Z",
+    "pr_updated_at": "2026-10-20T16:33:28Z",
     "review_decision": "CHANGES_REQUESTED",
     "commits": {
       "count": 120,
@@ -150,11 +150,11 @@
       }
     },
     "comments": {
-      "issue_count": 36,
+      "issue_count": 38,
       "review_thread_count": 78,
-      "total": 114,
+      "total": 116,
       "first_at": "2024-12-31T17:40:19Z",
-      "last_at": "2026-10-15T18:54:52Z",
+      "last_at": "2026-10-20T16:33:28Z",
       "by_author": {
         "Remi-Gau": {
           "count": 10,
@@ -187,9 +187,9 @@
           "last_at": "2026-10-15T18:35:38Z"
         },
         "rwblair": {
-          "count": 4,
+          "count": 6,
           "first_at": "2026-10-01T20:18:14Z",
-          "last_at": "2026-10-01T20:23:52Z"
+          "last_at": "2026-10-20T16:33:28Z"
         }
       }
     },
