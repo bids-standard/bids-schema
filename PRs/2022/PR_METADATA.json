@@ -8,12 +8,12 @@
   "authors_count": 4,
   "stats": {
     "_source_head_sha": "43ab3991df379d3aef8a2d7e9d5b25395ba2bbdb",
-    "_collected_at": "2026-10-24T04:11:30Z",
+    "_collected_at": "2026-10-24T15:44:48Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2024-12-22T02:29:37Z",
-    "pr_updated_at": "2026-10-21T13:09:25Z",
+    "pr_updated_at": "2026-10-24T07:52:15Z",
     "review_decision": "CHANGES_REQUESTED",
     "commits": {
       "count": 120,
@@ -162,11 +162,11 @@
       }
     },
     "comments": {
-      "issue_count": 40,
+      "issue_count": 44,
       "review_thread_count": 102,
-      "total": 142,
+      "total": 146,
       "first_at": "2024-12-31T17:40:19Z",
-      "last_at": "2026-10-20T20:01:22Z",
+      "last_at": "2026-10-24T07:52:15Z",
       "by_author": {
         "Remi-Gau": {
           "count": 10,
@@ -179,9 +179,9 @@
           "last_at": "2025-02-04T23:51:27Z"
         },
         "neuromechanist": {
-          "count": 18,
+          "count": 22,
           "first_at": "2025-03-18T14:09:58Z",
-          "last_at": "2026-10-20T18:51:30Z"
+          "last_at": "2026-10-24T07:52:15Z"
         },
         "VisLab": {
           "count": 12,
