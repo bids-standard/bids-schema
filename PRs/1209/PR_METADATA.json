@@ -9,8 +9,8 @@
   "stats": {
     "_source_head_sha": "e4ffa0b5408d9f91a23db0189bf9e06283f2ed36",
     "_collected_at": "2026-10-26T04:18:37Z",
-    "_complete": true,
-    "_error": null,
+    "_complete": false,
+    "_error": "graphql_error",
     "pr_state": "OPEN",
     "pr_created_at": "2022-08-16T17:38:40Z",
     "pr_updated_at": "2025-08-27T16:03:49Z",
