@@ -8,12 +8,12 @@
   "authors_count": 4,
   "stats": {
     "_source_head_sha": "147b46d771cd2b35b31a72b1f1bd1d7dc2d5a88a",
-    "_collected_at": "2026-10-29T18:20:27Z",
+    "_collected_at": "2026-10-30T05:21:47Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2024-12-22T02:29:37Z",
-    "pr_updated_at": "2026-10-29T13:41:25Z",
+    "pr_updated_at": "2026-10-29T20:28:13Z",
     "review_decision": "CHANGES_REQUESTED",
     "commits": {
       "count": 1,
@@ -153,11 +153,11 @@
       }
     },
     "comments": {
-      "issue_count": 22,
+      "issue_count": 24,
       "review_thread_count": 77,
-      "total": 99,
+      "total": 101,
       "first_at": "2024-12-31T17:40:19Z",
-      "last_at": "2026-10-27T03:15:57Z",
+      "last_at": "2026-10-29T20:25:49Z",
       "by_author": {
         "Remi-Gau": {
           "count": 5,
@@ -175,9 +175,9 @@
           "last_at": "2026-10-24T07:52:15Z"
         },
         "VisLab": {
-          "count": 6,
+          "count": 8,
           "first_at": "2024-12-31T17:40:19Z",
-          "last_at": "2025-03-31T18:37:18Z"
+          "last_at": "2026-10-29T20:25:49Z"
         },
         "yarikoptic": {
           "count": 20,
