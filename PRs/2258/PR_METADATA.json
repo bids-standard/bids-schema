@@ -8,12 +8,12 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "7e62a17b1c2532a2e12cc98cf5dbc1f3961c626d",
-    "_collected_at": "2026-11-03T06:13:51Z",
+    "_collected_at": "2026-11-03T19:22:48Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-11-13T18:38:15Z",
-    "pr_updated_at": "2026-10-23T00:23:09Z",
+    "pr_updated_at": "2026-11-03T16:06:04Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
       "count": 6,
@@ -95,11 +95,11 @@
       }
     },
     "comments": {
-      "issue_count": 8,
+      "issue_count": 10,
       "review_thread_count": 3,
-      "total": 11,
+      "total": 13,
       "first_at": "2025-11-13T18:40:08Z",
-      "last_at": "2026-09-30T01:11:25Z",
+      "last_at": "2026-11-03T16:05:25Z",
       "by_author": {
         "codecov": {
           "count": 1,
@@ -107,14 +107,14 @@
           "last_at": "2025-11-13T18:40:08Z"
         },
         "arokem": {
-          "count": 5,
+          "count": 6,
           "first_at": "2025-11-13T18:40:23Z",
-          "last_at": "2026-09-30T01:11:25Z"
+          "last_at": "2026-11-03T15:20:13Z"
         },
         "PeerHerholz": {
-          "count": 1,
+          "count": 2,
           "first_at": "2025-11-14T10:18:32Z",
-          "last_at": "2025-11-14T10:18:32Z"
+          "last_at": "2026-11-03T16:05:25Z"
         },
         "arnaudbore": {
           "count": 1,
