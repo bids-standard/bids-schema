@@ -28,7 +28,7 @@ def collect(base_dir: Path | None = None, bids_repo: Path | None = None) -> dict
     repo = bids_repo or Path(os.environ.get("BIDS_REPO") or root.parent / "bids-specification")
     output = root / OUTPUT_PATH
     mapping = load_json(output)
-    for tag in _git(repo, "tag", "--list", "schema-*").split():
+    for tag in _git(repo, "tag", "--list", "--sort=version:refname", "schema-*").split():
         schema_version = tag.removeprefix("schema-")
         if schema_version not in mapping:
             # fixed --abbrev, so that it does not depend on the clone
@@ -37,6 +37,5 @@ def collect(base_dir: Path | None = None, bids_repo: Path | None = None) -> dict
                 "bids_version_released": described.split("-")[0].removeprefix("v"),
                 "bids_version_exact": described.removeprefix("v").replace("-", "+", 1),
             }
-    mapping = dict(sorted(mapping.items()))
     write_json_atomic(output, mapping)
     return mapping

@@ -23,9 +23,8 @@ def _git(cwd: Path, *args: str) -> str:
     ).stdout
 
 
-def _commit(repo: Path) -> str:
+def _commit(repo: Path) -> None:
     _git(repo, "commit", "--allow-empty", "-m", "change")
-    return _git(repo, "rev-parse", "HEAD").strip()
 
 
 @pytest.fixture
@@ -52,13 +51,15 @@ def test_collect(spec_repo: Path, tmp_path: Path) -> None:
     mapping = schema_to_bids.collect(base_dir=base, bids_repo=spec_repo)
     sha = _git(spec_repo, "rev-parse", "schema-0.9.1").strip()
     assert mapping == {
-        "0.10.0": {"bids_version_released": "1.1.0", "bids_version_exact": "1.1.0"},
         "0.9.0": {"bids_version_released": "1.0.0", "bids_version_exact": "1.0.0"},
         "0.9.1": {
             "bids_version_released": "1.0.0",
             "bids_version_exact": f"1.0.0+1-g{sha[:9]}",
         },
+        "0.10.0": {"bids_version_released": "1.1.0", "bids_version_exact": "1.1.0"},
     }
+    # in version order
+    assert list(mapping) == ["0.9.0", "0.9.1", "0.10.0"]
     assert json.loads((base / "versions" / "schema_to_bids.json").read_text()) == mapping
 
 
@@ -74,7 +75,8 @@ def test_collect_adds_only_new_tags(spec_repo: Path, tmp_path: Path) -> None:
     assert mapping["0.9.0"] == known  # not described again
     assert mapping["0.1.0"] == known  # kept although not tagged in this clone
     assert mapping["0.10.0"]["bids_version_released"] == "1.1.0"
-    assert list(json.loads(output.read_text())) == ["0.1.0", "0.10.0", "0.9.0", "0.9.1"]
+    # existing entries stay in place, new ones get appended in version order
+    assert list(json.loads(output.read_text())) == ["0.9.0", "0.1.0", "0.9.1", "0.10.0"]
 
 
 @pytest.mark.ai_generated
