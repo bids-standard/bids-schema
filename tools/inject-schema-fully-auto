@@ -112,6 +112,20 @@ datalad_run_retry() {
     fi
 }
 
+echo "=== Phase 1b: Map schema-* tags to BIDS versions ==="
+
+if command -v bids-schema >/dev/null 2>&1; then
+    # Only adds new tags, so nothing gets committed unless a tag was added.
+    # Not fatal: the previous mapping stays valid.
+    datalad_run_retry \
+        "Map schema-* tags to BIDS versions via bids-schema collect schema-to-bids" \
+        "versions/schema_to_bids.json" \
+        bids-schema collect schema-to-bids \
+    || echo "WARNING: bids-schema collect schema-to-bids failed; keeping previous mapping." >&2
+else
+    echo "bids-schema CLI not on PATH; skipping schema->BIDS version mapping." >&2
+fi
+
 echo "=== Phase 2: Process PR schemas ==="
 
 if [ "$PROCESS_PRS" = "true" ]; then
