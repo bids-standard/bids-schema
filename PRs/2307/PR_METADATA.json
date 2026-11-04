@@ -7,18 +7,18 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_source_head_sha": "508cfc7b7c8df1b3211be25b4fd1dbe7874d5473",
-    "_collected_at": "2026-11-04T05:51:29Z",
+    "_source_head_sha": "09e9d67fa329356e2b7a85e921e04b941774f3ca",
+    "_collected_at": "2026-11-04T19:38:53Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2026-01-15T19:25:10Z",
-    "pr_updated_at": "2026-10-17T10:41:15Z",
+    "pr_updated_at": "2026-11-04T15:02:43Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
-      "count": 43,
+      "count": 44,
       "first_at": "2026-01-15T19:07:37Z",
-      "last_at": "2026-10-01T01:24:26Z"
+      "last_at": "2026-11-04T15:02:41Z"
     },
     "contributors": {
       "count": 5,
@@ -43,7 +43,7 @@
           "name": "Ben Dichter",
           "login": "bendichter",
           "email": "ben.dichter@gmail.com",
-          "authored": 25,
+          "authored": 26,
           "committed": 2
         },
         "effigies": {
@@ -193,14 +193,14 @@
     },
     "review_threads": {
       "total": 42,
-      "unresolved": 13,
-      "unresolved_active": 3,
-      "unresolved_outdated": 10,
+      "unresolved": 3,
+      "unresolved_active": 2,
+      "unresolved_outdated": 1,
       "unresolved_by_author": {
         "effigies": {
-          "count": 13,
-          "first_at": "2026-09-23T16:54:49Z",
-          "last_at": "2026-09-25T21:07:33Z"
+          "count": 3,
+          "first_at": "2026-09-25T01:34:56Z",
+          "last_at": "2026-09-25T20:55:00Z"
         }
       }
     }
