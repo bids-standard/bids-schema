@@ -183,6 +183,12 @@ if [ "$PROCESS_BEPS" = "true" ]; then
                 "Render BEPs/README.md" \
                 "BEPs/README.md" \
                 bids-schema render beps
+
+            echo "--- Phase 3c: Rendering BEPs/dashboard.json via bids-schema render bep-dashboard ---"
+            datalad_run_retry \
+                "Render BEPs/dashboard.json" \
+                "BEPs/dashboard.json" \
+                bids-schema render bep-dashboard
         fi
     else
         echo "No PR schemas available, skipping BEP processing"

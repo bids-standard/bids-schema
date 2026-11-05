@@ -35,6 +35,7 @@ BEPs/               one dir per BEP with a linked PR
   <NN>/schema.json, schema_pp.json, BIDS_VERSION, SCHEMA_VERSION,
        BEP_METADATA.json
   README.md         auto-generated status table
+  dashboard.json    machine-readable BEP activity feed (read by bids-website)
 tools/              orchestration and generation scripts (see below)
 doc/                design docs (e.g. doc/designs/1-BEP-support-design-plan.md)
 .github/workflows/  CI (inject.yml runs twice daily; shellcheck.yml)
@@ -64,7 +65,8 @@ from the repo root.
 | `bids-schema render beps`                   | python   | Render `BEPs/README.md`; joins sibling `PRs/<N>/PR_METADATA.json` at render time. No HTTP calls.              |
 | `bids-schema metadata write-pr`             | python   | Canonical `PR_METADATA.json` emitter (called from `tools/inject-schema-pr`).                                  |
 | `bids-schema metadata write-bep`            | python   | Canonical `BEP_METADATA.json` emitter (importable from `tools/process-bep-schemas` as `write_bep_metadata`).  |
-| `bids-schema cycle`                         | python   | Composite: `collect prs && collect beps && collect bep-docs && render prs && render beps`.                    |
+| `bids-schema render bep-dashboard`          | python   | Write `BEPs/dashboard.json`: one raw-valued BEP activity feed (BEP + joined PR facts) fetched client-side by the bids-website BEPs page. No HTTP calls. |
+| `bids-schema cycle`                         | python   | Composite: `collect prs && collect beps && collect bep-docs && render prs && render beps && render bep-dashboard`. |
 | `bids-schema info`                          | python   | Print tool version / gh CLI location / auth status (CI debugging).                                            |
 
 Every mutating step is wrapped in `datalad run` so history contains a
@@ -92,6 +94,7 @@ bids_schema/
     formatters.py            # shared cell formatters + record loaders
     pr_readme.py             # `bids-schema render prs`
     bep_readme.py            # `bids-schema render beps`
+    bep_dashboard.py         # `bids-schema render bep-dashboard` → BEPs/dashboard.json
   metadata/
     __init__.py
     io.py                    # atomic read-modify-write + write_pr_metadata / write_bep_metadata
