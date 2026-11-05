@@ -7,18 +7,18 @@
   "build_status": "success",
   "authors_count": 5,
   "stats": {
-    "_source_head_sha": "500fbac876e60e28bbbc51a334794df801e2d994",
-    "_collected_at": "2026-11-05T06:10:45Z",
+    "_source_head_sha": "597e9a2b4879f4c82d56fd5034330b4787213af1",
+    "_collected_at": "2026-11-05T19:47:32Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-05-30T14:09:19Z",
-    "pr_updated_at": "2026-11-04T14:59:36Z",
+    "pr_updated_at": "2026-11-05T14:21:54Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
-      "count": 134,
+      "count": 136,
       "first_at": "2025-05-20T15:24:26Z",
-      "last_at": "2026-09-02T21:20:39Z"
+      "last_at": "2026-11-05T13:57:08Z"
     },
     "contributors": {
       "count": 4,
@@ -29,7 +29,7 @@
           "name": "Eric Earl",
           "login": "ericearl",
           "email": "eric.earl@nih.gov",
-          "authored": 68,
+          "authored": 70,
           "committed": 9
         },
         "surchs": {
@@ -58,10 +58,10 @@
     "reviews": {
       "approved": 0,
       "changes_requested": 0,
-      "commented": 127,
+      "commented": 129,
       "dismissed": 1,
       "pending": 0,
-      "total": 128,
+      "total": 130,
       "by_author": {
         "effigies": {
           "approved": 0,
@@ -89,15 +89,15 @@
         },
         "ericearl": {
           "approved": 0,
-          "commented": 71,
+          "commented": 73,
           "changes_requested": 0,
           "dismissed": 0,
           "pending": 0,
           "first_at": "2025-05-30T15:01:22Z",
-          "last_at": "2026-08-18T17:28:33Z",
+          "last_at": "2026-11-05T14:21:54Z",
           "last_state": "COMMENTED",
           "effective_state": null,
-          "total": 71
+          "total": 73
         },
         "Arshitha": {
           "approved": 0,
@@ -211,8 +211,8 @@
     },
     "comments": {
       "issue_count": 81,
-      "review_thread_count": 168,
-      "total": 249,
+      "review_thread_count": 169,
+      "total": 250,
       "first_at": "2025-05-30T14:12:14Z",
       "last_at": "2026-11-04T14:51:48Z",
       "by_author": {
@@ -300,8 +300,8 @@
     },
     "review_threads": {
       "total": 106,
-      "unresolved": 35,
-      "unresolved_active": 4,
+      "unresolved": 32,
+      "unresolved_active": 1,
       "unresolved_outdated": 31,
       "unresolved_by_author": {
         "surchs": {
@@ -340,9 +340,9 @@
           "last_at": "2026-08-06T21:02:03Z"
         },
         "bendichter": {
-          "count": 4,
-          "first_at": "2026-11-04T14:42:10Z",
-          "last_at": "2026-11-04T14:51:48Z"
+          "count": 1,
+          "first_at": "2026-11-04T14:46:14Z",
+          "last_at": "2026-11-04T14:46:14Z"
         }
       }
     }
