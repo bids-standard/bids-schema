@@ -20,6 +20,7 @@ STATS = {
                  "by_author": {"a": {}, "b": {}, "c": {}}},
     "review_threads": {"unresolved": 2},
     "contributors": {"count": 4},
+    "commits": {"count": 21, "first_at": "2020-01-10T00:00:00Z", "last_at": "2026-05-09T00:00:00Z"},
 }
 
 
@@ -63,6 +64,8 @@ def test_joins_pr_stats_and_doc_activity(base_dir: Path, make_pr, make_bep) -> N
     assert pr["unresolved_threads"] == 2
     assert pr["comments"]["total"] == 12
     assert pr["comments"]["last_at"] == "2026-05-08T00:00:00Z"
+    # Only count + latest commit are exported (for "days since last activity").
+    assert pr["commits"] == {"count": 21, "last_at": "2026-05-09T00:00:00Z"}
 
     # Newest collection timestamp across inputs, not the wall clock.
     assert doc["data_as_of"] == "2026-05-11T00:00:00Z"
@@ -95,6 +98,7 @@ def test_failed_build_has_no_schema_url_and_falls_back_to_seed_authors(
     assert entry["pr"]["authors"] == 2
     assert entry["pr"]["commenters"] is None
     assert entry["pr"]["reviews"] is None
+    assert entry["pr"]["commits"] is None
 
 
 @pytest.mark.ai_generated
