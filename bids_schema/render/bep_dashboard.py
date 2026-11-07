@@ -40,6 +40,7 @@ def _pr_block(pr_metadata: dict) -> dict[str, Any] | None:
     reviews = stats.get("reviews") or {}
     threads = stats.get("review_threads") or {}
     contributors = stats.get("contributors") or {}
+    commits = stats.get("commits") or {}
 
     if contributors.get("count") is not None:
         authors = contributors["count"]
@@ -64,6 +65,10 @@ def _pr_block(pr_metadata: dict) -> dict[str, Any] | None:
             "first_at": comments.get("first_at"),
             "last_at": comments.get("last_at"),
         } if comments else None,
+        "commits": {
+            "count": commits.get("count"),
+            "last_at": commits.get("last_at"),
+        } if commits else None,
         "collected_at": stats.get("_collected_at"),
         "stats_complete": stats.get("_complete") if stats else None,
         "stats_error": stats.get("_error") if stats else None,
