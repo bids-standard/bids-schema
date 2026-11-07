@@ -38,6 +38,10 @@
           "first_at": "2020-06-30T19:48:57Z",
           "last_at": "2023-02-13T10:20:54Z"
         },
+        "commits": {
+          "count": 12,
+          "last_at": "2026-03-19T19:54:26Z"
+        },
         "collected_at": "2026-11-06T19:11:15Z",
         "stats_complete": true,
         "stats_error": null
@@ -72,6 +76,10 @@
           "first_at": "2020-07-07T15:10:42Z",
           "last_at": "2024-08-01T17:56:07Z"
         },
+        "commits": {
+          "count": 14,
+          "last_at": "2024-08-01T17:53:33Z"
+        },
         "collected_at": "2026-11-06T19:11:16Z",
         "stats_complete": true,
         "stats_error": null
@@ -105,6 +113,10 @@
           "total": 13,
           "first_at": "2025-11-13T18:40:08Z",
           "last_at": "2026-11-03T16:05:25Z"
+        },
+        "commits": {
+          "count": 6,
+          "last_at": "2026-10-02T21:30:33Z"
         },
         "collected_at": "2026-11-06T19:11:47Z",
         "stats_complete": true,
@@ -145,6 +157,10 @@
           "first_at": "2024-08-22T09:40:08Z",
           "last_at": "2024-08-22T09:40:08Z"
         },
+        "commits": {
+          "count": 4,
+          "last_at": "2024-08-21T18:06:13Z"
+        },
         "collected_at": "2026-11-06T19:11:27Z",
         "stats_complete": true,
         "stats_error": null
@@ -183,6 +199,10 @@
           "total": 0,
           "first_at": null,
           "last_at": null
+        },
+        "commits": {
+          "count": 61,
+          "last_at": "2026-02-26T17:46:48Z"
         },
         "collected_at": "2026-11-06T19:11:58Z",
         "stats_complete": true,
@@ -223,6 +243,10 @@
           "first_at": "2025-05-23T11:51:13Z",
           "last_at": "2026-04-22T20:53:16Z"
         },
+        "commits": {
+          "count": 300,
+          "last_at": "2026-09-22T09:28:49Z"
+        },
         "collected_at": "2026-11-06T19:11:37Z",
         "stats_complete": true,
         "stats_error": null
@@ -262,6 +286,10 @@
           "first_at": "2026-01-15T19:27:10Z",
           "last_at": "2026-10-01T16:38:57Z"
         },
+        "commits": {
+          "count": 44,
+          "last_at": "2026-11-04T15:02:41Z"
+        },
         "collected_at": "2026-11-06T19:11:52Z",
         "stats_complete": true,
         "stats_error": null
@@ -295,6 +323,10 @@
           "total": 2,
           "first_at": "2022-07-25T09:45:57Z",
           "last_at": "2023-02-13T11:42:30Z"
+        },
+        "commits": {
+          "count": 17,
+          "last_at": "2023-02-13T11:33:07Z"
         },
         "collected_at": "2026-11-06T19:11:18Z",
         "stats_complete": true,
@@ -335,6 +367,10 @@
           "first_at": "2025-05-30T14:12:14Z",
           "last_at": "2026-11-04T14:51:48Z"
         },
+        "commits": {
+          "count": 136,
+          "last_at": "2026-11-05T13:57:08Z"
+        },
         "collected_at": "2026-11-06T19:11:41Z",
         "stats_complete": true,
         "stats_error": null
@@ -368,6 +404,10 @@
           "total": 101,
           "first_at": "2024-12-31T17:40:19Z",
           "last_at": "2026-10-29T20:25:49Z"
+        },
+        "commits": {
+          "count": 1,
+          "last_at": "2026-10-29T02:14:49Z"
         },
         "collected_at": "2026-11-06T19:11:30Z",
         "stats_complete": true,
@@ -408,6 +448,10 @@
           "first_at": "2025-12-01T15:58:02Z",
           "last_at": "2026-10-09T15:47:28Z"
         },
+        "commits": {
+          "count": 23,
+          "last_at": "2026-11-05T14:26:19Z"
+        },
         "collected_at": "2026-11-06T19:11:48Z",
         "stats_complete": true,
         "stats_error": null
@@ -447,6 +491,10 @@
           "first_at": "2026-01-31T21:10:00Z",
           "last_at": "2026-09-30T00:54:44Z"
         },
+        "commits": {
+          "count": 17,
+          "last_at": "2026-07-05T19:33:04Z"
+        },
         "collected_at": "2026-11-06T19:11:57Z",
         "stats_complete": true,
         "stats_error": null
@@ -480,6 +528,10 @@
           "total": 101,
           "first_at": "2025-10-25T17:55:19Z",
           "last_at": "2026-09-30T04:24:24Z"
+        },
+        "commits": {
+          "count": 85,
+          "last_at": "2026-09-30T03:56:37Z"
         },
         "collected_at": "2026-11-06T19:11:46Z",
         "stats_complete": true,
