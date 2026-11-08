@@ -35,6 +35,7 @@ BEPs/               one dir per BEP with a linked PR
   <NN>/schema.json, schema_pp.json, BIDS_VERSION, SCHEMA_VERSION,
        BEP_METADATA.json
   README.md         auto-generated status table
+  dashboard.json    machine-readable BEP activity feed (read by bids-website)
 tools/              orchestration and generation scripts (see below)
 doc/                design docs (e.g. doc/designs/1-BEP-support-design-plan.md)
 .github/workflows/  CI (inject.yml runs twice daily; shellcheck.yml)
@@ -64,7 +65,8 @@ from the repo root.
 | `bids-schema render beps`                   | python   | Render `BEPs/README.md`; joins sibling `PRs/<N>/PR_METADATA.json` at render time. No HTTP calls.              |
 | `bids-schema metadata write-pr`             | python   | Canonical `PR_METADATA.json` emitter (called from `tools/inject-schema-pr`).                                  |
 | `bids-schema metadata write-bep`            | python   | Canonical `BEP_METADATA.json` emitter (importable from `tools/process-bep-schemas` as `write_bep_metadata`).  |
-| `bids-schema cycle`                         | python   | Composite: `collect prs && collect beps && collect bep-docs && render prs && render beps`.                    |
+| `bids-schema render bep-dashboard`          | python   | Write `BEPs/dashboard.json`: one raw-valued BEP activity feed (BEP + joined PR facts) fetched client-side by the bids-website BEPs page. No HTTP calls. |
+| `bids-schema cycle`                         | python   | Composite: `collect prs && collect beps && collect bep-docs && render prs && render beps && render bep-dashboard`. |
 | `bids-schema info`                          | python   | Print tool version / gh CLI location / auth status (CI debugging).                                            |
 
 Every mutating step is wrapped in `datalad run` so history contains a
@@ -92,6 +94,7 @@ bids_schema/
     formatters.py            # shared cell formatters + record loaders
     pr_readme.py             # `bids-schema render prs`
     bep_readme.py            # `bids-schema render beps`
+    bep_dashboard.py         # `bids-schema render bep-dashboard` → BEPs/dashboard.json
   metadata/
     __init__.py
     io.py                    # atomic read-modify-write + write_pr_metadata / write_bep_metadata
@@ -112,15 +115,34 @@ The CLI is registered via `[project.scripts]` in `pyproject.toml`.
   and leaves the new stats columns as `—`.
 - `pr_number`, `git_ref`, `last_commit`, `last_updated` (build time, UTC)
 - `has_schema_changes`, `build_status` (`success` | `failed`)
-- `authors_count` (unique commit authors from `merge_base..PR_HEAD`)
+- `authors_count` — **seed value only.** Unique contributor *emails*
+  (mailmap-canonical, authors ∪ committers, minus GitHub's web-flow
+  identity) over `merge_base..PR_HEAD`, computed by
+  `count_contributors` in `tools/inject-schema-pr` at **schema-build**
+  time. It goes stale as soon as commits land without a schema rebuild,
+  so renderers prefer `stats.contributors.count` and fall back here only
+  when stats are absent. Do not read it directly.
 - On failure: `error_message`, `error_log`
 - **`stats`** (v2 nested block, populated by `bids-schema collect prs`):
   `_source_head_sha`, `_collected_at`, `_complete`, `_error`;
   `pr_state`, `pr_created_at`, `pr_updated_at`, `review_decision`;
   `commits.{count, first_at, last_at}`;
+  `contributors.{count, authors, committers, by_identity{...}}`;
   `reviews.{approved, changes_requested, commented, dismissed, pending, total, by_author{...}}`;
   `comments.{issue_count, review_thread_count, total, first_at, last_at, by_author{...}}`;
   `review_threads.{total, unresolved, unresolved_active, unresolved_outdated, unresolved_by_author{...}}`.
+
+`contributors` is the authoritative contributor count, refreshed every
+collection cycle. It counts distinct *people* across both the author and
+the committer of every commit, keyed on GitHub login where GitHub
+resolved the commit email to an account and on the lowercased email
+otherwise; a second pass folds bare-email identities into a login when
+another commit tied that address to an account. GitHub's own web-flow
+identity (`noreply@github.com`) and `[bot]` logins are excluded, while
+per-user `…@users.noreply.github.com` addresses are kept. Keying on the
+*name* — what `git shortlog` groups by — miscounts anyone who has
+committed under two spellings, and ignoring the committer misses anyone
+who merely landed a patch.
 
 Per-author records under `reviews.by_author` also carry `last_state`
 (the reviewer's most recent submission state) and `effective_state`

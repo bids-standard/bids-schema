@@ -7,8 +7,10 @@ Top-level ``click`` group with subcommands:
 - ``bids-schema collect bep-docs`` — fetch BEP Google Doc activity via the Drive API.
 - ``bids-schema render prs``       — write ``PRs/README.md`` from on-disk metadata.
 - ``bids-schema render beps``      — write ``BEPs/README.md`` from on-disk metadata.
+- ``bids-schema render bep-dashboard`` — write ``BEPs/dashboard.json`` (consumed by
+  the bids-website BEPs page).
 - ``bids-schema cycle``            — collect prs && collect beps && collect bep-docs &&
-  render prs && render beps.
+  render prs && render beps && render bep-dashboard.
 - ``bids-schema info``             — dump versions and auth status (debugging).
 
 Collection and rendering are always cleanly separable: rendering reads only
@@ -35,7 +37,7 @@ def collect() -> None:  # pragma: no cover - trivial dispatcher
     pass
 
 
-@main.group(help="Render Markdown READMEs from on-disk metadata.")
+@main.group(help="Render READMEs and the BEP dashboard feed from on-disk metadata.")
 def render() -> None:  # pragma: no cover - trivial dispatcher
     pass
 
@@ -166,12 +168,20 @@ def render_beps() -> None:
     bep_readme.render_to_disk()
 
 
-@main.command("cycle", help="Composite: collect prs && collect beps && render prs && render beps.")
+@render.command("bep-dashboard", help="Write BEPs/dashboard.json from on-disk metadata.")
+def render_bep_dashboard() -> None:
+    from bids_schema.render import bep_dashboard
+
+    bep_dashboard.render_to_disk()
+
+
+@main.command("cycle", help="Composite: collect prs && collect beps && collect bep-docs && "
+                            "render prs && render beps && render bep-dashboard.")
 def cycle() -> None:
     # Call the underlying implementations directly (not the click commands)
     # so a non-zero exit from one collector doesn't skip subsequent phases.
     from bids_schema.collect import bep_doc_activity, bep_registration, github
-    from bids_schema.render import bep_readme, pr_readme
+    from bids_schema.render import bep_dashboard, bep_readme, pr_readme
 
     github.collect()
     bep_registration.collect()
@@ -184,6 +194,7 @@ def cycle() -> None:
         click.echo(f"Warning: {exc}", err=True)
     pr_readme.render_to_disk()
     bep_readme.render_to_disk()
+    bep_dashboard.render_to_disk()
 
 
 @main.command("info", help="Print tool version, auth status, and other debug info.")

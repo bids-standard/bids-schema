@@ -1,0 +1,12 @@
+---
+motion:
+  suffixes:
+    - motion
+  extensions:
+    - .tsv
+    - .json
+  datatypes:
+    - motion
+  entities:
+    $ref: meta.templates.raw.task.entities
+    tracksys: required

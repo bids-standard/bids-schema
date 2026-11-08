@@ -1,0 +1,64 @@
+#
+# Groups of related metadata fields
+#
+# Assumptions: never need disjunction of selectors
+# Assumptions: top-to-bottom overrides is sufficient logic
+
+---
+# Metadata for either physio or stim files
+Continuous:
+  selectors:
+    - intersects([suffix], ["physio", "stim"])
+  fields:
+    SamplingFrequency: required
+    StartTime: required
+    Columns: required
+
+PhysioHardware:
+  selectors:
+    - suffix == "physio"
+  fields:
+    DeviceSerialNumber: optional
+    Manufacturer: optional
+    ManufacturersModelName: optional
+    SoftwareVersions: optional
+
+PhysioTypeRecommended:
+  selectors:
+    - suffix == "physio"
+  fields:
+    PhysioType: recommended
+
+PhysioTypeRequired:
+  selectors:
+    # Avoid automated validation; this is for the sake of rendering a table.
+    - "false"
+  fields:
+    PhysioType: required
+
+PhysioEvents:
+  selectors:
+    - suffix == "physioevents"
+  fields:
+    Columns: required
+    Description: recommended
+    OnsetSource: required
+
+# Eye-tracking
+EyeTrack:
+  selectors:
+    - suffix == "physio"
+    - sidecar.PhysioType == "eyetrack"
+  fields:
+    RecordedEye: required
+    SampleCoordinateSystem: required
+    AverageCalibrationError: optional
+    CalibrationCount: optional
+    CalibrationPosition: optional
+    CalibrationType: optional
+    CalibrationUnit: optional
+    EyeTrackerDistance: optional
+    EyeTrackingMethod: optional
+    MaximalCalibrationError: optional
+    PupilFitMethod: optional
+    RawDataFilters: optional

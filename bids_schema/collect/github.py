@@ -74,7 +74,11 @@ query($owner:String!,$name:String!,$number:Int!,
       state createdAt updatedAt reviewDecision headRefOid
       commits(first:100, after:$cCur) {
         totalCount pageInfo{hasNextPage endCursor}
-        nodes{commit{committedDate authoredDate author{user{login}}}}
+        nodes{commit{
+          committedDate authoredDate
+          author{name email user{login}}
+          committer{name email user{login}}
+        }}
       }
       reviews(first:100, after:$rCur) {
         totalCount pageInfo{hasNextPage endCursor}
@@ -379,13 +383,32 @@ def _paginate_pr(pr_number: int) -> dict:
     }
 
 
+def _extract_actor(actor: dict | None) -> dict:
+    """Flatten a GraphQL ``GitActor`` into ``{name, email, login}``.
+
+    ``user`` is null when GitHub cannot match the commit's email to an
+    account (unregistered address, or a co-author trailer) — the raw
+    name/email are what identity resolution falls back to.
+    """
+    actor = actor or {}
+    return {
+        "name":  actor.get("name"),
+        "email": actor.get("email"),
+        "login": ((actor.get("user") or {}).get("login")),
+    }
+
+
 def _extract_commit(node: dict) -> dict:
     commit = node.get("commit") or {}
-    author_user = ((commit.get("author") or {}).get("user") or {})
+    author = _extract_actor(commit.get("author"))
+    committer = _extract_actor(commit.get("committer"))
     return {
         "authoredDate": commit.get("authoredDate"),
         "committedDate": commit.get("committedDate"),
-        "login": author_user.get("login"),
+        # Kept for backwards compatibility: the *authoring* login.
+        "login": author["login"],
+        "author": author,
+        "committer": committer,
     }
 
 
@@ -470,6 +493,89 @@ def _effective_state(states_by_time: list[tuple[str, str]]) -> str | None:
             continue
         return state
     return None
+
+
+#: GitHub's own machine identity on web-UI commits (merges, "Update branch",
+#: squash-from-UI). Note this is NOT the per-user noreply form, which lives on
+#: ``users.noreply.github.com`` and belongs to a real person.
+WEB_FLOW_EMAIL = "noreply@github.com"
+
+
+def _is_machine_identity(actor: dict) -> bool:
+    """True for GitHub's own commit identity and for App/bot accounts."""
+    login = (actor.get("login") or "").strip().lower()
+    if login.endswith("[bot]") or login == "web-flow":
+        return True
+    return (actor.get("email") or "").strip().lower() == WEB_FLOW_EMAIL
+
+
+def resolve_contributors(commits: list[dict]) -> dict:
+    """Count the distinct *people* behind a PR's commits.
+
+    Both roles count: someone who lands another person's patch (rebase,
+    squash-merge, applying a suggestion) contributed to the branch even
+    though ``git shortlog`` — which only reads the author field — never
+    shows them.
+
+    Identity is keyed on the GitHub login when GitHub resolved the commit
+    email to an account, and on the lowercased email otherwise. Keying on
+    the *name* (what ``git shortlog`` groups by) miscounts anyone who has
+    committed under two spellings: bids-specification PR #2307 has both
+    "Chris Markiewicz" and "Christopher J. Markiewicz" on one address, so
+    a name-keyed count reports six contributors where there are five.
+
+    A second pass folds bare-email identities into a login whenever some
+    other commit tied that same address to an account, so one person split
+    across resolved and unresolved commits still counts once.
+    """
+    actors: list[tuple[dict, str]] = []
+    for commit in commits:
+        actors.append((commit.get("author") or {}, "authored"))
+        actors.append((commit.get("committer") or {}, "committed"))
+
+    # Pass 1 — learn every email GitHub itself tied to an account.
+    email_to_login: dict[str, str] = {}
+    for actor, _role in actors:
+        if _is_machine_identity(actor):
+            continue
+        login = (actor.get("login") or "").strip()
+        email = (actor.get("email") or "").strip().lower()
+        if login and email:
+            email_to_login.setdefault(email, login.lower())
+
+    # Pass 2 — assign each actor a stable key and tally the two roles.
+    by_identity: dict[str, dict] = {}
+    for actor, role in actors:
+        if _is_machine_identity(actor):
+            continue
+        login = (actor.get("login") or "").strip()
+        email = (actor.get("email") or "").strip().lower()
+        name = (actor.get("name") or "").strip()
+        if login:
+            key = login.lower()
+        elif email:
+            key = email_to_login.get(email, email)
+        elif name:
+            key = name.lower()
+        else:
+            continue
+
+        record = by_identity.setdefault(key, {
+            "name": name or None, "login": login or None, "email": email or None,
+            "authored": 0, "committed": 0,
+        })
+        record[role] += 1
+        # Keep the most informative label we have seen for this person.
+        record["name"] = record["name"] or (name or None)
+        record["login"] = record["login"] or (login or None)
+        record["email"] = record["email"] or (email or None)
+
+    return {
+        "count":      len(by_identity),
+        "authors":    sum(1 for r in by_identity.values() if r["authored"]),
+        "committers": sum(1 for r in by_identity.values() if r["committed"]),
+        "by_identity": by_identity,
+    }
 
 
 def derive_stats(fetched: dict, source_head_sha: str | None) -> dict:
@@ -574,6 +680,8 @@ def derive_stats(fetched: dict, source_head_sha: str | None) -> dict:
             "first_at": commit_first,
             "last_at":  commit_last,
         },
+
+        "contributors": resolve_contributors(commits),
 
         "reviews": {
             "approved":          state_counts.get("APPROVED", 0),

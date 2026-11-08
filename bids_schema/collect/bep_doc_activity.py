@@ -206,7 +206,10 @@ def collect(
     root = base_dir or Path.cwd()
     bep_root = root / "BEPs"
 
-    api_key = os.environ.get("GOOGLE_API_KEY")
+    # `.strip()` guards against a secret pasted with a trailing newline or
+    # surrounding whitespace — Google rejects such a key with a 400
+    # "API key not valid" rather than treating it as unset.
+    api_key = (os.environ.get("GOOGLE_API_KEY") or "").strip() or None
     if not api_key:
         raise GoogleApiKeyError(
             "GOOGLE_API_KEY is not set; cannot collect BEP Google Doc activity. "

@@ -6,13 +6,13 @@
   "google_doc": "",
   "status": "review",
   "authors_count": 3,
-  "_schema_version": 2,
+  "_schema_version": 3,
   "bep_registered": "2026-02-08T01:58:45Z",
   "googledoc_registered": null,
   "_registration_source": {
     "repo": "bids-standard/bids-website",
     "path": "data/beps/beps.yml",
-    "walked_at": "2026-08-27T08:47:13Z",
-    "walked_ref": "850cdc8606be54c399d8fb3c6b7fdb59aea5f0bf"
+    "walked_at": "2026-11-05T06:11:28Z",
+    "walked_ref": "957da0e6c48ff0839403551bcbf1c390281d0559"
   }
 }

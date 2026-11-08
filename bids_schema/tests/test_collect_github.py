@@ -60,8 +60,14 @@ def test_derive_stats_end_to_end() -> None:
             "headRefOid": "abc123",
         },
         "commits": [
-            {"authoredDate": "2020-01-15T09:12:03Z", "committedDate": "2020-01-15T09:12:03Z", "login": "alice"},
-            {"authoredDate": "2026-05-11T15:27:31Z", "committedDate": "2026-05-11T15:27:31Z", "login": "bob"},
+            {"authoredDate": "2020-01-15T09:12:03Z", "committedDate": "2020-01-15T09:12:03Z",
+             "login": "alice",
+             "author":    {"name": "Alice", "email": "alice@example.org", "login": "alice"},
+             "committer": {"name": "Alice", "email": "alice@example.org", "login": "alice"}},
+            {"authoredDate": "2026-05-11T15:27:31Z", "committedDate": "2026-05-11T15:27:31Z",
+             "login": "bob",
+             "author":    {"name": "Bob", "email": "bob@example.org", "login": "bob"},
+             "committer": {"name": "Alice", "email": "alice@example.org", "login": "alice"}},
         ],
         "reviews": [
             {"state": "APPROVED", "submittedAt": "2025-02-01T10:00:00Z", "login": "alice"},
@@ -110,6 +116,12 @@ def test_derive_stats_end_to_end() -> None:
     assert stats["commits"]["count"] == 2
     assert stats["commits"]["first_at"] == "2020-01-15T09:12:03Z"
     assert stats["commits"]["last_at"] == "2026-05-11T15:27:31Z"
+
+    # contributors — alice authored one and committed both, bob authored one
+    assert stats["contributors"]["count"] == 2
+    assert stats["contributors"]["authors"] == 2
+    assert stats["contributors"]["committers"] == 1
+    assert stats["contributors"]["by_identity"]["alice"]["committed"] == 2
 
     # reviews aggregate
     assert stats["reviews"]["approved"] == 2
@@ -445,3 +457,113 @@ def test_paginate_pr_follows_commit_cursors(monkeypatch) -> None:
     assert [c["login"] for c in fetched["commits"]] == ["a", "b", "c"]
     assert fetched["_complete"] is True
     assert call_ix["i"] == 2  # first + second page
+
+
+# --- contributor identity resolution ------------------------------------
+
+
+def _commit(author, committer=None):
+    """Build the shape `_extract_commit` produces. Actors are (name, email, login)."""
+    def actor(a):
+        if a is None:
+            return {"name": None, "email": None, "login": None}
+        name, email, login = a
+        return {"name": name, "email": email, "login": login}
+    return {"author": actor(author), "committer": actor(committer)}
+
+
+@pytest.mark.ai_generated
+def test_resolve_contributors_counts_committers_too() -> None:
+    """Landing someone else's patch is a contribution `git shortlog` never shows."""
+    commits = [
+        _commit(("Alice", "alice@example.org", "alice"),
+                ("Bob", "bob@example.org", "bob")),
+    ]
+    out = github.resolve_contributors(commits)
+    assert out["count"] == 2
+    assert out["authors"] == 1
+    assert out["committers"] == 1
+    assert out["by_identity"]["alice"]["authored"] == 1
+    assert out["by_identity"]["bob"]["committed"] == 1
+
+
+@pytest.mark.ai_generated
+def test_resolve_contributors_folds_two_name_spellings() -> None:
+    """The real bids-specification#2307 case: one address, two display names.
+
+    `git shortlog -sn | wc -l` reports 6 contributors there; keying on the
+    account/address gives the correct 5.
+    """
+    commits = [
+        _commit(("Chris Markiewicz", "markiewicz@stanford.edu", "effigies")),
+        _commit(("Christopher J. Markiewicz", "markiewicz@stanford.edu", "effigies")),
+    ]
+    out = github.resolve_contributors(commits)
+    assert out["count"] == 1
+    assert out["by_identity"]["effigies"]["authored"] == 2
+
+
+@pytest.mark.ai_generated
+def test_resolve_contributors_folds_unresolved_email_into_login() -> None:
+    """Same person, one commit GitHub matched to an account and one it did not."""
+    commits = [
+        _commit(("Chris Markiewicz", "markiewicz@stanford.edu", "effigies")),
+        _commit(("Christopher J. Markiewicz", "markiewicz@stanford.edu", None)),
+    ]
+    out = github.resolve_contributors(commits)
+    assert out["count"] == 1
+    assert out["by_identity"]["effigies"]["authored"] == 2
+
+
+@pytest.mark.ai_generated
+def test_resolve_contributors_excludes_github_web_flow_and_bots() -> None:
+    commits = [
+        _commit(("Alice", "alice@example.org", "alice"),
+                ("GitHub", "noreply@github.com", None)),
+        _commit(("dependabot[bot]", "x@example.org", "dependabot[bot]")),
+    ]
+    out = github.resolve_contributors(commits)
+    assert out["count"] == 1
+    assert set(out["by_identity"]) == {"alice"}
+
+
+@pytest.mark.ai_generated
+def test_resolve_contributors_keeps_per_user_noreply_addresses() -> None:
+    """`…@users.noreply.github.com` is a real person, unlike `noreply@github.com`."""
+    commits = [
+        _commit(("Cody Baker", "51133164+CodyCBakerPhD@users.noreply.github.com", None)),
+    ]
+    out = github.resolve_contributors(commits)
+    assert out["count"] == 1
+
+
+@pytest.mark.ai_generated
+def test_resolve_contributors_empty() -> None:
+    out = github.resolve_contributors([])
+    assert out == {"count": 0, "authors": 0, "committers": 0, "by_identity": {}}
+
+
+@pytest.mark.ai_generated
+def test_extract_commit_captures_both_actors() -> None:
+    node = {"commit": {
+        "authoredDate": "2020-01-01T00:00:00Z",
+        "committedDate": "2020-01-02T00:00:00Z",
+        "author": {"name": "Alice", "email": "alice@example.org",
+                   "user": {"login": "alice"}},
+        "committer": {"name": "Bob", "email": "bob@example.org",
+                      "user": {"login": "bob"}},
+    }}
+    out = github._extract_commit(node)
+    assert out["login"] == "alice"          # back-compat: authoring login
+    assert out["author"]["login"] == "alice"
+    assert out["committer"]["login"] == "bob"
+    assert out["committer"]["email"] == "bob@example.org"
+
+
+@pytest.mark.ai_generated
+def test_extract_commit_tolerates_null_actors() -> None:
+    """GraphQL returns null `user` for unregistered emails, and null actors exist."""
+    out = github._extract_commit({"commit": {"authoredDate": "x", "committedDate": "y"}})
+    assert out["author"] == {"name": None, "email": None, "login": None}
+    assert out["committer"] == {"name": None, "email": None, "login": None}
+    assert github.resolve_contributors([out])["count"] == 0

@@ -7,18 +7,39 @@
   "build_status": "success",
   "authors_count": 2,
   "stats": {
-    "_source_head_sha": "7489caa077d88b5b1a53286ed875a6acb157037b",
-    "_collected_at": "2026-08-31T14:57:13Z",
+    "_source_head_sha": "ce9bb69294776e78a4fff2d1f58b26287c1e2beb",
+    "_collected_at": "2026-11-08T17:51:15Z",
     "_complete": true,
     "_error": null,
-    "pr_state": "OPEN",
+    "pr_state": "MERGED",
     "pr_created_at": "2026-03-17T17:07:37Z",
-    "pr_updated_at": "2026-07-07T19:27:14Z",
+    "pr_updated_at": "2026-09-25T16:49:50Z",
     "review_decision": null,
     "commits": {
-      "count": 1,
+      "count": 5,
       "first_at": "2026-03-17T16:59:56Z",
-      "last_at": "2026-03-17T16:59:56Z"
+      "last_at": "2026-09-25T16:40:09Z"
+    },
+    "contributors": {
+      "count": 2,
+      "authors": 2,
+      "committers": 2,
+      "by_identity": {
+        "ree-gupta": {
+          "name": "Reema Gupta",
+          "login": "ree-gupta",
+          "email": "reema.gupta@lmu.de",
+          "authored": 1,
+          "committed": 1
+        },
+        "bendichter": {
+          "name": "Ben Dichter",
+          "login": "bendichter",
+          "email": "ben.dichter@gmail.com",
+          "authored": 4,
+          "committed": 2
+        }
+      }
     },
     "reviews": {
       "approved": 0,
@@ -30,12 +51,28 @@
       "by_author": {}
     },
     "comments": {
-      "issue_count": 0,
+      "issue_count": 3,
       "review_thread_count": 0,
-      "total": 0,
-      "first_at": null,
-      "last_at": null,
-      "by_author": {}
+      "total": 3,
+      "first_at": "2026-09-23T14:20:05Z",
+      "last_at": "2026-09-25T16:44:59Z",
+      "by_author": {
+        "bendichter": {
+          "count": 1,
+          "first_at": "2026-09-23T14:20:05Z",
+          "last_at": "2026-09-23T14:20:05Z"
+        },
+        "ree-gupta": {
+          "count": 1,
+          "first_at": "2026-09-24T06:00:02Z",
+          "last_at": "2026-09-24T06:00:02Z"
+        },
+        "codecov": {
+          "count": 1,
+          "first_at": "2026-09-25T16:44:59Z",
+          "last_at": "2026-09-25T16:44:59Z"
+        }
+      }
     },
     "review_threads": {
       "total": 0,

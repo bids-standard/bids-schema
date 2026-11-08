@@ -1,5 +1,5 @@
 {
-  "bids_version": "1.11.2-dev",
+  "bids_version": "1.11.3-dev",
   "meta": {
     "associations": {
       "aslcontext": {
@@ -1449,6 +1449,7 @@
       }
     },
     "versions": [
+      "1.11.2",
       "1.11.1",
       "1.11.0",
       "1.10.1",
@@ -1487,14 +1488,14 @@
         "type": "string"
       },
       "acq_time__scans": {
-        "description": "Acquisition time refers to when the first data point in each run was acquired.\nFurthermore, if this header is provided, the acquisition times of all files\nfrom the same recording MUST be identical.\nDatetime format and their deidentification are described in\n[Units](SPEC_ROOT/common-principles.md#units).\n",
+        "description": "The moment the acquisition of the data that resulted in this file started,\nanalogous to the DICOM\n[Acquisition Time](https://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.7.10.html)\nattribute ([DICOM Tag (0008,0032)](https://www.dicomlookup.com/dicomtags/(0008,0032))).\nFurthermore, if this value is provided, the acquisition times of all files\nfrom the same recording MUST be identical.\nDatetime format and their deidentification are described in\n[Units](SPEC_ROOT/common-principles.md#units).\n",
         "display_name": "Scan acquisition time",
         "format": "datetime",
         "name": "acq_time",
         "type": "string"
       },
       "acq_time__sessions": {
-        "description": "Acquisition time refers to when the first data point of the first run was acquired.\nDatetime format and their deidentification are described in\n[Units](SPEC_ROOT/common-principles.md#units).\n",
+        "description": "The moment the acquisition of the first data point in this session started.\nDatetime format and their deidentification are described in\n[Units](SPEC_ROOT/common-principles.md#units).\n",
         "display_name": "Session acquisition time",
         "format": "datetime",
         "name": "acq_time",
@@ -4832,6 +4833,26 @@
         "description": "List of files in a file collection to generate the map.\nFieldmaps are also listed, if involved in the processing.\nThis field is DEPRECATED, and this metadata SHOULD be recorded in the\n`Sources` field using [BIDS URIs](SPEC_ROOT/common-principles.md#bids-uri)\nto distinguish sources from different datasets.\n",
         "display_name": "Based On",
         "name": "BasedOn"
+      },
+      "BigDelta": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "unit": "s"
+          },
+          {
+            "items": {
+              "exclusiveMinimum": 0,
+              "type": "number",
+              "unit": "s"
+            },
+            "type": "array"
+          }
+        ],
+        "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the time between the leading edges of two successive\ndiffusion-encoding gradient pulses (\u0394), specified in seconds.\nThe value may be an array, if \u0394 varies by volume, in which case the number\nof values MUST correspond to the number of volumes in the data file.\n",
+        "display_name": "Diffusion Big Delta (\u0394)",
+        "name": "BigDelta"
       },
       "BloodDensity": {
         "description": "Measured blood density. Unit of blood density should be in `\"g/mL\"`.\n",
@@ -8464,6 +8485,26 @@
         "name": "SliceTiming",
         "type": "array"
       },
+      "SmallDelta": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "unit": "s"
+          },
+          {
+            "items": {
+              "exclusiveMinimum": 0,
+              "type": "number",
+              "unit": "s"
+            },
+            "type": "array"
+          }
+        ],
+        "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the duration of a diffusion-encoding gradient pulse (\u03b4),\nspecified in seconds.\nThe value may be an array, if \u03b4 varies by volume, in which case the number\nof values MUST correspond to the number of volumes in the data file.\n",
+        "display_name": "Diffusion Small Delta (\u03b4)",
+        "name": "SmallDelta"
+      },
       "SoftwareFilters": {
         "anyOf": [
           {
@@ -9910,7 +9951,7 @@
         "value": "sbref"
       },
       "scans": {
-        "description": "The purpose of this file is to describe timing and other properties of each imaging acquisition\nsequence (each run file) within one session.\nEach neural recording file SHOULD be described by exactly one row. Some recordings consist of\nmultiple parts, that span several files, for example through echo-, part-, or split- entities.\nSuch recordings MUST be documented with one row per file.\nRelative paths to files should be used under a compulsory filename header.\nIf acquisition time is included it should be listed under the acq_time header.\nAcquisition time refers to when the first data point in each run was acquired.\nFurthermore, if this header is provided, the acquisition times of all files that belong to a\nrecording MUST be identical.\nDatetime should be expressed as described in Units.\nAdditional fields can include external behavioral measures relevant to the scan.\nFor example vigilance questionnaire score administered after a resting state scan.\nAll such included additional fields SHOULD be documented in an accompanying _scans.json file\nthat describes these fields in detail (see Tabular files).\n",
+        "description": "The purpose of this file is to describe timing and other properties of each imaging acquisition\nsequence (each run file) within one session.\nEach neural recording file SHOULD be described by exactly one row. Some recordings consist of\nmultiple parts, that span several files, for example through echo-, part-, or split- entities.\nSuch recordings MUST be documented with one row per file.\nRelative paths to files should be used under a compulsory filename header.\nIf acquisition time is included it should be listed under the acq_time header.\nAcquisition time refers to the moment the acquisition of the data in each run started.\nFurthermore, if this header is provided, the acquisition times of all files that belong to a\nrecording MUST be identical.\nDatetime should be expressed as described in Units.\nAdditional fields can include external behavioral measures relevant to the scan.\nFor example vigilance questionnaire score administered after a resting state scan.\nAll such included additional fields SHOULD be documented in an accompanying _scans.json file\nthat describes these fields in detail (see Tabular files).\n",
         "display_name": "Scans file",
         "value": "scans"
       },
@@ -10405,7 +10446,7 @@
         },
         "ParticipantIDMismatch": {
           "checks": [
-            "allequal(\n  sorted(intersects(columns.participant_id, dataset.subjects.sub_dirs)),\n  sorted(dataset.subjects.sub_dirs)\n)\n"
+            "allequal(\n  sorted(intersects(dataset.subjects.participant_id, dataset.subjects.sub_dirs)),\n  sorted(dataset.subjects.sub_dirs)\n)\n"
           ],
           "issue": {
             "code": "PARTICIPANT_ID_MISMATCH",
@@ -11280,6 +11321,21 @@
         }
       },
       "mri": {
+        "BigDeltaNotConsistent": {
+          "checks": [
+            "length(sidecar.BigDelta) == nifti_header.dim[4]"
+          ],
+          "issue": {
+            "code": "BIGDELTA_NOT_CONSISTENT",
+            "level": "error",
+            "message": "The number of values for 'BigDelta' for this file does\nnot match the 4th dimension of the NIfTI header.\n"
+          },
+          "selectors": [
+            "suffix == \"dwi\"",
+            "type(sidecar.BigDelta) == \"array\"",
+            "type(nifti_header) != \"null\""
+          ]
+        },
         "BolusCutOffDelayTimeNotMonotonicallyIncreasing": {
           "checks": [
             "allequal(sorted(sidecar.BolusCutOffDelayTime), sidecar.BolusCutOffDelayTime)"
@@ -11402,6 +11458,21 @@
             "type(sidecar.SliceTiming) != \"null\"",
             "type(nifti_header) != \"null\"",
             "sidecar.SliceEncodingDirection"
+          ]
+        },
+        "SmallDeltaNotConsistent": {
+          "checks": [
+            "length(sidecar.SmallDelta) == nifti_header.dim[4]"
+          ],
+          "issue": {
+            "code": "SMALLDELTA_NOT_CONSISTENT",
+            "level": "error",
+            "message": "The number of values for 'SmallDelta' for this file does\nnot match the 4th dimension of the NIfTI header.\n"
+          },
+          "selectors": [
+            "suffix == \"dwi\"",
+            "type(sidecar.SmallDelta) == \"array\"",
+            "type(nifti_header) != \"null\""
           ]
         },
         "TotalReadoutTimeGreaterThan": {
@@ -11808,7 +11879,7 @@
           },
           "selectors": [
             "datatype == 'phenotype'",
-            "suffix == '.tsv'",
+            "extension == '.tsv'",
             "type(dataset.subjects.participant_id) != 'null'"
           ]
         }
@@ -11824,7 +11895,7 @@
             "message": "As per section 164.514(C) of \"The De-identification Standard\" under HIPAA guidelines,\nparticipants with age 89 or higher should be tagged as 89+. More information can be found at\nhttps://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/#standard.\n"
           },
           "selectors": [
-            "path == 'participants.tsv'",
+            "path == '/participants.tsv'",
             "columns.age != null"
           ]
         },
@@ -18456,7 +18527,9 @@
         },
         "MRIDiffusionOtherMetadata": {
           "fields": {
+            "BigDelta": "optional",
             "PhaseEncodingDirection": "recommended",
+            "SmallDelta": "optional",
             "TotalReadoutTime": "recommended"
           },
           "selectors": [
@@ -21240,5 +21313,5 @@
       }
     }
   },
-  "schema_version": "2.0.0-dev"
+  "schema_version": "2.1.0-dev"
 }

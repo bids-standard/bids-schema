@@ -9,6 +9,20 @@ import pytest
 from bids_schema.render import bep_readme
 
 
+#: Column order of the rendered BEP table, for name-based cell assertions.
+COLUMNS = [
+    "BEP #", "Title", "Doc Activity", "PR #", "# Authors", "# Commenters", "Build",
+    "Reviews", "Unresolved", "Comments", "First comment", "Last comment",
+    "BEP registered", "Doc registered", "Actions",
+]
+
+
+@pytest.mark.ai_generated
+def test_table_header_matches_expected_columns() -> None:
+    header_row = bep_readme.TABLE_HEADER.splitlines()[0]
+    assert [c.strip() for c in header_row.split("|")[1:-1]] == COLUMNS
+
+
 @pytest.mark.ai_generated
 def test_empty_bep_list_still_renders() -> None:
     body = bep_readme.render([])
@@ -29,8 +43,10 @@ def test_render_to_disk_joins_pr_stats(base_dir: Path, make_pr, make_bep) -> Non
         "_error": None,
         "reviews": {"approved": 3, "changes_requested": 0, "commented": 1},
         "comments": {"total": 12, "first_at": "2020-01-16T00:00:00Z",
-                     "last_at": "2026-05-08T00:00:00Z"},
+                     "last_at": "2026-05-08T00:00:00Z",
+                     "by_author": {"a": {}, "b": {}, "c": {}}},
         "review_threads": {"unresolved": 2},
+        "contributors": {"count": 4, "authors": 3, "committers": 2},
     }
     pr_path.write_text(json.dumps(pr_data))
 
@@ -48,9 +64,18 @@ def test_render_to_disk_joins_pr_stats(base_dir: Path, make_pr, make_bep) -> Non
     # Google Doc has a URL but no doc_activity collected yet
     assert "⚪ Not checked yet" in body
     # PR stats joined from sibling PR_METADATA.json
-    assert "3✅/0❌/1💬" in body
-    assert "**2**" in body
-    assert "12 (2020-01-16 → 2026-05-08)" in body
+    row = next(line for line in body.splitlines() if "[011]" in line)
+    # Zero-valued changes_requested component dropped from the row (the legend
+    # still mentions `0❌` as a counter-example, so assert on the row only).
+    assert "3✅/1💬" in row
+    assert "0❌" not in row
+    assert "**2**" in row
+    cells = dict(zip(COLUMNS, (c.strip() for c in row.split("|")[1:-1])))
+    assert cells["Comments"] == "12"
+    assert cells["First comment"] == "2020-01-16"
+    assert cells["Last comment"] == "2026-05-08"
+    assert cells["# Authors"] == "4"      # collected contributors, not authors_count
+    assert cells["# Commenters"] == "3"
 
 
 @pytest.mark.ai_generated

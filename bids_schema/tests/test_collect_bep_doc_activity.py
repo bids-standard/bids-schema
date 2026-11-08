@@ -118,18 +118,37 @@ def test_collect_raises_without_api_key(monkeypatch, base_dir: Path, make_bep) -
 
 
 @pytest.mark.ai_generated
-@responses.activate
-def test_collect_raises_on_invalid_api_key(base_dir: Path, make_bep) -> None:
+def test_collect_skips_entirely_when_api_key_is_only_whitespace(
+    monkeypatch, base_dir: Path, make_bep
+) -> None:
+    monkeypatch.setenv("GOOGLE_API_KEY", "  \n")
     make_bep(11, google_doc="https://docs.google.com/document/d/AAA/")
+
+    rc = bep_doc_activity.collect(base_dir=base_dir)
+
+    assert rc == 0
+    assert "doc_activity" not in _read(base_dir, 11)
+
+
+@pytest.mark.ai_generated
+@responses.activate
+def test_collect_strips_surrounding_whitespace_from_api_key(
+    monkeypatch, base_dir: Path, make_bep
+) -> None:
+    monkeypatch.setenv("GOOGLE_API_KEY", "  real-key\n")
+    make_bep(11, google_doc="https://docs.google.com/document/d/cafef00d/")
     responses.add(
         responses.GET,
-        bep_doc_activity.DRIVE_API_URL.format(file_id="AAA"),
-        json={"error": {"status": "INVALID_ARGUMENT", "message": "API key not valid."}},
-        status=400,
+        bep_doc_activity.DRIVE_API_URL.format(file_id="cafef00d"),
+        json={"modifiedTime": "2026-01-01T00:00:00.000Z", "version": "7"},
+        status=200,
     )
 
-    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
-        bep_doc_activity.collect(base_dir=base_dir)
+    rc = bep_doc_activity.collect(base_dir=base_dir)
+
+    assert rc == 0
+    assert responses.calls[0].request.params["key"] == "real-key"
+    assert _read(base_dir, 11)["doc_activity"]["version"] == "7"
 
 
 @pytest.mark.ai_generated

@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pytest
 
-from bids_schema.render import bep_readme, pr_readme
+from bids_schema.render import bep_dashboard, bep_readme, pr_readme
 
 
 class _NoSubprocess(RuntimeError):
@@ -44,4 +44,17 @@ def test_render_beps_makes_no_subprocess_calls(base_dir: Path, make_pr, make_bep
     monkeypatch.setattr(subprocess, "Popen", _explode)
 
     out = bep_readme.render_to_disk(base_dir=base_dir)
+    assert out.exists()
+
+
+@pytest.mark.ai_generated
+def test_render_bep_dashboard_makes_no_subprocess_calls(base_dir: Path, make_pr, make_bep, monkeypatch) -> None:
+    make_pr(518)
+    make_bep(11, pr_number=518)
+
+    import subprocess
+    monkeypatch.setattr(subprocess, "run", _explode)
+    monkeypatch.setattr(subprocess, "Popen", _explode)
+
+    out = bep_dashboard.render_to_disk(base_dir=base_dir)
     assert out.exists()

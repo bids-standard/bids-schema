@@ -8,17 +8,45 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "1a73eafcecebe884ae27ada43957ac8e8ad91764",
-    "_collected_at": "2026-08-31T14:57:17Z",
+    "_collected_at": "2026-11-08T17:51:20Z",
     "_complete": true,
     "_error": null,
     "pr_state": "MERGED",
     "pr_created_at": "2026-04-23T19:10:51Z",
-    "pr_updated_at": "2026-06-26T16:05:26Z",
+    "pr_updated_at": "2026-09-29T19:11:34Z",
     "review_decision": "APPROVED",
     "commits": {
       "count": 18,
       "first_at": "2026-04-10T21:28:54Z",
       "last_at": "2026-06-24T19:56:25Z"
+    },
+    "contributors": {
+      "count": 3,
+      "authors": 3,
+      "committers": 2,
+      "by_identity": {
+        "bendhouseart": {
+          "name": "Anthony Galassi",
+          "login": "bendhouseart",
+          "email": "28850131+bendhouseart@users.noreply.github.com",
+          "authored": 14,
+          "committed": 13
+        },
+        "mnoergaard": {
+          "name": "Martin Norgaard",
+          "login": "mnoergaard",
+          "email": "martin.noergaard@nru.dk",
+          "authored": 1,
+          "committed": 0
+        },
+        "effigies": {
+          "name": "Christopher J. Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 3,
+          "committed": 3
+        }
+      }
     },
     "reviews": {
       "approved": 3,
@@ -79,11 +107,11 @@
       }
     },
     "comments": {
-      "issue_count": 17,
+      "issue_count": 18,
       "review_thread_count": 10,
-      "total": 27,
+      "total": 28,
       "first_at": "2026-04-24T20:59:33Z",
-      "last_at": "2026-06-26T15:53:56Z",
+      "last_at": "2026-09-29T19:11:34Z",
       "by_author": {
         "bendhouseart": {
           "count": 10,
@@ -104,6 +132,11 @@
           "count": 5,
           "first_at": "2026-06-23T14:58:14Z",
           "last_at": "2026-06-25T21:30:09Z"
+        },
+        "github-actions": {
+          "count": 1,
+          "first_at": "2026-09-29T19:11:34Z",
+          "last_at": "2026-09-29T19:11:34Z"
         },
         "rwblair": {
           "count": 3,

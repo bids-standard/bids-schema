@@ -1,0 +1,37 @@
+---
+photo:
+  suffixes:
+    - photo
+  extensions:
+    - .jpg
+    - .png
+    - .tif
+  datatypes:
+    - eeg
+    - ieeg
+    - meg
+    - nirs
+  entities:
+    $ref: meta.templates.raw.base.entities
+    acquisition: optional
+
+photo__emg:
+  $ref: rules.files.raw.photo.photo
+  datatypes:
+    - emg
+  entities:
+    $ref: rules.files.raw.photo.photo.entities
+    recording: optional
+
+photo__micr:
+  $ref: rules.files.raw.photo.photo
+  extensions:
+    - .jpg
+    - .png
+    - .tif
+    - .json
+  datatypes:
+    - micr
+  entities:
+    $ref: rules.files.raw.photo.photo.entities
+    sample: required

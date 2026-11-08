@@ -8,17 +8,31 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "187d8727193af37b0c10299f18cdf6b1e348e973",
-    "_collected_at": "2026-08-31T14:57:11Z",
+    "_collected_at": "2026-11-08T17:51:13Z",
     "_complete": true,
     "_error": null,
     "pr_state": "MERGED",
     "pr_created_at": "2026-02-19T15:16:29Z",
-    "pr_updated_at": "2026-06-30T14:49:02Z",
+    "pr_updated_at": "2026-09-29T19:11:33Z",
     "review_decision": "APPROVED",
     "commits": {
       "count": 6,
       "first_at": "2026-02-18T15:37:52Z",
       "last_at": "2026-04-10T19:03:57Z"
+    },
+    "contributors": {
+      "count": 1,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "effigies": {
+          "name": "Christopher J. Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 6,
+          "committed": 6
+        }
+      }
     },
     "reviews": {
       "approved": 2,
@@ -55,11 +69,11 @@
       }
     },
     "comments": {
-      "issue_count": 3,
+      "issue_count": 4,
       "review_thread_count": 0,
-      "total": 3,
+      "total": 4,
       "first_at": "2026-02-27T19:58:16Z",
-      "last_at": "2026-04-10T16:46:58Z",
+      "last_at": "2026-09-29T19:11:33Z",
       "by_author": {
         "effigies": {
           "count": 2,
@@ -70,6 +84,11 @@
           "count": 1,
           "first_at": "2026-04-10T16:16:07Z",
           "last_at": "2026-04-10T16:16:07Z"
+        },
+        "github-actions": {
+          "count": 1,
+          "first_at": "2026-09-29T19:11:33Z",
+          "last_at": "2026-09-29T19:11:33Z"
         }
       }
     },
