@@ -174,8 +174,11 @@ if [ "$PROCESS_BEPS" = "true" ]; then
             # `doc_activity.checked_at` in BEPs/dashboard.json already
             # carry the "couldn't check" signal per BEP, so we warn and
             # move on rather than failing the job.
-            if [ -z "${GOOGLE_API_KEY:-}" ]; then
-                echo "WARNING: GOOGLE_API_KEY is not set; skipping BEP Google Doc activity collection." >&2
+            # Strip whitespace the same way the collector does, so a
+            # whitespace-only secret gets the clear "not set" message
+            # instead of a failed (and retried) collector run.
+            if [ -z "$(printf '%s' "${GOOGLE_API_KEY:-}" | tr -d '[:space:]')" ]; then
+                echo "WARNING: GOOGLE_API_KEY is not set (or is only whitespace); skipping BEP Google Doc activity collection." >&2
             elif command -v bids-schema >/dev/null 2>&1; then
                 if ! datalad_run_retry \
                     "Collect BEP Google Doc activity via bids-schema collect bep-docs" \
