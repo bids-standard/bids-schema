@@ -168,10 +168,12 @@ if [ "$PROCESS_BEPS" = "true" ]; then
             # A missing or Drive-rejected GOOGLE_API_KEY is a real problem,
             # but not one that should take down the rest of the run —
             # everything else here (release/master builds, PR schemas,
-            # BEP schemas, both READMEs) is more important than one
-            # dashboard column. The ⚪/stale badge in BEPs/README.md
-            # already carries the "couldn't check" signal per BEP, so we
-            # warn and move on rather than failing the job.
+            # BEP schemas, both READMEs, BEPs/dashboard.json) is more
+            # important than one column of doc activity. The ⚪/stale
+            # badge in BEPs/README.md and the old
+            # `doc_activity.checked_at` in BEPs/dashboard.json already
+            # carry the "couldn't check" signal per BEP, so we warn and
+            # move on rather than failing the job.
             if [ -z "${GOOGLE_API_KEY:-}" ]; then
                 echo "WARNING: GOOGLE_API_KEY is not set; skipping BEP Google Doc activity collection." >&2
             elif command -v bids-schema >/dev/null 2>&1; then

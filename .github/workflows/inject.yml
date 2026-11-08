@@ -51,7 +51,8 @@ jobs:
           # docs only). A missing or invalid key degrades that one phase —
           # tools/inject-schema-fully-auto warns and moves on rather than
           # failing the whole run; the ⚪/stale badge in BEPs/README.md
-          # carries the signal.
+          # and the old `doc_activity.checked_at` in BEPs/dashboard.json
+          # carry the signal.
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: |
           tools/inject-schema-fully-auto

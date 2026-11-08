@@ -189,8 +189,10 @@ def cycle() -> None:
         bep_doc_activity.collect()
     except bep_doc_activity.GoogleApiKeyError as exc:
         # Missing/rejected key degrades this one phase — it must not skip
-        # the renders below, which is exactly what the comment above
-        # promises. The ⚪/stale badge in BEPs/README.md carries the signal.
+        # the renders below (READMEs and BEPs/dashboard.json), which is
+        # exactly what the comment above promises. The ⚪/stale badge in
+        # BEPs/README.md and the old `doc_activity.checked_at` in
+        # BEPs/dashboard.json carry the signal.
         click.echo(f"Warning: {exc}", err=True)
     pr_readme.render_to_disk()
     bep_readme.render_to_disk()

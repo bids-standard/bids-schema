@@ -201,10 +201,13 @@ statistics: BEP metadata never re-collects PR-derived facts.
   Consumed by `bids-schema collect bep-docs`; a missing key — or one
   the Drive API rejects as invalid/expired/blocked — makes the
   collector itself raise `GoogleApiKeyError` (a hard error for a
-  direct `bids-schema collect bep-docs` / `cycle` invocation). Inside
-  `tools/inject-schema-fully-auto`, that phase is wrapped so the error
-  only warns and is skipped — it does not fail the inject run, since
-  archiving schemas matters more than one dashboard column. (A per-doc
+  direct `bids-schema collect bep-docs` invocation). `bids-schema cycle`
+  and `tools/inject-schema-fully-auto` both catch it, warn, and skip
+  that phase — the READMEs and `BEPs/dashboard.json` still render, and
+  the inject run does not fail, since archiving schemas matters more
+  than one column of doc activity. Affected BEPs keep their last
+  `doc_activity` (stale `checked_at`; ⚪/stale badge in
+  `BEPs/README.md`). (A per-doc
   403/404 because one BEP doc isn't link-shared is unrelated and always
   tolerated — that doc keeps its last recorded `doc_activity`.)
 - **`bids_schema` package**: `pip install -e '.[ci]'` in CI,
