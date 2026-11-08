@@ -58,6 +58,8 @@ jobs:
           tools/inject-schema-fully-auto
 
       - name: Possibly push results
-        if: always()
+        # Push whatever earlier phases committed even if a later step
+        # failed, but not when the run was cancelled mid-way.
+        if: ${{ !cancelled() }}
         run:
           git push
