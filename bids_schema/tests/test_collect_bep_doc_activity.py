@@ -118,15 +118,30 @@ def test_collect_raises_without_api_key(monkeypatch, base_dir: Path, make_bep) -
 
 
 @pytest.mark.ai_generated
-def test_collect_skips_entirely_when_api_key_is_only_whitespace(
+@responses.activate
+def test_collect_raises_on_invalid_api_key(base_dir: Path, make_bep) -> None:
+    make_bep(11, google_doc="https://docs.google.com/document/d/AAA/")
+    responses.add(
+        responses.GET,
+        bep_doc_activity.DRIVE_API_URL.format(file_id="AAA"),
+        json={"error": {"status": "INVALID_ARGUMENT", "message": "API key not valid."}},
+        status=400,
+    )
+
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
+        bep_doc_activity.collect(base_dir=base_dir)
+
+
+@pytest.mark.ai_generated
+def test_collect_raises_when_api_key_is_only_whitespace(
     monkeypatch, base_dir: Path, make_bep
 ) -> None:
     monkeypatch.setenv("GOOGLE_API_KEY", "  \n")
     make_bep(11, google_doc="https://docs.google.com/document/d/AAA/")
 
-    rc = bep_doc_activity.collect(base_dir=base_dir)
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
+        bep_doc_activity.collect(base_dir=base_dir)
 
-    assert rc == 0
     assert "doc_activity" not in _read(base_dir, 11)
 
 
