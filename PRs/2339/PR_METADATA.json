@@ -6,5 +6,65 @@
   "last_updated": "2026-11-09T21:57:23Z",
   "has_schema_changes": true,
   "build_status": "success",
-  "authors_count": 3
+  "authors_count": 3,
+  "stats": {
+    "_source_head_sha": "dd638bcd5ee054547f686f46275cd29e1b248435",
+    "_collected_at": "2026-11-09T21:58:35Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2026-02-05T00:40:12Z",
+    "pr_updated_at": "2026-02-26T17:46:57Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 61,
+      "first_at": "2025-06-20T11:05:19Z",
+      "last_at": "2026-02-26T17:46:48Z"
+    },
+    "contributors": {
+      "count": 2,
+      "authors": 2,
+      "committers": 2,
+      "by_identity": {
+        "mnoergaard": {
+          "name": "Martin Norgaard",
+          "login": "mnoergaard",
+          "email": "martin.noergaard@nru.dk",
+          "authored": 15,
+          "committed": 12
+        },
+        "bendhouseart": {
+          "name": "Anthony Galassi",
+          "login": "bendhouseart",
+          "email": "28850131+bendhouseart@users.noreply.github.com",
+          "authored": 45,
+          "committed": 39
+        }
+      }
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 0,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 0,
+      "by_author": {}
+    },
+    "comments": {
+      "issue_count": 0,
+      "review_thread_count": 0,
+      "total": 0,
+      "first_at": null,
+      "last_at": null,
+      "by_author": {}
+    },
+    "review_threads": {
+      "total": 0,
+      "unresolved": 0,
+      "unresolved_active": 0,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {}
+    }
+  }
 }

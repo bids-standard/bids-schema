@@ -6,5 +6,224 @@
   "last_updated": "2026-11-09T21:57:01Z",
   "has_schema_changes": true,
   "build_status": "success",
-  "authors_count": 1
+  "authors_count": 1,
+  "stats": {
+    "_source_head_sha": "147b46d771cd2b35b31a72b1f1bd1d7dc2d5a88a",
+    "_collected_at": "2026-11-09T21:58:14Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2024-12-22T02:29:37Z",
+    "pr_updated_at": "2026-10-29T20:28:13Z",
+    "review_decision": "CHANGES_REQUESTED",
+    "commits": {
+      "count": 1,
+      "first_at": "2026-10-29T02:14:49Z",
+      "last_at": "2026-10-29T02:14:49Z"
+    },
+    "contributors": {
+      "count": 1,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "neuromechanist": {
+          "name": "Seyed Yahya Shirazi",
+          "login": "neuromechanist",
+          "email": "shirazi@ieee.org",
+          "authored": 1,
+          "committed": 1
+        }
+      }
+    },
+    "reviews": {
+      "approved": 2,
+      "changes_requested": 1,
+      "commented": 44,
+      "dismissed": 1,
+      "pending": 0,
+      "total": 48,
+      "by_author": {
+        "VisLab": {
+          "approved": 1,
+          "commented": 0,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2024-12-31T17:52:14Z",
+          "last_at": "2024-12-31T17:52:14Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 1
+        },
+        "neuromechanist": {
+          "approved": 0,
+          "commented": 31,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2024-12-31T20:09:50Z",
+          "last_at": "2026-10-28T22:08:57Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 31
+        },
+        "yarikoptic": {
+          "approved": 0,
+          "commented": 5,
+          "changes_requested": 1,
+          "dismissed": 1,
+          "pending": 0,
+          "first_at": "2025-01-09T22:24:14Z",
+          "last_at": "2026-09-02T13:57:38Z",
+          "last_state": "CHANGES_REQUESTED",
+          "effective_state": "CHANGES_REQUESTED",
+          "total": 7
+        },
+        "Remi-Gau": {
+          "approved": 0,
+          "commented": 3,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-01-10T09:35:45Z",
+          "last_at": "2025-01-10T09:40:01Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 3
+        },
+        "oesteban": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-01-10T09:43:16Z",
+          "last_at": "2025-01-10T09:43:16Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "dorahermes": {
+          "approved": 1,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-02-05T21:22:40Z",
+          "last_at": "2025-09-16T21:43:29Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 2
+        },
+        "rwblair": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-10-01T21:32:30Z",
+          "last_at": "2026-10-01T21:32:30Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "effigies": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-10-21T13:09:24Z",
+          "last_at": "2026-10-21T13:09:24Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "fabriciocravo": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-10-27T23:24:43Z",
+          "last_at": "2026-10-27T23:24:43Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 24,
+      "review_thread_count": 77,
+      "total": 101,
+      "first_at": "2024-12-31T17:40:19Z",
+      "last_at": "2026-10-29T20:25:49Z",
+      "by_author": {
+        "Remi-Gau": {
+          "count": 5,
+          "first_at": "2025-01-09T18:35:54Z",
+          "last_at": "2025-01-10T09:40:01Z"
+        },
+        "codecov": {
+          "count": 1,
+          "first_at": "2025-02-04T23:51:27Z",
+          "last_at": "2025-02-04T23:51:27Z"
+        },
+        "neuromechanist": {
+          "count": 11,
+          "first_at": "2025-03-18T14:09:58Z",
+          "last_at": "2026-10-24T07:52:15Z"
+        },
+        "VisLab": {
+          "count": 8,
+          "first_at": "2024-12-31T17:40:19Z",
+          "last_at": "2026-10-29T20:25:49Z"
+        },
+        "yarikoptic": {
+          "count": 20,
+          "first_at": "2025-01-09T21:43:18Z",
+          "last_at": "2026-09-02T17:00:04Z"
+        },
+        "dorahermes": {
+          "count": 2,
+          "first_at": "2025-02-05T21:22:40Z",
+          "last_at": "2026-10-15T18:35:38Z"
+        },
+        "rwblair": {
+          "count": 3,
+          "first_at": "2026-10-01T20:18:14Z",
+          "last_at": "2026-10-20T16:33:28Z"
+        },
+        "effigies": {
+          "count": 11,
+          "first_at": "2026-10-20T18:39:43Z",
+          "last_at": "2026-10-20T20:01:22Z"
+        },
+        "fabriciocravo": {
+          "count": 1,
+          "first_at": "2026-10-27T03:15:57Z",
+          "last_at": "2026-10-27T03:15:57Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 38,
+      "unresolved": 2,
+      "unresolved_active": 2,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {
+        "yarikoptic": {
+          "count": 1,
+          "first_at": "2025-12-16T16:32:09Z",
+          "last_at": "2025-12-16T16:32:09Z"
+        },
+        "effigies": {
+          "count": 1,
+          "first_at": "2026-10-20T20:01:22Z",
+          "last_at": "2026-10-20T20:01:22Z"
+        }
+      }
+    }
+  }
 }

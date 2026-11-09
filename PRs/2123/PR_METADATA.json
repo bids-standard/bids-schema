@@ -6,5 +6,346 @@
   "last_updated": "2026-11-09T21:57:06Z",
   "has_schema_changes": true,
   "build_status": "success",
-  "authors_count": 6
+  "authors_count": 6,
+  "stats": {
+    "_source_head_sha": "597e9a2b4879f4c82d56fd5034330b4787213af1",
+    "_collected_at": "2026-11-09T21:58:24Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2025-05-30T14:09:19Z",
+    "pr_updated_at": "2026-11-05T14:21:54Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 136,
+      "first_at": "2025-05-20T15:24:26Z",
+      "last_at": "2026-11-05T13:57:08Z"
+    },
+    "contributors": {
+      "count": 4,
+      "authors": 4,
+      "committers": 4,
+      "by_identity": {
+        "ericearl": {
+          "name": "Eric Earl",
+          "login": "ericearl",
+          "email": "eric.earl@nih.gov",
+          "authored": 70,
+          "committed": 9
+        },
+        "surchs": {
+          "name": "Sebastian Urchs",
+          "login": "surchs",
+          "email": "surchs@users.noreply.github.com",
+          "authored": 4,
+          "committed": 2
+        },
+        "rwblair": {
+          "name": "Ross Blair",
+          "login": "rwblair",
+          "email": "rosswilsonblair@gmail.com",
+          "authored": 29,
+          "committed": 24
+        },
+        "effigies": {
+          "name": "Chris Markiewicz",
+          "login": "effigies",
+          "email": "effigies@gmail.com",
+          "authored": 28,
+          "committed": 22
+        }
+      }
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 129,
+      "dismissed": 1,
+      "pending": 0,
+      "total": 130,
+      "by_author": {
+        "effigies": {
+          "approved": 0,
+          "commented": 11,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-05-30T14:14:35Z",
+          "last_at": "2026-08-06T21:02:03Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 11
+        },
+        "surchs": {
+          "approved": 0,
+          "commented": 4,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-05-30T14:57:31Z",
+          "last_at": "2025-09-30T20:14:00Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 4
+        },
+        "ericearl": {
+          "approved": 0,
+          "commented": 73,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-05-30T15:01:22Z",
+          "last_at": "2026-11-05T14:21:54Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 73
+        },
+        "Arshitha": {
+          "approved": 0,
+          "commented": 3,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-06-02T05:57:55Z",
+          "last_at": "2025-09-25T10:30:17Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 3
+        },
+        "rwblair": {
+          "approved": 0,
+          "commented": 5,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2025-10-16T22:04:30Z",
+          "last_at": "2026-07-08T19:20:45Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 5
+        },
+        "yarikoptic": {
+          "approved": 0,
+          "commented": 6,
+          "changes_requested": 0,
+          "dismissed": 1,
+          "pending": 0,
+          "first_at": "2026-01-09T20:38:56Z",
+          "last_at": "2026-04-02T01:41:14Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 7
+        },
+        "timdressler": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-03-01T13:42:58Z",
+          "last_at": "2026-03-01T13:42:58Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "VisLab": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-03-16T20:15:27Z",
+          "last_at": "2026-03-16T20:15:27Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "dorahermes": {
+          "approved": 0,
+          "commented": 2,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-04-09T16:14:20Z",
+          "last_at": "2026-04-09T16:16:10Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 2
+        },
+        "SamGuay": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-06-25T19:01:02Z",
+          "last_at": "2026-06-25T19:01:02Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        },
+        "bendhouseart": {
+          "approved": 0,
+          "commented": 20,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-08-06T20:10:11Z",
+          "last_at": "2026-08-06T20:16:39Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 20
+        },
+        "bendichter": {
+          "approved": 0,
+          "commented": 2,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-11-04T14:59:35Z",
+          "last_at": "2026-11-04T14:59:35Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 2
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 81,
+      "review_thread_count": 169,
+      "total": 250,
+      "first_at": "2025-05-30T14:12:14Z",
+      "last_at": "2026-11-04T14:51:48Z",
+      "by_author": {
+        "codecov": {
+          "count": 3,
+          "first_at": "2025-05-30T19:53:26Z",
+          "last_at": "2025-05-30T19:53:26Z"
+        },
+        "rwblair": {
+          "count": 15,
+          "first_at": "2025-07-17T19:45:07Z",
+          "last_at": "2026-07-08T19:20:45Z"
+        },
+        "ericearl": {
+          "count": 54,
+          "first_at": "2025-05-30T15:01:22Z",
+          "last_at": "2026-09-03T12:07:14Z"
+        },
+        "effigies": {
+          "count": 14,
+          "first_at": "2025-05-30T14:12:14Z",
+          "last_at": "2026-08-06T21:02:03Z"
+        },
+        "surchs": {
+          "count": 34,
+          "first_at": "2025-05-30T14:57:31Z",
+          "last_at": "2026-04-10T00:00:21Z"
+        },
+        "yarikoptic": {
+          "count": 7,
+          "first_at": "2025-11-25T19:11:26Z",
+          "last_at": "2026-03-27T13:36:57Z"
+        },
+        "mateuszpawlik": {
+          "count": 3,
+          "first_at": "2026-03-09T15:28:30Z",
+          "last_at": "2026-03-09T15:28:30Z"
+        },
+        "dorahermes": {
+          "count": 3,
+          "first_at": "2026-04-09T16:22:59Z",
+          "last_at": "2026-04-09T16:22:59Z"
+        },
+        "karl-koschutnig": {
+          "count": 12,
+          "first_at": "2026-04-15T14:37:13Z",
+          "last_at": "2026-07-21T17:10:31Z"
+        },
+        "mih": {
+          "count": 3,
+          "first_at": "2026-07-21T16:37:17Z",
+          "last_at": "2026-07-21T16:37:17Z"
+        },
+        "dominikwelke": {
+          "count": 6,
+          "first_at": "2026-08-26T09:05:29Z",
+          "last_at": "2026-08-26T09:33:03Z"
+        },
+        "dmoracze": {
+          "count": 3,
+          "first_at": "2026-08-27T19:27:04Z",
+          "last_at": "2026-08-27T19:27:04Z"
+        },
+        "Arshitha": {
+          "count": 9,
+          "first_at": "2025-09-20T10:48:29Z",
+          "last_at": "2025-09-22T09:12:12Z"
+        },
+        "SamGuay": {
+          "count": 5,
+          "first_at": "2026-06-25T17:40:15Z",
+          "last_at": "2026-06-25T18:52:09Z"
+        },
+        "bendhouseart": {
+          "count": 12,
+          "first_at": "2026-08-06T20:10:12Z",
+          "last_at": "2026-08-06T20:16:39Z"
+        },
+        "bendichter": {
+          "count": 4,
+          "first_at": "2026-11-04T14:42:10Z",
+          "last_at": "2026-11-04T14:51:48Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 106,
+      "unresolved": 32,
+      "unresolved_active": 1,
+      "unresolved_outdated": 31,
+      "unresolved_by_author": {
+        "surchs": {
+          "count": 14,
+          "first_at": "2025-05-30T14:57:31Z",
+          "last_at": "2025-09-25T02:24:18Z"
+        },
+        "ericearl": {
+          "count": 1,
+          "first_at": "2025-05-30T19:51:48Z",
+          "last_at": "2025-05-30T19:51:48Z"
+        },
+        "Arshitha": {
+          "count": 2,
+          "first_at": "2025-09-20T10:57:19Z",
+          "last_at": "2025-09-22T09:06:56Z"
+        },
+        "rwblair": {
+          "count": 8,
+          "first_at": "2025-10-16T21:14:42Z",
+          "last_at": "2025-10-16T21:55:51Z"
+        },
+        "yarikoptic": {
+          "count": 4,
+          "first_at": "2026-01-09T20:38:56Z",
+          "last_at": "2026-03-27T13:36:57Z"
+        },
+        "SamGuay": {
+          "count": 1,
+          "first_at": "2026-06-25T18:17:24Z",
+          "last_at": "2026-06-25T18:17:24Z"
+        },
+        "effigies": {
+          "count": 1,
+          "first_at": "2026-08-06T21:02:03Z",
+          "last_at": "2026-08-06T21:02:03Z"
+        },
+        "bendichter": {
+          "count": 1,
+          "first_at": "2026-11-04T14:46:14Z",
+          "last_at": "2026-11-04T14:46:14Z"
+        }
+      }
+    }
+  }
 }

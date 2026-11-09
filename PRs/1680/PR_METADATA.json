@@ -6,5 +6,120 @@
   "last_updated": "2026-11-09T21:56:59Z",
   "has_schema_changes": true,
   "build_status": "success",
-  "authors_count": 5
+  "authors_count": 5,
+  "stats": {
+    "_source_head_sha": "03a6237a6380b9f359931d028e90d757b3f7d9fe",
+    "_collected_at": "2026-11-09T21:58:09Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2024-01-12T10:36:13Z",
+    "pr_updated_at": "2026-11-09T20:13:11Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 4,
+      "first_at": "2024-01-12T10:23:57Z",
+      "last_at": "2026-11-09T18:42:21Z"
+    },
+    "contributors": {
+      "count": 4,
+      "authors": 3,
+      "committers": 1,
+      "by_identity": {
+        "sappelhoff": {
+          "name": "Stefan Appelhoff",
+          "login": "sappelhoff",
+          "email": "stefan.appelhoff@mailbox.org",
+          "authored": 1,
+          "committed": 0
+        },
+        "effigies": {
+          "name": "Chris Markiewicz",
+          "login": "effigies",
+          "email": "markiewicz@stanford.edu",
+          "authored": 0,
+          "committed": 3
+        },
+        "arnodelorme": {
+          "name": "Arnaud Delorme",
+          "login": "arnodelorme",
+          "email": "arnodelorme@gmail.com",
+          "authored": 1,
+          "committed": 0
+        },
+        "yarikoptic": {
+          "name": "Yaroslav Halchenko",
+          "login": "yarikoptic",
+          "email": "debian@onerussian.com",
+          "authored": 1,
+          "committed": 0
+        }
+      }
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 0,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 0,
+      "by_author": {}
+    },
+    "comments": {
+      "issue_count": 19,
+      "review_thread_count": 0,
+      "total": 19,
+      "first_at": "2024-01-12T10:40:54Z",
+      "last_at": "2026-11-09T20:13:11Z",
+      "by_author": {
+        "codecov": {
+          "count": 1,
+          "first_at": "2024-01-12T10:40:54Z",
+          "last_at": "2024-01-12T10:40:54Z"
+        },
+        "sappelhoff": {
+          "count": 2,
+          "first_at": "2024-12-02T21:34:11Z",
+          "last_at": "2024-12-03T09:31:28Z"
+        },
+        "Remi-Gau": {
+          "count": 4,
+          "first_at": "2024-12-03T08:55:16Z",
+          "last_at": "2026-02-10T10:35:50Z"
+        },
+        "CPernet": {
+          "count": 7,
+          "first_at": "2024-12-03T09:59:26Z",
+          "last_at": "2026-11-09T20:13:11Z"
+        },
+        "arnodelorme": {
+          "count": 2,
+          "first_at": "2026-02-09T17:59:46Z",
+          "last_at": "2026-02-09T18:52:41Z"
+        },
+        "yarikoptic": {
+          "count": 1,
+          "first_at": "2026-02-09T23:15:17Z",
+          "last_at": "2026-02-09T23:15:17Z"
+        },
+        "teonbrooks": {
+          "count": 1,
+          "first_at": "2026-11-09T17:05:44Z",
+          "last_at": "2026-11-09T17:05:44Z"
+        },
+        "effigies": {
+          "count": 1,
+          "first_at": "2026-11-09T20:02:50Z",
+          "last_at": "2026-11-09T20:02:50Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 0,
+      "unresolved": 0,
+      "unresolved_active": 0,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {}
+    }
+  }
 }
