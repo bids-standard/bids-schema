@@ -1,0 +1,10 @@
+{
+  "_schema_version": 2,
+  "pr_number": "2477",
+  "git_ref": "2f98db58323eaddead5e7ed697922b8384a18708",
+  "last_commit": "2f98db58323eaddead5e7ed697922b8384a18708",
+  "last_updated": "2026-11-09T21:57:37Z",
+  "has_schema_changes": true,
+  "build_status": "success",
+  "authors_count": 2
+}
