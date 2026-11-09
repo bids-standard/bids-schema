@@ -45,7 +45,8 @@ echo "Fetching latest PR references..."
 git fetch origin
 
 # Get list of all PR merge refs
-pr_refs=$(find .git/refs/pull/origin -name "merge" -type f 2>/dev/null || true)
+# (via git, not .git/refs/: fetched refs may be stored in packed-refs)
+pr_refs=$(git for-each-ref --format='%(refname)' 'refs/pull/origin/*/merge')
 
 if [ -z "$pr_refs" ]; then
     echo "No PR references found"
@@ -68,7 +69,7 @@ for ref_file in $pr_refs; do
     fi
 
     # Read the ref
-    ref=$(cat "$ref_file")
+    ref=$(git rev-parse "$ref_file")
 
     # Check if this PR has schema changes
     if git ls-tree "$ref" src/schema | grep -q .; then
@@ -125,7 +126,7 @@ if [ -d "$PR_DIR" ]; then
         fi
 
         # Check if this PR still exists
-        if [ ! -f ".git/refs/pull/origin/$pr_number/merge" ]; then
+        if ! git show-ref --verify --quiet "refs/pull/origin/$pr_number/merge"; then
             echo "  PR #$pr_number appears to be merged/closed, removing schema..."
             datalad -C "$BASE_DIR" run -m "Removing schema for PR #$pr_number (PR is gone)" \
                 --output "$pr_folder" \
