@@ -1,25 +1,10 @@
 {
+  "_schema_version": 3,
   "bep_number": "28",
   "title": "Provenance",
   "pr_number": 2099,
   "pull_request": "https://github.com/bids-standard/bids-specification/pull/2099",
   "google_doc": "https://docs.google.com/document/d/1vw3VNDof5cecv2PkFp7Lw_pNUTUo8-m8V4SIdtGJVKs/",
   "status": "review",
-  "authors_count": 6,
-  "_schema_version": 3,
-  "bep_registered": "2024-06-15T08:59:02Z",
-  "googledoc_registered": "2024-11-15T12:33:46Z",
-  "_registration_source": {
-    "repo": "bids-standard/bids-website",
-    "path": "data/beps/beps.yml",
-    "walked_at": "2026-11-05T06:11:28Z",
-    "walked_ref": "957da0e6c48ff0839403551bcbf1c390281d0559"
-  },
-  "doc_activity": {
-    "last_modified": "2025-09-08T23:07:33.513Z",
-    "version": "7777",
-    "edits_since_last_check": 3,
-    "checked_at": "2026-11-09T05:48:21Z",
-    "_error": null
-  }
+  "authors_count": 8
 }

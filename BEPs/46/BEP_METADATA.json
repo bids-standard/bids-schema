@@ -1,25 +1,10 @@
 {
+  "_schema_version": 3,
   "bep_number": "46",
   "title": "Diffusion Tractography",
   "pr_number": 2333,
   "pull_request": "https://github.com/bids-standard/bids-specification/pull/2333",
   "google_doc": "https://docs.google.com/document/d/1ubDQ2RhgjnfGqoeukzEkPV9YEHhfYMERrj7-3b0c2HI/edit",
   "status": "review",
-  "authors_count": 2,
-  "_schema_version": 3,
-  "bep_registered": "2025-06-03T09:32:19Z",
-  "googledoc_registered": "2025-06-03T09:32:19Z",
-  "_registration_source": {
-    "repo": "bids-standard/bids-website",
-    "path": "data/beps/beps.yml",
-    "walked_at": "2026-11-05T06:11:28Z",
-    "walked_ref": "957da0e6c48ff0839403551bcbf1c390281d0559"
-  },
-  "doc_activity": {
-    "last_modified": "2026-07-16T18:36:22.001Z",
-    "version": "4493",
-    "edits_since_last_check": 4,
-    "checked_at": "2026-11-09T05:48:22Z",
-    "_error": null
-  }
+  "authors_count": 2
 }
