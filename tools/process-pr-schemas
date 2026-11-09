@@ -22,6 +22,17 @@ if [ ! -d "$BIDS_REPO" ]; then
     git clone https://github.com/bids-standard/bids-specification/ "$BIDS_REPO"
 fi
 
+# PRs linked from a BEP are processed even without schema changes, so that
+# every BEP gets a PR record (stats, dashboard entry).
+BIDS_WEBSITE_REPO="${BIDS_WEBSITE_REPO:-$BASE_DIR/../bids-website}"
+if [ ! -d "$BIDS_WEBSITE_REPO" ]; then
+    echo "BIDS website repository not found at $BIDS_WEBSITE_REPO. Cloning..."
+    git clone https://github.com/bids-standard/bids-website/ "$BIDS_WEBSITE_REPO"
+fi
+bep_prs=$(grep -oE 'bids-specification/pull/[0-9]+' "$BIDS_WEBSITE_REPO/data/beps/beps.yml" \
+    | grep -oE '[0-9]+$' | sort -u || true)
+echo "PRs linked from BEPs: ${bep_prs//$'\n'/ }"
+
 cd "$BIDS_REPO"
 
 # Configure git to fetch PR refs if not already done
@@ -34,7 +45,8 @@ echo "Fetching latest PR references..."
 git fetch origin
 
 # Get list of all PR merge refs
-pr_refs=$(find .git/refs/pull/origin -name "merge" -type f 2>/dev/null || true)
+# (via git, not .git/refs/: fetched refs may be stored in packed-refs)
+pr_refs=$(git for-each-ref --format='%(refname)' 'refs/pull/origin/*/merge')
 
 if [ -z "$pr_refs" ]; then
     echo "No PR references found"
@@ -57,13 +69,16 @@ for ref_file in $pr_refs; do
     fi
 
     # Read the ref
-    ref=$(cat "$ref_file")
+    ref=$(git rev-parse "$ref_file")
 
     # Check if this PR has schema changes
     if git ls-tree "$ref" src/schema | grep -q .; then
         if git diff --quiet origin/master..."$ref" -- src/schema 2>/dev/null; then
-            # No schema changes, skip
-            continue
+            if ! echo "$bep_prs" | grep -qx "$pr_number"; then
+                # No schema changes and no BEP, skip
+                continue
+            fi
+            echo "PR #$pr_number has no schema changes but is linked from a BEP"
         fi
     else
         echo "I: PR $pr_number seems to have no src/schema -- skipping"
@@ -111,7 +126,7 @@ if [ -d "$PR_DIR" ]; then
         fi
 
         # Check if this PR still exists
-        if [ ! -f ".git/refs/pull/origin/$pr_number/merge" ]; then
+        if ! git show-ref --verify --quiet "refs/pull/origin/$pr_number/merge"; then
             echo "  PR #$pr_number appears to be merged/closed, removing schema..."
             datalad -C "$BASE_DIR" run -m "Removing schema for PR #$pr_number (PR is gone)" \
                 --output "$pr_folder" \
