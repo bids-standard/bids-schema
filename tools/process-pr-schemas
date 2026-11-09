@@ -22,6 +22,17 @@ if [ ! -d "$BIDS_REPO" ]; then
     git clone https://github.com/bids-standard/bids-specification/ "$BIDS_REPO"
 fi
 
+# PRs linked from a BEP are processed even without schema changes, so that
+# every BEP gets a PR record (stats, dashboard entry).
+BIDS_WEBSITE_REPO="${BIDS_WEBSITE_REPO:-$BASE_DIR/../bids-website}"
+if [ ! -d "$BIDS_WEBSITE_REPO" ]; then
+    echo "BIDS website repository not found at $BIDS_WEBSITE_REPO. Cloning..."
+    git clone https://github.com/bids-standard/bids-website/ "$BIDS_WEBSITE_REPO"
+fi
+bep_prs=$(grep -oE 'bids-specification/pull/[0-9]+' "$BIDS_WEBSITE_REPO/data/beps/beps.yml" \
+    | grep -oE '[0-9]+$' | sort -u || true)
+echo "PRs linked from BEPs: ${bep_prs//$'\n'/ }"
+
 cd "$BIDS_REPO"
 
 # Configure git to fetch PR refs if not already done
@@ -62,8 +73,11 @@ for ref_file in $pr_refs; do
     # Check if this PR has schema changes
     if git ls-tree "$ref" src/schema | grep -q .; then
         if git diff --quiet origin/master..."$ref" -- src/schema 2>/dev/null; then
-            # No schema changes, skip
-            continue
+            if ! echo "$bep_prs" | grep -qx "$pr_number"; then
+                # No schema changes and no BEP, skip
+                continue
+            fi
+            echo "PR #$pr_number has no schema changes but is linked from a BEP"
         fi
     else
         echo "I: PR $pr_number seems to have no src/schema -- skipping"
