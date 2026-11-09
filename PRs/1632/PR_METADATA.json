@@ -1,94 +1,10 @@
 {
+  "_schema_version": 2,
   "pr_number": "1632",
-  "git_ref": "64fa88607904ba7644726b795c9a3c5ce0ede241",
-  "last_commit": "64fa88607904ba7644726b795c9a3c5ce0ede241",
-  "last_updated": "2026-04-20T03:36:54Z",
+  "git_ref": "3a40e5ce5861d4d5b89be364173adb9b06d69cac",
+  "last_commit": "3a40e5ce5861d4d5b89be364173adb9b06d69cac",
+  "last_updated": "2026-11-09T21:56:57Z",
   "has_schema_changes": true,
   "build_status": "success",
-  "authors_count": 1,
-  "stats": {
-    "_source_head_sha": "97bd21c67319e18dd55081852bee4f16c9ba3b10",
-    "_collected_at": "2026-11-09T05:47:24Z",
-    "_complete": true,
-    "_error": null,
-    "pr_state": "OPEN",
-    "pr_created_at": "2023-10-18T15:08:54Z",
-    "pr_updated_at": "2026-10-28T11:42:23Z",
-    "review_decision": "REVIEW_REQUIRED",
-    "commits": {
-      "count": 1,
-      "first_at": "2023-10-18T15:08:34Z",
-      "last_at": "2023-10-18T15:08:34Z"
-    },
-    "contributors": {
-      "count": 1,
-      "authors": 1,
-      "committers": 1,
-      "by_identity": {
-        "yarikoptic": {
-          "name": "Yaroslav Halchenko",
-          "login": "yarikoptic",
-          "email": "debian@onerussian.com",
-          "authored": 1,
-          "committed": 1
-        }
-      }
-    },
-    "reviews": {
-      "approved": 0,
-      "changes_requested": 0,
-      "commented": 0,
-      "dismissed": 0,
-      "pending": 0,
-      "total": 0,
-      "by_author": {}
-    },
-    "comments": {
-      "issue_count": 12,
-      "review_thread_count": 0,
-      "total": 12,
-      "first_at": "2023-10-18T18:16:38Z",
-      "last_at": "2025-10-25T21:33:19Z",
-      "by_author": {
-        "satra": {
-          "count": 2,
-          "first_at": "2023-10-18T18:16:38Z",
-          "last_at": "2023-10-18T18:17:21Z"
-        },
-        "yarikoptic": {
-          "count": 6,
-          "first_at": "2023-10-18T20:12:06Z",
-          "last_at": "2025-10-25T21:33:19Z"
-        },
-        "sappelhoff": {
-          "count": 1,
-          "first_at": "2023-10-24T19:11:29Z",
-          "last_at": "2023-10-24T19:11:29Z"
-        },
-        "bendichter": {
-          "count": 1,
-          "first_at": "2023-12-18T19:07:30Z",
-          "last_at": "2023-12-18T19:07:30Z"
-        },
-        "codecov": {
-          "count": 1,
-          "first_at": "2024-04-13T15:23:37Z",
-          "last_at": "2024-04-13T15:23:37Z"
-        },
-        "effigies": {
-          "count": 1,
-          "first_at": "2024-05-23T14:44:28Z",
-          "last_at": "2024-05-23T14:44:28Z"
-        }
-      }
-    },
-    "review_threads": {
-      "total": 0,
-      "unresolved": 0,
-      "unresolved_active": 0,
-      "unresolved_outdated": 0,
-      "unresolved_by_author": {}
-    }
-  },
-  "_schema_version": 2
+  "authors_count": 1
 }
