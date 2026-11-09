@@ -1,5 +1,5 @@
 {
-  "bids_version": "1.11.2-dev",
+  "bids_version": "1.11.3-dev",
   "meta": {
     "associations": {
       "aslcontext": {
@@ -14,6 +14,7 @@
         }
       },
       "atlas_description": {
+        "inherit": true,
         "selectors": [
           "entities.atlas",
           "extension != '.json'"
@@ -492,16 +493,6 @@
               "description": "Contents of /participants.tsv, accessed by column header",
               "type": "object"
             },
-            "sessions_tsv": {
-              "additionalProperties": {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              "description": "Contents of /sessions.tsv, accessed by column header",
-              "type": "object"
-            },
             "tree": {
               "description": "Tree view of all files in dataset",
               "type": "object"
@@ -936,22 +927,6 @@
         "result": null
       },
       {
-        "expression": "zip([], null)",
-        "result": null
-      },
-      {
-        "expression": "zip(null, [])",
-        "result": null
-      },
-      {
-        "expression": "zip(null, [1])",
-        "result": null
-      },
-      {
-        "expression": "zip([1], null)",
-        "result": null
-      },
-      {
         "expression": "type(null)",
         "result": "null"
       },
@@ -1212,49 +1187,13 @@
         "result": [
           1.0
         ]
-      },
-      {
-        "expression": "zip([1, 2, 3], [4, 5, 6])",
-        "result": [
-          [
-            1,
-            4
-          ],
-          [
-            2,
-            5
-          ],
-          [
-            3,
-            6
-          ]
-        ]
-      },
-      {
-        "expression": "zip([1, 2, 3], [4, 5, 6], [7, 8, 9])",
-        "result": [
-          [
-            1,
-            4,
-            7
-          ],
-          [
-            2,
-            5,
-            8
-          ],
-          [
-            3,
-            6,
-            9
-          ]
-        ]
       }
     ],
     "templates": {
       "atlas": {
         "base": {
           "entities": {
+            "atlas": "optional",
             "cohort": "optional",
             "template": "required"
           }
@@ -1332,6 +1271,7 @@
           "extensions": [
             ".nii.gz",
             ".nii",
+            ".ome.zarr/",
             ".json"
           ],
           "selectors": [
@@ -1389,6 +1329,23 @@
             "dataset.dataset_description.DatasetType == 'derivative'"
           ]
         },
+        "surface_map": {
+          "entities": {
+            "density": "optional",
+            "description": "optional",
+            "hemisphere": "optional",
+            "session": "optional",
+            "space": "optional",
+            "subject": "optional"
+          },
+          "extensions": [
+            ".func.gii",
+            ".json"
+          ],
+          "selectors": [
+            "dataset.dataset_description.DatasetType == 'derivative'"
+          ]
+        },
         "volumetric": {
           "entities": {
             "description": "optional",
@@ -1400,6 +1357,7 @@
           "extensions": [
             ".nii.gz",
             ".nii",
+            ".ome.zarr/",
             ".json"
           ],
           "selectors": [
@@ -1480,6 +1438,7 @@
       }
     },
     "versions": [
+      "1.11.2",
       "1.11.1",
       "1.11.0",
       "1.10.1",
@@ -1518,14 +1477,14 @@
         "type": "string"
       },
       "acq_time__scans": {
-        "description": "Acquisition time refers to when the first data point in each run was acquired.\nFurthermore, if this header is provided, the acquisition times of all files\nfrom the same recording MUST be identical.\nDatetime format and their deidentification are described in\n[Units](SPEC_ROOT/common-principles.md#units).\n",
+        "description": "The moment the acquisition of the data that resulted in this file started,\nanalogous to the DICOM\n[Acquisition Time](https://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.7.10.html)\nattribute ([DICOM Tag (0008,0032)](https://www.dicomlookup.com/dicomtags/(0008,0032))).\nFurthermore, if this value is provided, the acquisition times of all files\nfrom the same recording MUST be identical.\nDatetime format and their deidentification are described in\n[Units](SPEC_ROOT/common-principles.md#units).\n",
         "display_name": "Scan acquisition time",
         "format": "datetime",
         "name": "acq_time",
         "type": "string"
       },
       "acq_time__sessions": {
-        "description": "Acquisition time refers to when the first data point of the first run was acquired.\nDatetime format and their deidentification are described in\n[Units](SPEC_ROOT/common-principles.md#units).\n",
+        "description": "The moment the acquisition of the first data point in this session started.\nDatetime format and their deidentification are described in\n[Units](SPEC_ROOT/common-principles.md#units).\n",
         "display_name": "Session acquisition time",
         "format": "datetime",
         "name": "acq_time",
@@ -2471,7 +2430,7 @@
         "value": "pet"
       },
       "phenotype": {
-        "description": "Participant level measurement data\n(for example, responses from multiple questionnaires)\nsplit into individual files separate from `participants.tsv`.\n",
+        "description": "Participant-level tabular measurement data\n(for example, responses from multiple questionnaires)\nsplit into individual files separate from `participants.tsv`.\n",
         "display_name": "Phenotype",
         "value": "phenotype"
       }
@@ -2591,14 +2550,14 @@
         "type": "string"
       },
       "nucleus": {
-        "description": "The `nuc-<label>` entity can be used to distinguish acquisitions tuned\nto detect different nuclei.\nThe label is the name of the nucleus or nuclei, which corresponds to DICOM Tag `0018, 9100`.\nIf present in the filename, `\"ResonantNucleus\"` MUST also be included in\nthe associated metadata.\n",
+        "description": "The `nuc-<label>` entity can be used to distinguish acquisitions tuned\nto detect different nuclei.\nThe label is the name of the nucleus or nuclei, which corresponds to DICOM Tag (0018,9100).\nIf present in the filename, `\"ResonantNucleus\"` MUST also be included in\nthe associated metadata.\n",
         "display_name": "Nucleus",
         "format": "label",
         "name": "nuc",
         "type": "string"
       },
       "part": {
-        "description": "This entity is used to indicate which component of the complex\nrepresentation of the MRI signal is represented in voxel data.\nThe `part-<label>` entity is associated with the DICOM Tag\n`0008, 9208`.\nAllowed label values for this entity are `phase`, `mag`, `real` and `imag`,\nwhich are typically used in `part-mag`/`part-phase` or\n`part-real`/`part-imag` pairs of files.\n\nPhase images MAY be in radians or in arbitrary units.\nThe sidecar JSON file MUST include the `\"Units\"` of the `phase` image.\nThe possible options are `\"rad\"` or `\"arbitrary\"`.\n\nWhen there is only a magnitude image of a given type, the `part` entity MAY be\nomitted.\n",
+        "description": "This entity is used to indicate which component of the complex\nrepresentation of the MRI signal is represented in voxel data.\nThe `part-<label>` entity is associated with the DICOM Tag\n(0008,9208).\nAllowed label values for this entity are `phase`, `mag`, `real` and `imag`,\nwhich are typically used in `part-mag`/`part-phase` or\n`part-real`/`part-imag` pairs of files.\n\nPhase images MAY be in radians or in arbitrary units.\nThe sidecar JSON file MUST include the `\"Units\"` of the `phase` image.\nThe possible options are `\"rad\"` or `\"arbitrary\"`.\n\nWhen there is only a magnitude image of a given type, the `part` entity MAY be\nomitted.\n",
         "display_name": "Part",
         "enum": [
           "mag",
@@ -2713,6 +2672,13 @@
         "display_name": "Template",
         "format": "label",
         "name": "tpl",
+        "type": "string"
+      },
+      "tool": {
+        "description": "An alphanumeric name for a phenotypic and assessment data tabular file.\n",
+        "display_name": "Tabular measurement tool",
+        "format": "label",
+        "name": "tool",
         "type": "string"
       },
       "tracer": {
@@ -4203,6 +4169,11 @@
         "display_name": "Functional Imaging File Format",
         "value": ".fif"
       },
+      "funcgii": {
+        "description": "A GIFTI functional file.\n\nPer the GIFTI standard: \"[A] functional file contains one or more DataArrays\nwith Intent set to NIFTI_INTENT_NONE or one of the statistical intent values.\nEach DataArray has DataType set to NIFTI_TYPE_FLOAT32.\nDimensionality is one with the first dimension set to the number of nodes.\"\n\nIn practice, this extension is used as a catch-all for scalar data sampled\nto a surface, with the exceptions of labels (`.label.gii`) and\nmorphometry (`.shape.gii`).\n\nThis extension may only be used in derivative datasets.\n",
+        "display_name": "GIFTI functional file",
+        "value": ".func.gii"
+      },
       "jpg": {
         "description": "A JPEG image file.\n",
         "display_name": "Joint Photographic Experts Group Format",
@@ -4510,7 +4481,7 @@
         "type": "string"
       },
       "AcquisitionDuration": {
-        "description": "Duration (in seconds) of scan acquisition, including all volumes for multi-volume scans.\nCorresponds to [DICOM Tag 0018, 9073](http://www.dicomlookup.com/dicomtags/(0018,9073))\n`Acquisition Duration`.\n",
+        "description": "Duration (in seconds) of scan acquisition, including all volumes for multi-volume scans.\nCorresponds to [DICOM Tag (0018,9073)](https://www.dicomlookup.com/dicomtags/(0018,9073))\n`Acquisition Duration`.\n",
         "display_name": "Acquisition Duration",
         "exclusiveMinimum": 0,
         "name": "AcquisitionDuration",
@@ -4537,20 +4508,13 @@
         "type": "array"
       },
       "AdditionalValidation": {
-        "anyOf": [
-          {
-            "type": "string"
-          },
-          {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          }
-        ],
-        "description": "A string or list of strings of additional validations to be performed on the data,\nchosen from among a pre-defined set. The currently allowed values are\nonly `\"Phenotype\"`.\n",
+        "description": "A list of strings of additional validations to be performed on the data,\nchosen from among a pre-defined set. The currently allowed values are\nonly `\"Phenotype\"`.\n",
         "display_name": "Additional Validation",
-        "name": "AdditionalValidation"
+        "items": {
+          "type": "string"
+        },
+        "name": "AdditionalValidation",
+        "type": "array"
       },
       "Anaesthesia": {
         "description": "Details of anaesthesia used, if any.\n",
@@ -4570,7 +4534,7 @@
             "type": "array"
           }
         ],
-        "description": "Methodology or methodologies used to analyze the `\"GeneticLevel\"`.\nValues MUST be taken from the\n[database of Genotypes and Phenotypes\n(dbGaP)](https://www.ncbi.nlm.nih.gov/gap/advanced)\nunder /Study/Molecular Data Type (for example, SNP Genotypes (Array) or\nMethylation (CpG).\n",
+        "description": "Methodology or methodologies used to analyze the `\"GeneticLevel\"`.\nValues MUST be taken from the\n[database of Genotypes and Phenotypes\n(dbGaP)](https://www.ncbi.nlm.nih.gov/gap/advanced_search/)\nunder /Study/Molecular Data Type (for example, SNP Genotypes (Array) or\nMethylation (CpG).\n",
         "display_name": "Analytical Approach",
         "name": "AnalyticalApproach"
       },
@@ -4763,7 +4727,7 @@
         "type": "number"
       },
       "AttenuationCorrection": {
-        "description": "Short description of the attenuation correction method used.\n",
+        "description": "Short description of the attenuation correction method used.\nCorresponds to [DICOM Tag (0054,1101)](https://www.dicomlookup.com/dicomtags/(0054,1101))\n`Attenuation Correction Method`.\n",
         "display_name": "Attenuation Correction",
         "name": "AttenuationCorrection",
         "type": "string"
@@ -4802,7 +4766,7 @@
             "type": "array"
           }
         ],
-        "description": "The presence of this key states that this particular 3D or 4D image MAY be\nused for fieldmap estimation purposes.\nEach `\"B0FieldIdentifier\"` MUST be a unique string within one participant's tree,\nshared only by the images meant to be used as inputs for the estimation of a\nparticular instance of the *B<sub>0</sub> field* estimation.\nIt is RECOMMENDED to derive this identifier from DICOM Tags, for example,\nDICOM tag 0018, 1030 `Protocol Name`, or DICOM tag 0018, 0024 `Sequence Name`\nwhen the former is not defined (for example, in GE devices.)\n",
+        "description": "The presence of this key states that this particular 3D or 4D image MAY be\nused for fieldmap estimation purposes.\nEach `\"B0FieldIdentifier\"` MUST be a unique string within one participant's tree,\nshared only by the images meant to be used as inputs for the estimation of a\nparticular instance of the *B<sub>0</sub> field* estimation.\nIt is RECOMMENDED to derive this identifier from DICOM Tags, for example,\nDICOM Tag (0018,1030) `Protocol Name`, or DICOM Tag (0018,0024) `Sequence Name`\nwhen the former is not defined (for example, on GE devices).\n",
         "display_name": "B0 Field Identifier",
         "name": "B0FieldIdentifier"
       },
@@ -4882,6 +4846,26 @@
         "display_name": "Based On",
         "name": "BasedOn"
       },
+      "BigDelta": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "unit": "s"
+          },
+          {
+            "items": {
+              "exclusiveMinimum": 0,
+              "type": "number",
+              "unit": "s"
+            },
+            "type": "array"
+          }
+        ],
+        "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the time between the leading edges of two successive\ndiffusion-encoding gradient pulses (\u0394), specified in seconds.\nThe value may be an array, if \u0394 varies by volume, in which case the number\nof values MUST correspond to the number of volumes in the data file.\n",
+        "display_name": "Diffusion Big Delta (\u0394)",
+        "name": "BigDelta"
+      },
       "BloodDensity": {
         "description": "Measured blood density. Unit of blood density should be in `\"g/mL\"`.\n",
         "display_name": "Blood Density",
@@ -4890,7 +4874,7 @@
         "unit": "g/mL"
       },
       "BodyPart": {
-        "description": "Body part of the organ / body region scanned.\n",
+        "description": "Body part of the organ / body region scanned.\nCorresponds to [DICOM Tag (0018,0015)](https://www.dicomlookup.com/dicomtags/(0018,0015)) `Body Part Examined`.\n",
         "display_name": "Body Part",
         "name": "BodyPart",
         "type": "string"
@@ -4924,18 +4908,18 @@
             "type": "array"
           }
         ],
-        "description": "Duration between the end of the labeling and the start of the bolus cut-off\nsaturation pulse(s), in seconds.\nThis can be a number or array of numbers, of which the values must be\nnon-negative and monotonically increasing, depending on the number of bolus\ncut-off saturation pulses.\nFor Q2TIPS, only the values for the first and last bolus cut-off saturation\npulses are provided.\nBased on [DICOM Tag 0018, 925F](http://www.dicomlookup.com/dicomtags/(0018,925F))\n`ASL Bolus Cut-off Delay Time`.\n",
+        "description": "Duration between the end of the labeling and the start of the bolus cut-off\nsaturation pulse(s), in seconds.\nThis can be a number or array of numbers, of which the values must be\nnon-negative and monotonically increasing, depending on the number of bolus\ncut-off saturation pulses.\nFor Q2TIPS, only the values for the first and last bolus cut-off saturation\npulses are provided.\nBased on [DICOM Tag (0018,925F)](https://www.dicomlookup.com/dicomtags/(0018,925F))\n`ASL Bolus Cut-off Delay Time`.\n",
         "display_name": "Bolus Cut Off Delay Time",
         "name": "BolusCutOffDelayTime"
       },
       "BolusCutOffFlag": {
-        "description": "Boolean indicating if a bolus cut-off technique is used.\nCorresponds to [DICOM Tag 0018, 925C](http://www.dicomlookup.com/dicomtags/(0018,925C))\n`ASL Bolus Cut-off Flag`.\n",
+        "description": "Boolean indicating if a bolus cut-off technique is used.\nCorresponds to [DICOM Tag (0018,925C)](https://www.dicomlookup.com/dicomtags/(0018,925C))\n`ASL Bolus Cut-off Flag`.\n",
         "display_name": "Bolus Cut Off Flag",
         "name": "BolusCutOffFlag",
         "type": "boolean"
       },
       "BolusCutOffTechnique": {
-        "description": "Name of the technique used, for example `\"Q2TIPS\"`, `\"QUIPSS\"`, `\"QUIPSSII\"`.\nCorresponds to [DICOM Tag 0018, 925E](http://www.dicomlookup.com/dicomtags/(0018,925E))\n`ASL Bolus Cut-off Technique`.\n",
+        "description": "Name of the technique used, for example `\"Q2TIPS\"`, `\"QUIPSS\"`, `\"QUIPSSII\"`.\nCorresponds to [DICOM Tag (0018,925E)](https://www.dicomlookup.com/dicomtags/(0018,925E))\n`ASL Bolus Cut-off Technique`.\n",
         "display_name": "Bolus Cut Off Technique",
         "name": "BolusCutOffTechnique",
         "type": "string"
@@ -5020,7 +5004,7 @@
         "unit": "ppm"
       },
       "ChemicalShiftReference": {
-        "description": "The chemical shift at the transmitter frequency, specified in ppm (for example, `2.68`).\nCorresponds to [DICOM Tag 0018, 9053](http://www.dicomlookup.com/dicomtags/(0018,9053))\n`Chemical Shift Reference`.\n",
+        "description": "The chemical shift at the transmitter frequency, specified in ppm (for example, `2.68`).\nCorresponds to [DICOM Tag (0018,9053)](https://www.dicomlookup.com/dicomtags/(0018,9053))\n`Chemical Shift Reference`.\n",
         "display_name": "Chemical Shift Reference",
         "name": "ChemicalShiftReference",
         "type": "number",
@@ -5078,7 +5062,7 @@
         "type": "string"
       },
       "CodeMeaning": {
-        "description": "Text that has meaning to a human and conveys the meaning of the term\nCorresponds to [DICOM Tag 0008, 0104](http://www.dicomlookup.com/dicomtags/(0008,0104))\n`Code Meaning`.\n",
+        "description": "Text that has meaning to a human and conveys the meaning of the term\nCorresponds to [DICOM Tag (0008,0104)](https://www.dicomlookup.com/dicomtags/(0008,0104))\n`Code Meaning`.\n",
         "display_name": "Code Meaning",
         "name": "CodeMeaning",
         "type": "string"
@@ -5091,19 +5075,19 @@
         "type": "string"
       },
       "CodeValue": {
-        "description": "An identifier that is unambiguous within the Coding Scheme\ndenoted by Coding Scheme Designator and Coding Scheme Version.\nCorresponds to [DICOM Tag 0008, 0100](http://www.dicomlookup.com/dicomtags/(0008,0100))\n`Code Value`.\n",
+        "description": "An identifier that is unambiguous within the Coding Scheme\ndenoted by Coding Scheme Designator and Coding Scheme Version.\nCorresponds to [DICOM Tag (0008,0100)](https://www.dicomlookup.com/dicomtags/(0008,0100))\n`Code Value`.\n",
         "display_name": "Code Value",
         "name": "CodeValue",
         "type": "string"
       },
       "CodingSchemeDesignator": {
-        "description": "The identifier of the coding scheme in which the coded entry is defined.\nCorresponds to [DICOM Tag 0008, 0102](http://www.dicomlookup.com/dicomtags/(0008,0102))\n`Coding Scheme Designator`.\n",
+        "description": "The identifier of the coding scheme in which the coded entry is defined.\nCorresponds to [DICOM Tag (0008,0102)](https://www.dicomlookup.com/dicomtags/(0008,0102))\n`Coding Scheme Designator`.\n",
         "display_name": "Coding Scheme Designator",
         "name": "CodingSchemeDesignator",
         "type": "string"
       },
       "CodingSchemeVersion": {
-        "description": "An identifier of the version of the coding scheme if necessary to resolve ambiguity.\nCorresponds to [DICOM Tag 0008, 0103](http://www.dicomlookup.com/dicomtags/(0008,0103))\n`Coding Scheme Version`.\n",
+        "description": "An identifier of the version of the coding scheme if necessary to resolve ambiguity.\nCorresponds to [DICOM Tag (0008,0103)](https://www.dicomlookup.com/dicomtags/(0008,0103))\n`Coding Scheme Version`.\n",
         "display_name": "Coding Scheme version",
         "name": "CodingSchemeVersion",
         "type": "string"
@@ -5195,7 +5179,7 @@
         "type": "boolean"
       },
       "ContrastBolusIngredient": {
-        "description": "Active ingredient of agent.\nCorresponds to [DICOM Tag 0018, 1048](http://www.dicomlookup.com/dicomtags/(0018,1048))\n`Contrast/Bolus Ingredient`.\n",
+        "description": "Active ingredient of agent.\nCorresponds to [DICOM Tag (0018,1048)](https://www.dicomlookup.com/dicomtags/(0018,1048))\n`Contrast/Bolus Ingredient`.\n",
         "display_name": "Contrast Bolus Ingredient",
         "enum": [
           "IODINE",
@@ -5284,7 +5268,7 @@
         "type": "string"
       },
       "DecayCorrectionFactor": {
-        "description": "Decay correction factor for each frame.\n",
+        "description": "Decay correction factor for each frame.\nCorresponds to [DICOM Tag (0054,1321)](https://www.dicomlookup.com/dicomtags/(0054,1321)) `Decay Factor`.\n",
         "display_name": "Decay Correction Factor",
         "items": {
           "type": "number"
@@ -5293,7 +5277,7 @@
         "type": "array"
       },
       "DeidentificationMethod": {
-        "description": "A description of the mechanism or method used to remove the Patient's identity.\nCorresponds to [DICOM Tag 0012, 0063](http://www.dicomlookup.com/dicomtags/(0012,0063))\n`De-identification Method`.\n",
+        "description": "A description of the mechanism or method used to remove the Patient's identity.\nCorresponds to [DICOM Tag (0012,0063)](https://www.dicomlookup.com/dicomtags/(0012,0063))\n`De-identification Method`.\n",
         "display_name": "Deidentification Method",
         "items": {
           "type": "string"
@@ -5302,30 +5286,30 @@
         "type": "array"
       },
       "DeidentificationMethodCodeSequence": {
-        "description": "A sequence of code objects describing the mechanism or method use to remove the Patient's identity.\nCorresponds to [DICOM Tag 0012, 0064](http://www.dicomlookup.com/dicomtags/(0012,0064))\n`De-identification Method Code Sequence`.\n",
+        "description": "A sequence of code objects describing the mechanism or method use to remove the Patient's identity.\nCorresponds to [DICOM Tag (0012,0064)](https://www.dicomlookup.com/dicomtags/(0012,0064))\n`De-identification Method Code Sequence`.\n",
         "display_name": "Deidentification Method Code Sequence",
         "items": {
           "properties": {
             "CodeMeaning": {
-              "description": "Text that has meaning to a human and conveys the meaning of the term\nCorresponds to [DICOM Tag 0008, 0104](http://www.dicomlookup.com/dicomtags/(0008,0104))\n`Code Meaning`.\n",
+              "description": "Text that has meaning to a human and conveys the meaning of the term\nCorresponds to [DICOM Tag (0008,0104)](https://www.dicomlookup.com/dicomtags/(0008,0104))\n`Code Meaning`.\n",
               "display_name": "Code Meaning",
               "name": "CodeMeaning",
               "type": "string"
             },
             "CodeValue": {
-              "description": "An identifier that is unambiguous within the Coding Scheme\ndenoted by Coding Scheme Designator and Coding Scheme Version.\nCorresponds to [DICOM Tag 0008, 0100](http://www.dicomlookup.com/dicomtags/(0008,0100))\n`Code Value`.\n",
+              "description": "An identifier that is unambiguous within the Coding Scheme\ndenoted by Coding Scheme Designator and Coding Scheme Version.\nCorresponds to [DICOM Tag (0008,0100)](https://www.dicomlookup.com/dicomtags/(0008,0100))\n`Code Value`.\n",
               "display_name": "Code Value",
               "name": "CodeValue",
               "type": "string"
             },
             "CodingSchemeDesignator": {
-              "description": "The identifier of the coding scheme in which the coded entry is defined.\nCorresponds to [DICOM Tag 0008, 0102](http://www.dicomlookup.com/dicomtags/(0008,0102))\n`Coding Scheme Designator`.\n",
+              "description": "The identifier of the coding scheme in which the coded entry is defined.\nCorresponds to [DICOM Tag (0008,0102)](https://www.dicomlookup.com/dicomtags/(0008,0102))\n`Coding Scheme Designator`.\n",
               "display_name": "Coding Scheme Designator",
               "name": "CodingSchemeDesignator",
               "type": "string"
             },
             "CodingSchemeVersion": {
-              "description": "An identifier of the version of the coding scheme if necessary to resolve ambiguity.\nCorresponds to [DICOM Tag 0008, 0103](http://www.dicomlookup.com/dicomtags/(0008,0103))\n`Coding Scheme Version`.\n",
+              "description": "An identifier of the version of the coding scheme if necessary to resolve ambiguity.\nCorresponds to [DICOM Tag (0008,0103)](https://www.dicomlookup.com/dicomtags/(0008,0103))\n`Coding Scheme Version`.\n",
               "display_name": "Coding Scheme version",
               "name": "CodingSchemeVersion",
               "type": "string"
@@ -5552,7 +5536,7 @@
         "type": "boolean"
       },
       "DoseCalibrationFactor": {
-        "description": "Multiplication factor used to transform raw data (in counts/sec) to meaningful unit (Bq/ml).\nCorresponds to [DICOM Tag 0054, 1322](http://www.dicomlookup.com/dicomtags/(0054,1322))\n`Dose Calibration Factor`.\n",
+        "description": "Multiplication factor used to transform raw data (in counts/sec) to meaningful unit (Bq/ml).\nCorresponds to [DICOM Tag (0054,1322)](https://www.dicomlookup.com/dicomtags/(0054,1322))\n`Dose Calibration Factor`.\n",
         "display_name": "Dose Calibration Factor",
         "name": "DoseCalibrationFactor",
         "type": "number"
@@ -5768,7 +5752,7 @@
             "type": "array"
           }
         ],
-        "description": "The echo time (TE) for the acquisition, specified in seconds.\nCorresponds to [DICOM Tag 0018, 0081](http://www.dicomlookup.com/dicomtags/(0018,0081))\n`Echo Time`\n(please note that the DICOM term is in milliseconds not seconds).\nThe data type number may apply to files from any MRI modality concerned with\na single value for this field, or to the files in a\n[file collection](SPEC_ROOT/appendices/file-collections.md)\nwhere the value of this field is iterated using the\n[`echo` entity](SPEC_ROOT/appendices/entities.md#echo).\n",
+        "description": "The echo time (TE) for the acquisition, specified in seconds.\nCorresponds to [DICOM Tag (0018,0081)](https://www.dicomlookup.com/dicomtags/(0018,0081))\n`Echo Time`\n(please note that the DICOM term is in milliseconds not seconds).\nThe data type number may apply to files from any MRI modality concerned with\na single value for this field, or to the files in a\n[file collection](SPEC_ROOT/appendices/file-collections.md)\nwhere the value of this field is iterated using the\n[`echo` entity](SPEC_ROOT/appendices/entities.md#echo).\n",
         "display_name": "Echo Time",
         "name": "EchoTime"
       },
@@ -6082,7 +6066,7 @@
             "type": "array"
           }
         ],
-        "description": "Flip angle (FA) for the acquisition, specified in degrees.\nCorresponds to: [DICOM Tag 0018, 1314](http://www.dicomlookup.com/dicomtags/(0018,1314))\n`Flip Angle`.\nThe data type number may apply to files from any MRI modality concerned with\na single value for this field, or to the files in a\n[file collection](SPEC_ROOT/appendices/file-collections.md)\nwhere the value of this field is iterated using the\n[`flip` entity](SPEC_ROOT/appendices/entities.md#flip).\n",
+        "description": "Flip angle (FA) for the acquisition, specified in degrees.\nCorresponds to: [DICOM Tag (0018,1314)](https://www.dicomlookup.com/dicomtags/(0018,1314))\n`Flip Angle`.\nThe data type number may apply to files from any MRI modality concerned with\na single value for this field, or to the files in a\n[file collection](SPEC_ROOT/appendices/file-collections.md)\nwhere the value of this field is iterated using the\n[`flip` entity](SPEC_ROOT/appendices/entities.md#flip).\n",
         "display_name": "Flip Angle",
         "name": "FlipAngle"
       },
@@ -6113,7 +6097,7 @@
         "type": "string"
       },
       "FrameAcquisitionDuration": {
-        "description": "Duration (in seconds) of volume acquisition.\nCorresponds to DICOM Tag 0018, 9220 `Frame Acquisition Duration`.\n",
+        "description": "Duration (in seconds) of volume acquisition.\nCorresponds to DICOM Tag (0018,9220) `Frame Acquisition Duration`.\n",
         "display_name": "Frame Acquisition Duration",
         "exclusiveMinimum": 0,
         "name": "FrameAcquisitionDuration",
@@ -6121,7 +6105,7 @@
         "unit": "s"
       },
       "FrameDuration": {
-        "description": "Time duration of each frame in default unit seconds.\nThis corresponds to [DICOM Tag 0018, 1242](http://www.dicomlookup.com/dicomtags/(0018,1242))\n`Actual Frame Duration` converted to seconds.\n",
+        "description": "Time duration of each frame in default unit seconds.\nThis corresponds to [DICOM Tag (0018,1242)](https://www.dicomlookup.com/dicomtags/(0018,1242))\n`Actual Frame Duration` converted to seconds.\n",
         "display_name": "Frame Duration",
         "items": {
           "type": "number"
@@ -6376,7 +6360,7 @@
         "type": "number"
       },
       "HardcopyDeviceSoftwareVersion": {
-        "description": "Manufacturer's designation of the software of the device that created this\nHardcopy Image (the printer).\nCorresponds to [DICOM Tag 0018, 101A](http://www.dicomlookup.com/dicomtags/(0018,101A))\n`Hardcopy Device Software Version`.\n",
+        "description": "Manufacturer's designation of the software of the device that created this\nHardcopy Image (the printer).\nCorresponds to [DICOM Tag (0018,101A)](https://www.dicomlookup.com/dicomtags/(0018,101A))\n`Hardcopy Device Software Version`.\n",
         "display_name": "Hardcopy Device Software Version",
         "name": "HardcopyDeviceSoftwareVersion",
         "type": "string"
@@ -6549,6 +6533,15 @@
         "name": "Immersion",
         "type": "string"
       },
+      "IndexColumns": {
+        "description": "A list of column names to be used as joint indices in\ntheir corresponding tabular phenotypic data file.\n",
+        "display_name": "Index Columns",
+        "items": {
+          "type": "string"
+        },
+        "name": "IndexColumns",
+        "type": "array"
+      },
       "InfusionRadioactivity": {
         "description": "Amount of radioactivity infused into the patient.\nThis value must be less than or equal to the total injected radioactivity\n(`\"InjectedRadioactivity\"`).\nUnits should be the same as `\"InjectedRadioactivityUnits\"`.\n",
         "display_name": "Infusion Radioactivity",
@@ -6622,7 +6615,7 @@
         "name": "InjectedMassUnits"
       },
       "InjectedRadioactivity": {
-        "description": "Total amount of radioactivity injected into the patient (for example, `400`).\nFor bolus-infusion experiments, this value should be the sum of all injected\nradioactivity originating from both bolus and infusion.\nCorresponds to [DICOM Tag 0018, 1074](http://www.dicomlookup.com/dicomtags/(0018,1074))\n`Radionuclide Total Dose`.\n",
+        "description": "Total amount of radioactivity injected into the patient (for example, `400`).\nFor bolus-infusion experiments, this value should be the sum of all injected\nradioactivity originating from both bolus and infusion.\nCorresponds to [DICOM Tag (0018,1074)](https://www.dicomlookup.com/dicomtags/(0018,1074))\n`Radionuclide Total Dose`.\n",
         "display_name": "Injected Radioactivity",
         "name": "InjectedRadioactivity",
         "type": "number"
@@ -6642,14 +6635,14 @@
         "unit": "mL"
       },
       "InjectionEnd": {
-        "description": "Time of end of injection with respect to `\"TimeZero\"` in the default unit\nseconds.\n",
+        "description": "Time of end of injection with respect to `\"TimeZero\"`, in seconds.\nCorresponds to [DICOM Tag (0018,1073)](https://www.dicomlookup.com/dicomtags/(0018,1073))\n`Radiopharmaceutical Stop Time` converted to seconds relative to TimeZero.\n",
         "display_name": "Injection End",
         "name": "InjectionEnd",
         "type": "number",
         "unit": "s"
       },
       "InjectionStart": {
-        "description": "Time of start of injection with respect to `\"TimeZero\"` in the default unit\nseconds.\nThis corresponds to [DICOM Tag 0018, 1072](http://www.dicomlookup.com/dicomtags/(0018,1072))\n`Contrast/Bolus Start Time` converted to seconds relative to `\"TimeZero\"`.\n",
+        "description": "Time of start of injection with respect to `\"TimeZero\"`, in seconds.\nThis corresponds to [DICOM Tag (0018,1072)](https://www.dicomlookup.com/dicomtags/(0018,1072))\n`Contrast/Bolus Start Time` converted to seconds relative to `\"TimeZero\"`.\n",
         "display_name": "Injection Start",
         "name": "InjectionStart",
         "type": "number",
@@ -6747,7 +6740,7 @@
         "unit": "mm"
       },
       "InversionTime": {
-        "description": "The inversion time (TI) for the acquisition, specified in seconds.\nInversion time is the time after the middle of inverting RF pulse to middle\nof excitation pulse to detect the amount of longitudinal magnetization.\nCorresponds to [DICOM Tag 0018, 0082](http://www.dicomlookup.com/dicomtags/(0018,0082))\n`Inversion Time`\n(please note that the DICOM term is in milliseconds not seconds).\n",
+        "description": "The inversion time (TI) for the acquisition, specified in seconds.\nInversion time is the time after the middle of inverting RF pulse to middle\nof excitation pulse to detect the amount of longitudinal magnetization.\nCorresponds to [DICOM Tag (0018,0082)](https://www.dicomlookup.com/dicomtags/(0018,0082))\n`Inversion Time`\n(please note that the DICOM term is in milliseconds not seconds).\n",
         "display_name": "Inversion Time",
         "exclusiveMinimum": 0,
         "name": "InversionTime",
@@ -6800,7 +6793,7 @@
             "type": "array"
           }
         ],
-        "description": "Total duration of the labeling pulse train, in seconds,\ncorresponding to the temporal width of the labeling bolus for\n`\"PCASL\"` or `\"CASL\"`.\nIn case all control-label volumes (or deltam or CBF) have the same\n`LabelingDuration`, a scalar must be specified.\nIn case the control-label volumes (or deltam or cbf) have a different\n`\"LabelingDuration\"`, an array of numbers must be specified,\nfor which any `m0scan` in the timeseries has a `\"LabelingDuration\"` of zero.\nIn case an array of numbers is provided,\nits length should be equal to the number of volumes specified in\n`*_aslcontext.tsv`.\nCorresponds to [DICOM Tag 0018, 9258](http://www.dicomlookup.com/dicomtags/(0018,9258))\n`ASL Pulse Train Duration`.\n",
+        "description": "Total duration of the labeling pulse train, in seconds,\ncorresponding to the temporal width of the labeling bolus for\n`\"PCASL\"` or `\"CASL\"`.\nIn case all control-label volumes (or deltam or CBF) have the same\n`LabelingDuration`, a scalar must be specified.\nIn case the control-label volumes (or deltam or cbf) have a different\n`\"LabelingDuration\"`, an array of numbers must be specified,\nfor which any `m0scan` in the timeseries has a `\"LabelingDuration\"` of zero.\nIn case an array of numbers is provided,\nits length should be equal to the number of volumes specified in\n`*_aslcontext.tsv`.\nCorresponds to [DICOM Tag (0018,9258)](https://www.dicomlookup.com/dicomtags/(0018,9258))\n`ASL Pulse Train Duration`.\n",
         "display_name": "Labeling Duration",
         "name": "LabelingDuration"
       },
@@ -6818,7 +6811,7 @@
         "type": "string"
       },
       "LabelingOrientation": {
-        "description": "Orientation of the labeling plane (`(P)CASL`) or slab (`PASL`).\nThe direction cosines of a normal vector perpendicular to the ASL labeling\nslab or plane with respect to the patient.\nCorresponds to [DICOM Tag 0018, 9255](http://www.dicomlookup.com/dicomtags/(0018,9255))\n`ASL Slab Orientation`.\n",
+        "description": "Orientation of the labeling plane (`(P)CASL`) or slab (`PASL`).\nThe direction cosines of a normal vector perpendicular to the ASL labeling\nslab or plane with respect to the patient.\nCorresponds to [DICOM Tag (0018,9255)](https://www.dicomlookup.com/dicomtags/(0018,9255))\n`ASL Slab Orientation`.\n",
         "display_name": "Labeling Orientation",
         "items": {
           "type": "number"
@@ -6876,7 +6869,7 @@
         "unit": "mT/m"
       },
       "LabelingSlabThickness": {
-        "description": "Thickness of the labeling slab in millimeters.\nFor non-selective FAIR a zero is entered.\nCorresponds to [DICOM Tag 0018, 9254](http://www.dicomlookup.com/dicomtags/(0018,9254))\n`ASL Slab Thickness`.\n",
+        "description": "Thickness of the labeling slab in millimeters.\nFor non-selective FAIR a zero is entered.\nCorresponds to [DICOM Tag (0018,9254)](https://www.dicomlookup.com/dicomtags/(0018,9254))\n`ASL Slab Thickness`.\n",
         "display_name": "Labeling Slab Thickness",
         "exclusiveMinimum": 0,
         "name": "LabelingSlabThickness",
@@ -7058,7 +7051,7 @@
         "type": "integer"
       },
       "MRAcquisitionType": {
-        "description": "Type of sequence readout.\nCorresponds to [DICOM Tag 0018, 0023](http://www.dicomlookup.com/dicomtags/(0018,0023))\n`MR Acquisition Type`.\n",
+        "description": "Type of sequence readout.\nCorresponds to [DICOM Tag (0018,0023)](https://www.dicomlookup.com/dicomtags/(0018,0023))\n`MR Acquisition Type`.\n",
         "display_name": "MR Acquisition Type",
         "enum": [
           "1D",
@@ -7069,7 +7062,7 @@
         "type": "string"
       },
       "MRTransmitCoilSequence": {
-        "description": "This is a relevant field if a non-standard transmit coil is used.\nCorresponds to [DICOM Tag 0018, 9049](http://www.dicomlookup.com/dicomtags/(0018,9049))\n`MR Transmit Coil Sequence`.\n",
+        "description": "This is a relevant field if a non-standard transmit coil is used.\nCorresponds to [DICOM Tag (0018,9049)](https://www.dicomlookup.com/dicomtags/(0018,9049))\n`MR Transmit Coil Sequence`.\n",
         "display_name": "MR Transmit Coil Sequence",
         "name": "MRTransmitCoilSequence",
         "type": "string"
@@ -7117,13 +7110,13 @@
         "type": "string"
       },
       "MTState": {
-        "description": "Boolean stating whether the magnetization transfer pulse is applied.\nCorresponds to [DICOM Tag 0018, 9020](http://www.dicomlookup.com/dicomtags/(0018,9020))\n`Magnetization Transfer`.\n",
+        "description": "Boolean stating whether the magnetization transfer pulse is applied.\nCorresponds to [DICOM Tag (0018,9020)](https://www.dicomlookup.com/dicomtags/(0018,9020))\n`Magnetization Transfer`.\n",
         "display_name": "MT State",
         "name": "MTState",
         "type": "boolean"
       },
       "MagneticFieldStrength": {
-        "description": "Nominal field strength of MR magnet in Tesla.\nCorresponds to [DICOM Tag 0018, 0087](http://www.dicomlookup.com/dicomtags/(0018,0087))\n`Magnetic Field Strength`.\n",
+        "description": "Nominal field strength of MR magnet in Tesla.\nCorresponds to [DICOM Tag (0018,0087)](https://www.dicomlookup.com/dicomtags/(0018,0087))\n`Magnetic Field Strength`.\n",
         "display_name": "Magnetic Field Strength",
         "name": "MagneticFieldStrength",
         "type": "number"
@@ -7263,7 +7256,7 @@
         "type": "string"
       },
       "MolarActivity": {
-        "description": "Molar activity of compound injected.\nCorresponds to [DICOM Tag 0018, 1077](http://www.dicomlookup.com/dicomtags/(0018,1077))\n`Radiopharmaceutical Specific Activity`.\n",
+        "description": "Molar activity of compound injected.\nCorresponds to [DICOM Tag (0018,1077)](https://www.dicomlookup.com/dicomtags/(0018,1077))\n`Radiopharmaceutical Specific Activity`.\n",
         "display_name": "Molar Activity",
         "name": "MolarActivity",
         "type": "number"
@@ -7556,19 +7549,19 @@
         "type": "integer"
       },
       "ParallelAcquisitionTechnique": {
-        "description": "The type of parallel imaging used (for example `\"GRAPPA\"`, `\"SENSE\"`).\nCorresponds to [DICOM Tag 0018, 9078](http://www.dicomlookup.com/dicomtags/(0018,9078))\n`Parallel Acquisition Technique`.\n",
+        "description": "The type of parallel imaging used (for example `\"GRAPPA\"`, `\"SENSE\"`).\nCorresponds to [DICOM Tag (0018,9078)](https://www.dicomlookup.com/dicomtags/(0018,9078))\n`Parallel Acquisition Technique`.\n",
         "display_name": "Parallel Acquisition Technique",
         "name": "ParallelAcquisitionTechnique",
         "type": "string"
       },
       "ParallelReductionFactorInPlane": {
-        "description": "The parallel imaging (for instance, GRAPPA) factor in plane.\nUse the denominator of the fraction of k-space encoded for each slice.\nFor example, 2 means half of k-space is encoded.\nCorresponds to [DICOM Tag 0018, 9069](http://www.dicomlookup.com/dicomtags/(0018,9069))\n`Parallel Reduction Factor In-plane`.\n",
+        "description": "The parallel imaging (for instance, GRAPPA) factor in plane.\nUse the denominator of the fraction of k-space encoded for each slice.\nFor example, 2 means half of k-space is encoded.\nCorresponds to [DICOM Tag (0018,9069)](https://www.dicomlookup.com/dicomtags/(0018,9069))\n`Parallel Reduction Factor In-plane`.\n",
         "display_name": "Parallel Reduction Factor In Plane",
         "name": "ParallelReductionFactorInPlane",
         "type": "number"
       },
       "ParallelReductionFactorOutOfPlane": {
-        "description": "The parallel imaging (for instance, GRAPPA) factor in the second phase encoding dimension of 3D sequences.\nUse the denominator of the fraction of k-space encoded in the second phase encoding dimension.\nFor example, 2 means half of k-space is encoded.\nWill typically be 1 for 2D sequences, as each slice in a 2D acquisition is usually fully encoded.\n`ParallelReductionFactorOutOfPlane` should not be confused with `MultibandAccelerationFactor`,\nas they imply different methods of accelerating the acquisition.\nCorresponds to [DICOM Tag 0018, 9155](http://www.dicomlookup.com/dicomtags/(0018,9155))\n`Parallel Reduction Factor out-of-plane`.\n",
+        "description": "The parallel imaging (for instance, GRAPPA) factor in the second phase encoding dimension of 3D sequences.\nUse the denominator of the fraction of k-space encoded in the second phase encoding dimension.\nFor example, 2 means half of k-space is encoded.\nWill typically be 1 for 2D sequences, as each slice in a 2D acquisition is usually fully encoded.\n`ParallelReductionFactorOutOfPlane` should not be confused with `MultibandAccelerationFactor`,\nas they imply different methods of accelerating the acquisition.\nCorresponds to [DICOM Tag (0018,9155)](https://www.dicomlookup.com/dicomtags/(0018,9155))\n`Parallel Reduction Factor out-of-plane`.\n",
         "display_name": "Parallel Reduction Factor Out of Plane",
         "name": "ParallelReductionFactorOutOfPlane",
         "type": "number"
@@ -7586,7 +7579,7 @@
         "type": "number"
       },
       "PartialFourierDirection": {
-        "description": "The direction where only partial Fourier information was collected.\nCorresponds to [DICOM Tag 0018, 9036](http://www.dicomlookup.com/dicomtags/(0018,9036))\n`Partial Fourier Direction`.\n",
+        "description": "The direction where only partial Fourier information was collected.\nCorresponds to [DICOM Tag (0018,9036)](https://www.dicomlookup.com/dicomtags/(0018,9036))\n`Partial Fourier Direction`.\n",
         "display_name": "Partial Fourier Direction",
         "name": "PartialFourierDirection",
         "type": "string"
@@ -7603,7 +7596,7 @@
             "type": "array"
           }
         ],
-        "description": "Dose amount of administered pharmaceutical.\n",
+        "description": "Dose amount of administered pharmaceutical.\nCorresponds to [DICOM Tag (0018,0028)](https://www.dicomlookup.com/dicomtags/(0018,0028)) `Intervention Drug Dose`.\n",
         "display_name": "Pharmaceutical Dose Amount",
         "name": "PharmaceuticalDoseAmount"
       },
@@ -7627,7 +7620,7 @@
             "type": "array"
           }
         ],
-        "description": "Time of administration of pharmaceutical dose, relative to time zero.\nFor an infusion, this should be a vector with two elements specifying the\nstart and end of the infusion period. For more complex dose regimens,\nthe regimen description should be complete enough to enable unambiguous\ninterpretation of `\"PharmaceuticalDoseTime\"`.\nUnit format of the specified pharmaceutical dose time MUST be seconds.\n",
+        "description": "Time of administration of pharmaceutical dose, relative to time zero.\nFor an infusion, this should be a vector with two elements specifying the\nstart and end of the infusion period. For more complex dose regimens,\nthe regimen description should be complete enough to enable unambiguous\ninterpretation of `\"PharmaceuticalDoseTime\"`.\nUnit format of the specified pharmaceutical dose time MUST be seconds.\nCorresponds to a combination of\n[DICOM Tag (0018,0027)](https://www.dicomlookup.com/dicomtags/(0018,0027)) `Intervention Drug Stop Time` and\n[DICOM Tag (0018,0035)](https://www.dicomlookup.com/dicomtags/(0018,0035)) `Intervention Drug Start Time`.\n",
         "display_name": "Pharmaceutical Dose Time",
         "name": "PharmaceuticalDoseTime"
       },
@@ -7639,7 +7632,7 @@
         "type": "string"
       },
       "PharmaceuticalName": {
-        "description": "Name of pharmaceutical.\n",
+        "description": "Name of administered pharmaceutical.\nNote that this is distinct from any radiotracer or contrast agent used in the scan protocol.\nThis partly matches [DICOM Tag (0018,0034)](https://www.dicomlookup.com/dicomtags/(0018,0034))\n`Intervention Drug Name`.\n",
         "display_name": "Pharmaceutical Name",
         "name": "PharmaceuticalName",
         "type": "string"
@@ -7733,7 +7726,7 @@
             "type": "array"
           }
         ],
-        "description": "This is the postlabeling delay (PLD) time, in seconds, after the end of the\nlabeling (for `\"CASL\"` or `\"PCASL\"`) or middle of the labeling pulse\n(for `\"PASL\"`) until the middle of the excitation pulse applied to the\nimaging slab (for 3D acquisition) or first slice (for 2D acquisition).\nCan be a number (for a single-PLD time series) or an array of numbers\n(for multi-PLD and Look-Locker).\nIn the latter case, the array of numbers contains the PLD of each volume,\nnamely each `control` and `label`, in the acquisition order.\nAny image within the time-series without a PLD, for example an `m0scan`,\nis indicated by a zero.\nBased on DICOM Tags 0018, 9079 `Inversion Times` and 0018, 0082\n`InversionTime`.\n",
+        "description": "This is the postlabeling delay (PLD) time, in seconds, after the end of the\nlabeling (for `\"CASL\"` or `\"PCASL\"`) or middle of the labeling pulse\n(for `\"PASL\"`) until the middle of the excitation pulse applied to the\nimaging slab (for 3D acquisition) or first slice (for 2D acquisition).\nCan be a number (for a single-PLD time series) or an array of numbers\n(for multi-PLD and Look-Locker).\nIn the latter case, the array of numbers contains the PLD of each volume,\nnamely each `control` and `label`, in the acquisition order.\nAny image within the time-series without a PLD, for example an `m0scan`,\nis indicated by a zero.\nBased on DICOM Tags (0018,9079) `Inversion Times` and (0018,0082)\n`Inversion Time`.\n",
         "display_name": "Post Labeling Delay",
         "name": "PostLabelingDelay"
       },
@@ -7862,7 +7855,7 @@
         "type": "string"
       },
       "ReceiveCoilName": {
-        "description": "Information describing the receiver coil.\nCorresponds to [DICOM Tag 0018, 1250](http://www.dicomlookup.com/dicomtags/(0018,1250))\n`Receive Coil Name`,\nalthough not all vendors populate that DICOM Tag,\nin which case this field can be derived from an appropriate\nprivate DICOM field.\n",
+        "description": "Information describing the receiver coil.\nCorresponds to [DICOM Tag (0018,1250)](https://www.dicomlookup.com/dicomtags/(0018,1250))\n`Receive Coil Name`,\nalthough not all vendors populate that DICOM Tag,\nin which case this field can be derived from an appropriate\nprivate DICOM field.\n",
         "display_name": "Receive Coil Name",
         "name": "ReceiveCoilName",
         "type": "string"
@@ -7899,7 +7892,7 @@
             "type": "array"
           }
         ],
-        "description": "Kernel size of post-recon filter (FWHM) in default units `\"mm\"`.\n",
+        "description": "Kernel size of post-recon filter (FWHM) in default units `\"mm\"`.\nThis partly matches the [DICOM Tag (0018,1210)](https://www.dicomlookup.com/dicomtags/(0018,1210))\n`Convolution Kernel`.\n",
         "display_name": "Recon Filter Size",
         "name": "ReconFilterSize"
       },
@@ -7915,7 +7908,7 @@
             "type": "array"
           }
         ],
-        "description": "Type of post-recon smoothing (for example, `[\"Shepp\"]`).\n",
+        "description": "Type of post-recon smoothing (for example, `[\"Shepp\"]`).\nThis partly matches the [DICOM Tag (0018,1210)](https://www.dicomlookup.com/dicomtags/(0018,1210))\n`Convolution Kernel`.\n",
         "display_name": "Recon Filter Type",
         "name": "ReconFilterType"
       },
@@ -7926,13 +7919,13 @@
         "type": "string"
       },
       "ReconMethodName": {
-        "description": "Reconstruction method or algorithm (for example, `\"3d-op-osem\"`).\n",
+        "description": "Reconstruction method or algorithm (for example, `\"3d-op-osem\"`).\nThis partly matches the [DICOM Tag (0054,1103)](https://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
         "display_name": "Recon Method Name",
         "name": "ReconMethodName",
         "type": "string"
       },
       "ReconMethodParameterLabels": {
-        "description": "Names of reconstruction parameters (for example, `[\"subsets\", \"iterations\"]`).\n",
+        "description": "Names of reconstruction parameters (for example, `[\"subsets\", \"iterations\"]`).\nThis partly matches the [DICOM Tag (0054,1103)](https://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
         "display_name": "Recon Method Parameter Labels",
         "items": {
           "type": "string"
@@ -7941,7 +7934,7 @@
         "type": "array"
       },
       "ReconMethodParameterUnits": {
-        "description": "Unit of reconstruction parameters (for example, `[\"none\", \"none\"]`).\n",
+        "description": "Unit of reconstruction parameters (for example, `[\"none\", \"none\"]`).\nThis partly matches the [DICOM Tag (0054,1103)](https://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
         "display_name": "Recon Method Parameter Units",
         "items": {
           "format": "unit",
@@ -7951,7 +7944,7 @@
         "type": "array"
       },
       "ReconMethodParameterValues": {
-        "description": "Values of reconstruction parameters (for example, `[21, 3]`).\n",
+        "description": "Values of reconstruction parameters (for example, `[21, 3]`).\nThis partly matches the [DICOM Tag (0054,1103)](https://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
         "display_name": "Recon Method Parameter Values",
         "items": {
           "type": "number"
@@ -8016,7 +8009,7 @@
         "type": "array"
       },
       "RepetitionTime": {
-        "description": "The time in seconds between the beginning of an acquisition of one volume\nand the beginning of acquisition of the volume following it (TR).\nWhen used in the context of functional acquisitions this parameter best\ncorresponds to\n[DICOM Tag 0020, 0110](http://www.dicomlookup.com/dicomtags/(0020,0110)):\nthe \"time delta between images in a\ndynamic of functional set of images\" but may also be found in\n[DICOM Tag 0018, 0080](http://www.dicomlookup.com/dicomtags/(0018,0080)):\n\"the period of time in msec between the beginning\nof a pulse sequence and the beginning of the succeeding\n(essentially identical) pulse sequence\".\nThis definition includes time between scans (when no data has been acquired)\nin case of sparse acquisition schemes.\nThis value MUST be consistent with the 'pixdim[4]' field (after accounting\nfor units stored in 'xyzt_units' field) in the NIfTI header.\nThis field is mutually exclusive with VolumeTiming.\n",
+        "description": "The time in seconds between the beginning of an acquisition of one volume\nand the beginning of acquisition of the volume following it (TR).\nWhen used in the context of functional acquisitions this parameter best\ncorresponds to\n[DICOM Tag (0020,0110)](https://www.dicomlookup.com/dicomtags/(0020,0110)):\nthe \"time delta between images in a\ndynamic of functional set of images\" but may also be found in\n[DICOM Tag (0018,0080)](https://www.dicomlookup.com/dicomtags/(0018,0080)):\n\"the period of time in msec between the beginning\nof a pulse sequence and the beginning of the succeeding\n(essentially identical) pulse sequence\".\nThis definition includes time between scans (when no data has been acquired)\nin case of sparse acquisition schemes.\nThis value MUST be consistent with the 'pixdim[4]' field (after accounting\nfor units stored in 'xyzt_units' field) in the NIfTI header.\nThis field is mutually exclusive with VolumeTiming.\n",
         "display_name": "Repetition Time",
         "exclusiveMinimum": 0,
         "name": "RepetitionTime",
@@ -8024,7 +8017,7 @@
         "unit": "s"
       },
       "RepetitionTimeExcitation": {
-        "description": "The interval, in seconds, between two successive excitations.\n[DICOM Tag 0018, 0080](http://www.dicomlookup.com/dicomtags/(0018,0080))\nbest refers to this parameter.\nThis field may be used together with the `\"RepetitionTimePreparation\"` for\ncertain use cases, such as\n[MP2RAGE](https://doi.org/10.1016/j.neuroimage.2009.10.002).\nUse `RepetitionTimeExcitation` (in combination with\n`\"RepetitionTimePreparation\"` if needed) for anatomy imaging data rather than\n`\"RepetitionTime\"` as it is already defined as the amount of time that it takes\nto acquire a single volume in the\n[task imaging data](SPEC_ROOT/modality-specific-files/magnetic-resonance-\\\nimaging-data.md#task-including-resting-state-imaging-data)\nsection.\n",
+        "description": "The interval, in seconds, between two successive excitations.\n[DICOM Tag (0018,0080)](https://www.dicomlookup.com/dicomtags/(0018,0080))\nbest refers to this parameter.\nThis field may be used together with the `\"RepetitionTimePreparation\"` for\ncertain use cases, such as\n[MP2RAGE](https://doi.org/10.1016/j.neuroimage.2009.10.002).\nUse `RepetitionTimeExcitation` (in combination with\n`\"RepetitionTimePreparation\"` if needed) for anatomy imaging data rather than\n`\"RepetitionTime\"` as it is already defined as the amount of time that it takes\nto acquire a single volume in the\n[task imaging data](SPEC_ROOT/modality-specific-files/magnetic-resonance-\\\nimaging-data.md#task-including-resting-state-imaging-data)\nsection.\n",
         "display_name": "Repetition Time Excitation",
         "minimum": 0,
         "name": "RepetitionTimeExcitation",
@@ -8081,7 +8074,7 @@
             "type": "array"
           }
         ],
-        "description": "The isotope of interest of an MR experiment (for example, `\"1H\"`, `\"13C\"`, `\"31P\"`).\nFor multi-nuclei experiments such as <sup>1</sup>H-[<sup>13</sup>C] MR,\nan array can be used: `[\"1H\", \"13C\"]`.\nCorresponds to [DICOM Tag 0018, 9100](http://www.dicomlookup.com/dicomtags/(0018,9100))\n`Resonant Nucleus`.\n",
+        "description": "The isotope of interest of an MR experiment (for example, `\"1H\"`, `\"13C\"`, `\"31P\"`).\nFor multi-nuclei experiments such as <sup>1</sup>H-[<sup>13</sup>C] MR,\nan array can be used: `[\"1H\", \"13C\"]`.\nCorresponds to [DICOM Tag (0018,9100)](https://www.dicomlookup.com/dicomtags/(0018,9100))\n`Resonant Nucleus`.\n",
         "display_name": "Resonant Nucleus",
         "name": "ResonantNucleus"
       },
@@ -8270,7 +8263,7 @@
         "type": "array"
       },
       "ScanDate": {
-        "description": "Date of scan in the format `\"YYYY-MM-DD[Z]\"`.\nThis field is DEPRECATED, and this metadata SHOULD be recorded in the `acq_time` column of the\ncorresponding [Scans file](SPEC_ROOT/modality-agnostic-files/data-summary-files.md#scans-file).\n",
+        "description": "Date of scan in the format `\"YYYY-MM-DD[Z]\"`.\nCorresponds to [DICOM Tag (0008,0022)](https://www.dicomlookup.com/dicomtags/(0008,0022)) `Acquisition Date`.\nThis field is DEPRECATED, and this metadata SHOULD be recorded in the `acq_time` column of the\ncorresponding [Scans file](SPEC_ROOT/modality-agnostic-files/data-summary-files.md#scans-file).\n",
         "display_name": "Scan Date",
         "format": "date",
         "name": "ScanDate",
@@ -8288,7 +8281,7 @@
             "type": "array"
           }
         ],
-        "description": "Parameters of ScanningSequence.\nCorresponds to [DICOM Tag 0018, 0022](http://www.dicomlookup.com/dicomtags/(0018,0022))\n`Scan Options`.\n",
+        "description": "Parameters of ScanningSequence.\nCorresponds to [DICOM Tag (0018,0022)](https://www.dicomlookup.com/dicomtags/(0018,0022))\n`Scan Options`.\n",
         "display_name": "Scan Options",
         "name": "ScanOptions"
       },
@@ -8311,7 +8304,7 @@
             "type": "array"
           }
         ],
-        "description": "Description of the type of data acquired.\nCorresponds to [DICOM Tag 0018, 0020](http://www.dicomlookup.com/dicomtags/(0018,0020))\n`Scanning Sequence`.\n",
+        "description": "Description of the type of data acquired.\nCorresponds to [DICOM Tag (0018,0020)](https://www.dicomlookup.com/dicomtags/(0018,0020))\n`Scanning Sequence`.\n",
         "display_name": "Scanning Sequence",
         "name": "ScanningSequence"
       },
@@ -8327,7 +8320,7 @@
         "type": "string"
       },
       "ScatterFraction": {
-        "description": "Scatter fraction for each frame (Units: 0-100%).\n",
+        "description": "Scatter fraction for each frame (Units: 0-100%).\nCorresponds to [DICOM Tag (0054,1323)](https://www.dicomlookup.com/dicomtags/(0054,1323))\n`Scatter Fraction Factor`.\n",
         "display_name": "Scatter Fraction",
         "items": {
           "maximum": 100,
@@ -8431,7 +8424,7 @@
         "name": "ScreenSize"
       },
       "SequenceName": {
-        "description": "Manufacturer's designation of the sequence name.\nCorresponds to [DICOM Tag 0018, 0024](http://www.dicomlookup.com/dicomtags/(0018,0024))\n`Sequence Name`.\n",
+        "description": "Manufacturer's designation of the sequence name.\nCorresponds to [DICOM Tag (0018,0024)](https://www.dicomlookup.com/dicomtags/(0018,0024))\n`Sequence Name`.\n",
         "display_name": "Sequence Name",
         "name": "SequenceName",
         "type": "string"
@@ -8448,7 +8441,7 @@
             "type": "array"
           }
         ],
-        "description": "Variant of the ScanningSequence.\nCorresponds to [DICOM Tag 0018, 0021](http://www.dicomlookup.com/dicomtags/(0018,0021))\n`Sequence Variant`.\n",
+        "description": "Variant of the ScanningSequence.\nCorresponds to [DICOM Tag (0018,0021)](https://www.dicomlookup.com/dicomtags/(0018,0021))\n`Sequence Variant`.\n",
         "display_name": "Sequence Variant",
         "name": "SequenceVariant"
       },
@@ -8512,6 +8505,26 @@
         },
         "name": "SliceTiming",
         "type": "array"
+      },
+      "SmallDelta": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "unit": "s"
+          },
+          {
+            "items": {
+              "exclusiveMinimum": 0,
+              "type": "number",
+              "unit": "s"
+            },
+            "type": "array"
+          }
+        ],
+        "description": "In the context of a diffusion-weighted pulsed gradient spin echo sequence,\ncorresponds to the duration of a diffusion-encoding gradient pulse (\u03b4),\nspecified in seconds.\nThe value may be an array, if \u03b4 varies by volume, in which case the number\nof values MUST correspond to the number of volumes in the data file.\n",
+        "display_name": "Diffusion Small Delta (\u03b4)",
+        "name": "SmallDelta"
       },
       "SoftwareFilters": {
         "anyOf": [
@@ -8698,7 +8711,7 @@
         "name": "SpecificRadioactivityUnits"
       },
       "SpectralWidth": {
-        "description": "The spectral bandwidth of the MR signal that is sampled, specified in Hz.\nCorresponds to [DICOM Tag 0018, 9052](http://www.dicomlookup.com/dicomtags/(0018,9052))\n`Spectral Width`.\n",
+        "description": "The spectral bandwidth of the MR signal that is sampled, specified in Hz.\nCorresponds to [DICOM Tag (0018,9052)](https://www.dicomlookup.com/dicomtags/(0018,9052))\n`Spectral Width`.\n",
         "display_name": "Spectral Width",
         "name": "SpectralWidth",
         "type": "number",
@@ -9014,7 +9027,7 @@
         "type": "string"
       },
       "TracerName": {
-        "description": "Name of the tracer compound used (for example, `\"CIMBI-36\"`)\n",
+        "description": "Name of the tracer compound used (for example, `\"CIMBI-36\"`)\nCorresponds to [DICOM Tag (0054,0300)](https://www.dicomlookup.com/dicomtags/(0054,0300))\n`Radionuclide Code Sequence`,\nextracted from the fields [(0008,0122)](https://www.dicomlookup.com/dicomtags/(0008,0122))\n`Mapping Resource Name`\nand/or [(0008,0105)](https://www.dicomlookup.com/dicomtags/(0008,0105)) `Mapping Resource`.\n",
         "display_name": "Tracer Name",
         "name": "TracerName",
         "type": "string"
@@ -9026,7 +9039,7 @@
         "type": "string"
       },
       "TracerRadionuclide": {
-        "description": "Radioisotope labeling tracer (for example, `\"C11\"`).\n",
+        "description": "Radioisotope labeling tracer (for example, `\"C11\"`).\nCorresponds to [DICOM Tag (0054,0300)](https://www.dicomlookup.com/dicomtags/(0054,0300))\n`Radionuclide Code Sequence`,\nextracted from the fields\n[(0008,0100)](https://www.dicomlookup.com/dicomtags/(0008,0100)) `Code Value`\nand/or [(0008,0104)](https://www.dicomlookup.com/dicomtags/(0008,0104)) `Code Meaning`.\n",
         "display_name": "Tracer Radionuclide",
         "name": "TracerRadionuclide",
         "type": "string"
@@ -9104,7 +9117,7 @@
         "type": "integer"
       },
       "VascularCrushing": {
-        "description": "Boolean indicating if Vascular Crushing is used.\nCorresponds to [DICOM Tag 0018, 9259](http://www.dicomlookup.com/dicomtags/(0018,9259))\n`ASL Crusher Flag`.\n",
+        "description": "Boolean indicating if Vascular Crushing is used.\nCorresponds to [DICOM Tag (0018,9259)](https://www.dicomlookup.com/dicomtags/(0018,9259))\n`ASL Crusher Flag`.\n",
         "display_name": "Vascular Crushing",
         "name": "VascularCrushing",
         "type": "boolean"
@@ -9123,7 +9136,7 @@
             "type": "array"
           }
         ],
-        "description": "The crusher gradient strength, in centimeters per second.\nSpecify either one number for the total time-series, or provide an array of\nnumbers, for example when using QUASAR, using the value zero to identify\nvolumes for which `VascularCrushing` was turned off.\nCorresponds to [DICOM Tag 0018, 925A](http://www.dicomlookup.com/dicomtags/(0018,925A))\n`ASL Crusher Flow Limit`.\n",
+        "description": "The crusher gradient strength, in centimeters per second.\nSpecify either one number for the total time-series, or provide an array of\nnumbers, for example when using QUASAR, using the value zero to identify\nvolumes for which `VascularCrushing` was turned off.\nCorresponds to [DICOM Tag (0018,925A)](https://www.dicomlookup.com/dicomtags/(0018,925A))\n`ASL Crusher Flow Limit`.\n",
         "display_name": "Vascular Crushing VENC",
         "name": "VascularCrushingVENC"
       },
@@ -9933,6 +9946,11 @@
         "display_name": "Phase-difference",
         "value": "phasediff"
       },
+      "phenotype": {
+        "description": "A table of data in a tab-separated value (TSV) file.\n",
+        "display_name": "Tabular phenotypic data",
+        "value": "phenotype"
+      },
       "photo": {
         "description": "Photos of the anatomical landmarks, head localization coils or tissue sample.\n",
         "display_name": "Photo File",
@@ -9959,7 +9977,7 @@
         "value": "sbref"
       },
       "scans": {
-        "description": "The purpose of this file is to describe timing and other properties of each imaging acquisition\nsequence (each run file) within one session.\nEach neural recording file SHOULD be described by exactly one row. Some recordings consist of\nmultiple parts, that span several files, for example through echo-, part-, or split- entities.\nSuch recordings MUST be documented with one row per file.\nRelative paths to files should be used under a compulsory filename header.\nIf acquisition time is included it should be listed under the acq_time header.\nAcquisition time refers to when the first data point in each run was acquired.\nFurthermore, if this header is provided, the acquisition times of all files that belong to a\nrecording MUST be identical.\nDatetime should be expressed as described in Units.\nAdditional fields can include external behavioral measures relevant to the scan.\nFor example vigilance questionnaire score administered after a resting state scan.\nAll such included additional fields SHOULD be documented in an accompanying _scans.json file\nthat describes these fields in detail (see Tabular files).\n",
+        "description": "The purpose of this file is to describe timing and other properties of each imaging acquisition\nsequence (each run file) within one session.\nEach neural recording file SHOULD be described by exactly one row. Some recordings consist of\nmultiple parts, that span several files, for example through echo-, part-, or split- entities.\nSuch recordings MUST be documented with one row per file.\nRelative paths to files should be used under a compulsory filename header.\nIf acquisition time is included it should be listed under the acq_time header.\nAcquisition time refers to the moment the acquisition of the data in each run started.\nFurthermore, if this header is provided, the acquisition times of all files that belong to a\nrecording MUST be identical.\nDatetime should be expressed as described in Units.\nAdditional fields can include external behavioral measures relevant to the scan.\nFor example vigilance questionnaire score administered after a resting state scan.\nAll such included additional fields SHOULD be documented in an accompanying _scans.json file\nthat describes these fields in detail (see Tabular files).\n",
         "display_name": "Scans file",
         "value": "scans"
       },
@@ -10001,7 +10019,7 @@
         "PDT2Echos": {
           "checks": [
             "type(sidecar.EchoTime) == 'array'",
-            "len(sidecar.EchoTime) == nifti_header.dim[4]"
+            "length(sidecar.EchoTime) == nifti_header.dim[4]"
           ],
           "issue": {
             "code": "PDT2_ECHOS_SHOULD_MATCH_NIFTI_LENGTH",
@@ -10098,7 +10116,7 @@
           "issue": {
             "code": "FLIP_ANGLE_NOT_MATCHING_ASLCONTEXT_TSV",
             "level": "error",
-            "message": "The number of values for 'FlipAngle' for this file does not match the number of volumes in the\nassociated 'aslcontext.tsv'.\n'FlipAngle' is the flip angle (FA) for the acquisition, specified in degrees.\nCorresponds to: [DICOM Tag 0018, 1314](http://www.dicomlookup.com/dicomtags/(0018,1314))\n`Flip Angle`.\nThe data type number may apply to files from any MRI modality concerned with a single value for this field,\nor to the files in a file collection where the value of this field is iterated using the flip entity.\nThe data type array provides a value for each volume in a 4D dataset and should only be used when the volume\ntiming is critical for interpretation of the data, such as in ASL or variable flip angle fMRI sequences.\n"
+            "message": "The number of values for 'FlipAngle' for this file does not match the number of volumes in the\nassociated 'aslcontext.tsv'.\n'FlipAngle' is the flip angle (FA) for the acquisition, specified in degrees.\nCorresponds to: [DICOM Tag (0018,1314)](https://www.dicomlookup.com/dicomtags/(0018,1314))\n`Flip Angle`.\nThe data type number may apply to files from any MRI modality concerned with a single value for this field,\nor to the files in a file collection where the value of this field is iterated using the flip entity.\nThe data type array provides a value for each volume in a 4D dataset and should only be used when the volume\ntiming is critical for interpretation of the data, such as in ASL or variable flip angle fMRI sequences.\n"
           },
           "selectors": [
             "suffix == \"asl\"",
@@ -10113,7 +10131,7 @@
           "issue": {
             "code": "FLIP_ANGLE_NOT_MATCHING_NIFTI",
             "level": "error",
-            "message": "The number of values for 'FlipAngle' for this file does not match the 4th dimension of the NIfTI header.\n'FlipAngle' is the flip angle (FA) for the acquisition, specified in degrees.\nCorresponds to: [DICOM Tag 0018, 1314](http://www.dicomlookup.com/dicomtags/(0018,1314))\n`Flip Angle`.\nThe data type number may apply to files from any MRI modality concerned with a single value for this field,\nor to the files in a file collection where the value of this field is iterated using the flip entity.\nThe data type array provides a value for each volume in a 4D dataset and should only be used when the\nvolume timing is critical for interpretation of the data, such as in ASL or variable flip\nangle fMRI sequences.\n"
+            "message": "The number of values for 'FlipAngle' for this file does not match the 4th dimension of the NIfTI header.\n'FlipAngle' is the flip angle (FA) for the acquisition, specified in degrees.\nCorresponds to: [DICOM Tag (0018,1314)](https://www.dicomlookup.com/dicomtags/(0018,1314))\n`Flip Angle`.\nThe data type number may apply to files from any MRI modality concerned with a single value for this field,\nor to the files in a file collection where the value of this field is iterated using the flip entity.\nThe data type array provides a value for each volume in a 4D dataset and should only be used when the\nvolume timing is critical for interpretation of the data, such as in ASL or variable flip\nangle fMRI sequences.\n"
           },
           "selectors": [
             "suffix == \"asl\"",
@@ -10129,7 +10147,7 @@
           "issue": {
             "code": "LABELLING_DURATION_NOT_MATCHING_ASLCONTEXT_TSV",
             "level": "error",
-            "message": "The number of values for 'LabelingDuration' for this file does not match the number of volumes\nin the associated 'aslcontext.tsv'.\n'LabelingDuration' is the total duration of the labeling pulse train, in seconds,\ncorresponding to the temporal width of the labeling bolus for `(P)CASL`.\nIn case all control-label volumes (or deltam or CBF) have the same `LabelingDuration`,\na scalar must be specified.\nIn case the control-label volumes (or deltam or cbf) have a different `LabelingDuration`,\nan array of numbers must be specified, for which any `m0scan` in the timeseries has a\n`LabelingDuration` of zero.\nIn case an array of numbers is provided, its length should be equal to the number of volumes\nspecified in the associated `aslcontext.tsv`.\nCorresponds to DICOM Tag 0018,9258 `ASL Pulse Train Duration`.\n"
+            "message": "The number of values for 'LabelingDuration' for this file does not match the number of volumes\nin the associated 'aslcontext.tsv'.\n'LabelingDuration' is the total duration of the labeling pulse train, in seconds,\ncorresponding to the temporal width of the labeling bolus for `(P)CASL`.\nIn case all control-label volumes (or deltam or CBF) have the same `LabelingDuration`,\na scalar must be specified.\nIn case the control-label volumes (or deltam or cbf) have a different `LabelingDuration`,\nan array of numbers must be specified, for which any `m0scan` in the timeseries has a\n`LabelingDuration` of zero.\nIn case an array of numbers is provided, its length should be equal to the number of volumes\nspecified in the associated `aslcontext.tsv`.\nCorresponds to DICOM Tag (0018,9258) `ASL Pulse Train Duration`.\n"
           },
           "selectors": [
             "suffix == \"asl\"",
@@ -10144,7 +10162,7 @@
           "issue": {
             "code": "LABELING_DURATION_LENGTH_NOT_MATCHING_NIFTI",
             "level": "error",
-            "message": "The number of values for 'LabelingDuration' for this file does not match the 4th dimension\nof the NIfTI header.\n'LabelingDuration' is the total duration of the labeling pulse train, in seconds,\ncorresponding to the temporal width of the labeling bolus for `(P)CASL`.\nIn case all control-label volumes (or deltam or CBF) have the same `LabelingDuration`, a scalar must be\nspecified.\nIn case the control-label volumes (or deltam or cbf) have a different `LabelingDuration`,\nan array of numbers must be specified, for which any `m0scan` in the timeseries has a `LabelingDuration` of\nzero.\nIn case an array of numbers is provided, its length should be equal to the number of volumes specified in\nthe associated `aslcontext.tsv`. Corresponds to DICOM Tag 0018,9258 `ASL Pulse Train Duration`.\n"
+            "message": "The number of values for 'LabelingDuration' for this file does not match the 4th dimension\nof the NIfTI header.\n'LabelingDuration' is the total duration of the labeling pulse train, in seconds,\ncorresponding to the temporal width of the labeling bolus for `(P)CASL`.\nIn case all control-label volumes (or deltam or CBF) have the same `LabelingDuration`, a scalar must be\nspecified.\nIn case the control-label volumes (or deltam or cbf) have a different `LabelingDuration`,\nan array of numbers must be specified, for which any `m0scan` in the timeseries has a `LabelingDuration` of\nzero.\nIn case an array of numbers is provided, its length should be equal to the number of volumes specified in\nthe associated `aslcontext.tsv`. Corresponds to DICOM Tag (0018,9258) `ASL Pulse Train Duration`.\n"
           },
           "selectors": [
             "suffix == \"asl\"",
@@ -10207,7 +10225,7 @@
           "issue": {
             "code": "POST_LABELING_DELAY_NOT_MATCHING_ASLCONTEXT_TSV",
             "level": "error",
-            "message": "The number of values for 'PostLabelingDelay' for this file does not match the number of volumes\nin the associated 'aslcontext.tsv'.\n'PostLabelingDelay' is the time, in seconds, after the end of the labeling (for (P)CASL) or\nmiddle of the labeling pulse (for PASL) until the middle of the excitation pulse applied to\nthe imaging slab (for 3D acquisition) or first slice (for 2D acquisition).\nCan be a number (for a single-PLD time series) or an array of numbers (for multi-PLD and Look-Locker).\nIn the latter case, the array of numbers contains the PLD of each volume\n(that is, each 'control' and 'label')\nin the acquisition order.\nAny image within the time-series without a PLD (for example, an 'm0scan') is indicated by a zero.\nBased on DICOM Tags 0018,9079 Inversion Times and 0018,0082 InversionTime.\n"
+            "message": "The number of values for 'PostLabelingDelay' for this file does not match the number of volumes\nin the associated 'aslcontext.tsv'.\n'PostLabelingDelay' is the time, in seconds, after the end of the labeling (for (P)CASL) or\nmiddle of the labeling pulse (for PASL) until the middle of the excitation pulse applied to\nthe imaging slab (for 3D acquisition) or first slice (for 2D acquisition).\nCan be a number (for a single-PLD time series) or an array of numbers (for multi-PLD and Look-Locker).\nIn the latter case, the array of numbers contains the PLD of each volume\n(that is, each 'control' and 'label')\nin the acquisition order.\nAny image within the time-series without a PLD (for example, an 'm0scan') is indicated by a zero.\nBased on DICOM Tags (0018,9079) `Inversion Times` and (0018,0082) `Inversion Time`.\n"
           },
           "selectors": [
             "suffix == \"asl\"",
@@ -10222,7 +10240,7 @@
           "issue": {
             "code": "POST_LABELING_DELAY_NOT_MATCHING_NIFTI",
             "level": "error",
-            "message": "The number of values for 'PostLabelingDelay' for this file does not match the 4th dimension of the NIfTI\nheader.\n'PostLabelingDelay' is the time, in seconds, after the end of the labeling (for (P)CASL) or middle of the\nlabeling pulse (for PASL) until the middle of the excitation pulse applied to the imaging slab\n(for 3D acquisition) or first slice (for 2D acquisition).\nCan be a number (for a single-PLD time series) or an array of numbers (for multi-PLD and Look-Locker).\nIn the latter case, the array of numbers contains the PLD of each volume\n(that is, each 'control' and 'label')\nin the acquisition order. Any image within the time-series without a PLD (for example, an 'm0scan') is\nindicated by a zero.\nBased on DICOM Tags 0018,9079 Inversion Times and 0018,0082 InversionTime.\n"
+            "message": "The number of values for 'PostLabelingDelay' for this file does not match the 4th dimension of the NIfTI\nheader.\n'PostLabelingDelay' is the time, in seconds, after the end of the labeling (for (P)CASL) or middle of the\nlabeling pulse (for PASL) until the middle of the excitation pulse applied to the imaging slab\n(for 3D acquisition) or first slice (for 2D acquisition).\nCan be a number (for a single-PLD time series) or an array of numbers (for multi-PLD and Look-Locker).\nIn the latter case, the array of numbers contains the PLD of each volume\n(that is, each 'control' and 'label')\nin the acquisition order. Any image within the time-series without a PLD (for example, an 'm0scan') is\nindicated by a zero.\nBased on DICOM Tags (0018,9079) `Inversion Times` and (0018,0082) `Inversion Time`.\n"
           },
           "selectors": [
             "suffix == \"asl\"",
@@ -10424,20 +10442,6 @@
         }
       },
       "dataset": {
-        "AgeUnits": {
-          "checks": [
-            "intersects([sidecar.age.Units], [\"year\", \"month\", \"week\", \"day\", \"hour\", \"minute\", \"second\"])"
-          ],
-          "issue": {
-            "code": "AGE_UNITS",
-            "level": "warning",
-            "message": "The \"Units\" value for age in 'participants.json' is not a valid\nISO 8601-based duration unit.\nAllowed values are \"year\", \"month\", \"week\", \"day\", \"hour\", \"minute\",\nor \"second\".\n"
-          },
-          "selectors": [
-            "path == '/participants.tsv'",
-            "\"Units\" in sidecar.age"
-          ]
-        },
         "NoSubjectFolders": {
           "checks": [
             "length(glob(\"sub-*\")) == 0"
@@ -10764,6 +10768,20 @@
         }
       },
       "events": {
+        "BehavioralOnsetAndDuration": {
+          "checks": [
+            "columns.onset == null || columns.duration == null"
+          ],
+          "issue": {
+            "code": "BEH_ONSET_DURATION",
+            "level": "warning",
+            "message": "This behavioral file contains onset and duration columns.\nConsider renaming to use the `events` suffix.\n"
+          },
+          "selectors": [
+            "suffix == \"beh\"",
+            "extension == \".tsv\""
+          ]
+        },
         "EventsMissing": {
           "checks": [
             "\"events\" in associations"
@@ -11135,6 +11153,19 @@
         }
       },
       "general": {
+        "BrainvisionLinksBroken": {
+          "checks": [
+            "exists([\n  substr(path, 1, length(path) - length(extension)) + \".eeg\",\n  substr(path, 1, length(path) - length(extension)) + \".vhdr\",\n  substr(path, 1, length(path) - length(extension)) + \".vmrk\"\n], \"dataset\") == 3\n"
+          ],
+          "issue": {
+            "code": "BRAINVISION_LINKS_BROKEN",
+            "level": "error",
+            "message": "A BrainVision recording must include matching '.eeg', '.vhdr', and '.vmrk' files.\n"
+          },
+          "selectors": [
+            "extension == \".vhdr\" ||\n(extension == \".vmrk\" &&\n exists(substr(path, 1, length(path) - length(extension)) + \".vhdr\", \"dataset\") == 0) ||\n(extension == \".eeg\" &&\n exists(substr(path, 1, length(path) - length(extension)) + \".vhdr\", \"dataset\") == 0 &&\n exists(substr(path, 1, length(path) - length(extension)) + \".vmrk\", \"dataset\") == 0)\n"
+          ]
+        },
         "DuplicateFiles": {
           "checks": [
             "exists(substr(path, 0, length(path) - 3), \"dataset\") == 0"
@@ -11172,53 +11203,6 @@
           },
           "selectors": [
             "match(path, '^/README')"
-          ]
-        },
-        "SegregatedSessions": {
-          "checks": [
-            "type(entities.subject) == 'null'"
-          ],
-          "issue": {
-            "code": "SEGREGATED_SESSIONS",
-            "level": "error",
-            "message": "Session files were detected outside the dataset root and\n\"Phenotype\" additional validation has been enabled.\nAggregate session data in a root-level `sessions.tsv` file.\n"
-          },
-          "selectors": [
-            "suffix == 'sessions'",
-            "extension == '.tsv'",
-            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
-          ]
-        },
-        "SessionRequired": {
-          "checks": [
-            "type(entities.session) != 'null'"
-          ],
-          "issue": {
-            "code": "SESSION_REQUIRED",
-            "level": "error",
-            "message": "Multi-session data is detected in the dataset, and\n\"Phenotype\" additional validation has been enabled.\nEvery data file MUST be found in a session directory.\n"
-          },
-          "selectors": [
-            "type(entities.subject) != 'null'",
-            "!intersects([extension], ['.tsv', '.json'])",
-            "type(dataset.sessions_tsv) != 'null'",
-            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
-          ]
-        },
-        "SessionsTSVRequired": {
-          "checks": [
-            "type(dataset.sessions_tsv) != 'null'"
-          ],
-          "issue": {
-            "code": "SESSIONS_TSV_REQUIRED",
-            "level": "error",
-            "location": "/sessions.tsv",
-            "message": "Multi-session data is detected in the dataset, and\n\"Phenotype\" additional validation has been enabled.\nA sessions.tsv file MUST exist in the dataset root.\n"
-          },
-          "selectors": [
-            "!intersects([extension], ['.tsv', '.json'])",
-            "type(entities.session) != 'null'",
-            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
           ]
         }
       },
@@ -11349,6 +11333,21 @@
         }
       },
       "mri": {
+        "BigDeltaNotConsistent": {
+          "checks": [
+            "length(sidecar.BigDelta) == nifti_header.dim[4]"
+          ],
+          "issue": {
+            "code": "BIGDELTA_NOT_CONSISTENT",
+            "level": "error",
+            "message": "The number of values for 'BigDelta' for this file does\nnot match the 4th dimension of the NIfTI header.\n"
+          },
+          "selectors": [
+            "suffix == \"dwi\"",
+            "type(sidecar.BigDelta) == \"array\"",
+            "type(nifti_header) != \"null\""
+          ]
+        },
         "BolusCutOffDelayTimeNotMonotonicallyIncreasing": {
           "checks": [
             "allequal(sorted(sidecar.BolusCutOffDelayTime), sidecar.BolusCutOffDelayTime)"
@@ -11473,6 +11472,21 @@
             "sidecar.SliceEncodingDirection"
           ]
         },
+        "SmallDeltaNotConsistent": {
+          "checks": [
+            "length(sidecar.SmallDelta) == nifti_header.dim[4]"
+          ],
+          "issue": {
+            "code": "SMALLDELTA_NOT_CONSISTENT",
+            "level": "error",
+            "message": "The number of values for 'SmallDelta' for this file does\nnot match the 4th dimension of the NIfTI header.\n"
+          },
+          "selectors": [
+            "suffix == \"dwi\"",
+            "type(sidecar.SmallDelta) == \"array\"",
+            "type(nifti_header) != \"null\""
+          ]
+        },
         "TotalReadoutTimeGreaterThan": {
           "checks": [
             "sidecar.TotalReadoutTime <= 10"
@@ -11549,6 +11563,21 @@
           },
           "selectors": [
             "type(nifti_header) != \"null\""
+          ]
+        },
+        "NiftiLargeVolume": {
+          "checks": [
+            "max([nifti_header.shape[0], nifti_header.shape[1], nifti_header.shape[2]]) <= 1024"
+          ],
+          "issue": {
+            "code": "NIFTI_LARGE_VOLUME",
+            "level": "warning",
+            "message": "NIfTI file has a spatial dimension exceeding 1024 voxels.\nConsider using the OME-Zarr file format, which is better suited\nfor large imaging data.\n"
+          },
+          "selectors": [
+            "match(extension, \"^\\.nii(\\.gz)?$\")",
+            "type(nifti_header) != \"null\"",
+            "length(nifti_header.shape) >= 3"
           ]
         },
         "NiftiPEDir": {
@@ -11851,97 +11880,163 @@
         }
       },
       "phenotype": {
-        "PhenotypeSessionAggregation": {
+        "ParticipantsSidecarRequired": {
           "checks": [
-            "!exists('sessions.tsv', 'dataset')"
+            "type(sidecar.participant_id) != 'null'"
           ],
           "issue": {
-            "code": "PHENOTYPE_SESSION_AGGREGATION",
+            "code": "PARTICIPANT_SIDECAR_DEFINITION_MISSING",
             "level": "error",
-            "message": "Participant-level sessions files (sub-<label>_sessions.tsv) must not exist\nwhen a root sessions.tsv file is present. Session information should be\naggregated in the root sessions.tsv file.\n"
+            "message": "`participants.tsv` is required to have `participant_id` defined in its `JSON` sidecar.\n"
           },
           "selectors": [
-            "suffix == 'sessions'",
-            "extension == '.tsv'",
             "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
-            "type(entities.subject) != 'null'"
+            "path == '/participants.tsv'"
           ]
         },
-        "PhenotypeSessionFileRequired": {
+        "PhenotypeDemographicsFileRequiredBySessionDir": {
           "checks": [
-            "exists('sessions.tsv', 'dataset')"
+            "exists('phenotype/tool-demographics_phenotype.tsv', 'dataset')"
           ],
           "issue": {
-            "code": "PHENOTYPE_SESSION_FILE_REQUIRED",
+            "code": "PHENOTYPE_DEMOGRAPHICS_FILE_REQUIRED_BY_SESSION_DIR",
             "level": "error",
-            "message": "A phenotype TSV file contains a session_id column but no sessions.tsv file\nwas found at the dataset root. A sessions.tsv file is required to define\nvalid session labels.\n"
+            "message": "A `/phenotype/tool-demographics_phenotype.tsv` file is required when session\ndirectories are present.\n"
           },
           "selectors": [
-            "datatype == 'phenotype'",
-            "extension == '.tsv'",
             "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
+            "path == '/dataset_description.json'",
+            "length(glob(\"sub-*/ses-*\")) > 0"
+          ]
+        },
+        "PhenotypeDemographicsFileRequiredByTool": {
+          "checks": [
+            "exists('phenotype/tool-demographics_phenotype.tsv', 'dataset')"
+          ],
+          "issue": {
+            "code": "PHENOTYPE_DEMOGRAPHICS_FILE_REQUIRED_BY_TOOL",
+            "level": "error",
+            "message": "A phenotype TSV file contains a `session_id` column, but no\n`/phenotype/tool-demographics_phenotype.tsv` file\nwas found in the `/phenotype/` directory.\n"
+          },
+          "selectors": [
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
+            "datatype == 'phenotype'",
+            "suffix == 'phenotype'",
+            "extension == '.tsv'",
             "type(columns.session_id) != 'null'"
           ]
         },
-        "PhenotypeSessionLevels": {
+        "PhenotypeDemographicsMissingData": {
+          "checks": [
+            "type(columns.session_id) != 'null'",
+            "type(sidecar.IndexColumns) != 'null'"
+          ],
+          "issue": {
+            "code": "PHENOTYPE_DEMOGRAPHICS_MISSING_DATA",
+            "level": "error",
+            "message": "`/phenotype/tool-demographics_phenotype.tsv` is required to have a `session_id` column defined as well as an\n`IndexColumns` defined in its sidecar when session directories are present.\n"
+          },
+          "selectors": [
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
+            "path == '/phenotype/tool-demographics_phenotype.tsv'",
+            "length(glob(\"sub-*/ses-*\")) > 0"
+          ]
+        },
+        "PhenotypeIndexColumnsRequired": {
+          "checks": [
+            "type(sidecar.IndexColumns) != 'null'"
+          ],
+          "issue": {
+            "code": "PHENOTYPE_TOOL_MISSING_INDEX_COLUMNS",
+            "level": "error",
+            "message": "A phenotype file is missing the `IndexColumns` key and value in its associated sidecar.\n"
+          },
+          "selectors": [
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
+            "suffix == 'phenotype'",
+            "extension == '.tsv'",
+            "type(columns.session_id) != 'null'"
+          ]
+        },
+        "PhenotypeSessionColumnExists": {
           "checks": [
             "type(sidecar.session_id.Levels) != 'null'"
           ],
           "issue": {
-            "code": "PHENOTYPE_SESSION_LEVELS",
+            "code": "PHENOTYPE_SESSION_LEVELS_MISSING",
             "level": "error",
-            "message": "The sessions.tsv sidecar must include a Levels field for session_id\nto define valid session labels and their descriptions.\n"
+            "message": "Session directories exist, but a `Levels` definition is missing\nfrom the `session_id` object in its sidecar.\n"
           },
           "selectors": [
-            "suffix == 'sessions'",
-            "extension == '.tsv'",
-            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
-          ]
-        },
-        "PhenotypeSessionsMissing": {
-          "checks": [
-            "exists('sessions.tsv', 'dataset')"
-          ],
-          "issue": {
-            "code": "PHENOTYPE_SESSIONS_MISSING",
-            "level": "error",
-            "message": "Session directories were found in this dataset but no sessions.tsv file\nexists at the dataset root. A sessions.tsv file is required when session\ndirectories are present and Phenotype validation is enabled.\n"
-          },
-          "selectors": [
-            "path == '/dataset_description.json'",
             "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
+            "suffix == 'phenotype'",
+            "extension == '.tsv'",
             "length(glob(\"sub-*/ses-*\")) > 0"
           ]
         },
-        "PhenotypeSessionsRequired": {
+        "PhenotypeSessionDirectoryMissing": {
           "checks": [
-            "type(columns.session_id) != 'null'"
+            "length(glob(\"sub-*/ses-*\")) > 0"
           ],
           "issue": {
-            "code": "PHENOTYPE_SESSIONS_REQUIRED",
+            "code": "SESSION_DIRECTORIES_REQUIRED",
             "level": "error",
-            "message": "Phenotype TSV files must have a session_id column if a dataset contains multiple sessions.\n"
+            "message": "No session directories were found. Session directories are required for all participants\nwhen `session_id` columns are used in any phenotype TSV file.\n"
           },
           "selectors": [
-            "datatype == 'phenotype'",
-            "extension == '.tsv'",
             "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
-            "type(dataset.session_tsv) != 'null'"
+            "entities.tool == 'demographics'",
+            "suffix == 'phenotype'",
+            "extension == '.tsv'",
+            "type(columns.session_id) != 'null'",
+            "length(glob(\"sub-*\")) > 0"
+          ]
+        },
+        "PhenotypeSessionRequired": {
+          "checks": [
+            "type(entities.ses) != 'null'"
+          ],
+          "issue": {
+            "code": "SESSION_REQUIRED",
+            "level": "error",
+            "message": "A participant data file is missing the `ses` entity.\nEvery data file must be in a session directory and use the `ses`\nentity when any other multi-session data is used in the dataset.\n"
+          },
+          "selectors": [
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
+            "type(entities.sub) != 'null'",
+            "!intersects([extension], ['.tsv', '.json'])",
+            "length(glob(\"sub-*/ses-*\")) > 0"
+          ]
+        },
+        "PhenotypeSidecarRequired": {
+          "checks": [
+            "type(sidecar.MeasurementToolMetadata.TermURL) != 'null' || type(sidecar.MeasurementToolMetadata.Description) != 'null'"
+          ],
+          "issue": {
+            "code": "PHENOTYPE_SIDECAR_REQUIRED",
+            "level": "error",
+            "message": "Phenotype TSV files are required to have a sidecar with a `MeasurementToolMetadata` object\ncontaining either a `TermURL` or `Description` key.\n"
+          },
+          "selectors": [
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
+            "suffix == 'phenotype'",
+            "extension == '.tsv'",
+            "type(entities.tool) != 'null'"
           ]
         },
         "PhenotypeSubjectsMissing": {
           "checks": [
-            "length(intersects(columns.participant_id, dataset.participant_tsv.participant_id))\n== length(unique(columns.participant_id))\n"
+            "length(intersects(unique(columns.participant_id), dataset.subjects.participant_id))\n== length(unique(columns.participant_id))\n"
           ],
           "issue": {
             "code": "PHENOTYPE_SUBJECTS_MISSING",
             "level": "error",
-            "message": "A phenotype/ .tsv file lists subjects that were not found in\nthe participant_id column found in the participants.tsv file.\n"
+            "message": "A phenotype TSV file contains subjects that were not found in\nthe `participant_id` column of the `participants.tsv` file.\n"
           },
           "selectors": [
             "datatype == 'phenotype'",
             "extension == '.tsv'",
-            "type(dataset.participant_tsv.participant_id) != 'null'"
+            "type(dataset.subjects.participant_id) != 'null'"
           ]
         }
       },
@@ -11956,7 +12051,7 @@
             "message": "As per section 164.514(C) of \"The De-identification Standard\" under HIPAA guidelines,\nparticipants with age 89 or higher should be tagged as 89+. More information can be found at\nhttps://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/#standard.\n"
           },
           "selectors": [
-            "path == 'participants.tsv'",
+            "path == '/participants.tsv'",
             "columns.age != null"
           ]
         },
@@ -12124,105 +12219,6 @@
       "extension",
       "deprecated"
     ],
-    "dataset_metadata": {
-      "atlas_description": {
-        "fields": {
-          "AtlasName": "required",
-          "AtlasSampleSize": "optional",
-          "Authors": "recommended",
-          "Curators": "optional",
-          "DerivedFrom": "optional",
-          "Description": "recommended",
-          "Funding": "optional",
-          "LevelType": "optional",
-          "License": "required",
-          "RRID": "optional",
-          "ReferencesAndLinks": "optional",
-          "Species": "optional"
-        },
-        "selectors": [
-          "suffix == 'description'",
-          "extension == '.json'",
-          "entities.atlas"
-        ]
-      },
-      "dataset_authors": {
-        "fields": {
-          "Authors": {
-            "issue": {
-              "code": "NO_AUTHORS",
-              "message": "The Authors field of dataset_description.json should contain an array of fields -\nwith one author per field. This was triggered because there are no authors, which\nwill make DOI registration from dataset metadata impossible.\n"
-            },
-            "level": "recommended"
-          }
-        },
-        "selectors": [
-          "path == \"/dataset_description.json\"",
-          "!exists(\"CITATION.cff\", \"dataset\")"
-        ]
-      },
-      "dataset_description": {
-        "fields": {
-          "Acknowledgements": "optional",
-          "AdditionalValidation": "optional",
-          "Authors": {
-            "level": "optional",
-            "level_addendum": "recommended if `CITATION.cff` is not present"
-          },
-          "BIDSVersion": "required",
-          "DatasetDOI": "optional",
-          "DatasetLinks": {
-            "level": "optional",
-            "level_addendum": "required if [BIDS URIs](SPEC_ROOT/common-principles.md#bids-uri) are used"
-          },
-          "DatasetType": "recommended",
-          "EthicsApprovals": "optional",
-          "Funding": "optional",
-          "GeneratedBy": "recommended",
-          "HEDVersion": "recommended",
-          "HowToAcknowledge": "optional",
-          "Keywords": "optional",
-          "License": "recommended",
-          "Name": "required",
-          "ReferencesAndLinks": "optional",
-          "SourceDatasets": "recommended"
-        },
-        "selectors": [
-          "path == \"/dataset_description.json\""
-        ]
-      },
-      "dataset_description_with_genetics": {
-        "fields": {
-          "Genetics": "required"
-        },
-        "selectors": [
-          "path == \"/dataset_description.json\"",
-          "exists('genetic_info.json', 'dataset')"
-        ]
-      },
-      "derivative_description": {
-        "fields": {
-          "GeneratedBy": "required"
-        },
-        "selectors": [
-          "path == \"/dataset_description.json\"",
-          "json.DatasetType == \"derivative\""
-        ]
-      },
-      "genetic_info": {
-        "fields": {
-          "AnalyticalApproach": "optional",
-          "BrainLocation": "optional",
-          "CellType": "optional",
-          "GeneticLevel": "required",
-          "SampleOrigin": "required",
-          "TissueOrigin": "optional"
-        },
-        "selectors": [
-          "path == \"/genetic_info.json\""
-        ]
-      }
-    },
     "directories": {
       "derivative": {
         "code": {
@@ -12449,6 +12445,7 @@
       "session",
       "cohort",
       "sample",
+      "tool",
       "task",
       "tracksys",
       "acquisition",
@@ -12487,14 +12484,6 @@
         "message": ".bval and .bvec files must be single space delimited\nand contain only numerical values.\n",
         "selectors": [
           "intersects([extension], [\".bval\", \".bvec\"])"
-        ]
-      },
-      "BrainvisionLinksBroken": {
-        "code": "BRAINVISION_LINKS_BROKEN",
-        "level": "error",
-        "message": "Internal file pointers in BrainVision file triplet (*.eeg, *.vhdr,\nand *.vmrk) are broken or some files do not exist.\n",
-        "selectors": [
-          "intersects([extension], [\".eeg\", \".vhdr\", \".vmrk\"])"
         ]
       },
       "BvecRowLength": {
@@ -12765,6 +12754,22 @@
             "level": "optional",
             "stem": "*"
           },
+          "phenotype_tool": {
+            "datatypes": [
+              "phenotype"
+            ],
+            "entities": {
+              "tool": "required"
+            },
+            "extensions": [
+              ".tsv",
+              ".json"
+            ],
+            "level": "optional",
+            "suffixes": [
+              "phenotype"
+            ]
+          },
           "samples": {
             "extensions": [
               ".tsv",
@@ -12841,6 +12846,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -12856,6 +12862,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -12873,6 +12880,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13051,6 +13059,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13066,6 +13075,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13085,6 +13095,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13116,6 +13127,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13131,6 +13143,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13149,6 +13162,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13181,6 +13195,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13196,6 +13211,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13215,6 +13231,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13248,6 +13265,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13263,6 +13281,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13283,6 +13302,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13314,6 +13334,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13329,6 +13350,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13347,6 +13369,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13379,6 +13402,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13394,6 +13418,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13413,6 +13438,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13444,6 +13470,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13459,6 +13486,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13477,6 +13505,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13508,6 +13537,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13534,6 +13564,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13552,6 +13583,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13592,6 +13624,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13622,6 +13655,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13638,6 +13672,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13758,6 +13793,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13774,6 +13810,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -13794,6 +13831,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13892,6 +13930,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13907,6 +13946,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "chunk": "optional",
               "cohort": "optional",
               "description": "optional",
@@ -13923,6 +13963,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13953,6 +13994,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -13968,6 +14010,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "chunk": "optional",
               "cohort": "optional",
               "description": "optional",
@@ -13985,6 +14028,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14082,6 +14126,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14111,6 +14156,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14139,6 +14185,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14159,6 +14206,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "chunk": "optional",
               "cohort": "optional",
               "description": "optional",
@@ -14174,6 +14222,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14211,6 +14260,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14229,6 +14279,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14248,6 +14299,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14282,6 +14334,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14297,6 +14350,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14315,6 +14369,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14347,6 +14402,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14362,6 +14418,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14381,6 +14438,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14413,6 +14471,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14428,6 +14487,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14447,6 +14507,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14473,6 +14534,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14494,6 +14556,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "chunk": "optional",
               "cohort": "optional",
               "description": "optional",
@@ -14507,6 +14570,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14541,6 +14605,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14557,6 +14622,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14572,6 +14638,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14603,6 +14670,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14618,6 +14686,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14635,6 +14704,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14665,6 +14735,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14680,6 +14751,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -14697,6 +14769,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14804,6 +14877,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14837,6 +14911,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14868,6 +14943,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14974,6 +15050,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -14991,6 +15068,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "ceagent": "optional",
               "chunk": "optional",
               "cohort": "optional",
@@ -15010,6 +15088,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -15041,6 +15120,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -15057,6 +15137,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "cohort": "optional",
               "description": "optional",
               "direction": "optional",
@@ -15073,6 +15154,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -15081,6 +15163,63 @@
             "suffixes": [
               "asl",
               "m0scan"
+            ]
+          },
+          "pet_pet_surface": {
+            "datatypes": [
+              "pet"
+            ],
+            "entities": {
+              "density": "optional",
+              "description": "optional",
+              "hemisphere": "optional",
+              "reconstruction": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "tracer": "optional"
+            },
+            "extensions": [
+              ".func.gii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "pet"
+            ]
+          },
+          "pet_pet_surface_atlas": {
+            "datatypes": [
+              "pet"
+            ],
+            "entities": {
+              "atlas": "optional",
+              "cohort": "optional",
+              "density": "optional",
+              "description": "optional",
+              "hemisphere": "optional",
+              "reconstruction": "optional",
+              "run": "optional",
+              "session": "optional",
+              "space": "optional",
+              "subject": "optional",
+              "task": "optional",
+              "template": "required",
+              "tracer": "optional"
+            },
+            "extensions": [
+              ".func.gii",
+              ".json"
+            ],
+            "selectors": [
+              "dataset.dataset_description.DatasetType == 'derivative'"
+            ],
+            "suffixes": [
+              "pet"
             ]
           },
           "pet_pet_volumetric": {
@@ -15101,6 +15240,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -15115,6 +15255,8 @@
               "pet"
             ],
             "entities": {
+              "atlas": "optional",
+              "cohort": "optional",
               "description": "optional",
               "reconstruction": "optional",
               "resolution": "optional",
@@ -15123,11 +15265,13 @@
               "space": "optional",
               "subject": "optional",
               "task": "optional",
+              "template": "required",
               "tracer": "optional"
             },
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "selectors": [
@@ -15575,6 +15719,7 @@
             ],
             "entities": {
               "acquisition": "optional",
+              "atlas": "optional",
               "chunk": "optional",
               "cohort": "optional",
               "description": "optional",
@@ -15732,6 +15877,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15757,6 +15903,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15783,6 +15930,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15810,6 +15958,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15835,6 +15984,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15861,6 +16011,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15886,6 +16037,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15911,6 +16063,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15945,6 +16098,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -15987,6 +16141,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16268,6 +16423,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16296,6 +16452,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json",
               ".bvec",
               ".bval"
@@ -16321,6 +16478,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16528,6 +16686,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16556,6 +16715,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16582,6 +16742,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16608,6 +16769,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16628,6 +16790,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16656,6 +16819,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16681,6 +16845,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json",
               ".bval",
               ".bvec"
@@ -16707,6 +16872,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16735,6 +16901,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16764,6 +16931,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -16789,6 +16957,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -17071,6 +17240,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -17135,6 +17305,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -17179,6 +17350,7 @@
             "extensions": [
               ".nii.gz",
               ".nii",
+              ".ome.zarr/",
               ".json"
             ],
             "suffixes": [
@@ -17425,6 +17597,85 @@
       }
     },
     "json": {
+      "atlas": {
+        "atlas_description": {
+          "fields": {
+            "AtlasName": "required",
+            "AtlasSampleSize": "optional",
+            "Authors": "recommended",
+            "Curators": "optional",
+            "DerivedFrom": "optional",
+            "Description": "recommended",
+            "Funding": "optional",
+            "LevelType": "optional",
+            "License": "required",
+            "RRID": "optional",
+            "ReferencesAndLinks": "optional",
+            "Species": "optional"
+          },
+          "selectors": [
+            "suffix == 'description'",
+            "extension == '.json'",
+            "entities.atlas"
+          ]
+        }
+      },
+      "dataset": {
+        "dataset_authors": {
+          "fields": {
+            "Authors": {
+              "issue": {
+                "code": "NO_AUTHORS",
+                "message": "The Authors field of dataset_description.json should contain an array of fields -\nwith one author per field. This was triggered because there are no authors, which\nwill make DOI registration from dataset metadata impossible.\n"
+              },
+              "level": "recommended"
+            }
+          },
+          "selectors": [
+            "path == \"/dataset_description.json\"",
+            "!exists(\"CITATION.cff\", \"dataset\")"
+          ]
+        },
+        "dataset_description": {
+          "fields": {
+            "Acknowledgements": "optional",
+            "AdditionalValidation": "optional",
+            "Authors": {
+              "level": "optional",
+              "level_addendum": "recommended if `CITATION.cff` is not present"
+            },
+            "BIDSVersion": "required",
+            "DatasetDOI": "optional",
+            "DatasetLinks": {
+              "level": "optional",
+              "level_addendum": "required if [BIDS URIs](SPEC_ROOT/common-principles.md#bids-uri) are used"
+            },
+            "DatasetType": "recommended",
+            "EthicsApprovals": "optional",
+            "Funding": "optional",
+            "GeneratedBy": "recommended",
+            "HEDVersion": "recommended",
+            "HowToAcknowledge": "optional",
+            "Keywords": "optional",
+            "License": "recommended",
+            "Name": "required",
+            "ReferencesAndLinks": "optional",
+            "SourceDatasets": "recommended"
+          },
+          "selectors": [
+            "path == \"/dataset_description.json\""
+          ]
+        },
+        "derivative_description": {
+          "fields": {
+            "GeneratedBy": "required"
+          },
+          "selectors": [
+            "path == \"/dataset_description.json\"",
+            "json.DatasetType == \"derivative\""
+          ]
+        }
+      },
       "eeg": {
         "EEGCoordsystemFiducials": {
           "fields": {
@@ -17574,6 +17825,30 @@
           "selectors": [
             "datatype == \"emg\"",
             "suffix == \"coordsystem\""
+          ]
+        }
+      },
+      "genetics": {
+        "dataset_description_with_genetics": {
+          "fields": {
+            "Genetics": "required"
+          },
+          "selectors": [
+            "path == \"/dataset_description.json\"",
+            "exists('genetic_info.json', 'dataset')"
+          ]
+        },
+        "genetic_info": {
+          "fields": {
+            "AnalyticalApproach": "optional",
+            "BrainLocation": "optional",
+            "CellType": "optional",
+            "GeneticLevel": "required",
+            "SampleOrigin": "required",
+            "TissueOrigin": "optional"
+          },
+          "selectors": [
+            "path == \"/genetic_info.json\""
           ]
         }
       },
@@ -18165,14 +18440,14 @@
             "BolusCutOffDelayTime": {
               "issue": {
                 "code": "PASL_BOLUS_CUT_OFF_DELAY_TIME",
-                "message": "It is required to define 'BolusCutOffDelayTime' for this file,\nwhen 'BolusCutOffFlag' is set to true. 'BolusCutOffDelayTime' is\nthe duration between the end of the labeling and the start of the\nbolus cut-off saturation pulse(s), in seconds. This can be a number\nor array of numbers, of which the values must be non-negative and\nmonotonically increasing, depending on the number of bolus cut-off\nsaturation pulses. For Q2TIPS, only the values for the first and last\nbolus cut-off saturation pulses are provided. Based on DICOM Tag\n0018,925F ASL Bolus Cut-off Delay Time.\n"
+                "message": "It is required to define 'BolusCutOffDelayTime' for this file,\nwhen 'BolusCutOffFlag' is set to true. 'BolusCutOffDelayTime' is\nthe duration between the end of the labeling and the start of the\nbolus cut-off saturation pulse(s), in seconds. This can be a number\nor array of numbers, of which the values must be non-negative and\nmonotonically increasing, depending on the number of bolus cut-off\nsaturation pulses. For Q2TIPS, only the values for the first and last\nbolus cut-off saturation pulses are provided. Based on DICOM Tag\n(0018,925F) `ASL Bolus Cut-off Delay Time`.\n"
               },
               "level": "required"
             },
             "BolusCutOffTechnique": {
               "issue": {
                 "code": "PASL_BOLUS_CUT_OFF_TECHNIQUE",
-                "message": "It is required to define `BolusCutOffTechnique` for this file,\nwhen `BolusCutOffFlag` is set to `true`. `BolusCutOffTechnique`,\nis the name of the technique used\n(for example, Q2TIPS, QUIPSS or QUIPSSII).\nCorresponds to DICOM Tag 0018,925E `ASL Bolus Cut-off Technique`.\n"
+                "message": "It is required to define `BolusCutOffTechnique` for this file,\nwhen `BolusCutOffFlag` is set to `true`. `BolusCutOffTechnique`,\nis the name of the technique used\n(for example, Q2TIPS, QUIPSS or QUIPSSII).\nCorresponds to DICOM Tag (0018,925E) `ASL Bolus Cut-off Technique`.\n"
               },
               "level": "required"
             }
@@ -18426,7 +18701,9 @@
         },
         "MRIDiffusionOtherMetadata": {
           "fields": {
+            "BigDelta": "optional",
             "PhaseEncodingDirection": "recommended",
+            "SmallDelta": "optional",
             "TotalReadoutTime": "recommended"
           },
           "selectors": [
@@ -19377,11 +19654,11 @@
         "DeidentificationMethod": {
           "fields": {
             "DeidentificationMethod": {
-              "description_addendum": "Corresponds to [DICOM Tag 0012, 0063](http://www.dicomlookup.com/dicomtags/(0012,0063))\n`De-identification Method`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0012,0063)](https://www.dicomlookup.com/dicomtags/(0012,0063))\n`De-identification Method`.\n",
               "level": "optional"
             },
             "DeidentificationMethodCodeSequence": {
-              "description_addendum": "Corresponds to [DICOM Tag 0012, 0064](http://www.dicomlookup.com/dicomtags/(0012,0064))\n`De-identification Method Code Sequence`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0012,0064)](https://www.dicomlookup.com/dicomtags/(0012,0064))\n`De-identification Method Code Sequence`.\n",
               "level": "optional"
             }
           },
@@ -19462,7 +19739,7 @@
               "description_addendum": "The data type array provides a value for each volume in a 4D dataset and\nshould only be used when the volume timing is critical for interpretation of\nthe data, such as in\n[ASL](SPEC_ROOT/modality-specific-files/magnetic-resonance-imaging-data.md#\\\narterial-spin-labeling-perfusion-data)\nor variable flip angle fMRI sequences.\n",
               "issue": {
                 "code": "LOOK_LOCKER_FLIP_ANGLE_MISSING",
-                "message": "You should define 'FlipAngle' for this file, in\ncase of a LookLocker acquisition. 'FlipAngle' is the\nflip angle (FA) for the acquisition, specified in degrees.\nCorresponds to [DICOM Tag 0018, 1314](http://www.dicomlookup.com/dicomtags/(0018,1314))\n`Flip Angle`.\nThe data type number may apply to files from any MRI modality\nconcerned with a single value for this field,\nor to the files in a file collection where the value of this field\nis iterated using the flip entity.\nThe data type array provides a value for each volume in a 4D dataset and\nshould only be used when the volume timing is critical for interpretation of the data,\nsuch as in ASL or variable flip angle fMRI sequences.\n"
+                "message": "You should define 'FlipAngle' for this file, in\ncase of a LookLocker acquisition. 'FlipAngle' is the\nflip angle (FA) for the acquisition, specified in degrees.\nCorresponds to [DICOM Tag (0018,1314)](https://www.dicomlookup.com/dicomtags/(0018,1314))\n`Flip Angle`.\nThe data type number may apply to files from any MRI modality\nconcerned with a single value for this field,\nor to the files in a file collection where the value of this field\nis iterated using the flip entity.\nThe data type array provides a value for each volume in a 4D dataset and\nshould only be used when the volume timing is critical for interpretation of the data,\nsuch as in ASL or variable flip angle fMRI sequences.\n"
               },
               "level": "required"
             }
@@ -19477,7 +19754,7 @@
           "fields": {
             "CoilCombinationMethod": "recommended",
             "DeviceSerialNumber": {
-              "description_addendum": "Corresponds to [DICOM Tag 0018, 1000](http://www.dicomlookup.com/dicomtags/(0018,1000))\n`DeviceSerialNumber`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0018,1000)](https://www.dicomlookup.com/dicomtags/(0018,1000))\n`DeviceSerialNumber`.\n",
               "level": "recommended"
             },
             "GradientSetType": "optional",
@@ -19488,11 +19765,11 @@
               "level_addendum": "required for Arterial Spin Labeling"
             },
             "Manufacturer": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 0070](http://www.dicomlookup.com/dicomtags/(0008,0070))\n`Manufacturer`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0008,0070)](https://www.dicomlookup.com/dicomtags/(0008,0070))\n`Manufacturer`.\n",
               "level": "recommended"
             },
             "ManufacturersModelName": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 1090](http://www.dicomlookup.com/dicomtags/(0008,1090))\n`Manufacturers Model Name`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0008,1090)](https://www.dicomlookup.com/dicomtags/(0008,1090))\n`Manufacturers Model Name`.\n",
               "level": "recommended"
             },
             "MatrixCoilMode": "recommended",
@@ -19501,11 +19778,11 @@
             "ReceiveCoilActiveElements": "recommended",
             "ReceiveCoilName": "recommended",
             "SoftwareVersions": {
-              "description_addendum": "Corresponds to [DICOM Tag 0018, 1020](http://www.dicomlookup.com/dicomtags/(0018,1020))\n`Software Versions`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0018,1020)](https://www.dicomlookup.com/dicomtags/(0018,1020))\n`Software Versions`.\n",
               "level": "recommended"
             },
             "StationName": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 1010](http://www.dicomlookup.com/dicomtags/(0008,1010))\n`Station Name`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0008,1010)](https://www.dicomlookup.com/dicomtags/(0008,1010))\n`Station Name`.\n",
               "level": "recommended"
             },
             "TablePosition": {
@@ -19521,15 +19798,15 @@
         "MRIInstitutionInformation": {
           "fields": {
             "InstitutionAddress": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 0081](http://www.dicomlookup.com/dicomtags/(0008,0081))\n`InstitutionAddress`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0008,0081)](https://www.dicomlookup.com/dicomtags/(0008,0081))\n`InstitutionAddress`.\n",
               "level": "recommended"
             },
             "InstitutionName": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 0080](http://www.dicomlookup.com/dicomtags/(0008,0080))\n`InstitutionName`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0008,0080)](https://www.dicomlookup.com/dicomtags/(0008,0080))\n`InstitutionName`.\n",
               "level": "recommended"
             },
             "InstitutionalDepartmentName": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 1040](http://www.dicomlookup.com/dicomtags/(0008,1040))\n`Institutional Department Name`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0008,1040)](https://www.dicomlookup.com/dicomtags/(0008,1040))\n`Institutional Department Name`.\n",
               "level": "recommended"
             }
           },
@@ -19581,7 +19858,7 @@
         "MRISample": {
           "fields": {
             "BodyPart": {
-              "description_addendum": "Corresponds to [DICOM Tag 0018, 0015](http://www.dicomlookup.com/dicomtags/(0018,0015))\n`Body Part Examined`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0018,0015)](https://www.dicomlookup.com/dicomtags/(0018,0015))\n`Body Part Examined`.\n",
               "level": "optional"
             },
             "BodyPartDetails": "optional",
@@ -19635,7 +19912,7 @@
             },
             "ScanOptions": "optional",
             "ScanningSequence": {
-              "description_addendum": "Corresponds to [DICOM Tag 0018, 0020](http://www.dicomlookup.com/dicomtags/(0018,0020))\n`Scanning Sequence`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0018,0020)](https://www.dicomlookup.com/dicomtags/(0018,0020))\n`Scanning Sequence`.\n",
               "level": "recommended"
             },
             "SequenceName": "recommended",
@@ -19721,6 +19998,8 @@
             "MTPulseShape": "recommended"
           },
           "selectors": [
+            "modality == \"mri\"",
+            "match(extension, \"^\\.nii(\\.gz)?$\")",
             "sidecar.MTState == true"
           ]
         },
@@ -19789,6 +20068,8 @@
             "SpoilingGradientMoment": "recommended"
           },
           "selectors": [
+            "modality == \"mri\"",
+            "match(extension, \"^\\.nii(\\.gz)?$\")",
             "intersects([sidecar.SpoilingType], [\"GRADIENT\", \"COMBINED\"])"
           ]
         },
@@ -19797,6 +20078,8 @@
             "SpoilingRFPhaseIncrement": "recommended"
           },
           "selectors": [
+            "modality == \"mri\"",
+            "match(extension, \"^\\.nii(\\.gz)?$\")",
             "intersects([sidecar.SpoilingType], [\"RF\", \"COMBINED\"])"
           ]
         },
@@ -19805,6 +20088,8 @@
             "SpoilingType": "recommended"
           },
           "selectors": [
+            "modality == \"mri\"",
+            "match(extension, \"^\\.nii(\\.gz)?$\")",
             "sidecar.SpoilingState == true"
           ]
         }
@@ -19946,7 +20231,7 @@
         "MRSSample": {
           "fields": {
             "BodyPart": {
-              "description_addendum": "Corresponds to [DICOM Tag 0018, 0015](http://www.dicomlookup.com/dicomtags/(0018,0015))\n`Body Part Examined`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0018,0015)](https://www.dicomlookup.com/dicomtags/(0018,0015))\n`Body Part Examined`.\n",
               "level": "optional",
               "level_addendum": "required if `voi` entity is present"
             },
@@ -20211,20 +20496,16 @@
         },
         "PETHardware": {
           "fields": {
-            "BodyPart": {
-              "description_addendum": "Corresponds to [DICOM Tag 0018, 0015](http://www.dicomlookup.com/dicomtags/(0018,0015))\n`Body Part Examined`.\n",
-              "level": "recommended"
-            },
             "Manufacturer": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 0070](http://www.dicomlookup.com/dicomtags/(0008,0070))\n`Manufacturer`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0008,0070)](https://www.dicomlookup.com/dicomtags/(0008,0070))\n`Manufacturer`.\n",
               "level": "required"
             },
             "ManufacturersModelName": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 1090](http://www.dicomlookup.com/dicomtags/(0008,1090))\n`Manufacturers Model Name`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0008,1090)](https://www.dicomlookup.com/dicomtags/(0008,1090))\n`Manufacturers Model Name`.\n",
               "level": "required"
             },
             "Units": {
-              "description_addendum": "SI unit for radioactivity (Becquerel) should be used (for example, \"Bq/mL\").\nCorresponds to [DICOM Tag 0054, 1001](http://www.dicomlookup.com/dicomtags/(0054,1001))\n`Units`.\n",
+              "description_addendum": "SI unit for radioactivity (Becquerel) should be used (for example, \"Bq/mL\").\nCorresponds to [DICOM Tag (0054,1001)](https://www.dicomlookup.com/dicomtags/(0054,1001)) `Units`.\n",
               "level": "required"
             }
           },
@@ -20236,15 +20517,15 @@
         "PETInstitutionInformation": {
           "fields": {
             "InstitutionAddress": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 0081](http://www.dicomlookup.com/dicomtags/(0008,0081))\n`InstitutionAddress`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0008,0081)](https://www.dicomlookup.com/dicomtags/(0008,0081))\n`InstitutionAddress`.\n",
               "level": "recommended"
             },
             "InstitutionName": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 0080](http://www.dicomlookup.com/dicomtags/(0008,0080))\n`InstitutionName`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0008,0080)](https://www.dicomlookup.com/dicomtags/(0008,0080))\n`InstitutionName`.\n",
               "level": "recommended"
             },
             "InstitutionalDepartmentName": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 1040](http://www.dicomlookup.com/dicomtags/(0008,1040))\n`Institutional Department Name`.\n",
+              "description_addendum": "Corresponds to [DICOM Tag (0008,1040)](https://www.dicomlookup.com/dicomtags/(0008,1040))\n`Institutional Department Name`.\n",
               "level": "recommended"
             }
           },
@@ -20256,20 +20537,11 @@
         "PETPharmaceuticals": {
           "fields": {
             "Anaesthesia": "optional",
-            "PharmaceuticalDoseAmount": {
-              "description_addendum": "For pharmaceutical co-administered with tracer.\nCorresponds to [DICOM Tag 0018, 0028](http://www.dicomlookup.com/dicomtags/(0018,0028))\n`Intervention Drug Dose`.\n",
-              "level": "recommended"
-            },
+            "PharmaceuticalDoseAmount": "recommended",
             "PharmaceuticalDoseRegimen": "recommended",
-            "PharmaceuticalDoseTime": {
-              "description_addendum": "Corresponds to a combination of DICOM Tags\n[0018, 0027](http://www.dicomlookup.com/dicomtags/(0018,0027)) `Intervention Drug Stop Time` and\n[0018, 0035](http://www.dicomlookup.com/dicomtags/(0018,0035)) `Intervention Drug Start Time`.\n",
-              "level": "recommended"
-            },
+            "PharmaceuticalDoseTime": "recommended",
             "PharmaceuticalDoseUnits": "recommended",
-            "PharmaceuticalName": {
-              "description_addendum": "For pharmaceutical co-administered with tracer.\nCorresponds to [DICOM Tag 0018, 0034](http://www.dicomlookup.com/dicomtags/(0018,0034))\n`Intervention Drug Name`.\n",
-              "level": "recommended"
-            }
+            "PharmaceuticalName": "recommended"
           },
           "selectors": [
             "datatype == \"pet\"",
@@ -20314,15 +20586,9 @@
             "SpecificRadioactivityUnits": "required",
             "TracerMolecularWeight": "recommended",
             "TracerMolecularWeightUnits": "recommended",
-            "TracerName": {
-              "description_addendum": "Corresponds to DICOM Tags (0008,0105) `Mapping Resource` and\n(0008,0122) `Mapping Resource Name`.\n",
-              "level": "required"
-            },
+            "TracerName": "required",
             "TracerRadLex": "recommended",
-            "TracerRadionuclide": {
-              "description_addendum": "Corresponds to DICOM Tags (0008,0104) `CodeValue` and (0008,0104) `CodeMeaning`.\n",
-              "level": "required"
-            },
+            "TracerRadionuclide": "required",
             "TracerSNOMED": "recommended"
           },
           "selectors": [
@@ -20333,56 +20599,32 @@
         "PETReconstruction": {
           "fields": {
             "AcquisitionMode": "required",
-            "AttenuationCorrection": {
-              "description_addendum": "This corresponds to [DICOM Tag 0054, 1101](http://www.dicomlookup.com/dicomtags/(0054,1101))\n`Attenuation Correction Method`.\n",
-              "level": "required"
-            },
+            "AttenuationCorrection": "required",
             "AttenuationCorrectionMethodReference": "recommended",
-            "DecayCorrectionFactor": {
-              "description_addendum": "Corresponds to [DICOM Tag 0054, 1321](http://www.dicomlookup.com/dicomtags/(0054,1321))\n`Decay Factor`.\n",
-              "level": "recommended"
-            },
-            "DoseCalibrationFactor": {
-              "description_addendum": "Corresponds to [DICOM Tag 0054, 1322](http://www.dicomlookup.com/dicomtags/(0054,1322))\n`Dose Calibration Factor`.\n",
-              "level": "recommended"
-            },
+            "DecayCorrectionFactor": "recommended",
+            "DoseCalibrationFactor": "recommended",
             "ImageDecayCorrected": "required",
             "ImageDecayCorrectionTime": "required",
             "PromptRate": "recommended",
             "RandomRate": "recommended",
             "ReconFilterSize": {
-              "description_addendum": "This partly matches the [DICOM Tag 0018, 1210](http://www.dicomlookup.com/dicomtags/(0018,1210))\n`Convolution Kernel`.\n",
               "level": "recommended",
               "level_addendum": "required if `ReconFilterType` is not `\"none\"`"
             },
-            "ReconFilterType": {
-              "description_addendum": "This partly matches the [DICOM Tag 0018, 1210](http://www.dicomlookup.com/dicomtags/(0018,1210))\n`Convolution Kernel`.\n",
-              "level": "required"
-            },
+            "ReconFilterType": "required",
             "ReconMethodImplementationVersion": "recommended",
-            "ReconMethodName": {
-              "description_addendum": "This partly matches the [DICOM Tag 0054, 1103](http://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
-              "level": "required"
-            },
-            "ReconMethodParameterLabels": {
-              "description_addendum": "This partly matches the [DICOM Tag 0054, 1103](http://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
-              "level": "required"
-            },
+            "ReconMethodName": "required",
+            "ReconMethodParameterLabels": "required",
             "ReconMethodParameterUnits": {
-              "description_addendum": "This partly matches the [DICOM Tag 0054, 1103](http://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
               "level": "recommended",
               "level_addendum": "required if `ReconMethodParameterLabels` does not contain `\"none\"`"
             },
             "ReconMethodParameterValues": {
-              "description_addendum": "This partly matches the [DICOM Tag 0054, 1103](http://www.dicomlookup.com/dicomtags/(0054,1103))\n`Reconstruction Method`.\n",
               "level": "recommended",
               "level_addendum": "required if `ReconMethodParameterLabels` does not contain `\"none\"`"
             },
             "ScaleFactor": "recommended",
-            "ScatterFraction": {
-              "description_addendum": "Corresponds to [DICOM Tag 0054, 1323](http://www.dicomlookup.com/dicomtags/(0054,1323))\n`Scatter Fraction Factor`.\n",
-              "level": "recommended"
-            },
+            "ScatterFraction": "recommended",
             "SinglesRate": "recommended"
           },
           "selectors": [
@@ -20392,10 +20634,7 @@
         },
         "PETSample": {
           "fields": {
-            "BodyPart": {
-              "description_addendum": "Corresponds to [DICOM Tag 0018, 0015](http://www.dicomlookup.com/dicomtags/(0018,0015))\n`Body Part Examined`.\n",
-              "level": "optional"
-            },
+            "BodyPart": "optional",
             "BodyPartDetails": "optional",
             "BodyPartDetailsOntology": "optional"
           },
@@ -20427,18 +20666,9 @@
           "fields": {
             "FrameDuration": "required",
             "FrameTimesStart": "required",
-            "InjectionEnd": {
-              "description_addendum": "Corresponds to [DICOM Tag 0018, 1073](http://www.dicomlookup.com/dicomtags/(0018,1073))\n`Radiopharmaceutical Stop Time` converted to seconds relative to TimeZero.\n",
-              "level": "recommended"
-            },
-            "InjectionStart": {
-              "description_addendum": "Corresponds to [DICOM Tag 0018, 1072](http://www.dicomlookup.com/dicomtags/(0018,1072))\n`Radiopharmaceutical Start Time`.\n",
-              "level": "required"
-            },
-            "ScanDate": {
-              "description_addendum": "Corresponds to [DICOM Tag 0008, 0022](http://www.dicomlookup.com/dicomtags/(0008,0022))\n`Acquisition Date`.\n",
-              "level": "deprecated"
-            },
+            "InjectionEnd": "recommended",
+            "InjectionStart": "required",
+            "ScanDate": "deprecated",
             "ScanStart": "required",
             "TimeZero": "required"
           },
@@ -20449,8 +20679,10 @@
         }
       },
       "phenotype": {
-        "MeasurementToolMetadata": {
+        "Phenotype": {
           "fields": {
+            "Derivative": "optional",
+            "IndexColumns": "optional",
             "MeasurementToolMetadata": {
               "level": "optional",
               "level_addendum": "recommended by phenotype guidelines"
@@ -20458,18 +20690,18 @@
           },
           "selectors": [
             "datatype == 'phenotype'",
-            "extension == '.tsv'",
-            "!intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
+            "extension == '.tsv'"
           ]
         },
-        "MeasurementToolMetadataRec": {
+        "PhenotypeMeasurementTool": {
           "fields": {
-            "MeasurementToolMetadata": "recommended"
+            "MeasurementToolMetadata": "required"
           },
           "selectors": [
+            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])",
             "datatype == 'phenotype'",
             "extension == '.tsv'",
-            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
+            "type(entities.tool) != \"null\""
           ]
         }
       },
@@ -20921,44 +21153,23 @@
             "HED": "optional",
             "age": "recommended",
             "handedness": "recommended",
-            "participant_id": "required",
-            "session_id": "recommended",
+            "participant_id": {
+              "description_addendum": "There MUST be exactly one row for each participant.\n",
+              "level": "required"
+            },
             "sex": "recommended",
             "species": "recommended",
             "strain": "recommended",
             "strain_rrid": "recommended"
           },
           "index_columns": [
-            "participant_id",
-            "session_id"
+            "participant_id"
           ],
           "initial_columns": [
-            "participant_id",
-            "session_id"
+            "participant_id"
           ],
           "selectors": [
-            "path == \"/participants.tsv\"",
-            "!intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
-          ]
-        },
-        "Participants__Additional": {
-          "additional_columns": "allowed_if_defined",
-          "columns": {
-            "HED": "optional",
-            "participant_id": "required",
-            "session_id": "recommended"
-          },
-          "index_columns": [
-            "participant_id",
-            "session_id"
-          ],
-          "initial_columns": [
-            "participant_id",
-            "session_id"
-          ],
-          "selectors": [
-            "path == \"/participants.tsv\"",
-            "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
+            "path == \"/participants.tsv\""
           ]
         },
         "Phenotypes": {
@@ -20966,28 +21177,17 @@
           "columns": {
             "HED": "optional",
             "participant_id": {
-              "description_addendum": "Note that data for one participant MAY be represented across multiple rows\nin case of multiple sessions or runs, and\ntherefore the entry in the `participant_id` column will be repeated.\n",
+              "description_addendum": "If `IndexColumns` is in use, then `participant_id` MAY appear on more than one row.\nThe combination of `IndexColumns` on rows MUST be unique.\n",
               "level": "required"
             },
-            "run_id": {
-              "description_addendum": "A chronological `run` number is used when\na measurement tool or assessment described by a tabular file\nwas repeated within a session.\n",
-              "level": "optional",
-              "level_addendum": "required if there are multiple runs within any session"
-            },
-            "session_id": {
-              "description_addendum": "A `session_id` column MUST be added to all tabular files in the phenotype directory\nas soon as multiple sessions are present in the data set.\n",
-              "level": "optional"
-            }
+            "run_id": "optional",
+            "session_id": "optional"
           },
           "index_columns": [
-            "participant_id",
-            "session_id",
-            "run_id"
+            "participant_id"
           ],
           "initial_columns": [
-            "participant_id",
-            "session_id",
-            "run_id"
+            "participant_id"
           ],
           "selectors": [
             "datatype == 'phenotype'",
@@ -20999,32 +21199,23 @@
           "additional_columns": "allowed_if_defined",
           "columns": {
             "HED": "optional",
+            "acq_time__sessions": "recommended",
             "participant_id": {
-              "description_addendum": "Note that data for one participant MAY be represented across multiple rows\nin case of multiple sessions or runs, and\ntherefore the entry in the `participant_id` column will be repeated.\n",
+              "description_addendum": "If `IndexColumns` is in use, then `participant_id` MAY appear on more than one row.\nThe combination of `IndexColumns` on rows MUST be unique.\n",
               "level": "required"
             },
-            "run_id": {
-              "description_addendum": "A chronological `run` number is used when\na measurement tool or assessment described by a tabular file\nwas repeated within a session.\n",
-              "level": "optional",
-              "level_addendum": "required if there are multiple runs within any session"
-            },
-            "session_id": {
-              "description_addendum": "A `session_id` column MUST be added to all tabular files in the phenotype directory\nas soon as multiple sessions are present in the data set.\n",
-              "level": "optional"
-            }
+            "run_id": "optional",
+            "session_id": "optional"
           },
           "index_columns": [
-            "participant_id",
-            "session_id",
-            "run_id"
+            "participant_id"
           ],
           "initial_columns": [
-            "participant_id",
-            "session_id",
-            "run_id"
+            "participant_id"
           ],
           "selectors": [
             "datatype == 'phenotype'",
+            "suffix == 'phenotype'",
             "intersects(dataset.dataset_description.AdditionalValidation, [\"Phenotype\"])"
           ]
         },
@@ -21071,20 +21262,17 @@
           "columns": {
             "HED": "optional",
             "acq_time__sessions": "optional",
-            "participant_id": "optional",
             "pathology": "recommended",
-            "run_id": "optional",
-            "session_id": "required"
+            "session_id": {
+              "description_addendum": "There MUST be exactly one row for each session.\n",
+              "level": "required"
+            }
           },
           "index_columns": [
-            "participant_id",
-            "session_id",
-            "run_id"
+            "session_id"
           ],
           "initial_columns": [
-            "participant_id",
-            "session_id",
-            "run_id"
+            "session_id"
           ],
           "selectors": [
             "suffix == \"sessions\"",
@@ -21097,20 +21285,17 @@
           "columns": {
             "HED": "optional",
             "acq_time__sessions": "recommended",
-            "participant_id": "optional",
             "pathology": "recommended",
-            "run_id": "optional",
-            "session_id": "required"
+            "session_id": {
+              "description_addendum": "There MUST be exactly one row for each session.\n",
+              "level": "required"
+            }
           },
           "index_columns": [
-            "participant_id",
-            "session_id",
-            "run_id"
+            "session_id"
           ],
           "initial_columns": [
-            "participant_id",
-            "session_id",
-            "run_id"
+            "session_id"
           ],
           "selectors": [
             "suffix == \"sessions\"",
@@ -21373,5 +21558,5 @@
       }
     }
   },
-  "schema_version": "1.3.0-dev"
+  "schema_version": "2.0.1-dev"
 }
