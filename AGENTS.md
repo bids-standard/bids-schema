@@ -210,9 +210,10 @@ version (bids-standard/bids-validator#10).
   run of `process-pr-schemas`)
 - **`gh` CLI** on `$PATH`, authenticated (`GITHUB_TOKEN` in CI /
   `gh auth login` locally). Consumed by `bids-schema collect prs`
-  to hit the GitHub GraphQL API; missing / unauthenticated `gh`
-  degrades gracefully — the collector logs a warning and sets
-  `stats._error` on affected records rather than failing the run.
+  to hit the GitHub GraphQL API. Unauthenticated `gh` (or other
+  failing API calls) degrades gracefully — the collector logs a
+  warning and sets `stats._error` on affected records rather than
+  failing the run. A missing `gh` fails the run: the collector exits 2.
 - `GOOGLE_API_KEY` — a Google Drive API key (no OAuth/service
   account; only reads metadata of publicly link-shared docs).
   Consumed by `bids-schema collect bep-docs`; missing key degrades

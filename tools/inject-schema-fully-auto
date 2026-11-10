@@ -128,8 +128,9 @@ if [ "$PROCESS_PRS" = "true" ]; then
 
     if [ -d "PRs" ] && compgen -G "PRs/*/PR_METADATA.json" > /dev/null; then
         echo "--- Phase 2a: Collecting PR stats via bids-schema collect prs ---"
-        # A missing gh CLI or auth is not fatal — the collector marks the
-        # affected records with stats._error and exits 0.
+        # Failing gh auth or API calls are not fatal — the collector marks
+        # the affected records with stats._error and exits 0.  A missing gh
+        # CLI is: the collector exits 2.
         datalad_run_retry \
             "Collect PR stats via bids-schema collect prs" \
             "PRs/*/PR_METADATA.json" \
