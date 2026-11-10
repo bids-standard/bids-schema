@@ -10446,7 +10446,7 @@
         },
         "ParticipantIDMismatch": {
           "checks": [
-            "allequal(\n  sorted(intersects(columns.participant_id, dataset.subjects.sub_dirs)),\n  sorted(dataset.subjects.sub_dirs)\n)\n"
+            "allequal(\n  sorted(intersects(dataset.subjects.participant_id, dataset.subjects.sub_dirs)),\n  sorted(dataset.subjects.sub_dirs)\n)\n"
           ],
           "issue": {
             "code": "PARTICIPANT_ID_MISMATCH",
@@ -21313,5 +21313,5 @@
       }
     }
   },
-  "schema_version": "2.0.1-dev"
+  "schema_version": "2.1.0-dev"
 }
