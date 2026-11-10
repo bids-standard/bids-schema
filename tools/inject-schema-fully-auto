@@ -128,16 +128,13 @@ if [ "$PROCESS_PRS" = "true" ]; then
 
     if [ -d "PRs" ] && compgen -G "PRs/*/PR_METADATA.json" > /dev/null; then
         echo "--- Phase 2a: Collecting PR stats via bids-schema collect prs ---"
-        # A missing gh CLI or auth is not fatal — the collector marks the
-        # affected records with stats._error and exits 0.
-        if command -v bids-schema >/dev/null 2>&1; then
-            datalad_run_retry \
-                "Collect PR stats via bids-schema collect prs" \
-                "PRs/*/PR_METADATA.json" \
-                bids-schema collect prs --all
-        else
-            echo "bids-schema CLI not on PATH; skipping stats collection." >&2
-        fi
+        # Failing gh auth or API calls are not fatal — the collector marks
+        # the affected records with stats._error and exits 0.  A missing gh
+        # CLI is: the collector exits 2.
+        datalad_run_retry \
+            "Collect PR stats via bids-schema collect prs" \
+            "PRs/*/PR_METADATA.json" \
+            bids-schema collect prs --all
 
         echo "--- Phase 2b: Rendering PRs/README.md via bids-schema render prs ---"
         datalad_run_retry \
@@ -161,28 +158,20 @@ if [ "$PROCESS_BEPS" = "true" ]; then
 
         if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
             echo "--- Phase 3a: Collecting BEP registration timestamps via bids-schema collect beps ---"
-            if command -v bids-schema >/dev/null 2>&1; then
-                datalad_run_retry \
-                    "Collect BEP registration timestamps via bids-schema collect beps" \
-                    "BEPs/*/BEP_METADATA.json" \
-                    bids-schema collect beps --all
-            else
-                echo "bids-schema CLI not on PATH; skipping BEP registration collection." >&2
-            fi
+            datalad_run_retry \
+                "Collect BEP registration timestamps via bids-schema collect beps" \
+                "BEPs/*/BEP_METADATA.json" \
+                bids-schema collect beps --all
         fi
 
         if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
             echo "--- Phase 3a2: Collecting BEP Google Doc activity via bids-schema collect bep-docs ---"
             # A missing GOOGLE_API_KEY is not fatal — the collector logs a
             # warning and exits 0, leaving doc_activity as "not checked yet".
-            if command -v bids-schema >/dev/null 2>&1; then
-                datalad_run_retry \
-                    "Collect BEP Google Doc activity via bids-schema collect bep-docs" \
-                    "BEPs/*/BEP_METADATA.json" \
-                    bids-schema collect bep-docs --all
-            else
-                echo "bids-schema CLI not on PATH; skipping BEP doc activity collection." >&2
-            fi
+            datalad_run_retry \
+                "Collect BEP Google Doc activity via bids-schema collect bep-docs" \
+                "BEPs/*/BEP_METADATA.json" \
+                bids-schema collect bep-docs --all
         fi
 
         if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
