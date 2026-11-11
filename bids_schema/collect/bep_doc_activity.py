@@ -60,17 +60,28 @@ class GoogleApiKeyError(RuntimeError):
 
 
 # Substrings that mark a Drive API error as an API-key problem (bad key,
-# expired key, referer/IP restriction) rather than a per-file permission
-# issue. Matched case-insensitively against the error's status, message,
-# and per-error ``reason`` fields, gated on a 400/401/403 status.
+# Drive API not enabled for the key's project, key restricted to other
+# APIs, referrer/IP/app restriction) rather than a per-file permission
+# issue. Matched case-insensitively against the error's ``status``,
+# ``message``, legacy ``errors[].reason``, and ``details[].reason`` (the
+# ``google.rpc.ErrorInfo`` entry, where current reason codes such as
+# ``API_KEY_SERVICE_BLOCKED`` live), gated on a 400/401/403 status.
 _API_KEY_ERROR_MARKERS = (
+    # Message prose and legacy ``errors[].reason`` values.
     "api key not valid",
-    "api_key_invalid",
-    "api_key_service_blocked",
     "keyinvalid",
     "keyexpired",
     "iprefererblocked",
     "ipreferernotallowed",
+    "accessnotconfigured",
+    # ``details[].reason`` (ErrorInfo) values.
+    "api_key_invalid",
+    "api_key_service_blocked",
+    "api_key_http_referrer_blocked",
+    "api_key_ip_address_blocked",
+    "api_key_android_app_blocked",
+    "api_key_ios_app_blocked",
+    "service_disabled",
 )
 
 # Set to 1/true/yes to skip this collector on purpose (e.g. local runs
@@ -108,24 +119,33 @@ def _is_api_key_error(response: requests.Response) -> bool:
 
     Distinguishes "this key is bad" (fatal, affects every request) from
     "this particular doc isn't link-shared" (a 403/404 we tolerate).
+    Anything that isn't a Google JSON error object (HTML error page,
+    plain text, a JSON array, ``"error": "<string>"``) is treated as not
+    a key problem.
     """
     if response.status_code not in (400, 401, 403):
         return False
     try:
-        error = response.json().get("error", {}) or {}
+        body = response.json()
     except ValueError:
         return False
+    error = body.get("error") if isinstance(body, dict) else None
+    if not isinstance(error, dict):
+        return False
+
+    def _reasons(key: str) -> list[str]:
+        entries = error.get(key)
+        if not isinstance(entries, list):
+            return []
+        return [str(e.get("reason", "")) for e in entries if isinstance(e, dict)]
+
     haystack = " ".join(
-        str(part)
-        for part in (
-            error.get("status", ""),
-            error.get("message", ""),
-            *(
-                e.get("reason", "")
-                for e in error.get("errors", [])
-                if isinstance(e, dict)
-            ),
-        )
+        [
+            str(error.get("status", "")),
+            str(error.get("message", "")),
+            *_reasons("errors"),
+            *_reasons("details"),
+        ]
     ).lower()
     return any(marker in haystack for marker in _API_KEY_ERROR_MARKERS)
 

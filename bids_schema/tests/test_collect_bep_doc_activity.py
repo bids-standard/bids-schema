@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 import pytest
+import requests
 import responses
 
 from bids_schema.collect import bep_doc_activity
@@ -85,6 +86,128 @@ def test_fetch_doc_metadata_raises_on_invalid_api_key() -> None:
     )
     with pytest.raises(bep_doc_activity.GoogleApiKeyError):
         bep_doc_activity.fetch_doc_metadata(doc_id, api_key="bad-key")
+
+
+@pytest.mark.ai_generated
+@responses.activate
+def test_fetch_doc_metadata_returns_none_on_non_json_error() -> None:
+    doc_id = "private-doc"
+    responses.add(
+        responses.GET,
+        bep_doc_activity.DRIVE_API_URL.format(file_id=doc_id),
+        body="<html><body>403. That's an error.</body></html>",
+        status=403,
+    )
+    assert bep_doc_activity.fetch_doc_metadata(doc_id, api_key="fake-key") is None
+
+
+def _error_info(reason: str, domain: str = "googleapis.com") -> dict:
+    return {"@type": "type.googleapis.com/google.rpc.ErrorInfo", "reason": reason, "domain": domain}
+
+
+def _drive_error(code: int, status: str, message: str, legacy_reason: str, details=None) -> dict:
+    error = {
+        "code": code,
+        "status": status,
+        "message": message,
+        "errors": [{"message": message, "domain": "global", "reason": legacy_reason}],
+    }
+    if details is not None:
+        error["details"] = details
+    return {"error": error}
+
+
+# Shapes of Drive v3 error responses. Key-level problems affect every
+# request and must be detected; per-doc and transient ones must not.
+_KEY_ERROR_SHAPES = {
+    "invalid_key": (
+        400,
+        _drive_error(400, "INVALID_ARGUMENT", "API key not valid. Please pass a valid API key.",
+                     "badRequest", [_error_info("API_KEY_INVALID")]),
+    ),
+    "drive_api_not_enabled": (
+        403,
+        _drive_error(403, "PERMISSION_DENIED",
+                     "Google Drive API has not been used in project 123 before or it is disabled.",
+                     "accessNotConfigured", [_error_info("SERVICE_DISABLED")]),
+    ),
+    "key_restricted_to_other_apis": (
+        403,
+        _drive_error(403, "PERMISSION_DENIED", "Requests to this API drive method are blocked.",
+                     "forbidden", [_error_info("API_KEY_SERVICE_BLOCKED")]),
+    ),
+    "referrer_blocked": (
+        403,
+        _drive_error(403, "PERMISSION_DENIED", "Requests from referer <empty> are blocked.",
+                     "forbidden", [_error_info("API_KEY_HTTP_REFERRER_BLOCKED")]),
+    ),
+    "ip_blocked": (
+        403,
+        _drive_error(403, "PERMISSION_DENIED", "The IP address 203.0.113.5 is blocked.",
+                     "forbidden", [_error_info("API_KEY_IP_ADDRESS_BLOCKED")]),
+    ),
+    "legacy_key_expired": (
+        400,
+        _drive_error(400, "INVALID_ARGUMENT", "API key expired. Please renew the API key.",
+                     "keyExpired"),
+    ),
+}
+
+_NOT_KEY_ERROR_SHAPES = {
+    "doc_not_shared": (
+        404,
+        _drive_error(404, "NOT_FOUND", "File not found: AAA.", "notFound"),
+    ),
+    "insufficient_file_permissions": (
+        403,
+        _drive_error(403, "PERMISSION_DENIED", "The user does not have sufficient permissions for this file.",
+                     "insufficientFilePermissions"),
+    ),
+    "rate_limited": (
+        403,
+        _drive_error(403, "PERMISSION_DENIED", "Rate Limit Exceeded", "rateLimitExceeded",
+                     [_error_info("RATE_LIMIT_EXCEEDED")]),
+    ),
+    "server_error_mentioning_key": (
+        500,
+        _drive_error(500, "INTERNAL", "API key not valid.", "backendError"),
+    ),
+    "error_is_a_string": (403, {"error": "forbidden"}),
+    "body_is_an_array": (400, [{"error": {"message": "API key not valid."}}]),
+    "details_not_a_list": (
+        403,
+        {"error": {"status": "PERMISSION_DENIED", "details": "API_KEY_SERVICE_BLOCKED-ish"}},
+    ),
+}
+
+
+def _response(status: int, payload) -> requests.Response:
+    response = requests.Response()
+    response.status_code = status
+    response._content = json.dumps(payload).encode()
+    return response
+
+
+@pytest.mark.ai_generated
+@pytest.mark.parametrize("shape", sorted(_KEY_ERROR_SHAPES))
+def test_is_api_key_error_detects_key_level_failures(shape: str) -> None:
+    status, payload = _KEY_ERROR_SHAPES[shape]
+    assert bep_doc_activity._is_api_key_error(_response(status, payload)) is True
+
+
+@pytest.mark.ai_generated
+@pytest.mark.parametrize("shape", sorted(_NOT_KEY_ERROR_SHAPES))
+def test_is_api_key_error_ignores_per_doc_and_malformed_errors(shape: str) -> None:
+    status, payload = _NOT_KEY_ERROR_SHAPES[shape]
+    assert bep_doc_activity._is_api_key_error(_response(status, payload)) is False
+
+
+@pytest.mark.ai_generated
+def test_is_api_key_error_ignores_non_json_body() -> None:
+    response = requests.Response()
+    response.status_code = 403
+    response._content = b"<html>403 Forbidden</html>"
+    assert bep_doc_activity._is_api_key_error(response) is False
 
 
 @pytest.mark.ai_generated
