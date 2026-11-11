@@ -47,6 +47,13 @@ Related: `doc/designs/1-BEP-support-design-plan.md`, `AGENTS.md`
   a separate status file. Replaces the plain "Google Doc" link column
   in `BEPs/README.md` with a traffic-light activity badge linking to
   the doc. See `AGENTS.md` § Metadata contracts for the field list.
+- **v4.1** — key-level Drive API errors (missing, invalid, or
+  restricted `GOOGLE_API_KEY`; Drive API not enabled) fail the
+  `cycle` / inject run after the remaining phases finish, instead of
+  degrading silently; per-doc errors still degrade one BEP. The
+  collector fetches before writing, so a failure leaves `BEPs/`
+  untouched. `BIDS_SCHEMA_SKIP_BEP_DOCS=1` opts out. Details in
+  `AGENTS.md` § `GOOGLE_API_KEY`.
 
 ## 1. Goal
 
@@ -594,6 +601,12 @@ skipped without the full query.
 network_error, graphql_error, etc.). Do NOT wipe previously-successful
 fields — the renderer will show them with a "stale" marker. This means a
 transient blip degrades one row, not the whole run.
+
+(The BEP Google Doc collector, `bids_schema.collect.bep_doc_activity`
+from v4, follows the same rule for per-doc errors, but not for
+key-level ones: a missing or rejected `GOOGLE_API_KEY` affects every
+request, so it fails the run once the remaining phases have finished.
+See `AGENTS.md` § `GOOGLE_API_KEY`.)
 
 **Batching.** Called once per cron cycle with the list of PR numbers
 from `PRs/*/`. Writes each `PRs/<N>/PR_METADATA.json` via atomic
