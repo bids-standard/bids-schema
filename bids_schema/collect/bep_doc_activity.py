@@ -73,6 +73,16 @@ _API_KEY_ERROR_MARKERS = (
     "ipreferernotallowed",
 )
 
+# Set to 1/true/yes to skip this collector on purpose (e.g. local runs
+# without a Drive key). Anything else means a working key is expected.
+SKIP_ENV_VAR = "BIDS_SCHEMA_SKIP_BEP_DOCS"
+
+
+def skip_requested() -> bool:
+    """True when ``BIDS_SCHEMA_SKIP_BEP_DOCS`` asks to skip this collector."""
+    return os.environ.get(SKIP_ENV_VAR, "").strip().lower() in ("1", "true", "yes")
+
+
 DRIVE_FILE_ID_RE = re.compile(r"/d/([a-zA-Z0-9_-]+)")
 DRIVE_API_URL = "https://www.googleapis.com/drive/v3/files/{file_id}"
 DRIVE_FIELDS = "modifiedTime,version,name"
@@ -195,9 +205,10 @@ def collect(
 ) -> int:
     """Refresh ``doc_activity`` in every ``BEPs/<NN>/BEP_METADATA.json`` with a Google Doc.
 
-    Returns a process-exit code (0 = OK; no ``BEPs/`` directory just
-    means "nothing to do"). Raises ``GoogleApiKeyError`` when
-    ``GOOGLE_API_KEY`` is unset or the Drive API rejects it.
+    Returns a process-exit code (0 = OK; no ``BEPs/`` directory, or
+    ``BIDS_SCHEMA_SKIP_BEP_DOCS=1``, just means "nothing to do"). Raises
+    ``GoogleApiKeyError`` when ``GOOGLE_API_KEY`` is unset or the Drive
+    API rejects it.
     """
     logging.basicConfig(
         level=os.environ.get("BIDS_SCHEMA_LOGLEVEL", "INFO"),
@@ -206,6 +217,13 @@ def collect(
     root = base_dir or Path.cwd()
     bep_root = root / "BEPs"
 
+    if skip_requested():
+        log.warning(
+            "%s is set; skipping BEP Google Doc activity collection on request.",
+            SKIP_ENV_VAR,
+        )
+        return 0
+
     # `.strip()` guards against a secret pasted with a trailing newline or
     # surrounding whitespace — Google rejects such a key with a 400
     # "API key not valid" rather than treating it as unset.
@@ -213,7 +231,8 @@ def collect(
     if not api_key:
         raise GoogleApiKeyError(
             "GOOGLE_API_KEY is not set; cannot collect BEP Google Doc activity. "
-            "Set it to a Google Drive API key with the Drive API enabled."
+            "Set it to a Google Drive API key with the Drive API enabled, or set "
+            f"{SKIP_ENV_VAR}=1 to skip this phase on purpose."
         )
 
     if not bep_root.is_dir():

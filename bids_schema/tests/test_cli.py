@@ -11,14 +11,13 @@ from bids_schema.render import bep_dashboard, bep_readme, pr_readme
 
 
 @pytest.mark.ai_generated
-def test_cycle_still_renders_after_bep_doc_activity_key_error(monkeypatch) -> None:
-    """A missing/rejected GOOGLE_API_KEY must not skip the README/dashboard renders.
+def test_cycle_renders_then_fails_after_bep_doc_activity_key_error(monkeypatch) -> None:
+    """A missing/rejected GOOGLE_API_KEY fails `cycle`, but only after rendering.
 
-    Regression test: `cycle()` used to re-raise `GoogleApiKeyError` as a
-    `ClickException`, aborting before the `render_to_disk()` calls for
-    `pr_readme`, `bep_readme`, and `bep_dashboard` ran — contradicting
-    the comment directly above it that says a non-zero exit from one
-    collector shouldn't skip subsequent phases.
+    `cycle()` must not skip the `render_to_disk()` calls for `pr_readme`,
+    `bep_readme`, and `bep_dashboard` (the comment above its body promises
+    a failing collector doesn't skip later phases), yet the key error
+    must still surface as a non-zero exit rather than a warning.
     """
     calls: list[str] = []
 
@@ -36,7 +35,7 @@ def test_cycle_still_renders_after_bep_doc_activity_key_error(monkeypatch) -> No
 
     result = CliRunner().invoke(cli.main, ["cycle"])
 
-    assert result.exit_code == 0, result.output
+    assert result.exit_code == 1, result.output
     assert calls == [
         "github",
         "bep_registration",
@@ -46,3 +45,4 @@ def test_cycle_still_renders_after_bep_doc_activity_key_error(monkeypatch) -> No
         "bep_dashboard",
     ]
     assert "GOOGLE_API_KEY" in result.output
+    assert "still rendered" in result.output

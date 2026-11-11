@@ -185,18 +185,21 @@ def cycle() -> None:
 
     github.collect()
     bep_registration.collect()
+    key_error: bep_doc_activity.GoogleApiKeyError | None = None
     try:
         bep_doc_activity.collect()
     except bep_doc_activity.GoogleApiKeyError as exc:
-        # Missing/rejected key degrades this one phase — it must not skip
+        # A missing/rejected key is a real failure, but it must not skip
         # the renders below (READMEs and BEPs/dashboard.json), which is
-        # exactly what the comment above promises. The ⚪/stale badge in
-        # BEPs/README.md and the old `doc_activity.checked_at` in
-        # BEPs/dashboard.json carry the signal.
-        click.echo(f"Warning: {exc}", err=True)
+        # what the comment above promises. Render first, then fail.
+        key_error = exc
     pr_readme.render_to_disk()
     bep_readme.render_to_disk()
     bep_dashboard.render_to_disk()
+    if key_error is not None:
+        raise click.ClickException(
+            f"{key_error} (READMEs and BEPs/dashboard.json were still rendered.)"
+        ) from key_error
 
 
 @main.command("info", help="Print tool version, auth status, and other debug info.")

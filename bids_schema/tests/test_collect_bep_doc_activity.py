@@ -14,6 +14,7 @@ from bids_schema.collect import bep_doc_activity
 @pytest.fixture(autouse=True)
 def _api_key(monkeypatch) -> None:
     monkeypatch.setenv("GOOGLE_API_KEY", "fake-key")
+    monkeypatch.delenv(bep_doc_activity.SKIP_ENV_VAR, raising=False)
 
 
 def _read(base_dir: Path, number) -> dict:
@@ -115,6 +116,36 @@ def test_collect_raises_without_api_key(monkeypatch, base_dir: Path, make_bep) -
         bep_doc_activity.collect(base_dir=base_dir)
 
     assert "doc_activity" not in _read(base_dir, 11)
+
+
+@pytest.mark.ai_generated
+@pytest.mark.parametrize("value", ["1", "true", "YES"])
+@responses.activate
+def test_collect_skips_on_request_even_without_api_key(
+    monkeypatch, base_dir: Path, make_bep, value: str
+) -> None:
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    monkeypatch.setenv(bep_doc_activity.SKIP_ENV_VAR, value)
+    make_bep(11, google_doc="https://docs.google.com/document/d/AAA/")
+
+    rc = bep_doc_activity.collect(base_dir=base_dir)
+
+    assert rc == 0
+    assert len(responses.calls) == 0
+    assert "doc_activity" not in _read(base_dir, 11)
+
+
+@pytest.mark.ai_generated
+@pytest.mark.parametrize("value", ["", "0", "false", "no"])
+def test_collect_does_not_skip_for_other_values(
+    monkeypatch, base_dir: Path, make_bep, value: str
+) -> None:
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    monkeypatch.setenv(bep_doc_activity.SKIP_ENV_VAR, value)
+    make_bep(11, google_doc="https://docs.google.com/document/d/AAA/")
+
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError, match=bep_doc_activity.SKIP_ENV_VAR):
+        bep_doc_activity.collect(base_dir=base_dir)
 
 
 @pytest.mark.ai_generated
