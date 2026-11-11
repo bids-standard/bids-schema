@@ -225,10 +225,11 @@ def collect(
 ) -> int:
     """Refresh ``doc_activity`` in every ``BEPs/<NN>/BEP_METADATA.json`` with a Google Doc.
 
-    Returns a process-exit code (0 = OK; no ``BEPs/`` directory, or
-    ``BIDS_SCHEMA_SKIP_BEP_DOCS=1``, just means "nothing to do"). Raises
-    ``GoogleApiKeyError`` when ``GOOGLE_API_KEY`` is unset or the Drive
-    API rejects it.
+    Returns a process-exit code (0 = OK; no ``BEPs/`` directory, nothing
+    due for a check, or ``BIDS_SCHEMA_SKIP_BEP_DOCS=1`` just means
+    "nothing to do"). Raises ``GoogleApiKeyError`` when a check is due and
+    ``GOOGLE_API_KEY`` is unset or the Drive API rejects it; all fetches
+    happen before any write, so a raise leaves every record untouched.
     """
     logging.basicConfig(
         level=os.environ.get("BIDS_SCHEMA_LOGLEVEL", "INFO"),
@@ -244,17 +245,6 @@ def collect(
         )
         return 0
 
-    # `.strip()` guards against a secret pasted with a trailing newline or
-    # surrounding whitespace — Google rejects such a key with a 400
-    # "API key not valid" rather than treating it as unset.
-    api_key = (os.environ.get("GOOGLE_API_KEY") or "").strip() or None
-    if not api_key:
-        raise GoogleApiKeyError(
-            "GOOGLE_API_KEY is not set; cannot collect BEP Google Doc activity. "
-            "Set it to a Google Drive API key with the Drive API enabled, or set "
-            f"{SKIP_ENV_VAR}=1 to skip this phase on purpose."
-        )
-
     if not bep_root.is_dir():
         log.info("No BEPs/ directory at %s; nothing to collect.", root)
         return 0
@@ -264,6 +254,8 @@ def collect(
     num_skipped = 0
     num_errored = 0
 
+    # Pass 1: find the BEPs whose doc needs (re)checking. No HTTP, no key.
+    to_check: list[tuple[Path, dict, dict, str]] = []
     for bep_dir in iter_numeric_subdirs(bep_root):
         bep_number_norm = bep_dir.name.lstrip("0") or "0"
         if only_set and bep_number_norm not in only_set:
@@ -291,9 +283,34 @@ def collect(
             )
             continue
 
-        metadata = fetch_doc_metadata(doc_id, api_key)
-        checked_at = now_utc_iso()
+        to_check.append((record_path, record, existing, doc_id))
 
+    if not to_check:
+        log.info("Done. Nothing to check (skipped=%d).", num_skipped)
+        return 0
+
+    # Only now is a key required — a run with nothing to fetch never needs one.
+    # `.strip()` guards against a secret pasted with a trailing newline or
+    # surrounding whitespace — Google rejects such a key with a 400
+    # "API key not valid" rather than treating it as unset.
+    api_key = (os.environ.get("GOOGLE_API_KEY") or "").strip() or None
+    if not api_key:
+        raise GoogleApiKeyError(
+            "GOOGLE_API_KEY is not set; cannot collect BEP Google Doc activity. "
+            "Set it to a Google Drive API key with the Drive API enabled, or set "
+            f"{SKIP_ENV_VAR}=1 to skip this phase on purpose."
+        )
+
+    # Pass 2: fetch everything before writing anything, so a key that fails
+    # partway through (expiry, restriction change) raises with BEPs/ untouched
+    # instead of leaving records at two different schema versions.
+    fetched = [
+        (record_path, record, existing, fetch_doc_metadata(doc_id, api_key), now_utc_iso())
+        for record_path, record, existing, doc_id in to_check
+    ]
+
+    # Pass 3: write.
+    for record_path, record, existing, metadata, checked_at in fetched:
         if metadata is None or metadata["modified_time"] is None:
             # Keep whatever was last recorded rather than blanking it out —
             # a transient 403/404 shouldn't make a BEP look unchecked.

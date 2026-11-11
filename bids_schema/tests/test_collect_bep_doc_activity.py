@@ -321,6 +321,68 @@ def test_collect_strips_surrounding_whitespace_from_api_key(
 
 
 @pytest.mark.ai_generated
+def test_collect_needs_no_key_without_beps_dir(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    assert bep_doc_activity.collect(base_dir=tmp_path) == 0
+
+
+@pytest.mark.ai_generated
+def test_collect_needs_no_key_when_nothing_is_due(monkeypatch, base_dir: Path, make_bep) -> None:
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    make_bep(11, google_doc="")  # no doc to check
+    make_bep(
+        12, google_doc="https://docs.google.com/document/d/BBB/",
+        doc_activity={  # checked just now -> fresh
+            "last_modified": "2026-08-01T00:00:00.000Z",
+            "version": "1",
+            "edits_since_last_check": None,
+            "checked_at": bep_doc_activity.now_utc_iso(),
+            "_error": None,
+        },
+    )
+    make_bep(16, google_doc="https://docs.google.com/document/d/CCC/")  # due, never checked
+
+    # Restricted to BEPs with nothing due: no key needed.
+    assert bep_doc_activity.collect(base_dir=base_dir, only=["11", "12"]) == 0
+    # BEP 16 is due, so the missing key is an error.
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
+        bep_doc_activity.collect(base_dir=base_dir)
+
+
+@pytest.mark.ai_generated
+@responses.activate
+def test_collect_key_error_mid_run_leaves_every_record_untouched(
+    base_dir: Path, make_bep
+) -> None:
+    """A key that fails partway through must not leave BEPs/ half-written."""
+    paths = [
+        make_bep(11, google_doc="https://docs.google.com/document/d/AAA/"),
+        make_bep(12, google_doc="https://docs.google.com/document/d/BBB/"),
+        make_bep(16, google_doc="https://docs.google.com/document/d/CCC/"),
+    ]
+    before = [path.read_bytes() for path in paths]
+    responses.add(
+        responses.GET,
+        bep_doc_activity.DRIVE_API_URL.format(file_id="AAA"),
+        json={"modifiedTime": "2026-08-01T00:00:00.000Z", "version": "7"},
+        status=200,
+    )
+    status, payload = _KEY_ERROR_SHAPES["invalid_key"]
+    responses.add(
+        responses.GET,
+        bep_doc_activity.DRIVE_API_URL.format(file_id="BBB"),
+        json=payload,
+        status=status,
+    )
+
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
+        bep_doc_activity.collect(base_dir=base_dir)
+
+    assert [path.read_bytes() for path in paths] == before
+    assert len(responses.calls) == 2  # stopped at the bad response; BEP 16 never fetched
+
+
+@pytest.mark.ai_generated
 def test_collect_skips_beps_without_a_google_doc(base_dir: Path, make_bep) -> None:
     make_bep(11, google_doc="")
 
