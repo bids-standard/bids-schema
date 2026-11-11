@@ -48,12 +48,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # `bids-schema collect bep-docs` uses a Google Drive API key to
           # read BEP Google Docs' modifiedTime/version (publicly-viewable
-          # docs only). Missing/unset degrades gracefully — the collector
-          # logs a warning and leaves doc_activity as "not checked yet".
+          # docs only). A missing or rejected key fails this job, but
+          # only after tools/inject-schema-fully-auto has finished the
+          # remaining phases; the push step below still publishes them.
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: |
           tools/inject-schema-fully-auto
 
       - name: Possibly push results
+        # Push whatever earlier phases committed even if a later step
+        # failed, but not when the run was cancelled mid-way.
+        if: ${{ !cancelled() }}
         run:
           git push

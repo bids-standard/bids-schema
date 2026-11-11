@@ -26,12 +26,16 @@ renderer shows as "not checked yet"). Two fields come out of this:
   history, which need OAuth/a service account).
 
 Requires the ``GOOGLE_API_KEY`` environment variable, pointing at an API
-key with the Google Drive API enabled. A missing key degrades
-gracefully (logs a warning, exits 0) — same pattern as the missing-``gh``
-branch in ``bids_schema.collect.github``.
+key with the Google Drive API enabled. A missing key — or a key the
+Drive API rejects as invalid — is a hard error: ``collect`` raises
+``GoogleApiKeyError`` rather than skipping the phase. (A per-doc
+403/404 because a single BEP doc isn't link-shared is *not* a key
+problem and is still handled gracefully — that doc keeps its last
+recorded ``doc_activity``.)
 
 Public entry point: ``collect(only, force, base_dir)``. Returns a
-process-exit code (0 = OK).
+process-exit code (0 = OK); raises ``GoogleApiKeyError`` when the API
+key is missing or invalid.
 """
 
 from __future__ import annotations
@@ -49,6 +53,46 @@ from bids_schema.metadata.schema import CURRENT_BEP_SCHEMA_VERSION
 from bids_schema.metadata.time import now_utc_iso
 
 log = logging.getLogger(__name__)
+
+
+class GoogleApiKeyError(RuntimeError):
+    """The ``GOOGLE_API_KEY`` is missing, or the Drive API rejected it."""
+
+
+# Substrings that mark a Drive API error as an API-key problem (bad key,
+# Drive API not enabled for the key's project, key restricted to other
+# APIs, referrer/IP/app restriction) rather than a per-file permission
+# issue. Matched case-insensitively against the error's ``status``,
+# ``message``, legacy ``errors[].reason``, and ``details[].reason`` (the
+# ``google.rpc.ErrorInfo`` entry, where current reason codes such as
+# ``API_KEY_SERVICE_BLOCKED`` live), gated on a 400/401/403 status.
+_API_KEY_ERROR_MARKERS = (
+    # Message prose and legacy ``errors[].reason`` values.
+    "api key not valid",
+    "keyinvalid",
+    "keyexpired",
+    "iprefererblocked",
+    "ipreferernotallowed",
+    "accessnotconfigured",
+    # ``details[].reason`` (ErrorInfo) values.
+    "api_key_invalid",
+    "api_key_service_blocked",
+    "api_key_http_referrer_blocked",
+    "api_key_ip_address_blocked",
+    "api_key_android_app_blocked",
+    "api_key_ios_app_blocked",
+    "service_disabled",
+)
+
+# Set to 1/true/yes to skip this collector on purpose (e.g. local runs
+# without a Drive key). Anything else means a working key is expected.
+SKIP_ENV_VAR = "BIDS_SCHEMA_SKIP_BEP_DOCS"
+
+
+def skip_requested() -> bool:
+    """True when ``BIDS_SCHEMA_SKIP_BEP_DOCS`` asks to skip this collector."""
+    return os.environ.get(SKIP_ENV_VAR, "").strip().lower() in ("1", "true", "yes")
+
 
 DRIVE_FILE_ID_RE = re.compile(r"/d/([a-zA-Z0-9_-]+)")
 DRIVE_API_URL = "https://www.googleapis.com/drive/v3/files/{file_id}"
@@ -70,11 +114,51 @@ def extract_doc_id(google_doc_url: str) -> str | None:
     return match.group(1) if match else None
 
 
+def _is_api_key_error(response: requests.Response) -> bool:
+    """True when a non-200 Drive response blames the API key itself.
+
+    Distinguishes "this key is bad" (fatal, affects every request) from
+    "this particular doc isn't link-shared" (a 403/404 we tolerate).
+    Anything that isn't a Google JSON error object (HTML error page,
+    plain text, a JSON array, ``"error": "<string>"``) is treated as not
+    a key problem.
+    """
+    if response.status_code not in (400, 401, 403):
+        return False
+    try:
+        body = response.json()
+    except ValueError:
+        return False
+    error = body.get("error") if isinstance(body, dict) else None
+    if not isinstance(error, dict):
+        return False
+
+    def _reasons(key: str) -> list[str]:
+        entries = error.get(key)
+        if not isinstance(entries, list):
+            return []
+        return [str(e.get("reason", "")) for e in entries if isinstance(e, dict)]
+
+    haystack = " ".join(
+        [
+            str(error.get("status", "")),
+            str(error.get("message", "")),
+            *_reasons("errors"),
+            *_reasons("details"),
+        ]
+    ).lower()
+    return any(marker in haystack for marker in _API_KEY_ERROR_MARKERS)
+
+
 def fetch_doc_metadata(doc_id: str, api_key: str) -> dict | None:
     """Return ``{"modified_time": ..., "version": ...}``, or ``None``.
 
     ``version`` comes back from the Drive API as a stringified int64;
     it is returned as-is here (still a string) and parsed by callers.
+
+    Raises ``GoogleApiKeyError`` when the response indicates the API key
+    is invalid/expired/blocked — that condition is not per-doc and there
+    is no point continuing the run.
     """
     response = requests.get(
         DRIVE_API_URL.format(file_id=doc_id),
@@ -82,6 +166,11 @@ def fetch_doc_metadata(doc_id: str, api_key: str) -> dict | None:
         timeout=REQUEST_TIMEOUT,
     )
     if response.status_code != 200:
+        if _is_api_key_error(response):
+            raise GoogleApiKeyError(
+                f"Google Drive API rejected GOOGLE_API_KEY "
+                f"(HTTP {response.status_code}): {response.text[:200]}"
+            )
         log.warning(
             "Could not fetch metadata for doc %s (HTTP %s): %s",
             doc_id,
@@ -136,8 +225,11 @@ def collect(
 ) -> int:
     """Refresh ``doc_activity`` in every ``BEPs/<NN>/BEP_METADATA.json`` with a Google Doc.
 
-    Returns a process-exit code (0 = OK; missing ``GOOGLE_API_KEY`` or no
-    ``BEPs/`` directory are not errors — both just mean "nothing to do").
+    Returns a process-exit code (0 = OK; no ``BEPs/`` directory, nothing
+    due for a check, or ``BIDS_SCHEMA_SKIP_BEP_DOCS=1`` just means
+    "nothing to do"). Raises ``GoogleApiKeyError`` when a check is due and
+    ``GOOGLE_API_KEY`` is unset or the Drive API rejects it; all fetches
+    happen before any write, so a raise leaves every record untouched.
     """
     logging.basicConfig(
         level=os.environ.get("BIDS_SCHEMA_LOGLEVEL", "INFO"),
@@ -146,13 +238,10 @@ def collect(
     root = base_dir or Path.cwd()
     bep_root = root / "BEPs"
 
-    # `.strip()` guards against a secret pasted with a trailing newline or
-    # surrounding whitespace — Google rejects such a key with a 400
-    # "API key not valid" rather than treating it as unset.
-    api_key = (os.environ.get("GOOGLE_API_KEY") or "").strip() or None
-    if not api_key:
+    if skip_requested():
         log.warning(
-            "GOOGLE_API_KEY not set; skipping BEP Google Doc activity collection."
+            "%s is set; skipping BEP Google Doc activity collection on request.",
+            SKIP_ENV_VAR,
         )
         return 0
 
@@ -165,6 +254,8 @@ def collect(
     num_skipped = 0
     num_errored = 0
 
+    # Pass 1: find the BEPs whose doc needs (re)checking. No HTTP, no key.
+    to_check: list[tuple[Path, dict, dict, str]] = []
     for bep_dir in iter_numeric_subdirs(bep_root):
         bep_number_norm = bep_dir.name.lstrip("0") or "0"
         if only_set and bep_number_norm not in only_set:
@@ -192,9 +283,34 @@ def collect(
             )
             continue
 
-        metadata = fetch_doc_metadata(doc_id, api_key)
-        checked_at = now_utc_iso()
+        to_check.append((record_path, record, existing, doc_id))
 
+    if not to_check:
+        log.info("Done. Nothing to check (skipped=%d).", num_skipped)
+        return 0
+
+    # Only now is a key required — a run with nothing to fetch never needs one.
+    # `.strip()` guards against a secret pasted with a trailing newline or
+    # surrounding whitespace — Google rejects such a key with a 400
+    # "API key not valid" rather than treating it as unset.
+    api_key = (os.environ.get("GOOGLE_API_KEY") or "").strip() or None
+    if not api_key:
+        raise GoogleApiKeyError(
+            "GOOGLE_API_KEY is not set; cannot collect BEP Google Doc activity. "
+            "Set it to a Google Drive API key with the Drive API enabled, or set "
+            f"{SKIP_ENV_VAR}=1 to skip this phase on purpose."
+        )
+
+    # Pass 2: fetch everything before writing anything, so a key that fails
+    # partway through (expiry, restriction change) raises with BEPs/ untouched
+    # instead of leaving records at two different schema versions.
+    fetched = [
+        (record_path, record, existing, fetch_doc_metadata(doc_id, api_key), now_utc_iso())
+        for record_path, record, existing, doc_id in to_check
+    ]
+
+    # Pass 3: write.
+    for record_path, record, existing, metadata, checked_at in fetched:
         if metadata is None or metadata["modified_time"] is None:
             # Keep whatever was last recorded rather than blanking it out —
             # a transient 403/404 shouldn't make a BEP look unchecked.

@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 import pytest
+import requests
 import responses
 
 from bids_schema.collect import bep_doc_activity
@@ -14,6 +15,7 @@ from bids_schema.collect import bep_doc_activity
 @pytest.fixture(autouse=True)
 def _api_key(monkeypatch) -> None:
     monkeypatch.setenv("GOOGLE_API_KEY", "fake-key")
+    monkeypatch.delenv(bep_doc_activity.SKIP_ENV_VAR, raising=False)
 
 
 def _read(base_dir: Path, number) -> dict:
@@ -53,10 +55,159 @@ def test_fetch_doc_metadata_returns_none_on_error() -> None:
     responses.add(
         responses.GET,
         bep_doc_activity.DRIVE_API_URL.format(file_id=doc_id),
-        body="The caller does not have permission",
+        json={
+            "error": {
+                "code": 403,
+                "status": "PERMISSION_DENIED",
+                "message": "The caller does not have permission",
+                "errors": [{"reason": "insufficientFilePermissions"}],
+            }
+        },
         status=403,
     )
     assert bep_doc_activity.fetch_doc_metadata(doc_id, api_key="fake-key") is None
+
+
+@pytest.mark.ai_generated
+@responses.activate
+def test_fetch_doc_metadata_raises_on_invalid_api_key() -> None:
+    doc_id = "any-doc"
+    responses.add(
+        responses.GET,
+        bep_doc_activity.DRIVE_API_URL.format(file_id=doc_id),
+        json={
+            "error": {
+                "code": 400,
+                "status": "INVALID_ARGUMENT",
+                "message": "API key not valid. Please pass a valid API key.",
+            }
+        },
+        status=400,
+    )
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
+        bep_doc_activity.fetch_doc_metadata(doc_id, api_key="bad-key")
+
+
+@pytest.mark.ai_generated
+@responses.activate
+def test_fetch_doc_metadata_returns_none_on_non_json_error() -> None:
+    doc_id = "private-doc"
+    responses.add(
+        responses.GET,
+        bep_doc_activity.DRIVE_API_URL.format(file_id=doc_id),
+        body="<html><body>403. That's an error.</body></html>",
+        status=403,
+    )
+    assert bep_doc_activity.fetch_doc_metadata(doc_id, api_key="fake-key") is None
+
+
+def _error_info(reason: str, domain: str = "googleapis.com") -> dict:
+    return {"@type": "type.googleapis.com/google.rpc.ErrorInfo", "reason": reason, "domain": domain}
+
+
+def _drive_error(code: int, status: str, message: str, legacy_reason: str, details=None) -> dict:
+    error = {
+        "code": code,
+        "status": status,
+        "message": message,
+        "errors": [{"message": message, "domain": "global", "reason": legacy_reason}],
+    }
+    if details is not None:
+        error["details"] = details
+    return {"error": error}
+
+
+# Shapes of Drive v3 error responses. Key-level problems affect every
+# request and must be detected; per-doc and transient ones must not.
+_KEY_ERROR_SHAPES = {
+    "invalid_key": (
+        400,
+        _drive_error(400, "INVALID_ARGUMENT", "API key not valid. Please pass a valid API key.",
+                     "badRequest", [_error_info("API_KEY_INVALID")]),
+    ),
+    "drive_api_not_enabled": (
+        403,
+        _drive_error(403, "PERMISSION_DENIED",
+                     "Google Drive API has not been used in project 123 before or it is disabled.",
+                     "accessNotConfigured", [_error_info("SERVICE_DISABLED")]),
+    ),
+    "key_restricted_to_other_apis": (
+        403,
+        _drive_error(403, "PERMISSION_DENIED", "Requests to this API drive method are blocked.",
+                     "forbidden", [_error_info("API_KEY_SERVICE_BLOCKED")]),
+    ),
+    "referrer_blocked": (
+        403,
+        _drive_error(403, "PERMISSION_DENIED", "Requests from referer <empty> are blocked.",
+                     "forbidden", [_error_info("API_KEY_HTTP_REFERRER_BLOCKED")]),
+    ),
+    "ip_blocked": (
+        403,
+        _drive_error(403, "PERMISSION_DENIED", "The IP address 203.0.113.5 is blocked.",
+                     "forbidden", [_error_info("API_KEY_IP_ADDRESS_BLOCKED")]),
+    ),
+    "legacy_key_expired": (
+        400,
+        _drive_error(400, "INVALID_ARGUMENT", "API key expired. Please renew the API key.",
+                     "keyExpired"),
+    ),
+}
+
+_NOT_KEY_ERROR_SHAPES = {
+    "doc_not_shared": (
+        404,
+        _drive_error(404, "NOT_FOUND", "File not found: AAA.", "notFound"),
+    ),
+    "insufficient_file_permissions": (
+        403,
+        _drive_error(403, "PERMISSION_DENIED", "The user does not have sufficient permissions for this file.",
+                     "insufficientFilePermissions"),
+    ),
+    "rate_limited": (
+        403,
+        _drive_error(403, "PERMISSION_DENIED", "Rate Limit Exceeded", "rateLimitExceeded",
+                     [_error_info("RATE_LIMIT_EXCEEDED")]),
+    ),
+    "server_error_mentioning_key": (
+        500,
+        _drive_error(500, "INTERNAL", "API key not valid.", "backendError"),
+    ),
+    "error_is_a_string": (403, {"error": "forbidden"}),
+    "body_is_an_array": (400, [{"error": {"message": "API key not valid."}}]),
+    "details_not_a_list": (
+        403,
+        {"error": {"status": "PERMISSION_DENIED", "details": "API_KEY_SERVICE_BLOCKED-ish"}},
+    ),
+}
+
+
+def _response(status: int, payload) -> requests.Response:
+    response = requests.Response()
+    response.status_code = status
+    response._content = json.dumps(payload).encode()
+    return response
+
+
+@pytest.mark.ai_generated
+@pytest.mark.parametrize("shape", sorted(_KEY_ERROR_SHAPES))
+def test_is_api_key_error_detects_key_level_failures(shape: str) -> None:
+    status, payload = _KEY_ERROR_SHAPES[shape]
+    assert bep_doc_activity._is_api_key_error(_response(status, payload)) is True
+
+
+@pytest.mark.ai_generated
+@pytest.mark.parametrize("shape", sorted(_NOT_KEY_ERROR_SHAPES))
+def test_is_api_key_error_ignores_per_doc_and_malformed_errors(shape: str) -> None:
+    status, payload = _NOT_KEY_ERROR_SHAPES[shape]
+    assert bep_doc_activity._is_api_key_error(_response(status, payload)) is False
+
+
+@pytest.mark.ai_generated
+def test_is_api_key_error_ignores_non_json_body() -> None:
+    response = requests.Response()
+    response.status_code = 403
+    response._content = b"<html>403 Forbidden</html>"
+    assert bep_doc_activity._is_api_key_error(response) is False
 
 
 @pytest.mark.ai_generated
@@ -80,26 +231,71 @@ def test_compute_edits_since_last_check_none_when_version_decreases() -> None:
 
 
 @pytest.mark.ai_generated
-def test_collect_skips_entirely_without_api_key(monkeypatch, base_dir: Path, make_bep) -> None:
+def test_collect_raises_without_api_key(monkeypatch, base_dir: Path, make_bep) -> None:
     monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    make_bep(11, google_doc="https://docs.google.com/document/d/AAA/")
+
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
+        bep_doc_activity.collect(base_dir=base_dir)
+
+    assert "doc_activity" not in _read(base_dir, 11)
+
+
+@pytest.mark.ai_generated
+@pytest.mark.parametrize("value", ["1", "true", "YES"])
+@responses.activate
+def test_collect_skips_on_request_even_without_api_key(
+    monkeypatch, base_dir: Path, make_bep, value: str
+) -> None:
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    monkeypatch.setenv(bep_doc_activity.SKIP_ENV_VAR, value)
     make_bep(11, google_doc="https://docs.google.com/document/d/AAA/")
 
     rc = bep_doc_activity.collect(base_dir=base_dir)
 
     assert rc == 0
+    assert len(responses.calls) == 0
     assert "doc_activity" not in _read(base_dir, 11)
 
 
 @pytest.mark.ai_generated
-def test_collect_skips_entirely_when_api_key_is_only_whitespace(
+@pytest.mark.parametrize("value", ["", "0", "false", "no"])
+def test_collect_does_not_skip_for_other_values(
+    monkeypatch, base_dir: Path, make_bep, value: str
+) -> None:
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    monkeypatch.setenv(bep_doc_activity.SKIP_ENV_VAR, value)
+    make_bep(11, google_doc="https://docs.google.com/document/d/AAA/")
+
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError, match=bep_doc_activity.SKIP_ENV_VAR):
+        bep_doc_activity.collect(base_dir=base_dir)
+
+
+@pytest.mark.ai_generated
+@responses.activate
+def test_collect_raises_on_invalid_api_key(base_dir: Path, make_bep) -> None:
+    make_bep(11, google_doc="https://docs.google.com/document/d/AAA/")
+    responses.add(
+        responses.GET,
+        bep_doc_activity.DRIVE_API_URL.format(file_id="AAA"),
+        json={"error": {"status": "INVALID_ARGUMENT", "message": "API key not valid."}},
+        status=400,
+    )
+
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
+        bep_doc_activity.collect(base_dir=base_dir)
+
+
+@pytest.mark.ai_generated
+def test_collect_raises_when_api_key_is_only_whitespace(
     monkeypatch, base_dir: Path, make_bep
 ) -> None:
     monkeypatch.setenv("GOOGLE_API_KEY", "  \n")
     make_bep(11, google_doc="https://docs.google.com/document/d/AAA/")
 
-    rc = bep_doc_activity.collect(base_dir=base_dir)
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
+        bep_doc_activity.collect(base_dir=base_dir)
 
-    assert rc == 0
     assert "doc_activity" not in _read(base_dir, 11)
 
 
@@ -122,6 +318,68 @@ def test_collect_strips_surrounding_whitespace_from_api_key(
     assert rc == 0
     assert responses.calls[0].request.params["key"] == "real-key"
     assert _read(base_dir, 11)["doc_activity"]["version"] == "7"
+
+
+@pytest.mark.ai_generated
+def test_collect_needs_no_key_without_beps_dir(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    assert bep_doc_activity.collect(base_dir=tmp_path) == 0
+
+
+@pytest.mark.ai_generated
+def test_collect_needs_no_key_when_nothing_is_due(monkeypatch, base_dir: Path, make_bep) -> None:
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    make_bep(11, google_doc="")  # no doc to check
+    make_bep(
+        12, google_doc="https://docs.google.com/document/d/BBB/",
+        doc_activity={  # checked just now -> fresh
+            "last_modified": "2026-08-01T00:00:00.000Z",
+            "version": "1",
+            "edits_since_last_check": None,
+            "checked_at": bep_doc_activity.now_utc_iso(),
+            "_error": None,
+        },
+    )
+    make_bep(16, google_doc="https://docs.google.com/document/d/CCC/")  # due, never checked
+
+    # Restricted to BEPs with nothing due: no key needed.
+    assert bep_doc_activity.collect(base_dir=base_dir, only=["11", "12"]) == 0
+    # BEP 16 is due, so the missing key is an error.
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
+        bep_doc_activity.collect(base_dir=base_dir)
+
+
+@pytest.mark.ai_generated
+@responses.activate
+def test_collect_key_error_mid_run_leaves_every_record_untouched(
+    base_dir: Path, make_bep
+) -> None:
+    """A key that fails partway through must not leave BEPs/ half-written."""
+    paths = [
+        make_bep(11, google_doc="https://docs.google.com/document/d/AAA/"),
+        make_bep(12, google_doc="https://docs.google.com/document/d/BBB/"),
+        make_bep(16, google_doc="https://docs.google.com/document/d/CCC/"),
+    ]
+    before = [path.read_bytes() for path in paths]
+    responses.add(
+        responses.GET,
+        bep_doc_activity.DRIVE_API_URL.format(file_id="AAA"),
+        json={"modifiedTime": "2026-08-01T00:00:00.000Z", "version": "7"},
+        status=200,
+    )
+    status, payload = _KEY_ERROR_SHAPES["invalid_key"]
+    responses.add(
+        responses.GET,
+        bep_doc_activity.DRIVE_API_URL.format(file_id="BBB"),
+        json=payload,
+        status=status,
+    )
+
+    with pytest.raises(bep_doc_activity.GoogleApiKeyError):
+        bep_doc_activity.collect(base_dir=base_dir)
+
+    assert [path.read_bytes() for path in paths] == before
+    assert len(responses.calls) == 2  # stopped at the bad response; BEP 16 never fetched
 
 
 @pytest.mark.ai_generated

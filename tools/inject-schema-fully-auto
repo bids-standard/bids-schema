@@ -120,6 +120,10 @@ datalad_run_retry \
     "versions/schema_to_bids.json" \
     bids-schema collect schema-to-bids
 
+# Set when a phase fails in a way that must fail the job, but only after
+# the remaining phases have run and their results are committed.
+deferred_failures=""
+
 echo "=== Phase 2: Process PR schemas ==="
 
 if [ "$PROCESS_PRS" = "true" ]; then
@@ -166,12 +170,19 @@ if [ "$PROCESS_BEPS" = "true" ]; then
 
         if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
             echo "--- Phase 3a2: Collecting BEP Google Doc activity via bids-schema collect bep-docs ---"
-            # A missing GOOGLE_API_KEY is not fatal — the collector logs a
-            # warning and exits 0, leaving doc_activity as "not checked yet".
-            datalad_run_retry \
+            # A missing or Drive-rejected GOOGLE_API_KEY must fail the job so
+            # it gets fixed, but not before the remaining phases (both READMEs,
+            # BEPs/dashboard.json) have run, so their results still get
+            # committed and pushed. The collector decides what counts as a
+            # failure: an unset key fails unless BIDS_SCHEMA_SKIP_BEP_DOCS=1
+            # asks to skip this phase on purpose.
+            if ! datalad_run_retry \
                 "Collect BEP Google Doc activity via bids-schema collect bep-docs" \
                 "BEPs/*/BEP_METADATA.json" \
-                bids-schema collect bep-docs --all
+                bids-schema collect bep-docs --all; then
+                echo "ERROR: BEP Google Doc activity collection failed; finishing the remaining phases, then failing the job." >&2
+                deferred_failures+="  - BEP Google Doc activity collection (bids-schema collect bep-docs) failed; see the error above.\n"
+            fi
         fi
 
         if [ -d "BEPs" ] && compgen -G "BEPs/*/BEP_METADATA.json" > /dev/null; then
@@ -212,5 +223,12 @@ echo ""
 echo "Master version: $schema_ver"
 echo "Latest release: $released_ver"
 echo "=========================================="
+
+if [ -n "$deferred_failures" ]; then
+    echo "" >&2
+    echo "ERROR: the run finished, but these phases failed:" >&2
+    echo -e "$deferred_failures" >&2
+    exit 1
+fi
 
 echo "done"

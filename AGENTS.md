@@ -216,9 +216,27 @@ version (bids-standard/bids-validator#10).
   failing the run. A missing `gh` fails the run: the collector exits 2.
 - `GOOGLE_API_KEY` — a Google Drive API key (no OAuth/service
   account; only reads metadata of publicly link-shared docs).
-  Consumed by `bids-schema collect bep-docs`; missing key degrades
-  gracefully — the collector logs a warning and exits 0, leaving
-  `doc_activity` as "not checked yet".
+  Consumed by `bids-schema collect bep-docs`. When a doc check is due,
+  a missing key — or one the Drive API rejects as a key-level problem
+  (invalid/expired key, Drive API not enabled, key restricted to other
+  APIs or by referrer/IP/app) — makes the collector raise
+  `GoogleApiKeyError`, and that is a **failure**, not a warning:
+  - direct `bids-schema collect bep-docs` exits non-zero;
+  - `bids-schema cycle` still renders both READMEs and
+    `BEPs/dashboard.json`, then exits non-zero;
+  - `tools/inject-schema-fully-auto` records the failure, finishes the
+    remaining phases, prints a summary, and exits 1; the workflow's
+    push step (`if: ${{ !cancelled() }}`) still publishes the results,
+    and the red job is the alert.
+
+  The collector fetches every due doc before writing any, so a key that
+  fails partway through leaves `BEPs/` untouched. A run with nothing
+  due (no `BEPs/`, only fresh BEPs, or an `--only` filter) needs no
+  key. A per-doc 403/404 because one BEP doc isn't link-shared is not a
+  key problem and is always tolerated — that doc keeps its last
+  recorded `doc_activity`, with `_error: true`. Set
+  `BIDS_SCHEMA_SKIP_BEP_DOCS=1` to skip the collector on purpose (see
+  "Environment variables" below).
 - **`bids_schema` package**: `pip install -e '.[ci]'` in CI,
   `pip install -e '.[test]'` locally. Registers the `bids-schema`
   entry-point script and pulls in `click` + `PyYAML`.
@@ -263,6 +281,11 @@ The active feature branch for the PR/BEP work is `enh-prs-and-beps`
    `BIDS_SCHEMA_KEEPTMP=1` to preserve tempdirs when debugging
    `inject-schema-fully-auto`.
 7. **Environment variables** consumed by the CLI:
+   - `BIDS_SCHEMA_SKIP_BEP_DOCS` — set to `1`/`true`/`yes` to skip
+     `bids-schema collect bep-docs` on purpose (e.g. local runs without
+     a Drive key); `cycle` and `inject-schema-fully-auto` then succeed
+     without doc activity. Unset, an unset `GOOGLE_API_KEY` is an error
+     whenever a doc check is due.
    - `BIDS_SCHEMA_RAW_BRANCH` — branch name embedded in README raw-file
      URLs. Defaults to `main`. Override when rendering from an
      unmerged feature branch to keep `Raw` / `Pretty` links resolving.
