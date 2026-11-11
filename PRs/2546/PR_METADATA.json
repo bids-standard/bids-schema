@@ -1,0 +1,69 @@
+{
+  "_schema_version": 2,
+  "pr_number": "2546",
+  "git_ref": "e9ed1156f5896cf980289266de4dfae9632157c1",
+  "last_commit": "e9ed1156f5896cf980289266de4dfae9632157c1",
+  "last_updated": "2026-11-09T21:57:46Z",
+  "has_schema_changes": true,
+  "build_status": "success",
+  "authors_count": 7,
+  "stats": {
+    "_source_head_sha": "7ca0027615bed763d4de48ddc89ce4cd99296eac",
+    "_collected_at": "2026-11-10T19:34:53Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2026-09-26T04:01:49Z",
+    "pr_updated_at": "2026-09-26T04:06:44Z",
+    "review_decision": null,
+    "commits": {
+      "count": 1,
+      "first_at": "2026-09-26T04:01:34Z",
+      "last_at": "2026-09-26T04:01:34Z"
+    },
+    "contributors": {
+      "count": 1,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "bdichter@benjamins-mac-mini.local": {
+          "name": "Benjamin Dichter",
+          "login": null,
+          "email": "bdichter@benjamins-mac-mini.local",
+          "authored": 1,
+          "committed": 1
+        }
+      }
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 0,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 0,
+      "by_author": {}
+    },
+    "comments": {
+      "issue_count": 1,
+      "review_thread_count": 0,
+      "total": 1,
+      "first_at": "2026-09-26T04:06:43Z",
+      "last_at": "2026-09-26T04:06:43Z",
+      "by_author": {
+        "codecov": {
+          "count": 1,
+          "first_at": "2026-09-26T04:06:43Z",
+          "last_at": "2026-09-26T04:06:43Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 0,
+      "unresolved": 0,
+      "unresolved_active": 0,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {}
+    }
+  }
+}

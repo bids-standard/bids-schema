@@ -1,0 +1,69 @@
+{
+  "_schema_version": 2,
+  "pr_number": "2477",
+  "git_ref": "fe10b9f6bef2fb5a4c82080def67de3fef4841ec",
+  "last_commit": "fe10b9f6bef2fb5a4c82080def67de3fef4841ec",
+  "last_updated": "2026-11-10T06:54:45Z",
+  "has_schema_changes": true,
+  "build_status": "success",
+  "authors_count": 2,
+  "stats": {
+    "_source_head_sha": "40437d6c2351116ca4fef434097afdaaa5aa212f",
+    "_collected_at": "2026-11-10T19:34:48Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2026-07-28T11:41:34Z",
+    "pr_updated_at": "2026-07-28T11:45:55Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 2,
+      "first_at": "2026-07-28T11:37:43Z",
+      "last_at": "2026-07-28T11:41:57Z"
+    },
+    "contributors": {
+      "count": 1,
+      "authors": 1,
+      "committers": 0,
+      "by_identity": {
+        "sinaklg": {
+          "name": "Sina Kling",
+          "login": "sinaklg",
+          "email": "40434329+sinaklg@users.noreply.github.com",
+          "authored": 1,
+          "committed": 0
+        }
+      }
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 0,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 0,
+      "by_author": {}
+    },
+    "comments": {
+      "issue_count": 1,
+      "review_thread_count": 0,
+      "total": 1,
+      "first_at": "2026-07-28T11:45:55Z",
+      "last_at": "2026-07-28T11:45:55Z",
+      "by_author": {
+        "codecov": {
+          "count": 1,
+          "first_at": "2026-07-28T11:45:55Z",
+          "last_at": "2026-07-28T11:45:55Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 0,
+      "unresolved": 0,
+      "unresolved_active": 0,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {}
+    }
+  }
+}

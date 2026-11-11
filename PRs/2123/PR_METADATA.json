@@ -1,19 +1,20 @@
 {
+  "_schema_version": 2,
   "pr_number": "2123",
-  "git_ref": "c7a06e885621c07253ecd96e42952fc06ddef9bf",
-  "last_commit": "c7a06e885621c07253ecd96e42952fc06ddef9bf",
-  "last_updated": "2026-05-09T03:40:10Z",
+  "git_ref": "64e5414cb3498eccec10a5ad5ce93fce02960daa",
+  "last_commit": "64e5414cb3498eccec10a5ad5ce93fce02960daa",
+  "last_updated": "2026-11-09T21:57:06Z",
   "has_schema_changes": true,
   "build_status": "success",
-  "authors_count": 5,
+  "authors_count": 6,
   "stats": {
     "_source_head_sha": "597e9a2b4879f4c82d56fd5034330b4787213af1",
-    "_collected_at": "2026-11-08T17:50:55Z",
+    "_collected_at": "2026-11-10T19:34:28Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-05-30T14:09:19Z",
-    "pr_updated_at": "2026-11-05T14:21:54Z",
+    "pr_updated_at": "2026-11-10T15:57:53Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
       "count": 136,
@@ -58,22 +59,22 @@
     "reviews": {
       "approved": 0,
       "changes_requested": 0,
-      "commented": 129,
+      "commented": 133,
       "dismissed": 1,
       "pending": 0,
-      "total": 130,
+      "total": 134,
       "by_author": {
         "effigies": {
           "approved": 0,
-          "commented": 11,
+          "commented": 13,
           "changes_requested": 0,
           "dismissed": 0,
           "pending": 0,
           "first_at": "2025-05-30T14:14:35Z",
-          "last_at": "2026-08-06T21:02:03Z",
+          "last_at": "2026-11-10T15:57:53Z",
           "last_state": "COMMENTED",
           "effective_state": null,
-          "total": 11
+          "total": 13
         },
         "surchs": {
           "approved": 0,
@@ -206,13 +207,25 @@
           "last_state": "COMMENTED",
           "effective_state": null,
           "total": 2
+        },
+        "dominikwelke": {
+          "approved": 0,
+          "commented": 2,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-11-10T14:28:47Z",
+          "last_at": "2026-11-10T14:28:47Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 2
         }
       }
     },
     "comments": {
       "issue_count": 81,
-      "review_thread_count": 169,
-      "total": 250,
+      "review_thread_count": 171,
+      "total": 252,
       "first_at": "2025-05-30T14:12:14Z",
       "last_at": "2026-11-04T14:51:48Z",
       "by_author": {
@@ -300,8 +313,8 @@
     },
     "review_threads": {
       "total": 106,
-      "unresolved": 32,
-      "unresolved_active": 1,
+      "unresolved": 31,
+      "unresolved_active": 0,
       "unresolved_outdated": 31,
       "unresolved_by_author": {
         "surchs": {
@@ -338,14 +351,8 @@
           "count": 1,
           "first_at": "2026-08-06T21:02:03Z",
           "last_at": "2026-08-06T21:02:03Z"
-        },
-        "bendichter": {
-          "count": 1,
-          "first_at": "2026-11-04T14:46:14Z",
-          "last_at": "2026-11-04T14:46:14Z"
         }
       }
     }
-  },
-  "_schema_version": 2
+  }
 }

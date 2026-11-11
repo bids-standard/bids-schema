@@ -1,14 +1,15 @@
 {
+  "_schema_version": 2,
   "pr_number": "2258",
-  "git_ref": "8416ea8633195ed101e564fe3712d888c10ee137",
-  "last_commit": "8416ea8633195ed101e564fe3712d888c10ee137",
-  "last_updated": "2026-01-05T02:28:05Z",
+  "git_ref": "521d8d30e5548638b9011d0817e7514243de85e3",
+  "last_commit": "521d8d30e5548638b9011d0817e7514243de85e3",
+  "last_updated": "2026-11-09T21:57:13Z",
   "has_schema_changes": true,
   "build_status": "success",
-  "authors_count": 2,
+  "authors_count": 3,
   "stats": {
     "_source_head_sha": "7e62a17b1c2532a2e12cc98cf5dbc1f3961c626d",
-    "_collected_at": "2026-11-08T17:51:01Z",
+    "_collected_at": "2026-11-10T19:34:34Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
@@ -151,6 +152,5 @@
         }
       }
     }
-  },
-  "_schema_version": 2
+  }
 }

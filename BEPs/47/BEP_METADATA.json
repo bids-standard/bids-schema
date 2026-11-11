@@ -1,18 +1,18 @@
 {
+  "_schema_version": 3,
   "bep_number": "47",
   "title": "Audio/video recordings for behavioral experiments",
   "pr_number": 2231,
   "pull_request": "https://github.com/bids-standard/bids-specification/pull/2231",
   "google_doc": "",
   "status": "review",
-  "authors_count": 3,
-  "_schema_version": 3,
+  "authors_count": 7,
   "bep_registered": "2026-02-08T01:58:45Z",
   "googledoc_registered": null,
   "_registration_source": {
     "repo": "bids-standard/bids-website",
     "path": "data/beps/beps.yml",
-    "walked_at": "2026-11-05T06:11:28Z",
+    "walked_at": "2026-11-09T21:58:52Z",
     "walked_ref": "957da0e6c48ff0839403551bcbf1c390281d0559"
   }
 }

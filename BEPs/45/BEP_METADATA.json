@@ -1,4 +1,5 @@
 {
+  "_schema_version": 3,
   "bep_number": "45",
   "title": "Peripheral Physiological Recordings",
   "pr_number": 2267,
@@ -6,20 +7,19 @@
   "google_doc": "https://docs.google.com/document/d/1oTfjzY5ZnLIYd0kPPWhR81sBmMuy_jC5YYIaqj6OhSA/edit",
   "status": "review",
   "authors_count": 4,
-  "_schema_version": 3,
   "bep_registered": "2025-03-19T18:46:00Z",
   "googledoc_registered": "2025-03-19T18:46:00Z",
   "_registration_source": {
     "repo": "bids-standard/bids-website",
     "path": "data/beps/beps.yml",
-    "walked_at": "2026-11-05T06:11:28Z",
+    "walked_at": "2026-11-09T21:58:52Z",
     "walked_ref": "957da0e6c48ff0839403551bcbf1c390281d0559"
   },
   "doc_activity": {
     "last_modified": "2026-11-05T15:08:29.169Z",
-    "version": "10645",
-    "edits_since_last_check": 0,
-    "checked_at": "2026-11-08T05:39:19Z",
+    "version": "10649",
+    "edits_since_last_check": 2,
+    "checked_at": "2026-11-10T19:34:57Z",
     "_error": null
   }
 }

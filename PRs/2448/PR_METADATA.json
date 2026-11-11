@@ -1,0 +1,97 @@
+{
+  "_schema_version": 2,
+  "pr_number": "2448",
+  "git_ref": "562da02d9026f2945eb3fb77e15462de97feb7b4",
+  "last_commit": "562da02d9026f2945eb3fb77e15462de97feb7b4",
+  "last_updated": "2026-11-09T21:57:36Z",
+  "has_schema_changes": true,
+  "build_status": "success",
+  "authors_count": 2,
+  "stats": {
+    "_source_head_sha": "22c84762d7def936ae21f0769b38641ff401d82d",
+    "_collected_at": "2026-11-10T19:34:47Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2026-06-25T20:27:02Z",
+    "pr_updated_at": "2026-07-23T15:57:06Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 7,
+      "first_at": "2026-06-18T04:54:16Z",
+      "last_at": "2026-07-17T21:13:07Z"
+    },
+    "contributors": {
+      "count": 1,
+      "authors": 1,
+      "committers": 1,
+      "by_identity": {
+        "kabilar": {
+          "name": "Kabilar Gunalan",
+          "login": "kabilar",
+          "email": "kabi@mit.edu",
+          "authored": 7,
+          "committed": 7
+        }
+      }
+    },
+    "reviews": {
+      "approved": 1,
+      "changes_requested": 0,
+      "commented": 0,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 1,
+      "by_author": {
+        "effigies": {
+          "approved": 1,
+          "commented": 0,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-07-19T14:35:07Z",
+          "last_at": "2026-07-19T14:35:07Z",
+          "last_state": "APPROVED",
+          "effective_state": "APPROVED",
+          "total": 1
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 6,
+      "review_thread_count": 0,
+      "total": 6,
+      "first_at": "2026-06-25T20:31:10Z",
+      "last_at": "2026-07-23T15:55:15Z",
+      "by_author": {
+        "codecov": {
+          "count": 1,
+          "first_at": "2026-06-25T20:31:10Z",
+          "last_at": "2026-06-25T20:31:10Z"
+        },
+        "effigies": {
+          "count": 2,
+          "first_at": "2026-07-17T15:53:20Z",
+          "last_at": "2026-07-17T20:27:48Z"
+        },
+        "kabilar": {
+          "count": 2,
+          "first_at": "2026-07-17T19:51:08Z",
+          "last_at": "2026-07-17T21:14:36Z"
+        },
+        "balbasty": {
+          "count": 1,
+          "first_at": "2026-07-23T15:55:15Z",
+          "last_at": "2026-07-23T15:55:15Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 0,
+      "unresolved": 0,
+      "unresolved_active": 0,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {}
+    }
+  }
+}
