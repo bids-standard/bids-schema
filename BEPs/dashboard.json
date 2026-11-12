@@ -1,7 +1,7 @@
 {
   "_schema_version": 1,
   "source": "https://github.com/bids-standard/bids-schema",
-  "data_as_of": "2026-11-12T19:47:13Z",
+  "data_as_of": "2026-11-12T20:12:37Z",
   "thresholds_days": {
     "fresh": 30,
     "active": 180
@@ -175,8 +175,8 @@
       "google_doc": "https://docs.google.com/document/d/1PmcVs7vg7Th-cGC-UrX8rAhKUHIzOI-uIOh69_mvdlw/",
       "doc_activity": {
         "last_modified": "2024-12-02T21:34:46.525Z",
-        "edits_since_last_check": 0,
-        "checked_at": "2026-11-11T19:29:09Z",
+        "edits_since_last_check": 2,
+        "checked_at": "2026-11-12T20:12:36Z",
         "error": null
       },
       "pr_number": 1680,
@@ -218,8 +218,8 @@
       "google_doc": "https://docs.google.com/document/d/1yzsd1J9GT-aA0DWhdlgNr5LCu6_gvbjLyfvYq2FuxlY/",
       "doc_activity": {
         "last_modified": "2026-06-25T12:40:26.960Z",
-        "edits_since_last_check": 1,
-        "checked_at": "2026-11-11T19:29:09Z",
+        "edits_since_last_check": 3,
+        "checked_at": "2026-11-12T20:12:36Z",
         "error": null
       },
       "pr_number": 2339,
@@ -261,8 +261,8 @@
       "google_doc": "https://docs.google.com/document/d/1vw3VNDof5cecv2PkFp7Lw_pNUTUo8-m8V4SIdtGJVKs/",
       "doc_activity": {
         "last_modified": "2025-09-08T23:07:33.513Z",
-        "edits_since_last_check": 3,
-        "checked_at": "2026-11-11T19:29:09Z",
+        "edits_since_last_check": 4,
+        "checked_at": "2026-11-12T20:12:37Z",
         "error": null
       },
       "pr_number": 2099,
@@ -304,8 +304,8 @@
       "google_doc": "https://docs.google.com/document/d/1oG-C8T-dWPqfVzL2W8HO3elWK8NIh2cOCPssRGv23n0/",
       "doc_activity": {
         "last_modified": "2026-01-05T05:59:51.427Z",
-        "edits_since_last_check": 0,
-        "checked_at": "2026-11-11T19:29:10Z",
+        "edits_since_last_check": 8,
+        "checked_at": "2026-11-12T20:12:37Z",
         "error": null
       },
       "pr_number": 2307,
@@ -385,8 +385,8 @@
       "google_doc": "https://docs.google.com/document/d/1WTkfES8L0vItZVyyR68fc-9cO03jS-kCnMnw6602pbc/",
       "doc_activity": {
         "last_modified": "2026-05-13T12:31:07.977Z",
-        "edits_since_last_check": 0,
-        "checked_at": "2026-11-11T19:29:10Z",
+        "edits_since_last_check": 2,
+        "checked_at": "2026-11-12T20:12:37Z",
         "error": null
       },
       "pr_number": 2123,
@@ -466,8 +466,8 @@
       "google_doc": "https://docs.google.com/document/d/1oTfjzY5ZnLIYd0kPPWhR81sBmMuy_jC5YYIaqj6OhSA/edit",
       "doc_activity": {
         "last_modified": "2026-11-05T15:08:29.169Z",
-        "edits_since_last_check": 1,
-        "checked_at": "2026-11-11T19:29:10Z",
+        "edits_since_last_check": 0,
+        "checked_at": "2026-11-12T20:12:37Z",
         "error": null
       },
       "pr_number": 2267,
@@ -509,8 +509,8 @@
       "google_doc": "https://docs.google.com/document/d/1ubDQ2RhgjnfGqoeukzEkPV9YEHhfYMERrj7-3b0c2HI/edit",
       "doc_activity": {
         "last_modified": "2026-07-16T18:36:22.001Z",
-        "edits_since_last_check": 0,
-        "checked_at": "2026-11-11T19:29:10Z",
+        "edits_since_last_check": 5,
+        "checked_at": "2026-11-12T20:12:37Z",
         "error": null
       },
       "pr_number": 2333,
