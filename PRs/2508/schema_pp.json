@@ -454,7 +454,7 @@
             },
             "scans": {
               "additionalProperties": false,
-              "description": "Row from the scans.tsv file corresponding to the current file",
+              "description": "Row from the scans.tsv file corresponding to the current file.\nThe row is the one whose `filename` value equals the path of the current file\nrelative to the directory containing the scans.tsv file.\nColumn values are omitted if the column is absent, the value is `n/a`,\nor the current file is not listed in the scans.tsv file.\n",
               "properties": {
                 "acq_time": {
                   "description": "Value of the acq_time column for the current file, if present",
@@ -1649,7 +1649,7 @@
         "unit": "s"
       },
       "duration__scans": {
-        "description": "Wallclock duration of the recording in seconds,\nfrom the acquisition of the first data sample to the end of the acquisition of the last data sample.\nMUST be strictly positive.\nFor MRI data, this is equivalent to the `AcquisitionDuration` sidecar metadata field;\nif both are present for the same file they SHOULD be equal.\n",
+        "description": "Wallclock duration of the recording in seconds,\nfrom the acquisition of the first data sample to the end of the acquisition of the last data sample.\nMUST be strictly positive.\nFor MRI data, this is equivalent to the `AcquisitionDuration` sidecar metadata field;\nif both are present for the same file they MUST be equal.\n",
         "display_name": "Scan duration",
         "exclusiveMinimum": 0,
         "name": "duration",
@@ -11473,15 +11473,15 @@
           ],
           "issue": {
             "code": "SCANS_DURATION_MISMATCH_ACQUISITION_DURATION",
-            "level": "warning",
-            "message": "The 'duration' column in the scans.tsv file does not match the\n'AcquisitionDuration' sidecar metadata field for this file.\nBoth fields record total acquisition duration in seconds and SHOULD be equal.\n"
+            "level": "error",
+            "message": "The 'duration' column in the scans.tsv file does not match the\n'AcquisitionDuration' sidecar metadata field for this file.\nBoth fields record total acquisition duration in seconds and MUST be equal.\n"
           },
           "selectors": [
             "modality == \"mri\"",
             "match(extension, \"^\\.nii(\\.gz)?$\")",
             "\"AcquisitionDuration\" in sidecar",
             "type(associations.scans) != \"null\"",
-            "\"duration\" in associations.scans",
+            "type(associations.scans.duration) != \"null\"",
             "!intersects([suffix], [\"bold\", \"asl\"]) || type(sidecar.VolumeTiming) == \"null\""
           ]
         },
