@@ -6,5 +6,112 @@
   "last_updated": "2026-11-12T19:46:33Z",
   "has_schema_changes": true,
   "build_status": "success",
-  "authors_count": 2
+  "authors_count": 2,
+  "stats": {
+    "_source_head_sha": "dd5d5982d0badf31ee36ff59322ff2a75f00d21b",
+    "_collected_at": "2026-11-12T19:47:19Z",
+    "_complete": true,
+    "_error": null,
+    "pr_state": "OPEN",
+    "pr_created_at": "2026-09-03T21:19:48Z",
+    "pr_updated_at": "2026-11-12T16:36:28Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "commits": {
+      "count": 4,
+      "first_at": "2026-09-03T20:01:26Z",
+      "last_at": "2026-11-05T22:25:11Z"
+    },
+    "contributors": {
+      "count": 2,
+      "authors": 2,
+      "committers": 2,
+      "by_identity": {
+        "yarikoptic": {
+          "name": "Yaroslav Halchenko",
+          "login": "yarikoptic",
+          "email": "debian@onerussian.com",
+          "authored": 2,
+          "committed": 2
+        },
+        "claude": {
+          "name": "Claude",
+          "login": "claude",
+          "email": "noreply@anthropic.com",
+          "authored": 2,
+          "committed": 2
+        }
+      }
+    },
+    "reviews": {
+      "approved": 0,
+      "changes_requested": 0,
+      "commented": 7,
+      "dismissed": 0,
+      "pending": 0,
+      "total": 7,
+      "by_author": {
+        "yarikoptic": {
+          "approved": 0,
+          "commented": 5,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-09-03T21:20:47Z",
+          "last_at": "2026-09-17T19:41:32Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 5
+        },
+        "effigies": {
+          "approved": 0,
+          "commented": 2,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-09-17T15:49:11Z",
+          "last_at": "2026-09-17T18:39:10Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 2
+        }
+      }
+    },
+    "comments": {
+      "issue_count": 5,
+      "review_thread_count": 7,
+      "total": 12,
+      "first_at": "2026-09-03T21:20:47Z",
+      "last_at": "2026-09-10T20:11:42Z",
+      "by_author": {
+        "codecov": {
+          "count": 1,
+          "first_at": "2026-09-03T21:21:18Z",
+          "last_at": "2026-09-03T21:21:18Z"
+        },
+        "rwblair": {
+          "count": 2,
+          "first_at": "2026-09-04T22:31:17Z",
+          "last_at": "2026-09-10T19:49:47Z"
+        },
+        "yarikoptic": {
+          "count": 4,
+          "first_at": "2026-09-03T21:20:47Z",
+          "last_at": "2026-09-10T20:11:42Z"
+        }
+      }
+    },
+    "review_threads": {
+      "total": 2,
+      "unresolved": 2,
+      "unresolved_active": 2,
+      "unresolved_outdated": 0,
+      "unresolved_by_author": {
+        "yarikoptic": {
+          "count": 2,
+          "first_at": "2026-09-03T21:20:47Z",
+          "last_at": "2026-09-10T20:11:42Z"
+        }
+      }
+    }
+  }
 }
