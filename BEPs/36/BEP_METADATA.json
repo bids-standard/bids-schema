@@ -6,5 +6,13 @@
   "pull_request": "https://github.com/bids-standard/bids-specification/pull/2123",
   "google_doc": "https://docs.google.com/document/d/1WTkfES8L0vItZVyyR68fc-9cO03jS-kCnMnw6602pbc/",
   "status": "review",
-  "authors_count": 6
+  "authors_count": 6,
+  "bep_registered": "2024-06-15T08:59:02Z",
+  "googledoc_registered": "2024-11-15T12:33:46Z",
+  "_registration_source": {
+    "repo": "bids-standard/bids-website",
+    "path": "data/beps/beps.yml",
+    "walked_at": "2026-11-13T19:30:01Z",
+    "walked_ref": "13d51f6408712e9c74ff20a1c2adae37880d2767"
+  }
 }
