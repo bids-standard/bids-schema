@@ -9,12 +9,12 @@
   "authors_count": 6,
   "stats": {
     "_source_head_sha": "597e9a2b4879f4c82d56fd5034330b4787213af1",
-    "_collected_at": "2026-11-12T19:47:01Z",
+    "_collected_at": "2026-11-13T06:08:47Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-05-30T14:09:19Z",
-    "pr_updated_at": "2026-11-10T15:57:53Z",
+    "pr_updated_at": "2026-11-13T01:13:33Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
       "count": 136,
@@ -59,22 +59,22 @@
     "reviews": {
       "approved": 0,
       "changes_requested": 0,
-      "commented": 133,
+      "commented": 139,
       "dismissed": 1,
       "pending": 0,
-      "total": 134,
+      "total": 140,
       "by_author": {
         "effigies": {
           "approved": 0,
-          "commented": 13,
+          "commented": 19,
           "changes_requested": 0,
           "dismissed": 0,
           "pending": 0,
           "first_at": "2025-05-30T14:14:35Z",
-          "last_at": "2026-11-10T15:57:53Z",
+          "last_at": "2026-11-13T01:06:21Z",
           "last_state": "COMMENTED",
           "effective_state": null,
-          "total": 13
+          "total": 19
         },
         "surchs": {
           "approved": 0,
@@ -224,10 +224,10 @@
     },
     "comments": {
       "issue_count": 81,
-      "review_thread_count": 171,
-      "total": 252,
+      "review_thread_count": 183,
+      "total": 264,
       "first_at": "2025-05-30T14:12:14Z",
-      "last_at": "2026-11-04T14:51:48Z",
+      "last_at": "2026-11-13T01:06:21Z",
       "by_author": {
         "codecov": {
           "count": 3,
@@ -245,9 +245,9 @@
           "last_at": "2026-09-03T12:07:14Z"
         },
         "effigies": {
-          "count": 14,
+          "count": 26,
           "first_at": "2025-05-30T14:12:14Z",
-          "last_at": "2026-08-06T21:02:03Z"
+          "last_at": "2026-11-13T01:06:21Z"
         },
         "surchs": {
           "count": 34,
@@ -312,10 +312,10 @@
       }
     },
     "review_threads": {
-      "total": 106,
-      "unresolved": 31,
-      "unresolved_active": 0,
-      "unresolved_outdated": 31,
+      "total": 118,
+      "unresolved": 43,
+      "unresolved_active": 11,
+      "unresolved_outdated": 32,
       "unresolved_by_author": {
         "surchs": {
           "count": 14,
@@ -348,9 +348,9 @@
           "last_at": "2026-06-25T18:17:24Z"
         },
         "effigies": {
-          "count": 1,
+          "count": 13,
           "first_at": "2026-08-06T21:02:03Z",
-          "last_at": "2026-08-06T21:02:03Z"
+          "last_at": "2026-11-13T01:06:21Z"
         }
       }
     }
