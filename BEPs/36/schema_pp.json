@@ -10442,6 +10442,20 @@
         }
       },
       "dataset": {
+        "AgeUnits": {
+          "checks": [
+            "intersects([sidecar.age.Units], [\"year\", \"month\", \"week\", \"day\", \"hour\", \"minute\", \"second\"])"
+          ],
+          "issue": {
+            "code": "AGE_UNITS",
+            "level": "warning",
+            "message": "The \"Units\" value for age in 'participants.json' is not a valid\nISO 8601-based duration unit.\nAllowed values are \"year\", \"month\", \"week\", \"day\", \"hour\", \"minute\",\nor \"second\".\n"
+          },
+          "selectors": [
+            "path == '/participants.tsv'",
+            "\"Units\" in sidecar.age"
+          ]
+        },
         "NoSubjectFolders": {
           "checks": [
             "length(glob(\"sub-*\")) == 0"
@@ -21558,5 +21572,5 @@
       }
     }
   },
-  "schema_version": "2.0.1-dev"
+  "schema_version": "2.1.0-dev"
 }
