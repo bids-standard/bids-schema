@@ -1,7 +1,7 @@
 {
   "_schema_version": 1,
   "source": "https://github.com/bids-standard/bids-schema",
-  "data_as_of": "2026-11-13T06:09:08Z",
+  "data_as_of": "2026-11-13T19:30:03Z",
   "thresholds_days": {
     "fresh": 30,
     "active": 180
@@ -42,7 +42,7 @@
           "count": 12,
           "last_at": "2026-03-19T19:54:26Z"
         },
-        "collected_at": "2026-11-13T06:08:22Z",
+        "collected_at": "2026-11-13T19:29:09Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -80,7 +80,7 @@
           "count": 14,
           "last_at": "2024-08-01T17:53:33Z"
         },
-        "collected_at": "2026-11-13T06:08:22Z",
+        "collected_at": "2026-11-13T19:29:10Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -118,7 +118,7 @@
           "count": 6,
           "last_at": "2026-10-02T21:30:33Z"
         },
-        "collected_at": "2026-11-13T06:08:51Z",
+        "collected_at": "2026-11-13T19:29:42Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -161,7 +161,7 @@
           "count": 4,
           "last_at": "2024-08-21T18:06:13Z"
         },
-        "collected_at": "2026-11-13T06:08:34Z",
+        "collected_at": "2026-11-13T19:29:21Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -176,7 +176,7 @@
       "doc_activity": {
         "last_modified": "2024-12-02T21:34:46.525Z",
         "edits_since_last_check": 2,
-        "checked_at": "2026-11-12T20:12:36Z",
+        "checked_at": "2026-11-13T19:30:02Z",
         "error": null
       },
       "pr_number": 1680,
@@ -204,7 +204,7 @@
           "count": 4,
           "last_at": "2026-11-09T18:42:21Z"
         },
-        "collected_at": "2026-11-13T06:08:32Z",
+        "collected_at": "2026-11-13T19:29:18Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -218,8 +218,8 @@
       "google_doc": "https://docs.google.com/document/d/1yzsd1J9GT-aA0DWhdlgNr5LCu6_gvbjLyfvYq2FuxlY/",
       "doc_activity": {
         "last_modified": "2026-06-25T12:40:26.960Z",
-        "edits_since_last_check": 3,
-        "checked_at": "2026-11-12T20:12:36Z",
+        "edits_since_last_check": 4,
+        "checked_at": "2026-11-13T19:30:02Z",
         "error": null
       },
       "pr_number": 2339,
@@ -247,7 +247,7 @@
           "count": 61,
           "last_at": "2026-02-26T17:46:48Z"
         },
-        "collected_at": "2026-11-13T06:08:57Z",
+        "collected_at": "2026-11-13T19:29:48Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -261,8 +261,8 @@
       "google_doc": "https://docs.google.com/document/d/1vw3VNDof5cecv2PkFp7Lw_pNUTUo8-m8V4SIdtGJVKs/",
       "doc_activity": {
         "last_modified": "2025-09-08T23:07:33.513Z",
-        "edits_since_last_check": 4,
-        "checked_at": "2026-11-12T20:12:37Z",
+        "edits_since_last_check": 2,
+        "checked_at": "2026-11-13T19:30:02Z",
         "error": null
       },
       "pr_number": 2099,
@@ -290,7 +290,7 @@
           "count": 300,
           "last_at": "2026-09-22T09:28:49Z"
         },
-        "collected_at": "2026-11-13T06:08:43Z",
+        "collected_at": "2026-11-13T19:29:32Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -304,8 +304,8 @@
       "google_doc": "https://docs.google.com/document/d/1oG-C8T-dWPqfVzL2W8HO3elWK8NIh2cOCPssRGv23n0/",
       "doc_activity": {
         "last_modified": "2026-01-05T05:59:51.427Z",
-        "edits_since_last_check": 8,
-        "checked_at": "2026-11-12T20:12:37Z",
+        "edits_since_last_check": 0,
+        "checked_at": "2026-11-13T19:30:02Z",
         "error": null
       },
       "pr_number": 2307,
@@ -333,7 +333,7 @@
           "count": 44,
           "last_at": "2026-11-04T15:02:41Z"
         },
-        "collected_at": "2026-11-13T06:08:55Z",
+        "collected_at": "2026-11-13T19:29:46Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -371,7 +371,7 @@
           "count": 17,
           "last_at": "2023-02-13T11:33:07Z"
         },
-        "collected_at": "2026-11-13T06:08:24Z",
+        "collected_at": "2026-11-13T19:29:11Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -385,8 +385,8 @@
       "google_doc": "https://docs.google.com/document/d/1WTkfES8L0vItZVyyR68fc-9cO03jS-kCnMnw6602pbc/",
       "doc_activity": {
         "last_modified": "2026-05-13T12:31:07.977Z",
-        "edits_since_last_check": 2,
-        "checked_at": "2026-11-12T20:12:37Z",
+        "edits_since_last_check": null,
+        "checked_at": "2026-11-13T19:30:02Z",
         "error": null
       },
       "pr_number": 2123,
@@ -395,26 +395,26 @@
         "build_status": "success",
         "state": "OPEN",
         "created_at": "2025-05-30T14:09:19Z",
-        "updated_at": "2026-11-13T01:13:33Z",
+        "updated_at": "2026-11-13T18:14:02Z",
         "review_decision": "REVIEW_REQUIRED",
         "authors": 4,
         "commenters": 16,
         "reviews": {
           "approved": 0,
           "changes_requested": 0,
-          "commented": 139
+          "commented": 141
         },
         "unresolved_threads": 43,
         "comments": {
-          "total": 264,
+          "total": 265,
           "first_at": "2025-05-30T14:12:14Z",
           "last_at": "2026-11-13T01:06:21Z"
         },
         "commits": {
-          "count": 136,
-          "last_at": "2026-11-05T13:57:08Z"
+          "count": 138,
+          "last_at": "2026-11-13T14:33:57Z"
         },
-        "collected_at": "2026-11-13T06:08:47Z",
+        "collected_at": "2026-11-13T19:29:37Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -433,26 +433,26 @@
         "build_status": "success",
         "state": "OPEN",
         "created_at": "2024-12-22T02:29:37Z",
-        "updated_at": "2026-10-29T20:28:13Z",
+        "updated_at": "2026-11-13T16:13:51Z",
         "review_decision": "CHANGES_REQUESTED",
         "authors": 1,
-        "commenters": 9,
+        "commenters": 10,
         "reviews": {
           "approved": 2,
           "changes_requested": 1,
-          "commented": 44
+          "commented": 45
         },
-        "unresolved_threads": 2,
+        "unresolved_threads": 6,
         "comments": {
-          "total": 101,
+          "total": 105,
           "first_at": "2024-12-31T17:40:19Z",
-          "last_at": "2026-10-29T20:25:49Z"
+          "last_at": "2026-11-13T15:55:22Z"
         },
         "commits": {
           "count": 1,
           "last_at": "2026-10-29T02:14:49Z"
         },
-        "collected_at": "2026-11-13T06:08:36Z",
+        "collected_at": "2026-11-13T19:29:24Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -465,9 +465,9 @@
       "title": "Peripheral Physiological Recordings",
       "google_doc": "https://docs.google.com/document/d/1oTfjzY5ZnLIYd0kPPWhR81sBmMuy_jC5YYIaqj6OhSA/edit",
       "doc_activity": {
-        "last_modified": "2026-11-05T15:08:29.169Z",
-        "edits_since_last_check": 0,
-        "checked_at": "2026-11-12T20:12:37Z",
+        "last_modified": "2026-11-13T15:52:43.738Z",
+        "edits_since_last_check": 51,
+        "checked_at": "2026-11-13T19:30:03Z",
         "error": null
       },
       "pr_number": 2267,
@@ -495,7 +495,7 @@
           "count": 23,
           "last_at": "2026-11-05T14:26:19Z"
         },
-        "collected_at": "2026-11-13T06:08:53Z",
+        "collected_at": "2026-11-13T19:29:43Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -509,8 +509,8 @@
       "google_doc": "https://docs.google.com/document/d/1ubDQ2RhgjnfGqoeukzEkPV9YEHhfYMERrj7-3b0c2HI/edit",
       "doc_activity": {
         "last_modified": "2026-07-16T18:36:22.001Z",
-        "edits_since_last_check": 5,
-        "checked_at": "2026-11-12T20:12:37Z",
+        "edits_since_last_check": 1,
+        "checked_at": "2026-11-13T19:30:03Z",
         "error": null
       },
       "pr_number": 2333,
@@ -538,7 +538,7 @@
           "count": 17,
           "last_at": "2026-07-05T19:33:04Z"
         },
-        "collected_at": "2026-11-13T06:08:56Z",
+        "collected_at": "2026-11-13T19:29:47Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -557,26 +557,26 @@
         "build_status": "success",
         "state": "OPEN",
         "created_at": "2025-10-25T16:42:26Z",
-        "updated_at": "2026-09-30T04:24:24Z",
+        "updated_at": "2026-11-13T17:52:29Z",
         "review_decision": "APPROVED",
         "authors": 6,
-        "commenters": 13,
+        "commenters": 14,
         "reviews": {
           "approved": 2,
           "changes_requested": 0,
-          "commented": 56
+          "commented": 58
         },
-        "unresolved_threads": 1,
+        "unresolved_threads": 5,
         "comments": {
-          "total": 101,
+          "total": 106,
           "first_at": "2025-10-25T17:55:19Z",
-          "last_at": "2026-09-30T04:24:24Z"
+          "last_at": "2026-11-13T15:15:54Z"
         },
         "commits": {
           "count": 85,
           "last_at": "2026-09-30T03:56:37Z"
         },
-        "collected_at": "2026-11-13T06:08:51Z",
+        "collected_at": "2026-11-13T19:29:41Z",
         "stats_complete": true,
         "stats_error": null
       },
