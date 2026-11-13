@@ -9,12 +9,12 @@
   "authors_count": 7,
   "stats": {
     "_source_head_sha": "d02449331a81d188ab317e0f5c37c166d34e1851",
-    "_collected_at": "2026-11-13T06:08:51Z",
+    "_collected_at": "2026-11-13T19:29:41Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-10-25T16:42:26Z",
-    "pr_updated_at": "2026-09-30T04:24:24Z",
+    "pr_updated_at": "2026-11-13T17:52:29Z",
     "review_decision": "APPROVED",
     "commits": {
       "count": 85,
@@ -73,10 +73,10 @@
     "reviews": {
       "approved": 2,
       "changes_requested": 0,
-      "commented": 56,
+      "commented": 58,
       "dismissed": 0,
       "pending": 0,
-      "total": 58,
+      "total": 60,
       "by_author": {
         "bendichter": {
           "approved": 0,
@@ -140,15 +140,15 @@
         },
         "CodyCBakerPhD": {
           "approved": 0,
-          "commented": 2,
+          "commented": 3,
           "changes_requested": 0,
           "dismissed": 0,
           "pending": 0,
           "first_at": "2026-05-21T14:58:21Z",
-          "last_at": "2026-05-21T15:53:41Z",
+          "last_at": "2026-11-13T17:52:29Z",
           "last_state": "COMMENTED",
           "effective_state": null,
-          "total": 2
+          "total": 3
         },
         "roaldarbol": {
           "approved": 0,
@@ -161,15 +161,27 @@
           "last_state": "COMMENTED",
           "effective_state": null,
           "total": 1
+        },
+        "bclenet": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-11-13T15:17:19Z",
+          "last_at": "2026-11-13T15:17:19Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
         }
       }
     },
     "comments": {
       "issue_count": 43,
-      "review_thread_count": 58,
-      "total": 101,
+      "review_thread_count": 63,
+      "total": 106,
       "first_at": "2025-10-25T17:55:19Z",
-      "last_at": "2026-09-30T04:24:24Z",
+      "last_at": "2026-11-13T15:15:54Z",
       "by_author": {
         "codecov": {
           "count": 1,
@@ -235,19 +247,29 @@
           "count": 2,
           "first_at": "2025-10-29T08:31:02Z",
           "last_at": "2025-12-03T14:49:20Z"
+        },
+        "bclenet": {
+          "count": 4,
+          "first_at": "2026-11-13T14:43:11Z",
+          "last_at": "2026-11-13T15:15:54Z"
         }
       }
     },
     "review_threads": {
-      "total": 21,
-      "unresolved": 1,
-      "unresolved_active": 0,
+      "total": 25,
+      "unresolved": 5,
+      "unresolved_active": 4,
       "unresolved_outdated": 1,
       "unresolved_by_author": {
         "yarikoptic": {
           "count": 1,
           "first_at": "2026-01-06T19:26:41Z",
           "last_at": "2026-01-06T19:26:41Z"
+        },
+        "bclenet": {
+          "count": 4,
+          "first_at": "2026-11-13T14:43:11Z",
+          "last_at": "2026-11-13T15:15:54Z"
         }
       }
     }

@@ -9,12 +9,12 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "147b46d771cd2b35b31a72b1f1bd1d7dc2d5a88a",
-    "_collected_at": "2026-11-13T06:08:36Z",
+    "_collected_at": "2026-11-13T19:29:24Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2024-12-22T02:29:37Z",
-    "pr_updated_at": "2026-10-29T20:28:13Z",
+    "pr_updated_at": "2026-11-13T16:13:51Z",
     "review_decision": "CHANGES_REQUESTED",
     "commits": {
       "count": 1,
@@ -38,10 +38,10 @@
     "reviews": {
       "approved": 2,
       "changes_requested": 1,
-      "commented": 44,
+      "commented": 45,
       "dismissed": 1,
       "pending": 0,
-      "total": 48,
+      "total": 49,
       "by_author": {
         "VisLab": {
           "approved": 1,
@@ -150,15 +150,27 @@
           "last_state": "COMMENTED",
           "effective_state": null,
           "total": 1
+        },
+        "bclenet": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-11-13T16:13:51Z",
+          "last_at": "2026-11-13T16:13:51Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
         }
       }
     },
     "comments": {
       "issue_count": 24,
-      "review_thread_count": 77,
-      "total": 101,
+      "review_thread_count": 81,
+      "total": 105,
       "first_at": "2024-12-31T17:40:19Z",
-      "last_at": "2026-10-29T20:25:49Z",
+      "last_at": "2026-11-13T15:55:22Z",
       "by_author": {
         "Remi-Gau": {
           "count": 5,
@@ -204,13 +216,18 @@
           "count": 1,
           "first_at": "2026-10-27T03:15:57Z",
           "last_at": "2026-10-27T03:15:57Z"
+        },
+        "bclenet": {
+          "count": 4,
+          "first_at": "2026-11-13T15:41:28Z",
+          "last_at": "2026-11-13T15:55:22Z"
         }
       }
     },
     "review_threads": {
-      "total": 38,
-      "unresolved": 2,
-      "unresolved_active": 2,
+      "total": 42,
+      "unresolved": 6,
+      "unresolved_active": 6,
       "unresolved_outdated": 0,
       "unresolved_by_author": {
         "yarikoptic": {
@@ -222,6 +239,11 @@
           "count": 1,
           "first_at": "2026-10-20T20:01:22Z",
           "last_at": "2026-10-20T20:01:22Z"
+        },
+        "bclenet": {
+          "count": 4,
+          "first_at": "2026-11-13T15:41:28Z",
+          "last_at": "2026-11-13T15:55:22Z"
         }
       }
     }
