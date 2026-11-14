@@ -9,13 +9,13 @@
   "authors_count": 6,
   "stats": {
     "_source_head_sha": "57a3a7960d91fb9cd462b8761862f1b824ee234b",
-    "_collected_at": "2026-11-13T19:29:37Z",
+    "_collected_at": "2026-11-14T05:55:32Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-05-30T14:09:19Z",
-    "pr_updated_at": "2026-11-13T18:14:02Z",
-    "review_decision": "REVIEW_REQUIRED",
+    "pr_updated_at": "2026-11-13T21:16:06Z",
+    "review_decision": "CHANGES_REQUESTED",
     "commits": {
       "count": 138,
       "first_at": "2025-05-20T15:24:26Z",
@@ -58,11 +58,11 @@
     },
     "reviews": {
       "approved": 0,
-      "changes_requested": 0,
+      "changes_requested": 2,
       "commented": 141,
       "dismissed": 1,
       "pending": 0,
-      "total": 142,
+      "total": 144,
       "by_author": {
         "effigies": {
           "approved": 0,
@@ -127,14 +127,14 @@
         "yarikoptic": {
           "approved": 0,
           "commented": 6,
-          "changes_requested": 0,
+          "changes_requested": 2,
           "dismissed": 1,
           "pending": 0,
           "first_at": "2026-01-09T20:38:56Z",
-          "last_at": "2026-04-02T01:41:14Z",
-          "last_state": "COMMENTED",
-          "effective_state": null,
-          "total": 7
+          "last_at": "2026-11-13T21:15:43Z",
+          "last_state": "CHANGES_REQUESTED",
+          "effective_state": "CHANGES_REQUESTED",
+          "total": 9
         },
         "timdressler": {
           "approved": 0,
@@ -236,10 +236,10 @@
     },
     "comments": {
       "issue_count": 81,
-      "review_thread_count": 184,
-      "total": 265,
+      "review_thread_count": 188,
+      "total": 269,
       "first_at": "2025-05-30T14:12:14Z",
-      "last_at": "2026-11-13T01:06:21Z",
+      "last_at": "2026-11-13T21:13:20Z",
       "by_author": {
         "codecov": {
           "count": 3,
@@ -267,9 +267,9 @@
           "last_at": "2026-04-10T00:00:21Z"
         },
         "yarikoptic": {
-          "count": 7,
+          "count": 11,
           "first_at": "2025-11-25T19:11:26Z",
-          "last_at": "2026-03-27T13:36:57Z"
+          "last_at": "2026-11-13T21:13:20Z"
         },
         "mateuszpawlik": {
           "count": 3,
@@ -324,9 +324,9 @@
       }
     },
     "review_threads": {
-      "total": 118,
-      "unresolved": 43,
-      "unresolved_active": 11,
+      "total": 122,
+      "unresolved": 47,
+      "unresolved_active": 15,
       "unresolved_outdated": 32,
       "unresolved_by_author": {
         "surchs": {
@@ -350,9 +350,9 @@
           "last_at": "2025-10-16T21:55:51Z"
         },
         "yarikoptic": {
-          "count": 4,
+          "count": 8,
           "first_at": "2026-01-09T20:38:56Z",
-          "last_at": "2026-03-27T13:36:57Z"
+          "last_at": "2026-11-13T21:13:20Z"
         },
         "SamGuay": {
           "count": 1,

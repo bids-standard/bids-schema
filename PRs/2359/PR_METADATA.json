@@ -9,12 +9,12 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "46f2777e9c202fc919992c7082ae13f6fbf151ca",
-    "_collected_at": "2026-11-13T19:29:50Z",
+    "_collected_at": "2026-11-14T05:55:44Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2026-03-06T03:41:35Z",
-    "pr_updated_at": "2026-04-21T17:10:40Z",
+    "pr_updated_at": "2026-11-13T20:27:42Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
       "count": 6,
@@ -38,22 +38,22 @@
     "reviews": {
       "approved": 0,
       "changes_requested": 0,
-      "commented": 2,
+      "commented": 3,
       "dismissed": 0,
       "pending": 0,
-      "total": 2,
+      "total": 3,
       "by_author": {
         "yarikoptic": {
           "approved": 0,
-          "commented": 1,
+          "commented": 2,
           "changes_requested": 0,
           "dismissed": 0,
           "pending": 0,
           "first_at": "2026-04-20T15:08:43Z",
-          "last_at": "2026-04-20T15:08:43Z",
+          "last_at": "2026-11-13T20:27:42Z",
           "last_state": "COMMENTED",
           "effective_state": null,
-          "total": 1
+          "total": 2
         },
         "effigies": {
           "approved": 0,
@@ -71,8 +71,8 @@
     },
     "comments": {
       "issue_count": 2,
-      "review_thread_count": 2,
-      "total": 4,
+      "review_thread_count": 3,
+      "total": 5,
       "first_at": "2026-03-10T15:24:23Z",
       "last_at": "2026-04-20T15:08:43Z",
       "by_author": {

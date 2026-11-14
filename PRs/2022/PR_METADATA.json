@@ -9,12 +9,12 @@
   "authors_count": 1,
   "stats": {
     "_source_head_sha": "147b46d771cd2b35b31a72b1f1bd1d7dc2d5a88a",
-    "_collected_at": "2026-11-13T19:29:24Z",
+    "_collected_at": "2026-11-14T05:55:22Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2024-12-22T02:29:37Z",
-    "pr_updated_at": "2026-11-13T16:13:51Z",
+    "pr_updated_at": "2026-11-13T22:08:45Z",
     "review_decision": "CHANGES_REQUESTED",
     "commits": {
       "count": 1,
@@ -37,11 +37,11 @@
     },
     "reviews": {
       "approved": 2,
-      "changes_requested": 1,
-      "commented": 45,
+      "changes_requested": 2,
+      "commented": 46,
       "dismissed": 1,
       "pending": 0,
-      "total": 49,
+      "total": 51,
       "by_author": {
         "VisLab": {
           "approved": 1,
@@ -69,15 +69,15 @@
         },
         "yarikoptic": {
           "approved": 0,
-          "commented": 5,
-          "changes_requested": 1,
+          "commented": 6,
+          "changes_requested": 2,
           "dismissed": 1,
           "pending": 0,
           "first_at": "2025-01-09T22:24:14Z",
-          "last_at": "2026-09-02T13:57:38Z",
+          "last_at": "2026-11-13T22:08:44Z",
           "last_state": "CHANGES_REQUESTED",
           "effective_state": "CHANGES_REQUESTED",
-          "total": 7
+          "total": 9
         },
         "Remi-Gau": {
           "approved": 0,
@@ -167,10 +167,10 @@
     },
     "comments": {
       "issue_count": 24,
-      "review_thread_count": 81,
-      "total": 105,
+      "review_thread_count": 84,
+      "total": 108,
       "first_at": "2024-12-31T17:40:19Z",
-      "last_at": "2026-11-13T15:55:22Z",
+      "last_at": "2026-11-13T21:53:00Z",
       "by_author": {
         "Remi-Gau": {
           "count": 5,
@@ -193,9 +193,9 @@
           "last_at": "2026-10-29T20:25:49Z"
         },
         "yarikoptic": {
-          "count": 20,
+          "count": 21,
           "first_at": "2025-01-09T21:43:18Z",
-          "last_at": "2026-09-02T17:00:04Z"
+          "last_at": "2026-11-13T21:53:00Z"
         },
         "dorahermes": {
           "count": 2,
@@ -225,15 +225,15 @@
       }
     },
     "review_threads": {
-      "total": 42,
-      "unresolved": 6,
-      "unresolved_active": 6,
+      "total": 43,
+      "unresolved": 7,
+      "unresolved_active": 7,
       "unresolved_outdated": 0,
       "unresolved_by_author": {
         "yarikoptic": {
-          "count": 1,
+          "count": 2,
           "first_at": "2025-12-16T16:32:09Z",
-          "last_at": "2025-12-16T16:32:09Z"
+          "last_at": "2026-11-13T21:53:00Z"
         },
         "effigies": {
           "count": 1,
