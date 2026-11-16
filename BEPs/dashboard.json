@@ -1,7 +1,7 @@
 {
   "_schema_version": 1,
   "source": "https://github.com/bids-standard/bids-schema",
-  "data_as_of": "2026-11-16T05:56:58Z",
+  "data_as_of": "2026-11-16T21:54:01Z",
   "thresholds_days": {
     "fresh": 30,
     "active": 180
@@ -42,7 +42,7 @@
           "count": 12,
           "last_at": "2026-03-19T19:54:26Z"
         },
-        "collected_at": "2026-11-16T05:56:10Z",
+        "collected_at": "2026-11-16T21:53:05Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -80,7 +80,7 @@
           "count": 14,
           "last_at": "2024-08-01T17:53:33Z"
         },
-        "collected_at": "2026-11-16T05:56:11Z",
+        "collected_at": "2026-11-16T21:53:06Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -118,7 +118,7 @@
           "count": 6,
           "last_at": "2026-10-02T21:30:33Z"
         },
-        "collected_at": "2026-11-16T05:56:39Z",
+        "collected_at": "2026-11-16T21:53:38Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -161,7 +161,7 @@
           "count": 4,
           "last_at": "2024-08-21T18:06:13Z"
         },
-        "collected_at": "2026-11-16T05:56:21Z",
+        "collected_at": "2026-11-16T21:53:17Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -176,7 +176,7 @@
       "doc_activity": {
         "last_modified": "2024-12-02T21:34:46.525Z",
         "edits_since_last_check": 2,
-        "checked_at": "2026-11-15T18:43:52Z",
+        "checked_at": "2026-11-16T21:54:00Z",
         "error": null
       },
       "pr_number": 1680,
@@ -204,7 +204,7 @@
           "count": 4,
           "last_at": "2026-11-09T18:42:21Z"
         },
-        "collected_at": "2026-11-16T05:56:18Z",
+        "collected_at": "2026-11-16T21:53:15Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -218,8 +218,8 @@
       "google_doc": "https://docs.google.com/document/d/1yzsd1J9GT-aA0DWhdlgNr5LCu6_gvbjLyfvYq2FuxlY/",
       "doc_activity": {
         "last_modified": "2026-06-25T12:40:26.960Z",
-        "edits_since_last_check": 0,
-        "checked_at": "2026-11-15T18:43:52Z",
+        "edits_since_last_check": 2,
+        "checked_at": "2026-11-16T21:54:00Z",
         "error": null
       },
       "pr_number": 2339,
@@ -247,7 +247,7 @@
           "count": 61,
           "last_at": "2026-02-26T17:46:48Z"
         },
-        "collected_at": "2026-11-16T05:56:45Z",
+        "collected_at": "2026-11-16T21:53:45Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -261,8 +261,8 @@
       "google_doc": "https://docs.google.com/document/d/1vw3VNDof5cecv2PkFp7Lw_pNUTUo8-m8V4SIdtGJVKs/",
       "doc_activity": {
         "last_modified": "2025-09-08T23:07:33.513Z",
-        "edits_since_last_check": 1,
-        "checked_at": "2026-11-15T18:43:53Z",
+        "edits_since_last_check": 4,
+        "checked_at": "2026-11-16T21:54:00Z",
         "error": null
       },
       "pr_number": 2099,
@@ -290,7 +290,7 @@
           "count": 300,
           "last_at": "2026-09-22T09:28:49Z"
         },
-        "collected_at": "2026-11-16T05:56:30Z",
+        "collected_at": "2026-11-16T21:53:27Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -305,7 +305,7 @@
       "doc_activity": {
         "last_modified": "2026-01-05T05:59:51.427Z",
         "edits_since_last_check": 0,
-        "checked_at": "2026-11-15T18:43:53Z",
+        "checked_at": "2026-11-16T21:54:00Z",
         "error": null
       },
       "pr_number": 2307,
@@ -333,7 +333,7 @@
           "count": 44,
           "last_at": "2026-11-04T15:02:41Z"
         },
-        "collected_at": "2026-11-16T05:56:43Z",
+        "collected_at": "2026-11-16T21:53:43Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -371,7 +371,7 @@
           "count": 17,
           "last_at": "2023-02-13T11:33:07Z"
         },
-        "collected_at": "2026-11-16T05:56:12Z",
+        "collected_at": "2026-11-16T21:53:07Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -386,7 +386,7 @@
       "doc_activity": {
         "last_modified": "2026-05-13T12:31:07.977Z",
         "edits_since_last_check": 0,
-        "checked_at": "2026-11-15T18:43:53Z",
+        "checked_at": "2026-11-16T21:54:01Z",
         "error": null
       },
       "pr_number": 2123,
@@ -414,7 +414,7 @@
           "count": 138,
           "last_at": "2026-11-13T14:33:57Z"
         },
-        "collected_at": "2026-11-16T05:56:34Z",
+        "collected_at": "2026-11-16T21:53:33Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -452,7 +452,7 @@
           "count": 1,
           "last_at": "2026-10-29T02:14:49Z"
         },
-        "collected_at": "2026-11-16T05:56:23Z",
+        "collected_at": "2026-11-16T21:53:19Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -466,8 +466,8 @@
       "google_doc": "https://docs.google.com/document/d/1oTfjzY5ZnLIYd0kPPWhR81sBmMuy_jC5YYIaqj6OhSA/edit",
       "doc_activity": {
         "last_modified": "2026-11-13T15:52:43.738Z",
-        "edits_since_last_check": 2,
-        "checked_at": "2026-11-15T18:43:53Z",
+        "edits_since_last_check": 0,
+        "checked_at": "2026-11-16T21:54:01Z",
         "error": null
       },
       "pr_number": 2267,
@@ -495,7 +495,7 @@
           "count": 23,
           "last_at": "2026-11-05T14:26:19Z"
         },
-        "collected_at": "2026-11-16T05:56:40Z",
+        "collected_at": "2026-11-16T21:53:40Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -510,7 +510,7 @@
       "doc_activity": {
         "last_modified": "2026-07-16T18:36:22.001Z",
         "edits_since_last_check": 0,
-        "checked_at": "2026-11-15T18:43:53Z",
+        "checked_at": "2026-11-16T21:54:01Z",
         "error": null
       },
       "pr_number": 2333,
@@ -538,7 +538,7 @@
           "count": 17,
           "last_at": "2026-07-05T19:33:04Z"
         },
-        "collected_at": "2026-11-16T05:56:45Z",
+        "collected_at": "2026-11-16T21:53:44Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -576,7 +576,7 @@
           "count": 85,
           "last_at": "2026-09-30T03:56:37Z"
         },
-        "collected_at": "2026-11-16T05:56:38Z",
+        "collected_at": "2026-11-16T21:53:37Z",
         "stats_complete": true,
         "stats_error": null
       },
