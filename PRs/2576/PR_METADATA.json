@@ -9,12 +9,12 @@
   "authors_count": 2,
   "stats": {
     "_source_head_sha": "87932ab7264a5c01603b5fe25fabed9ec10fe625",
-    "_collected_at": "2026-11-19T20:23:22Z",
+    "_collected_at": "2026-11-20T06:50:26Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2026-11-12T21:45:15Z",
-    "pr_updated_at": "2026-11-19T03:42:31Z",
+    "pr_updated_at": "2026-11-19T21:49:06Z",
     "review_decision": "REVIEW_REQUIRED",
     "commits": {
       "count": 1,
@@ -38,32 +38,56 @@
     "reviews": {
       "approved": 0,
       "changes_requested": 0,
-      "commented": 0,
+      "commented": 1,
       "dismissed": 0,
       "pending": 0,
-      "total": 0,
-      "by_author": {}
+      "total": 1,
+      "by_author": {
+        "yarikoptic": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-11-19T21:49:06Z",
+          "last_at": "2026-11-19T21:49:06Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
+        }
+      }
     },
     "comments": {
       "issue_count": 1,
-      "review_thread_count": 0,
-      "total": 1,
+      "review_thread_count": 1,
+      "total": 2,
       "first_at": "2026-11-19T03:42:31Z",
-      "last_at": "2026-11-19T03:42:31Z",
+      "last_at": "2026-11-19T21:49:06Z",
       "by_author": {
         "effigies": {
           "count": 1,
           "first_at": "2026-11-19T03:42:31Z",
           "last_at": "2026-11-19T03:42:31Z"
+        },
+        "yarikoptic": {
+          "count": 1,
+          "first_at": "2026-11-19T21:49:06Z",
+          "last_at": "2026-11-19T21:49:06Z"
         }
       }
     },
     "review_threads": {
-      "total": 0,
-      "unresolved": 0,
-      "unresolved_active": 0,
+      "total": 1,
+      "unresolved": 1,
+      "unresolved_active": 1,
       "unresolved_outdated": 0,
-      "unresolved_by_author": {}
+      "unresolved_by_author": {
+        "yarikoptic": {
+          "count": 1,
+          "first_at": "2026-11-19T21:49:06Z",
+          "last_at": "2026-11-19T21:49:06Z"
+        }
+      }
     }
   }
 }
