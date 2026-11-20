@@ -1,5 +1,5 @@
 {
-  "bids_version": "1.11.2-dev",
+  "bids_version": "1.11.3-dev",
   "meta": {
     "associations": {
       "aslcontext": {
@@ -1449,6 +1449,7 @@
       }
     },
     "versions": [
+      "1.11.2",
       "1.11.1",
       "1.11.0",
       "1.10.1",
@@ -10541,7 +10542,7 @@
         },
         "ParticipantIDMismatch": {
           "checks": [
-            "allequal(\n  sorted(intersects(columns.participant_id, dataset.subjects.sub_dirs)),\n  sorted(dataset.subjects.sub_dirs)\n)\n"
+            "allequal(\n  sorted(intersects(dataset.subjects.participant_id, dataset.subjects.sub_dirs)),\n  sorted(dataset.subjects.sub_dirs)\n)\n"
           ],
           "issue": {
             "code": "PARTICIPANT_ID_MISMATCH",
@@ -11974,7 +11975,7 @@
           },
           "selectors": [
             "datatype == 'phenotype'",
-            "suffix == '.tsv'",
+            "extension == '.tsv'",
             "type(dataset.subjects.participant_id) != 'null'"
           ]
         }
@@ -11990,7 +11991,7 @@
             "message": "As per section 164.514(C) of \"The De-identification Standard\" under HIPAA guidelines,\nparticipants with age 89 or higher should be tagged as 89+. More information can be found at\nhttps://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/#standard.\n"
           },
           "selectors": [
-            "path == 'participants.tsv'",
+            "path == '/participants.tsv'",
             "columns.age != null"
           ]
         },
@@ -21413,5 +21414,5 @@
       }
     }
   },
-  "schema_version": "2.0.0-dev"
+  "schema_version": "2.1.0-dev"
 }
