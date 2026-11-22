@@ -454,7 +454,7 @@
             },
             "scans": {
               "additionalProperties": false,
-              "description": "Row from the scans.tsv file corresponding to the current file.\nThe row is the one whose `filename` value equals the path of the current file\nrelative to the directory containing the scans.tsv file.\nColumn values are omitted if the column is absent, the value is `n/a`,\nor the current file is not listed in the scans.tsv file.\n",
+              "description": "Row from the scans.tsv file corresponding to the current file. The row is the one whose `filename` value equals the path of the current file relative to the directory containing the scans.tsv file. Column values are omitted if the column is absent, the value is `n/a`, or the current file is not listed in the scans.tsv file.\n",
               "properties": {
                 "acq_time": {
                   "description": "Value of the acq_time column for the current file, if present",
