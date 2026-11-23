@@ -21079,7 +21079,7 @@
           "columns": {
             "HED": "optional",
             "acq_time__scans": "optional",
-            "duration__scans": "recommended",
+            "duration__scans": "optional",
             "filename": {
               "description_addendum": "There MUST be exactly one row for each file.\n",
               "level": "required"
