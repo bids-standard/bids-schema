@@ -1649,7 +1649,7 @@
         "unit": "s"
       },
       "duration__scans": {
-        "description": "Wallclock duration of the recording in seconds,\nfrom the acquisition of the first data sample to the end of the acquisition of the last data sample.\nMUST be strictly positive.\nFor MRI data, this is equivalent to the `AcquisitionDuration` sidecar metadata field;\nif both are present for the same file they MUST be equal.\n",
+        "description": "Wallclock duration of the recording in seconds,\nfrom the acquisition of the first data sample to the end of the acquisition of the last data sample\nwhich are stored in the file.\nIt thus starts at `acq_time`, if that is provided,\nand does not include anything which precedes the first stored data sample\nor follows the last one,\nsuch as preparation, calibration or reference scans,\nor volumes discarded by the scanner (\"dummy scans\")\nor by the user before including the file in the dataset.\nFor a recording which got interrupted,\nit is the duration of the data which was acquired, not of what was planned.\nAs for `acq_time`, the durations of all files from the same recording\n(for example, those with the [`split`](SPEC_ROOT/appendices/entities.md#split) entity)\nMUST be identical, and be that of the entire recording.\nMUST be strictly positive.\n\nFor MRI data, this is not necessarily the `AcquisitionDuration` sidecar metadata field,\nwhich is the duration reported by the scanner and,\ndepending on the vendor and the sequence, can also include\npreparation, reference and discarded scans,\nor be the duration which was planned for an acquisition which got interrupted.\nIf both are present for the same file,\n`duration` SHOULD NOT be longer than `AcquisitionDuration`.\n",
         "display_name": "Scan duration",
         "exclusiveMinimum": 0,
         "name": "duration",
@@ -4519,7 +4519,7 @@
         "type": "string"
       },
       "AcquisitionDuration": {
-        "description": "Duration (in seconds) of scan acquisition, including all volumes for multi-volume scans.\nCorresponds to [DICOM Tag (0018,9073)](https://www.dicomlookup.com/dicomtags/(0018,9073))\n`Acquisition Duration`.\n",
+        "description": "Duration (in seconds) of scan acquisition, including all volumes for multi-volume scans.\nCorresponds to [DICOM Tag (0018,9073)](https://www.dicomlookup.com/dicomtags/(0018,9073))\n`Acquisition Duration`.\nBeing the duration which the scanner reports,\nit can also include preparation, reference and discarded (\"dummy\") scans\nwhich precede the data stored in the file,\nand be the duration which was planned for an acquisition which got interrupted.\nFor the duration of the stored data see the `duration` column of the\n[scans file](SPEC_ROOT/modality-agnostic-files/data-summary-files.md#scans-file).\n",
         "display_name": "Acquisition Duration",
         "exclusiveMinimum": 0,
         "name": "AcquisitionDuration",
@@ -11469,12 +11469,12 @@
         },
         "ScansAcquisitionDurationConsistency": {
           "checks": [
-            "associations.scans.duration == sidecar.AcquisitionDuration"
+            "associations.scans.duration - sidecar.AcquisitionDuration <= 0.001"
           ],
           "issue": {
-            "code": "SCANS_DURATION_MISMATCH_ACQUISITION_DURATION",
-            "level": "error",
-            "message": "The 'duration' column in the scans.tsv file does not match the\n'AcquisitionDuration' sidecar metadata field for this file.\nBoth fields record total acquisition duration in seconds and MUST be equal.\n"
+            "code": "SCANS_DURATION_EXCEEDS_ACQUISITION_DURATION",
+            "level": "warning",
+            "message": "The 'duration' column in the scans.tsv file is longer than the\n'AcquisitionDuration' sidecar metadata field for this file.\n'duration' is of the data stored in the file,\nwhereas 'AcquisitionDuration' is of the entire acquisition as reported by the scanner,\nwhich can also include preparation, reference and discarded scans.\nCheck that both are in seconds, and that 'AcquisitionDuration'\nis not the duration of a single volume.\n"
           },
           "selectors": [
             "modality == \"mri\"",
