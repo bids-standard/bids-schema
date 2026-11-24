@@ -1,25 +1,25 @@
 {
   "_schema_version": 2,
   "pr_number": "2231",
-  "git_ref": "bcf87469df193631e1ae12e698b77beabb412801",
-  "last_commit": "bcf87469df193631e1ae12e698b77beabb412801",
-  "last_updated": "2026-11-09T21:57:11Z",
+  "git_ref": "eef10867d52f32aed142bd15e804697aa514a313",
+  "last_commit": "eef10867d52f32aed142bd15e804697aa514a313",
+  "last_updated": "2026-11-24T09:29:22Z",
   "has_schema_changes": true,
   "build_status": "success",
   "authors_count": 7,
   "stats": {
-    "_source_head_sha": "d02449331a81d188ab317e0f5c37c166d34e1851",
-    "_collected_at": "2026-11-09T21:58:28Z",
+    "_source_head_sha": "61fdc199c7e806ce903082f9ea969563c4048317",
+    "_collected_at": "2026-11-24T09:30:04Z",
     "_complete": true,
     "_error": null,
     "pr_state": "OPEN",
     "pr_created_at": "2025-10-25T16:42:26Z",
-    "pr_updated_at": "2026-09-30T04:24:24Z",
+    "pr_updated_at": "2026-11-23T23:45:02Z",
     "review_decision": "APPROVED",
     "commits": {
-      "count": 85,
+      "count": 86,
       "first_at": "2025-10-25T15:41:03Z",
-      "last_at": "2026-09-30T03:56:37Z"
+      "last_at": "2026-11-23T23:25:35Z"
     },
     "contributors": {
       "count": 6,
@@ -30,8 +30,8 @@
           "name": "Ben Dichter",
           "login": "bendichter",
           "email": "ben.dichter@gmail.com",
-          "authored": 53,
-          "committed": 25
+          "authored": 54,
+          "committed": 26
         },
         "effigies": {
           "name": "Chris Markiewicz",
@@ -73,10 +73,10 @@
     "reviews": {
       "approved": 2,
       "changes_requested": 0,
-      "commented": 56,
+      "commented": 59,
       "dismissed": 0,
       "pending": 0,
-      "total": 58,
+      "total": 61,
       "by_author": {
         "bendichter": {
           "approved": 0,
@@ -92,15 +92,15 @@
         },
         "yarikoptic": {
           "approved": 1,
-          "commented": 6,
+          "commented": 7,
           "changes_requested": 0,
           "dismissed": 0,
           "pending": 0,
           "first_at": "2025-10-25T21:42:58Z",
-          "last_at": "2026-07-07T18:28:03Z",
+          "last_at": "2026-11-19T21:49:13Z",
           "last_state": "COMMENTED",
           "effective_state": "APPROVED",
-          "total": 7
+          "total": 8
         },
         "effigies": {
           "approved": 0,
@@ -140,15 +140,15 @@
         },
         "CodyCBakerPhD": {
           "approved": 0,
-          "commented": 2,
+          "commented": 3,
           "changes_requested": 0,
           "dismissed": 0,
           "pending": 0,
           "first_at": "2026-05-21T14:58:21Z",
-          "last_at": "2026-05-21T15:53:41Z",
+          "last_at": "2026-11-13T17:52:29Z",
           "last_state": "COMMENTED",
           "effective_state": null,
-          "total": 2
+          "total": 3
         },
         "roaldarbol": {
           "approved": 0,
@@ -161,15 +161,27 @@
           "last_state": "COMMENTED",
           "effective_state": null,
           "total": 1
+        },
+        "bclenet": {
+          "approved": 0,
+          "commented": 1,
+          "changes_requested": 0,
+          "dismissed": 0,
+          "pending": 0,
+          "first_at": "2026-11-13T15:17:19Z",
+          "last_at": "2026-11-13T15:17:19Z",
+          "last_state": "COMMENTED",
+          "effective_state": null,
+          "total": 1
         }
       }
     },
     "comments": {
       "issue_count": 43,
-      "review_thread_count": 58,
-      "total": 101,
+      "review_thread_count": 64,
+      "total": 107,
       "first_at": "2025-10-25T17:55:19Z",
-      "last_at": "2026-09-30T04:24:24Z",
+      "last_at": "2026-11-13T15:15:54Z",
       "by_author": {
         "codecov": {
           "count": 1,
@@ -235,19 +247,29 @@
           "count": 2,
           "first_at": "2025-10-29T08:31:02Z",
           "last_at": "2025-12-03T14:49:20Z"
+        },
+        "bclenet": {
+          "count": 4,
+          "first_at": "2026-11-13T14:43:11Z",
+          "last_at": "2026-11-13T15:15:54Z"
         }
       }
     },
     "review_threads": {
-      "total": 21,
-      "unresolved": 1,
-      "unresolved_active": 0,
-      "unresolved_outdated": 1,
+      "total": 25,
+      "unresolved": 5,
+      "unresolved_active": 3,
+      "unresolved_outdated": 2,
       "unresolved_by_author": {
         "yarikoptic": {
           "count": 1,
           "first_at": "2026-01-06T19:26:41Z",
           "last_at": "2026-01-06T19:26:41Z"
+        },
+        "bclenet": {
+          "count": 4,
+          "first_at": "2026-11-13T14:43:11Z",
+          "last_at": "2026-11-13T15:15:54Z"
         }
       }
     }
