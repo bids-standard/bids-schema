@@ -18594,6 +18594,32 @@
             "intersects([suffix], [\"audio\", \"video\", \"audiovideo\", \"image\"])"
           ]
         },
+        "AudioVideoTiming": {
+          "fields": {
+            "StartTime": {
+              "description_addendum": "For audio, video, and audio-video recordings, this is the start of the first\ndata sample of the recording, relative to time zero of the run.\nIf the run has an events file, its `onset` values are measured from the same time zero.\nIf absent, a value of `0` is assumed.\nSee [Timing of recordings](SPEC_ROOT/modality-specific-files/behavioral-experiments.md#timing-of-recordings).\n",
+              "level": "recommended",
+              "level_addendum": "required if the `recording` entity is present"
+            }
+          },
+          "selectors": [
+            "datatype == \"beh\"",
+            "intersects([suffix], [\"audio\", \"video\", \"audiovideo\"])"
+          ]
+        },
+        "AudioVideoTimingMultipleRecordings": {
+          "fields": {
+            "StartTime": {
+              "level": "required",
+              "level_addendum": "if the `recording` entity is present"
+            }
+          },
+          "selectors": [
+            "datatype == \"beh\"",
+            "intersects([suffix], [\"audio\", \"video\", \"audiovideo\"])",
+            "entities.recording != null"
+          ]
+        },
         "BEHInstitutionInformation": {
           "fields": {
             "InstitutionAddress": "recommended",
