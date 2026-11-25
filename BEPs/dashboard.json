@@ -1,7 +1,7 @@
 {
   "_schema_version": 1,
   "source": "https://github.com/bids-standard/bids-schema",
-  "data_as_of": "2026-11-24T22:15:03Z",
+  "data_as_of": "2026-11-25T08:01:12Z",
   "thresholds_days": {
     "fresh": 30,
     "active": 180
@@ -13,8 +13,8 @@
       "google_doc": "https://docs.google.com/document/d/1YG2g4UkEio4t_STIBOqYOwneLEs1emHIXbGKynx7V0Y/",
       "doc_activity": {
         "last_modified": "2024-04-01T09:14:21.046Z",
-        "edits_since_last_check": 0,
-        "checked_at": "2026-11-24T09:30:27Z",
+        "edits_since_last_check": 2,
+        "checked_at": "2026-11-25T08:01:12Z",
         "error": null
       },
       "pr_number": 518,
@@ -42,7 +42,7 @@
           "count": 12,
           "last_at": "2026-03-19T19:54:26Z"
         },
-        "collected_at": "2026-11-24T22:14:02Z",
+        "collected_at": "2026-11-25T08:00:22Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -80,7 +80,7 @@
           "count": 14,
           "last_at": "2024-08-01T17:53:33Z"
         },
-        "collected_at": "2026-11-24T22:14:03Z",
+        "collected_at": "2026-11-25T08:00:23Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -118,7 +118,7 @@
           "count": 6,
           "last_at": "2026-10-02T21:30:33Z"
         },
-        "collected_at": "2026-11-24T22:14:40Z",
+        "collected_at": "2026-11-25T08:00:51Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -132,8 +132,8 @@
       "google_doc": "https://docs.google.com/document/d/1ugBdUF6dhElXdj3u9vw0iWjE6f_Bibsro3ah7sRV0GA/",
       "doc_activity": {
         "last_modified": "2026-11-03T16:16:31.071Z",
-        "edits_since_last_check": 3,
-        "checked_at": "2026-11-24T09:30:28Z",
+        "edits_since_last_check": 5,
+        "checked_at": "2026-11-25T08:01:12Z",
         "error": null
       },
       "pr_number": 1902,
@@ -161,7 +161,7 @@
           "count": 4,
           "last_at": "2024-08-21T18:06:13Z"
         },
-        "collected_at": "2026-11-24T22:14:16Z",
+        "collected_at": "2026-11-25T08:00:33Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -204,7 +204,7 @@
           "count": 4,
           "last_at": "2026-11-09T18:42:21Z"
         },
-        "collected_at": "2026-11-24T22:14:13Z",
+        "collected_at": "2026-11-25T08:00:31Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -247,7 +247,7 @@
           "count": 61,
           "last_at": "2026-02-26T17:46:48Z"
         },
-        "collected_at": "2026-11-24T22:14:47Z",
+        "collected_at": "2026-11-25T08:00:59Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -290,7 +290,7 @@
           "count": 300,
           "last_at": "2026-09-22T09:28:49Z"
         },
-        "collected_at": "2026-11-24T22:14:28Z",
+        "collected_at": "2026-11-25T08:00:42Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -333,7 +333,7 @@
           "count": 44,
           "last_at": "2026-11-04T15:02:41Z"
         },
-        "collected_at": "2026-11-24T22:14:45Z",
+        "collected_at": "2026-11-25T08:00:56Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -371,7 +371,7 @@
           "count": 17,
           "last_at": "2023-02-13T11:33:07Z"
         },
-        "collected_at": "2026-11-24T22:14:04Z",
+        "collected_at": "2026-11-25T08:00:24Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -414,7 +414,7 @@
           "count": 138,
           "last_at": "2026-11-13T14:33:57Z"
         },
-        "collected_at": "2026-11-24T22:14:33Z",
+        "collected_at": "2026-11-25T08:00:46Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -452,7 +452,7 @@
           "count": 1,
           "last_at": "2026-10-29T02:14:49Z"
         },
-        "collected_at": "2026-11-24T22:14:19Z",
+        "collected_at": "2026-11-25T08:00:35Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -495,7 +495,7 @@
           "count": 23,
           "last_at": "2026-11-05T14:26:19Z"
         },
-        "collected_at": "2026-11-24T22:14:42Z",
+        "collected_at": "2026-11-25T08:00:52Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -538,7 +538,7 @@
           "count": 17,
           "last_at": "2026-07-05T19:33:04Z"
         },
-        "collected_at": "2026-11-24T22:14:46Z",
+        "collected_at": "2026-11-25T08:00:58Z",
         "stats_complete": true,
         "stats_error": null
       },
@@ -576,7 +576,7 @@
           "count": 86,
           "last_at": "2026-11-23T23:25:35Z"
         },
-        "collected_at": "2026-11-24T22:14:38Z",
+        "collected_at": "2026-11-25T08:00:50Z",
         "stats_complete": true,
         "stats_error": null
       },
