@@ -2536,7 +2536,7 @@
         "type": "string"
       },
       "modality": {
-        "description": "The `mod-<label>` entity corresponds to modality label for defacing\nmasks and for masks in raw data, for example, T1w, \ninplaneT1, referenced by a defacemask image.\nFor example, `sub-01_mod-T1w_defacemask.nii.gz`.\n",
+        "description": "The `mod-<label>` entity corresponds to modality label for defacing\nmasks and for masks in raw data, for example, T1w,\ninplaneT1, referenced by a defacemask image.\nFor example, `sub-01_mod-T1w_defacemask.nii.gz`.\n",
         "display_name": "Corresponding Modality",
         "format": "label",
         "name": "mod",
